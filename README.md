@@ -76,7 +76,9 @@ VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=https://api.example.com
 
 naming branch convention:
 
-eg: IFA-1-user-login
+eg: 
+story: feature/IF-1-user-login
+bug: bugfix/IF-1-user-login
 
 License
 
