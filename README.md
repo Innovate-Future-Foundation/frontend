@@ -75,6 +75,7 @@ VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=https://api.example.com
 # Contributing
 
 naming branch convention:
+feature || bugfix/[ticket code]-[lowerclass word linked with - ]
 
 eg: 
 story: feature/IF-1-user-login
