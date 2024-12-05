@@ -10,12 +10,12 @@ export default defineConfig({
     globals: true,
     setupFiles: "./setupTest.ts",
     coverage: {
-      reporter: ["text", "json", "html"],
-    },
+      reporter: ["text", "json", "html"]
+    }
   },
   resolve: {
     alias: {
-      "@": "/src",
-    },
-  },
+      "@": "/src"
+    }
+  }
 });
