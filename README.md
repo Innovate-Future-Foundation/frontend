@@ -8,11 +8,10 @@ A modern SaaS platform for study tour agencies to manage their operations effici
 2. [Features](#features)
 3. [Tech Stack](#tech-stack)
 4. [Development Setup](#development-setup)
-   - [Docker Environment](#docker-environment-recommended)
+   - [Docker Environment](#docker-environment)
    - [Traditional Setup](#traditional-setup)
-6. [Testing](#testing)
-7. [Contributing](#contributing)
-8. [License](#license)
+5. [Contributing](#contributing)
+6. [License](#license)
 
 ## Description
 
@@ -51,7 +50,7 @@ This platform empowers study tour agencies to manage their tours, templates, and
 
 ## Development Setup
 
-### Docker Environment (Recommended)
+### Docker Environment
 
 Prerequisites:
 
