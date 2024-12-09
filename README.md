@@ -9,7 +9,6 @@ A modern SaaS platform for study tour agencies to manage their operations effici
 3. [Tech Stack](#tech-stack)
 4. [Development Setup](#development-setup)
    - [Docker Environment](#docker-environment)
-   - [Traditional Setup](#traditional-setup)
 5. [Contributing](#contributing)
 6. [License](#license)
 
@@ -93,8 +92,6 @@ docker-compose exec frontend npm run lint
 docker-compose exec frontend npm run format
 ```
 
-### Traditional Setup
-
 Prerequisites:
 
 - Node.js (v18+)
@@ -116,7 +113,7 @@ npm install
 ```
 
 3. Set up environment variables:
-Create a `.env` file in the root directory:
+   Create a `.env` file in the root directory:
 
 ```env
 VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=<https://api.example.com>
@@ -130,55 +127,61 @@ npm run dev
 
 ## Available Commands
 
-| Command              | Description         |
-|---------------------|---------------------|
-| `npm install`       | Install dependencies|
-| `npm run dev`       | Start dev server    |
-| `npm run test`      | Run tests          |
-| `npm run coverage`  | Test coverage      |
-| `npm run prepare`   | Setup Husky        |
-| `npm run lint`      | Run ESLint         |
-| `npm run format`    | Format code        |
+| Command            | Description          |
+| ------------------ | -------------------- |
+| `npm install`      | Install dependencies |
+| `npm run dev`      | Start dev server     |
+| `npm run test`     | Run tests            |
+| `npm run coverage` | Test coverage        |
+| `npm run prepare`  | Setup Husky          |
+| `npm run lint`     | Run ESLint           |
+| `npm run format`   | Format code          |
 
 ## Contributing
 
 ### Branch Naming Convention
 
-- **Feature branches**: `feature/IF-<number>-<description>`  
-  - Used for new features visible to the user.  
+- **Feature branches**: `feature/IF-<number>-<description>`
+
+  - Used for new features visible to the user.
   - Example: `feature/IF-1-user-login`
 
-- **Bug fix branches**: `bugfix/IF-<number>-<description>`  
-  - Used for fixes to user-facing bugs.  
+- **Bug fix branches**: `bugfix/IF-<number>-<description>`
+
+  - Used for fixes to user-facing bugs.
   - Example: `bugfix/IF-2-fix-login-error`
 
-- **Documentation branches**: `docs/IF-<number>-<description>`  
-  - Used for changes to documentation (e.g., README updates, API docs).  
+- **Documentation branches**: `docs/IF-<number>-<description>`
+
+  - Used for changes to documentation (e.g., README updates, API docs).
   - Example: `docs/IF-3-update-api-docs`
 
-- **Style branches**: `style/IF-<number>-<description>`  
-  - Used for code style updates, like formatting or fixing linting issues.  
+- **Style branches**: `style/IF-<number>-<description>`
+
+  - Used for code style updates, like formatting or fixing linting issues.
   - Example: `style/IF-4-code-formatting`
 
-- **Refactor branches**: `refactor/IF-<number>-<description>`  
-  - Used for refactoring production code without adding features or fixing bugs.  
+- **Refactor branches**: `refactor/IF-<number>-<description>`
+
+  - Used for refactoring production code without adding features or fixing bugs.
   - Example: `refactor/IF-5-rename-login-service`
 
-- **Test branches**: `test/IF-<number>-<description>`  
-  - Used for adding or updating tests without modifying production code.  
+- **Test branches**: `test/IF-<number>-<description>`
+
+  - Used for adding or updating tests without modifying production code.
   - Example: `test/IF-6-add-login-unit-tests`
 
-- **Chore branches**: `chore/IF-<number>-<description>`  
-  - Used for non-production tasks like updating build scripts or dependencies.  
+- **Chore branches**: `chore/IF-<number>-<description>`
+  - Used for non-production tasks like updating build scripts or dependencies.
   - Example: `chore/IF-7-update-dependencies`
 
 ---
 
 ### Naming Guidelines
 
-1. **Consistency**: Use all lowercase, and separate words in the description with hyphens (`-`).  
-2. **Descriptive**: The description should provide a clear understanding of the branch's purpose.  
-3. **Issue Tracking**: `<number>` should match the issue or task ID from your project management system (e.g., JIRA, GitHub Issues).  
+1. **Consistency**: Use all lowercase, and separate words in the description with hyphens (`-`).
+2. **Descriptive**: The description should provide a clear understanding of the branch's purpose.
+3. **Issue Tracking**: `<number>` should match the issue or task ID from your project management system (e.g., JIRA, GitHub Issues).
 
 ### Development Workflow
 
