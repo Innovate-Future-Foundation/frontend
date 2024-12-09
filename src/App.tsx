@@ -4,7 +4,7 @@ const App: React.FC = () => {
   return (
     <div>
       <header>
-        <nav>
+        <nav className="flex">
           <Link to="/">Home</Link> | <Link to="/about">About</Link>
         </nav>
       </header>
