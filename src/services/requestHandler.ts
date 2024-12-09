@@ -1,29 +1,28 @@
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import request from "./httpClient";
-import { API_BASE_URL } from "@/constants/apiConfig";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 // Avoids duplicate requests while a previous request is in progress
 const requestHandler = (() => {
   let hasRequest: string[] = [];
 
   // Return the request handler
-  return async <T>(config: { endpoint: string; method?: string; params?: any; data?: any }): Promise<T> => {
+  return async <T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+    const { url, method } = config;
     // default method to GET
-    const { endpoint, method = "GET", ...rest } = config;
+    const methodReq = method ? method : "GET";
 
-    const url = `${API_BASE_URL}${endpoint}`;
-
-    if (hasRequest.includes(url)) {
+    if (url && hasRequest.includes(url)) {
       return Promise.reject(new Error(ERROR_MESSAGES.DUPLICATE_REQUEST));
     }
 
-    hasRequest.push(url);
+    if (url) hasRequest.push(url);
 
     try {
-      const response = await request({ ...config, method, ...rest });
+      const response = await request({ ...config, method: methodReq });
       hasRequest = hasRequest.filter(item => item !== url);
 
-      return response.data;
+      return response;
     } catch (error) {
       hasRequest = hasRequest.filter(item => item !== url);
 
