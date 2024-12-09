@@ -1,0 +1,28 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.dev
+    container_name: innovate-future-frontend
+
+    volumes:
+      - .:/app
+
+      - /app/node_modules
+      - /app/dist
+      - /app/.git
+      - /app/coverage
+      
+    ports: 
+      - "5173:5173"
+
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:5172/api
+    stdin_open: true
+    tty: true
+
+
+networks:
+  default:
+    name: innovate-future-network
