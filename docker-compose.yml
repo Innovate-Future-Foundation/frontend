@@ -18,7 +18,7 @@ services:
 
     environment:
       - NODE_ENV=development
-      - REACT_APP_API_URL=http://localhost:5172/api
+      - VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=https://api.example.com
     stdin_open: true
     tty: true
 
