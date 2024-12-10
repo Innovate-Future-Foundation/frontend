@@ -5,7 +5,13 @@ const App: React.FC = () => {
     <div>
       <header>
         <nav>
-          <Link to="/">Home</Link> | <Link to="/about">About</Link>
+          <Link to="/">
+            <p>Home</p>
+          </Link>
+          |
+          <Link to="/about">
+            <p>About</p>
+          </Link>
         </nav>
       </header>
       <main>

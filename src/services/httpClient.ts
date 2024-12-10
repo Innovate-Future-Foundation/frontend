@@ -2,17 +2,18 @@ import axios from "axios";
 import { API_BASE_URL } from "@/constants/apiConfig";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 
-const request = axios.create({
+const appRequest = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30 * 1000,
   responseType: "json",
   headers: {
     "Content-Type": "application/json"
-  }
+  },
+  method: "GET"
 });
 
 // handle request
-request.interceptors.request.use(null, error => {
+appRequest.interceptors.request.use(null, error => {
   // handle network and timeout error
   let errorMsg = ERROR_MESSAGES.UNKNOWN;
   if (error.code === "ECONNABORTED") {
@@ -26,7 +27,7 @@ request.interceptors.request.use(null, error => {
 });
 
 // handle response
-request.interceptors.response.use(
+appRequest.interceptors.response.use(
   res => {
     // get 2** response
     return res;
@@ -56,4 +57,4 @@ request.interceptors.response.use(
   }
 );
 
-export default request;
+export default appRequest;
