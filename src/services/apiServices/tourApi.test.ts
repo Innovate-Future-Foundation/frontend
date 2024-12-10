@@ -1,35 +1,29 @@
 import { tourType } from "@/types";
-import axios from "axios";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, Mock, vi } from "vitest";
 import { tourApis } from "./tourApi";
 import { API_ENDPOINTS } from "@/constants/apiConfig";
+import axios from "axios";
+const mocks = vi.hoisted(() => ({
+  get: vi.fn(),
+  post: vi.fn()
+}));
 
-vi.mock("axios", () => {
-  const mockAxios = vi.fn();
+vi.mock("axios", async importActual => {
+  const actual = await importActual<typeof import("axios")>();
 
-  Object.assign(mockAxios, {
-    post: vi.fn(),
-    get: vi.fn(),
-    delete: vi.fn(),
-    put: vi.fn(),
-    create: vi.fn().mockReturnThis(),
-    interceptors: {
-      request: {
-        use: vi.fn(),
-        eject: vi.fn()
-      },
-      response: {
-        use: vi.fn(),
-        eject: vi.fn()
-      }
+  const mockAxios = {
+    default: {
+      ...actual.default,
+      create: vi.fn(() => ({
+        ...actual.default.create(),
+        get: mocks.get,
+        post: mocks.post
+      }))
     }
-  });
-
-  return {
-    default: mockAxios
   };
-});
 
+  return mockAxios;
+});
 const mockedAxios = vi.mocked(axios);
 
 describe("appRequest tests", () => {
@@ -50,18 +44,15 @@ describe("appRequest tests", () => {
     };
 
     const mockResponse = { status: 200, data: { isSuccess: true } };
-    mockedAxios.mockResolvedValue(mockResponse);
+    (mockedAxios.create().post as Mock).mockResolvedValue(mockResponse);
 
     // Act
     const result = await tourApis.createTour(mockTourData);
 
     // Assert
-    expect(mockedAxios).toHaveBeenCalledWith({
-      url: API_ENDPOINTS.TOUR,
-      method: "POST",
-      data: mockTourData
-    });
+    expect(mockedAxios.create().post).toHaveBeenCalledWith(API_ENDPOINTS.TOUR, mockTourData);
     expect(result).toEqual(mockResponse);
+    expect(mockedAxios.create().post).toHaveBeenCalled();
   });
 
   it("should call request with correct parameters when getting a tour by ID", async () => {
@@ -72,16 +63,14 @@ describe("appRequest tests", () => {
       tourGuide: "John Doe",
       tourDuration: "5 days"
     };
-
-    mockedAxios.mockResolvedValueOnce(mockResponse);
+    (mockedAxios.create().get as Mock).mockResolvedValueOnce(mockResponse);
 
     // Act
     const result = await tourApis.getTourById(mockId);
 
     // Assert
-    expect(mockedAxios).toHaveBeenCalledWith({
-      url: `${API_ENDPOINTS.TOUR}/${mockId}`
-    });
+    expect(mockedAxios.create().get).toHaveBeenCalledWith(`${API_ENDPOINTS.TOUR}/${mockId}`);
     expect(result).toEqual(mockResponse);
+    expect(mockedAxios.create().get).toHaveBeenCalled();
   });
 });

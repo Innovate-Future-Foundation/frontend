@@ -3,18 +3,10 @@ import { tourType } from "@/types";
 import request from "../httpClient";
 
 // Create a new tour
-const createTour = (tourData: tourType) =>
-  request({
-    url: API_ENDPOINTS.TOUR,
-    method: "POST",
-    data: tourData
-  });
+const createTour = (tourData: tourType) => request.post(API_ENDPOINTS.TOUR, tourData);
 
 // Read (get) a tour by ID
-const getTourById = (id: string) =>
-  request({
-    url: `${API_ENDPOINTS.TOUR}/${id}`
-  });
+const getTourById = (id: string) => request.get(`${API_ENDPOINTS.TOUR}/${id}`);
 
 export const tourApis = {
   createTour,
