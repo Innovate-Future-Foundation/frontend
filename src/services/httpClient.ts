@@ -11,20 +11,6 @@ const appRequest = axios.create({
   }
 });
 
-// handle request
-appRequest.interceptors.request.use(null, error => {
-  // handle network and timeout error
-  let errorMsg = ERROR_MESSAGES.UNKNOWN;
-  if (error.code === "ECONNABORTED") {
-    errorMsg = ERROR_MESSAGES.ECONNABORTED;
-  } else if (error.message.includes("Network Error")) {
-    errorMsg = ERROR_MESSAGES.NETWORK_ERROR;
-  }
-
-  console.error(`Error occurred: ${errorMsg}`);
-  return Promise.reject(new Error(errorMsg));
-});
-
 // handle response
 appRequest.interceptors.response.use(
   res => {
@@ -33,6 +19,13 @@ appRequest.interceptors.response.use(
   },
   error => {
     let errorMsg = ERROR_MESSAGES.UNKNOWN;
+    // Handle network and timeout errors
+    if (error.message.includes("Network Error")) {
+      errorMsg = ERROR_MESSAGES.NETWORK_ERROR;
+    } else if (error.code === "ECONNABORTED") {
+      errorMsg = ERROR_MESSAGES.TIME_OUT;
+    }
+    // Handle HTTP errors with response status
     if (error.response) {
       const statusCode = error.response.status;
 
@@ -50,7 +43,9 @@ appRequest.interceptors.response.use(
           errorMsg = ERROR_MESSAGES.UNKNOWN;
           break;
       }
-      console.error(`Error occurred: Error code ${statusCode}; ${errorMsg}`);
+      console.error(`Error occurred: HTTP ${statusCode}; ${errorMsg}`);
+    } else {
+      console.error(`Error occurred: ${errorMsg}`);
     }
     return Promise.reject(new Error(errorMsg));
   }

@@ -1,48 +1,42 @@
-import { describe, it, expect, vi, Mock, beforeEach, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
+import MockAdapter from "axios-mock-adapter";
 import appRequest from "@/services/httpClient";
-import axios from "axios";
-const mocks = vi.hoisted(() => ({
-  get: vi.fn(),
-  post: vi.fn()
-}));
+import { ERROR_MESSAGES } from "@/constants/errorMessages";
 
-vi.mock("axios", async importActual => {
-  const actual = await importActual<typeof import("axios")>();
+describe("Axios Response Interceptor", () => {
+  const mock = new MockAdapter(appRequest);
 
-  const mockAxios = {
-    default: {
-      ...actual.default,
-      create: vi.fn(() => ({
-        ...actual.default.create(),
-        get: mocks.get,
-        post: mocks.post
-      }))
-    }
-  };
-
-  return mockAxios;
-});
-const mockedAxios = vi.mocked(axios);
-
-describe("appRequest tests", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
+  it("should handle Network Error and throw NETWORK_ERROR message", async () => {
+    mock.onGet("/test").networkError();
+    await expect(appRequest.get("/test")).rejects.toThrow(ERROR_MESSAGES.NETWORK_ERROR);
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
+  it("should handle timeout error and throw TIMEOUT message", async () => {
+    mock.onGet("/test").timeout();
+    await expect(appRequest.get("/test")).rejects.toThrow(ERROR_MESSAGES.TIME_OUT);
   });
 
-  it("should use the base URL", async () => {
-    // Arrange
-    (mockedAxios.create().get as Mock).mockResolvedValue({ status: 200, data: { isSuccess: true } });
+  it("should handle 401 error and throw UNAUTHORIZED message", async () => {
+    mock.onGet("/test").reply(401);
 
-    // Act
-    const result = await appRequest.get("/test-endpoint");
+    await expect(appRequest.get("/test")).rejects.toThrow(ERROR_MESSAGES.UNAUTHORIZED);
+  });
 
-    // Assert
-    expect(mockedAxios.create().get).toHaveBeenCalledWith("/test-endpoint");
-    expect(result.status).toBe(200);
-    expect(result.data.isSuccess).toBe(true);
+  it("should handle 403 error and throw FORBIDDEN message", async () => {
+    mock.onGet("/test").reply(403);
+
+    await expect(appRequest.get("/test")).rejects.toThrow(ERROR_MESSAGES.FORBIDDEN);
+  });
+
+  it("should handle 409 error and throw CONFLICT message", async () => {
+    mock.onGet("/test").reply(409);
+
+    await expect(appRequest.get("/test")).rejects.toThrow(ERROR_MESSAGES.CONFLICT);
+  });
+
+  it("should handle unknown error and throw UNKNOWN message", async () => {
+    mock.onGet("/test").reply(500);
+
+    await expect(appRequest.get("/test")).rejects.toThrow(ERROR_MESSAGES.UNKNOWN);
   });
 });

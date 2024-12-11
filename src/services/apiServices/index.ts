@@ -1,1 +1,1 @@
-export * from "./tourApi";
+export * from "./tourApis";

@@ -1,6 +1,5 @@
-//error messages
 export const ERROR_MESSAGES = {
-  ECONNABORTED: "Request timeout. The server took too long to respond.",
+  TIME_OUT: "Request timeout. The server took too long to respond.",
   NETWORK_ERROR: "Network error occurred. Please check your connection.",
   UNAUTHORIZED: "No authorization. Please log in.",
   FORBIDDEN: "Access denied. You do not have permission.",
