@@ -113,10 +113,11 @@ npm install
 ```
 
 3. Set up environment variables:
-   Create a `.env` file in the root directory:
+   Create a `.env.local` file in the root directory:
 
 ```env
-VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=<https://api.example.com>
+NODE_ENV=development
+VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=https://api.example.com
 ```
 
 4. Start the development server:
