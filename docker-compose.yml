@@ -3,17 +3,14 @@ services:
     build:
       context: .
       dockerfile: .docker/Dockerfile.dev
+      
     container_name: innovate-future-frontend
-
+    env_file:
+      - .env
     volumes:
       - .:/app
 
-      - /app/node_modules
-      - /app/dist
-      - /app/.git
-      - /app/coverage
-      
-    ports: 
+    ports:
       - "5173:5173"
 
     environment:
@@ -21,7 +18,6 @@ services:
       - VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=https://api.example.com
     stdin_open: true
     tty: true
-
 
 networks:
   default:
