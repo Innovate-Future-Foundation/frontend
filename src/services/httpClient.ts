@@ -1,10 +1,10 @@
 import axios from "axios";
-import { API_BASE_URL } from "@/constants/apiConfig";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
+import { API_BASE_URL, API_REQUEST_TIMEOUT } from "@/constants/apiConfig";
 
 const appRequest = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30 * 1000,
+  timeout: API_REQUEST_TIMEOUT,
   responseType: "json",
   headers: {
     "Content-Type": "application/json"
