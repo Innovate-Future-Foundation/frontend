@@ -18,14 +18,35 @@ pipeline{
                 }
             }
         }
+        stage('Test'){
+            steps{
+                script{
+                    echo "Running test"
+                    def testResult = sh(script: 'npm test', returnStatus: true)
+                    if ( testResult == 0){
+                        echo "Test passed"
+                    }else{
+                        echo "Test failed, check code. Pipeline Aborts"
+                    }
+                }
+            }
+        }
         stage('Build'){
             steps{
                 sh 'npm run build'               
             }
         }
-        stage('Test'){
+        stage('Post Build Test'){
             steps{
-                echo 'Test stage'
+                echo 'Post Build Test'
+                sh  '''
+                if [ -f build/index.html ]; then
+                    echo "Build file exists. Test passed!"
+                else
+                    echo "Error: build/index.html not found!"
+                exit 1
+                fi
+                '''
             }
         }
     }
