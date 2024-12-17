@@ -4,7 +4,7 @@ pipeline{
         nodejs "nodejs-for-inff"
     }
     stages{
-        
+
         stage('Install Dependencies'){
             steps{
                 script{
@@ -24,7 +24,7 @@ pipeline{
             }
         }
         stage('Test'){
-            step{
+            steps{
                 echo 'Test stage'
             }
         }
