@@ -40,10 +40,10 @@ pipeline{
             steps{
                 echo 'Post Build Test'
                 sh  '''
-                if [ -f build/index.html ]; then
+                if [ -f dist/index.html ]; then
                     echo "Build file exists. Test passed!"
                 else
-                    echo "Error: build/index.html not found!"
+                    echo "Error: dist/index.html not found!"
                 exit 1
                 fi
                 '''
