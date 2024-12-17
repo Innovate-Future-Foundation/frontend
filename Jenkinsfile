@@ -4,7 +4,6 @@ pipeline{
         nodejs "nodejs-for-inff"
     }
     stages{
-
         stage('Install Dependencies'){
             steps{
                 script{
@@ -47,6 +46,11 @@ pipeline{
                 exit 1
                 fi
                 '''
+            }
+        }
+        stage('Deploy to S3'){
+            steps{
+                sh 'aws s3 sync dist/ s3://inff-devops-frontend-jascon --delete'
             }
         }
     }
