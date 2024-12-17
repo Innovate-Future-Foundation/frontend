@@ -8,6 +8,10 @@ pipeline {
         CLOUDFRONT_DISTRIBUTION_ID = 'E1UPEE7ZVCSGAE'
     }
 
+    tools {
+        nodejs 'nodejs18'
+    }
+
     stages {
         stage('Checkout') {
             steps {
