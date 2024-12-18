@@ -22,8 +22,8 @@ pipeline {
         stage('Configure NPM') {
             steps {
                 sh '''
-                    npm config set timeout 600000
-                    npm config set registry http://registry.npmjs.org/
+                    npm config set fetch-timeout 600000
+                    npm config set registry https://registry.npmjs.org/
                 '''
             }
         }
