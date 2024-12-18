@@ -19,9 +19,18 @@ pipeline {
             }
         }
 
+        stage('Configure NPM') {
+            steps {
+                sh '''
+                    npm config set timeout 600000
+                    npm config set registry http://registry.npmjs.org/
+                '''
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm install --verbose'
             }
         }
 
