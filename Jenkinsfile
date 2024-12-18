@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION = '18'
+        NODE_VERSION = '20'
         AWS_REGION = 'us-east-1'
         S3_BUCKET = 'inff-devops-frontend-henry-v2'
         CLOUDFRONT_DISTRIBUTION_ID = 'E1UPEE7ZVCSGAE'
     }
 
     tools {
-        nodejs 'nodejs18'
+        nodejs 'nodejs20'
     }
 
     stages {
