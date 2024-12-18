@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         NODE_VERSION = '18'
-        AWS_REGION = 'ap-southeast-2'
+        AWS_REGION = 'us-east-1'
         S3_BUCKET = 'inff-devops-frontend-henry-v2'
         CLOUDFRONT_DISTRIBUTION_ID = 'E1UPEE7ZVCSGAE'
     }
