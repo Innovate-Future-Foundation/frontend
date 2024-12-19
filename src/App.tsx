@@ -4,7 +4,7 @@ const App: React.FC = () => {
   return (
     <div>
       <header>
-        <nav>
+        <nav style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <Link to="/">
             <p>Home</p>
           </Link>
