@@ -4,8 +4,14 @@ const App: React.FC = () => {
   return (
     <div>
       <header>
-        <nav className="flex">
-          <Link to="/">Home</Link> | <Link to="/about">About</Link>
+        <nav>
+          <Link to="/">
+            <p>Home</p>
+          </Link>
+          |
+          <Link to="/about">
+            <p>About</p>
+          </Link>
         </nav>
       </header>
       <main>
