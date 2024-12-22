@@ -61,7 +61,9 @@ pipeline{
         stage('Deploy to S3'){
             steps{
                 echo "Deploying to S3 with version: ${env.ARTIFACT_VERSION}"
-                sh 'aws s3 sync dist/ s3://inff-devops-frontend-jascon/${ARTIFACT_VERSION} --delete'
+                sh '''aws s3 sync dist/ s3://inff-devops-frontend-jascon/${ARTIFACT_VERSION} --delete
+                aws s3 cp s3://inff-devops-frontend-jascon/${ARTIFACT_VERSION}/index.html s3://inff-devops-frontend-jascon/index.html
+                '''
             }
         }
         stage('Invalidate CloudFront Cache') {
