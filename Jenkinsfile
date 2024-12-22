@@ -53,5 +53,19 @@ pipeline{
                 sh 'aws s3 sync dist/ s3://inff-devops-frontend-jascon --delete'
             }
         }
+        stage('Invalidate CloudFront Cache') {
+            steps {
+                script {
+                    
+                    def distributionId = 'E2QUQL99SU4KGV'
+                    def invalidationPath = '/*'
+                    sh """
+                    echo "Invalidating CloudFront cache..."
+                    aws cloudfront create-invalidation --distribution-id ${distributionId} --paths ${invalidationPath}
+                    echo "CloudFront invalidation request submitted."
+                    """
+                }
+            }
+        }
     }
 }
