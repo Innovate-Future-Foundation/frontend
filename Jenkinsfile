@@ -20,7 +20,7 @@ pipeline{
         stage('Test'){
             steps{
                 script{
-                    echo "Running test"
+                    echo "triggered form github Running test"
                     def testResult = sh(script: 'npm test', returnStatus: true)
                     if ( testResult == 0){
                         echo "Test passed"
