@@ -3,7 +3,19 @@ pipeline{
     tools{
         nodejs "nodejs-for-inff"
     }
+    environment {
+        ARTIFACT_VERSION = '' // Placeholder
+    }
     stages{
+        stage('Generate Artifact Version') {
+            steps {
+                script {                    
+                def timestamp = sh(script: 'date +%Y%m%d%H%M%S', returnStdout: true).trim()
+                env.ARTIFACT_VERSION = "${BUILD_NUMBER}-${timestamp}" 
+                echo "Generated artifact version: ${env.ARTIFACT_VERSION}"
+                }
+            }
+        }
         stage('Install Dependencies'){
             steps{
                 script{
@@ -50,7 +62,8 @@ pipeline{
         }
         stage('Deploy to S3'){
             steps{
-                sh 'aws s3 sync dist/ s3://inff-devops-frontend-jascon --delete'
+                echo "Deploying to S3 with version: ${env.ARTIFACT_VERSION}"
+                sh 'aws s3 sync dist/ s3://inff-devops-frontend-jascon/${ARTIFACT_VERSION} --delete'
             }
         }
         stage('Invalidate CloudFront Cache') {
