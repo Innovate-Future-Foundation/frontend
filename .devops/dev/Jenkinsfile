@@ -18,6 +18,29 @@ pipeline {
                 }
             }
         }
+        stage ('Test') {
+            steps {
+                script {
+                    echo 'Testing...'
+                    sh 'npm test'
+                }
+            }
+        }
+        stage ('Verify') {
+            steps {
+                script {
+                    echo 'Verifying build artifact...'
+                    sh '''
+                        if [ ! -f dist/index.html ]; then
+                            echo "Verification failed: index.html not found in the dist folder!"
+                            exit 1
+                        else
+                            echo "Verification successful: index.html found in the dist folder."
+                        fi
+                    '''
+                }
+            }
+        }
         stage ('Deploy') {
             steps {
                 script {
