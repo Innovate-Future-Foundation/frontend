@@ -3,15 +3,13 @@ pipeline{
     tools{
         nodejs "nodejs-for-inff"
     }
-    environment {
-        ARTIFACT_VERSION = '' // Placeholder
-    }
     stages{
         stage('Generate Artifact Version') {
             steps {
-                script {                    
+                script {                                    
                 def timestamp = sh(script: 'date +%Y%m%d%H%M%S', returnStdout: true).trim()
-                env.ARTIFACT_VERSION = "${BUILD_NUMBER}-${timestamp}" 
+                echo "Generated timestamp: ${timestamp}" 
+                env.ARTIFACT_VERSION = "${BUILD_NUMBER}-${timestamp}"
                 echo "Generated artifact version: ${env.ARTIFACT_VERSION}"
                 }
             }
