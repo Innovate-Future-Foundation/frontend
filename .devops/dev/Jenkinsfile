@@ -1,11 +1,36 @@
 pipeline {
     agent any
 
+    environment {
+        NODE_VERSION = '20'
+        AWS_REGION = 'ap-southeast-2'
+        S3_BUCKET = ''
+        CLOUD_FRONT_DISTRIBUTION_ID = ''
+    }
+
+    parameters {
+        string(name: 'S3_BUCKET', defaultValue: '', description: 'S3 bucket name')
+        string(name: 'CLOUD_FRONT_DISTRIBUTION_ID', defaultValue: '', description: 'CloudFront distribution ID')
+    }
+
     stages {
         stage ('Prepare') {
             steps {
                 script {
                     echo 'Preparing...'
+                    env.S3_BUCKET = params.S3_BUCKET
+                    env.CLOUD_FRONT_DISTRIBUTION_ID = params.CLOUD_FRONT_DISTRIBUTION_ID
+                    if (env.S3_BUCKET == '' || env.CLOUD_FRONT_DISTRIBUTION_ID == '') {
+                        error('S3_BUCKET and CLOUD_FRONT_DISTRIBUTION_ID are required!')
+                    }
+                }
+            }
+        }
+        stage ('Install Dependency') {
+            steps {
+                script {
+                    echo 'Installing dependency...'
+                    sh 'npm install'
                 }
             }
         }
@@ -13,7 +38,6 @@ pipeline {
             steps {
                 script {
                     echo 'Building...'
-                    sh 'npm install'
                     sh 'npm run build'
                 }
             }
@@ -45,9 +69,69 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying...'
-                    // withAws
+                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                        sh '''
+                            aws s3 sync dist/ s3://${env.S3_BUCKET} --delete
+                        '''
+                    }
                 }
             }
+        }
+        stage ('Invalidate CloudFront') {
+            steps {
+                script {
+                    echo 'Invalidate CloudFront...'
+                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                        sh '''
+                            aws cloudfront create-invalidation --distribution-id ${env.CLOUD_FRONT_DISTRIBUTION_ID} --paths "/*"
+                        '''
+                    }
+                }
+            }
+        }
+
+        /** 
+          * Verify deployment by checking the HTTP status code of the deployed website
+          * if status code is 200, deployment is successful
+          * if status code is not 200, deployment is failed, then revert the deployment by switching back to the previous version
+        **/
+        stage ('Verify Deployment') {
+            steps {
+                echo 'Verifying deployment...'
+                def response = sh(script: 'curl -s -o /dev/null -w "%{http_code}" http://${env.CLOUD_FRONT_DISTRIBUTION_ID}.cloudfront.net', returnStdout: true).trim()
+                if (response == '200') {
+                    echo 'Deployment successful!'
+                } else {
+                    echo 'Deployment failed! Reverting deployment...'
+                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                        sh '''
+                            aws s3 sync s3://${env.S3_BUCKET}/previous/ s3://${env.S3_BUCKET}/ --delete
+                            aws cloudfront create-invalidation --distribution-id ${env.CLOUD_FRONT_DISTRIBUTION_ID} --paths "/*"
+                        '''
+                    }
+                    
+                    currentBuild.result = 'FAILURE'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            discordSend(
+                webhookUrl: 'https://discord.com/api/webhooks/...',
+                message: """
+                    ${env.JOB_NAME} Deployment to ${env.S3_BUCKET} completed with status: ${currentBuild.currentResult}
+                    Job Duration: ${currentBuild.durationString}
+                    Triggered by: ${env.BUILD_USER}
+                    Triggered at: ${currentBuild.getTime().format('yyyy-MM-dd HH:mm:ss')}
+                    
+                    Branch: ${env.GIT_BRANCH}
+                    Commit: ${env.GIT_COMMIT}
+
+                    Job Details: ${env.BUILD_URL}
+                """,
+                color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger'
+            )
         }
     }
 }
