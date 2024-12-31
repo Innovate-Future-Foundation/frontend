@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { SimpleTestGetApi } from "@/services/apiServices/simpleTestGetApi";
+import { useStore } from "../../stores/useStore";
 
 interface MockGetResponse {
   title: string;
@@ -7,11 +8,23 @@ interface MockGetResponse {
 }
 
 const Home: React.FC = () => {
+  const { setData, setLoading, setError } = useStore();
+
   const { data, isLoading, error } = useQuery<MockGetResponse, Error>({
     queryKey: ["Unique key id"],
     queryFn: async (): Promise<MockGetResponse> => {
-      const response = await SimpleTestGetApi.MockGetQuery();
-      return response?.data;
+      setLoading(true);
+      try {
+        const response = await SimpleTestGetApi.MockGetQuery();
+        const data = response?.data;
+        setData(data);
+        return data;
+      } catch (err) {
+        setError(err as Error);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
     },
     staleTime: 5 * 1000 //cache fresh for 5 seconds
   });
