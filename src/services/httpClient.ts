@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
-import { API_BASE_URL, API_REQUEST_TIMEOUT } from "@/constants/apiConfig";
+import { API_BASE_URL, API_REQUEST_TIMEOUT, WHITE_LIST_API } from "@/constants/apiConfig";
 
 const appRequest = axios.create({
   baseURL: API_BASE_URL,
@@ -10,6 +10,32 @@ const appRequest = axios.create({
     "Content-Type": "application/json"
   }
 });
+
+// handle request
+appRequest.interceptors.request.use(
+  config => {
+    let path;
+
+    if (/^https?:\/\//i.test(config.url ?? "")) {
+      path = new URL(config.url ?? "").pathname;
+    } else {
+      path = new URL(config.url ?? "", API_BASE_URL).pathname;
+    }
+
+    const accessToken = localStorage.getItem("accessToken");
+
+    // Check if the path is not in the whitelist and token exists
+    if (!WHITE_LIST_API.includes(path) && accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    return config;
+  },
+  error => {
+    console.error("Request Error:", error);
+    return Promise.reject(new Error(error));
+  }
+);
 
 // handle response
 appRequest.interceptors.response.use(
