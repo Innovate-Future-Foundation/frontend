@@ -1,31 +1,59 @@
+import java.text.SimpleDateFormat
+import java.net.URLEncoder
+SimpleDateFormat dayFormat = new SimpleDateFormat('yyyy/MM/dd HH:mm:ss');
+def nowTimesamp = dayFormat.format(new Date());
+
 pipeline {
     agent any
 
     environment {
-        NODE_VERSION = '20'
+        CODE_REPO_URL = 'https://github.com/Innovate-Future-Foundation/Frontend'
+        BRANCH_NAME = 'devops/mark'
+        BASE_DIRECTORY = './'
         AWS_REGION = 'ap-southeast-2'
-        S3_BUCKET = ''
-        CLOUD_FRONT_DISTRIBUTION_ID = ''
+        S3_BUCKET = 'frontend-bucket-inff-mark'
+        CLOUD_FRONT_DISTRIBUTION_ID = 'E39FCIGDLLS6I0'
+        CLOUD_FRONT_DISTRIBUTION_URL = 'https://d17xc8vlc0khh3.cloudfront.net'
+        WEBSITE_URL = 'https://inff-web.mark-it-zone.com/'
     }
 
-    parameters {
-        string(name: 'S3_BUCKET', defaultValue: '', description: 'S3 bucket name')
-        string(name: 'CLOUD_FRONT_DISTRIBUTION_ID', defaultValue: '', description: 'CloudFront distribution ID')
-    }
+    // parameters {
+    //     string(name: 'S3_BUCKET', defaultValue: '', description: 'S3 bucket name')
+    //     string(name: 'CLOUD_FRONT_DISTRIBUTION_ID', defaultValue: '', description: 'CloudFront distribution ID')
+    // }
 
     stages {
         stage ('Prepare') {
             steps {
                 script {
-                    echo 'Preparing...'
-                    env.S3_BUCKET = params.S3_BUCKET
-                    env.CLOUD_FRONT_DISTRIBUTION_ID = params.CLOUD_FRONT_DISTRIBUTION_ID
-                    if (env.S3_BUCKET == '' || env.CLOUD_FRONT_DISTRIBUTION_ID == '') {
-                        error('S3_BUCKET and CLOUD_FRONT_DISTRIBUTION_ID are required!')
-                    }
+                    echo 'Clean Workspace...'
+                    cleanWs()
+
+                    echo 'Setting up environment variables...'
+                    // env.S3_BUCKET = params.S3_BUCKET
+                    // env.CLOUD_FRONT_DISTRIBUTION_ID = params.CLOUD_FRONT_DISTRIBUTION_ID
+                    // if (env.S3_BUCKET == '' || env.CLOUD_FRONT_DISTRIBUTION_ID == '') {
+                    //     error('S3_BUCKET and CLOUD_FRONT_DISTRIBUTION_ID are required!')
+                    // }
+
+                    echo "Node version: ${sh(script: 'node --version', returnStdout: true)}"
+                    echo "NPM version: ${sh(script: 'npm --version', returnStdout: true)}"
                 }
             }
         }
+        // stage ('Checkout') {
+        //     steps {
+        //         echo 'Checking out code from SCM...'
+        //         checkout([
+        //             $class: 'GitSCM',
+        //             branches: [[name: "*/${BRANCH_NAME}"]],
+        //             doGenerateSubmoduleConfigurations: false,
+        //             userRemoteConfigs: [[
+        //                 url: "${CODE_REPO_URL}.git"
+        //             ]]
+        //         ])
+        //     }
+        // }
         stage ('Install Dependency') {
             steps {
                 script {
@@ -54,14 +82,14 @@ pipeline {
             steps {
                 script {
                     echo 'Verifying build artifact...'
-                    sh '''
+                    sh """
                         if [ ! -f dist/index.html ]; then
                             echo "Verification failed: index.html not found in the dist folder!"
                             exit 1
                         else
                             echo "Verification successful: index.html found in the dist folder."
                         fi
-                    '''
+                    """
                 }
             }
         }
@@ -69,10 +97,8 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying...'
-                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
-                        sh '''
-                            aws s3 sync dist/ s3://${env.S3_BUCKET} --delete
-                        '''
+                    withAWS(credentials: 'aws_credentials', region: env.AWS_REGION) {
+                        sh "aws s3 sync dist/ s3://${env.S3_BUCKET} --delete"
                     }
                 }
             }
@@ -81,10 +107,10 @@ pipeline {
             steps {
                 script {
                     echo 'Invalidate CloudFront...'
-                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
-                        sh '''
+                    withAWS(credentials: 'aws_credentials', region: env.AWS_REGION) {
+                        sh """
                             aws cloudfront create-invalidation --distribution-id ${env.CLOUD_FRONT_DISTRIBUTION_ID} --paths "/*"
-                        '''
+                        """
                     }
                 }
             }
@@ -97,41 +123,55 @@ pipeline {
         **/
         stage ('Verify Deployment') {
             steps {
-                echo 'Verifying deployment...'
-                def response = sh(script: 'curl -s -o /dev/null -w "%{http_code}" http://${env.CLOUD_FRONT_DISTRIBUTION_ID}.cloudfront.net', returnStdout: true).trim()
-                if (response == '200') {
-                    echo 'Deployment successful!'
-                } else {
-                    echo 'Deployment failed! Reverting deployment...'
-                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
-                        sh '''
-                            aws s3 sync s3://${env.S3_BUCKET}/previous/ s3://${env.S3_BUCKET}/ --delete
-                            aws cloudfront create-invalidation --distribution-id ${env.CLOUD_FRONT_DISTRIBUTION_ID} --paths "/*"
-                        '''
+                script {
+                    echo 'Verifying deployment...'
+                    def responseCode = sh(
+                        script:  "curl -s -o /dev/null -w '%{http_code}' ${env.CLOUD_FRONT_DISTRIBUTION_URL}", 
+                        returnStdout: true).trim()
+                    if (responseCode.startsWith('2')) {
+                        echo 'Deployment successful!'
+                    } else {
+                        echo 'Deployment failed! Reverting deployment...'
+                        withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                            sh """
+                                aws s3 sync s3://${env.S3_BUCKET}/previous/ s3://${env.S3_BUCKET}/ --delete
+                                aws cloudfront create-invalidation --distribution-id ${env.CLOUD_FRONT_DISTRIBUTION_ID} --paths "/*"
+                            """
+                        }
+                        
+                        currentBuild.result = 'FAILURE'
                     }
-                    
-                    currentBuild.result = 'FAILURE'
                 }
             }
         }
     }
     post {
         always {
-            discordSend(
-                webhookUrl: 'https://discord.com/api/webhooks/...',
-                message: """
-                    ${env.JOB_NAME} Deployment to ${env.S3_BUCKET} completed with status: ${currentBuild.currentResult}
-                    Job Duration: ${currentBuild.durationString}
-                    Triggered by: ${env.BUILD_USER}
-                    Triggered at: ${currentBuild.getTime().format('yyyy-MM-dd HH:mm:ss')}
-                    
-                    Branch: ${env.GIT_BRANCH}
-                    Commit: ${env.GIT_COMMIT}
-
-                    Job Details: ${env.BUILD_URL}
-                """,
-                color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger'
-            )
+            script {
+                def jobName = java.net.URLEncoder.encode(env.JOB_NAME, "UTF-8").replace("+", "%20")
+                def blueOceanUrl = "${env.JENKINS_URL}blue/organizations/jenkins/${jobName}/detail/${jobName}/${env.BUILD_NUMBER}/pipeline"
+                wrap([$class: 'BuildUser']) {
+                    discordSend(
+                        webhookURL: 'https://discord.com/api/webhooks/1325091913975595080/1U_xTAiCnW3O526iK88OOGTj375WKko-4xwHNSRJDyb-FIT3ZzybTIUx9asCN9YNeslr',
+                        title: "${env.JOB_NAME} Deployment to ${env.S3_BUCKET} completed with status: ${currentBuild.currentResult}",
+                        description: """
+## Pipeline Build
+- Job Duration: ${currentBuild.durationString.replace(' and counting', '')}
+- Triggered by: ${env.BUILD_USER} <${env.BUILD_USER_EMAIL}>
+- Triggered at: ${nowTimesamp} UTC
+## Git
+- Repository: ${env.CODE_REPO_URL}
+- Branch: ${env.GIT_BRANCH}
+- Commit: `${env.GIT_COMMIT}` by ${env.GIT_AUTHOR_NAME}
+## URLs
+- [CloudFront](${env.CLOUD_FRONT_DISTRIBUTION_URL})
+- [Website](https://inff-web.mark-it-zone.com/)
+                        """,
+                        link: blueOceanUrl,
+                        result: currentBuild.currentResult
+                    )
+                }
+            }
         }
     }
 }

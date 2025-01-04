@@ -10,8 +10,9 @@ This Terraform configuration sets up an AWS S3 bucket and a CloudFront distribut
 
 ```mermaid
 graph TD
-    A[Client] -->|Request| B[CloudFront Distribution]
-    B -->|Reverse Proxy| C[S3 Bucket]
+    A[Client] -->|Request| B[Route 53]
+    B --> |Route| C[CloudFront Distribution]
+    C -->|Reverse Proxy| D[S3 Bucket]
 ```
 
 ## Resources
