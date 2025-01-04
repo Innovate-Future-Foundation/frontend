@@ -41,19 +41,19 @@ pipeline {
                 }
             }
         }
-        // stage ('Checkout') {
-        //     steps {
-        //         echo 'Checking out code from SCM...'
-        //         checkout([
-        //             $class: 'GitSCM',
-        //             branches: [[name: "*/${BRANCH_NAME}"]],
-        //             doGenerateSubmoduleConfigurations: false,
-        //             userRemoteConfigs: [[
-        //                 url: "${CODE_REPO_URL}.git"
-        //             ]]
-        //         ])
-        //     }
-        // }
+        stage ('Checkout') {
+            steps {
+                echo 'Checking out code from SCM...'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "*/${BRANCH_NAME}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    userRemoteConfigs: [[
+                        url: "${CODE_REPO_URL}.git"
+                    ]]
+                ])
+            }
+        }
         stage ('Install Dependency') {
             steps {
                 script {
