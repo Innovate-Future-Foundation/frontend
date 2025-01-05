@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+    
+    tools {
+        nodejs "nodejs20"
+    }
+    
     environment {
         NODE_VERSION = '20'
         AWS_REGION = 'ap-southeast-2'
@@ -8,9 +12,7 @@ pipeline {
         CLOUDFRONT_DISTRIBUTION_ID = 'E219G7VGCN3IRP'
     }
 
-    tools {
-        nodejs 'nodejs20'
-    }
+
 
     stages {
         stage('Checkout') {
