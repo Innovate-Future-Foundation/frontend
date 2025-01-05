@@ -2,27 +2,20 @@ pipeline {
     agent any
         
     environment {
-        NODE_VERSION = '20'
+        CODE_REPO_URL = 'https://github.com/Innovate-Future-Foundation/Frontend'
+        BRANCH_NAME = 'devops/mia'
+        BASE_DIRECTORY = './'
         AWS_REGION = 'ap-southeast-2'
         S3_BUCKET = 'www.drcharlotte.link'
-        CLOUDFRONT_DISTRIBUTION_ID = 'E219G7VGCN3IRP'
+        CLOUD_FRONT_DISTRIBUTION_ID = 'E219G7VGCN3IRP'
+        CLOUD_FRONT_DISTRIBUTION_URL = 'd1q1ia269mn16b.cloudfront.net'
+        WEBSITE_URL = 'https://www.drcharlotte.link/'
     }
-
-
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scmGit(branches: [[name: '*/devops/mia']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/Innovate-Future-Foundation/Frontend.git']])
-            }
-        }
-
-        stage('Configure NPM') {
-            steps {
-                sh '''
-                    npm config set fetch-timeout 600000
-                    npm config set registry https://registry.npmjs.org/
-                '''
+                checkout scm
             }
         }
 
