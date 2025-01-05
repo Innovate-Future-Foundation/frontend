@@ -6,6 +6,7 @@ pipeline {
         AWS_REGION = 'us-east-1'
         S3_BUCKET = 'inff-devops-frontend-henry-v2'
         CLOUDFRONT_DISTRIBUTION_ID = 'E1UPEE7ZVCSGAE'
+        SMTP_CREDS = credentials('smtp-credentials')
     }
 
     tools {
@@ -60,28 +61,24 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
-            emailext (
+            mail (
                 subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
                 to: 'henrychienau@gmail.com',
-                from: "${GMAIL_CREDS_USR}",
-                replyTo: "${GMAIL_CREDS_USR}",
-                mimeType: 'text/html',
-                attachLog: true
+                from: "${SMTP_CREDS_USR}",
+                charset: 'UTF-8'
             )
         }
         failure {
             echo 'Pipeline failed!'
-            emailext (
+            mail (
                 subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
                 to: 'henrychienau@gmail.com',
-                from: "${GMAIL_CREDS_USR}",
-                replyTo: "${GMAIL_CREDS_USR}",
-                mimeType: 'text/html',
-                attachLog: true
+                from: "${SMTP_CREDS_USR}",
+                charset: 'UTF-8'
             )
         }
     }
