@@ -60,20 +60,28 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
-            mail (
+            emailext (
                 subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
-                to: 'henrychienau@gmail.com'
+                to: 'henrychienau@gmail.com',
+                from: "${GMAIL_CREDS_USR}",
+                replyTo: "${GMAIL_CREDS_USR}",
+                mimeType: 'text/html',
+                attachLog: true
             )
         }
         failure {
             echo 'Pipeline failed!'
-            mail (
+            emailext (
                 subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
-                to: 'henrychienau@gmail.com'
+                to: 'henrychienau@gmail.com',
+                from: "${GMAIL_CREDS_USR}",
+                replyTo: "${GMAIL_CREDS_USR}",
+                mimeType: 'text/html',
+                attachLog: true
             )
         }
     }
