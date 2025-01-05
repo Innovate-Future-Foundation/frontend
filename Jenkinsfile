@@ -89,12 +89,13 @@ pipeline{
                 }
             }
         }
-        post {
-            success {
-                echo "Deployment successful!"
-            }
-            failure {
-                echo "Deployment failed. Please check the logs for details."
-            }
+    }
+    post {
+        success {
+            echo "Deployment successful!"
+        }
+        failure {
+            echo "Deployment failed. Please check the logs for details."
+        }
     }
 }
