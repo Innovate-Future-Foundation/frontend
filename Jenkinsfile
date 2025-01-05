@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'inff-devops-frontend' }
+    agent any
         
     environment {
         CODE_REPO_URL = 'https://github.com/Innovate-Future-Foundation/Frontend'
