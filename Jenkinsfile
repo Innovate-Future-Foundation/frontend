@@ -58,6 +58,15 @@ pipeline{
                 '''
             }
         }
+        stage('Manual Approval') {
+            steps {
+                script {
+                    input message: "Approve deployment to production?", 
+                          ok: "Deploy", 
+                          submitter: 'admin' // Optional: restrict who can approve
+                }
+            }
+        }
         stage('Deploy to S3'){
             steps{
                 echo "Deploying to S3 with version: ${env.ARTIFACT_VERSION}"
