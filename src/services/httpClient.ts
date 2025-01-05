@@ -8,7 +8,8 @@ const appRequest = axios.create({
   responseType: "json",
   headers: {
     "Content-Type": "application/json"
-  }
+  },
+  withCredentials: true
 });
 
 // handle response

@@ -1,25 +1,9 @@
-import { Link, Outlet } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import routerConfig from "@/routes";
 
 const App: React.FC = () => {
-  return (
-    <div>
-      <header>
-        <nav>
-          <Link to="/">
-            <p>Home</p>
-          </Link>
-          |
-          <Link to="/about">
-            <p>About</p>
-          </Link>
-        </nav>
-      </header>
-      <main>
-        {/* Renders the component matching the current route */}
-        <Outlet />
-      </main>
-    </div>
-  );
+  const router = createBrowserRouter(routerConfig);
+  return <RouterProvider router={router} />;
 };
 
 export default App;

@@ -1,19 +1,24 @@
-import App from "@/App";
-import AboutPage from "@/pages/AboutPage";
-import HomePage from "@/pages/HomePage";
+import HomePage from "@/pages/MainLayout/HomePage";
+import DashboardPage from "@/pages/MainLayout/DashboardPage";
+import MainLayout from "@/pages/MainLayout";
+// import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 const router = [
   {
     path: "/",
-    element: <App />,
+    element: <MainLayout />,
     children: [
       {
         index: true,
         element: <HomePage />
       },
       {
-        path: "about",
-        element: <AboutPage />
+        path: "dashboard",
+        element: (
+          // <ProtectedRoute>
+          <DashboardPage />
+          // </ProtectedRoute>
+        )
       }
     ]
   }
