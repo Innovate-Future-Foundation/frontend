@@ -60,9 +60,21 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
+            mail (
+                subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+                Check console output at: ${env.BUILD_URL}""",
+                to: 'henrychienau@gmail.com'
+            )
         }
         failure {
             echo 'Pipeline failed!'
+            mail (
+                subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+                Check console output at: ${env.BUILD_URL}""",
+                to: 'henrychienau@gmail.com'
+            )
         }
     }
 }
