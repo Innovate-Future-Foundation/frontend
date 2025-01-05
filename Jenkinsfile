@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'inff-devops-frontend' }
         
     environment {
         CODE_REPO_URL = 'https://github.com/Innovate-Future-Foundation/Frontend'
@@ -11,16 +11,26 @@ pipeline {
         CLOUD_FRONT_DISTRIBUTION_URL = 'd1q1ia269mn16b.cloudfront.net'
         WEBSITE_URL = 'https://www.drcharlotte.link/'
     }
-
+    
+    parameters {
+        string(name: 'AWS_CREDENTIAL_ID', defaultValue: 'miagracetang-at-145367278427', description: 'The ID of the AWS credentials to use')
+        string(name: 'S3_BUCKET', defaultValue: '', description: 'The name of the S3 bucket to deploy to')
+        string(name: 'GIT_BRANCH', defaultValue: 'devops/mia', description: 'The Git branch to build and deploy')
+    }
+    
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                script {
+                    // Checkout the specified branch
+                    checkout([$class: 'GitSCM', branches: [[name: '*/devops/mia']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/Innovate-Future-Foundation/Frontend.git']])
+                }
             }
         }
 
         stage('Install Dependencies') {
             steps {
+                sh 'npm install'
                 sh 'npm install --verbose'
             }
         }
