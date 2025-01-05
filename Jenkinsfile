@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     // Checkout the specified branch
-                    checkout([$class: 'GitSCM', branches: [[name: '*/devops/mia']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/Innovate-Future-Foundation/Frontend.git']])
+                    checkout([$class: 'GitSCM', branches: [[name: '*/devops/mia']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/Innovate-Future-Foundation/Frontend.git']]])
                 }
             }
         }
