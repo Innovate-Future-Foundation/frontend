@@ -12,8 +12,8 @@ pipeline {
         BASE_DIRECTORY = './'
         AWS_REGION = 'ap-southeast-2'
         S3_BUCKET = 'frontend-bucket-inff-mark'
-        CLOUD_FRONT_DISTRIBUTION_ID = 'E39FCIGDLLS6I0'
-        CLOUD_FRONT_DISTRIBUTION_URL = 'https://d17xc8vlc0khh3.cloudfront.net'
+        CLOUD_FRONT_DISTRIBUTION_ID = 'E2NV9J60VJGDLZ'
+        CLOUD_FRONT_DISTRIBUTION_URL = 'https://dqj2xzwbnt1x7.cloudfront.net'
         WEBSITE_URL = 'https://inff-web.mark-it-zone.com/'
     }
 
