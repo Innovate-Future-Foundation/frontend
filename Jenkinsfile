@@ -1,10 +1,6 @@
 pipeline {
     agent any
-    
-    tools {
-        nodejs "nodejs18"
-    }
-    
+        
     environment {
         NODE_VERSION = '20'
         AWS_REGION = 'ap-southeast-2'
