@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git "https://github.com/Innovate-Future-Foundation/Frontend.git"
+                checkout scmGit(branches: [[name: '*/devops/mia']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubtoken', url: 'https://github.com/Innovate-Future-Foundation/Frontend.git']])
             }
         }
 
