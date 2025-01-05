@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'jenkins_slave' }
         
     environment {
         CODE_REPO_URL = 'https://github.com/Innovate-Future-Foundation/Frontend'
