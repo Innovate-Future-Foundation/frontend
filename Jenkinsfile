@@ -8,7 +8,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = credentials('aws-credentials') 
         AWS_SECRET_ACCESS_KEY = credentials('aws-credentials')
-        S3_BUCKET_NAME = 'devops-fan' 
+        S3_BUCKET = 'devops-fan' 
     }
 
     stages {
@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 sh '''
-                aws s3 sync ./dist s3://devops-fan --delete
+                aws s3 sync ./dist s3://${S3_BUCKET} --delete
                 '''
             }
         }
