@@ -5,7 +5,7 @@ pipeline {
         NODE_VERSION = '20' // Node.js version requirement
         AWS_REGION = 'ap-southeast-2' // AWS region for deployment
         S3_BUCKET = 'devops-fan' // Target S3 bucket
-        CLOUDFRONT_DISTRIBUTION_ID = 'E1UPEE7ZVCSGAE' // CloudFront distribution ID
+        CLOUDFRONT_DISTRIBUTION_ID = 'E2BQAOIVAQ515Q' // CloudFront distribution ID
     }
 
     tools {
