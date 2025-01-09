@@ -1,7 +1,8 @@
-import { authApis } from "@/services/apiServices/authApis";
 import { useEffect } from "react";
+
+import { authApis } from "@/services/apiServices/authApis";
+import MainLayout from "@/layouts/MainLayout";
 import DashboardContent from "./DashboardContent";
-import MainLayout from "@/components/MainLayout/MainLayout";
 
 const DashboardPage = () => {
   const url = window.location.href;

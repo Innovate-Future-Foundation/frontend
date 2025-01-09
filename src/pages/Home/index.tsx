@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import MainLayout from "@/components/MainLayout/MainLayout";
+import MainLayout from "@/layouts/MainLayout";
 
 const HomePage: React.FC = () => {
   return (

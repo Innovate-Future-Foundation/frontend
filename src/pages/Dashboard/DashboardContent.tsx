@@ -1,7 +1,8 @@
-import { AppSidebar } from "@/pages/DashboardPage/AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 import { Outlet } from "react-router-dom";
+
+import { AppSidebar } from "@/pages/Dashboard/Sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export type roleType = {
   role: string;

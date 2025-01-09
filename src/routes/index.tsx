@@ -1,6 +1,6 @@
-import DashboardPage from "@/pages/DashboardPage";
-import HomePage from "@/pages/HomePage";
-import OrganisationPage from "@/pages/OrganisationPage";
+import DashboardPage from "@/pages/Dashboard";
+import HomePage from "@/pages/Home";
+import OrganisationPage from "@/pages/Organisation";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 const router = [

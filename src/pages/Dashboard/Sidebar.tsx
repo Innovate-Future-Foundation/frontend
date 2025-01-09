@@ -1,7 +1,7 @@
 import { Building2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { Link } from "react-router-dom";
 
 // Menu items.
 const items = [

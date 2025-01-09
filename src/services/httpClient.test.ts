@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import MockAdapter from "axios-mock-adapter";
+
 import appRequest from "@/services/httpClient";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 
