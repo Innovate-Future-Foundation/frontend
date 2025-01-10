@@ -1,13 +1,25 @@
-import Footer from "@/components/Footer";
-import MainLayout from "@/layouts/MainLayout";
+import { Navbar } from "@/components/ui/Navbar";
+import { HeroSection } from "@/components/ui/HeroSection";
+import { Features } from "@/components/ui/Features";
+import { Partners } from "@/components/ui/Partners";
+import { Events } from "@/components/ui/Events";
+import { JoinUs } from "@/components/ui/JoinUs";
+import { SupportSection } from "@/components/ui/SupportSection";
+import { Footer } from "@/components/ui/Footer";
 
-const HomePage: React.FC = () => {
+const Home = () => {
   return (
-    <MainLayout>
-      Homepage
+    <div>
+      <Navbar />
+      <HeroSection />
+      <Features />
+      <Partners />
+      <Events />
+      <JoinUs />
+      <SupportSection />
       <Footer />
-    </MainLayout>
+    </div>
   );
 };
 
-export default HomePage;
+export default Home;
