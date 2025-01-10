@@ -1,24 +1,24 @@
-import HomePage from "@/pages/MainLayout/HomePage";
-import DashboardPage from "@/pages/MainLayout/DashboardPage";
-import MainLayout from "@/pages/MainLayout";
+import DashboardPage from "@/pages/Dashboard";
+import HomePage from "@/pages/Home";
+import OrganisationPage from "@/pages/Organisation";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 const router = [
   {
     path: "/",
-    element: <MainLayout />,
+    element: <HomePage />
+  },
+  {
+    path: "dashboard",
+    element: (
+      // <ProtectedRoute>
+      <DashboardPage />
+      // </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
-        element: <HomePage />
-      },
-      {
-        path: "dashboard",
-        element: (
-          // <ProtectedRoute>
-          <DashboardPage />
-          // </ProtectedRoute>
-        )
+        element: <OrganisationPage />
       }
     ]
   }

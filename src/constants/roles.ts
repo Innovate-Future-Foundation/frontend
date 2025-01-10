@@ -1,6 +1,7 @@
-export const ROLES = {
-  ADMIN: "admin",
-  TEACHER: "teacher",
-  PARENT: "parent",
-  CHILD: "child"
-};
+export enum ROLES {
+  PLATFORM_ADMIN = "platform admin",
+  ORGANISATION_ADMIN = "organisation admin",
+  ORGANISATION_TEACHER = "organisation teacher",
+  PARENT = "parent",
+  STUDENT = "student"
+}
