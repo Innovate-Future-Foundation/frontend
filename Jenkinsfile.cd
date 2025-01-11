@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_REGION = 'ap-southeast-2'
         S3_BUCKET = 'devops-fan'
-        CLOUDFRONT_DISTRIBUTION_ID = 'E2BQAOIVAQ515Q'
+        CLOUDFRONT_DISTRIBUTION_ID = 'E1AC7JOIMP2FFI'
         SMTP_CREDS = credentials('smtp-credentials')
     }
 
