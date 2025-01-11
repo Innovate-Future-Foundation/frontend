@@ -1,94 +1,111 @@
-# Jenkins Pipeline Documentation
+# CI/CD Pipeline Documentation
 
 ## Overview
-
-This Jenkins pipeline automates the build and deployment process for the INFF Frontend application. It handles the complete CI/CD workflow from code checkout to CloudFront invalidation.
-
-## Pipeline Structure
-
-### Environment Variables
-
-```groovy
-environment {
-    NODE_VERSION = '20'              // Node.js version requirement
-    AWS_REGION = 'us-east-1'         // AWS region for deployment
-    S3_BUCKET = 'inff-devops-frontend-henry-v2'  // Target S3 bucket
-    CLOUDFRONT_DISTRIBUTION_ID = 'E1UPEE7ZVCSGAE' // CloudFront distribution
-}
-```
-
-### Tools
-
-```groovy
-tools {
-    nodejs 'nodejs20'    // Specifies Node.js 20.x as the required runtime
-}
-```
-
-### Stages
-
-### 1. Checkout
-
-- **Purpose**: Retrieves source code from the Git repository
-- **Command**: `checkout scm`
-- **Note**: Uses the configured SCM (Source Control Management) settings
-
-### 2. Configure NPM
-
-- **Purpose**: Sets up NPM configuration for reliable package installation
-- **Commands**:
-  - Sets fetch timeout to 10 minutes
-  - Configures NPM registry URL
-
-```bash
-npm config set fetch-timeout 600000
-npm config set registry <https://registry.npmjs.org/>
-```
-
-### 3. Install Dependencies
-
-- **Purpose**: Installs project dependencies
-- **Command**: `npm install --verbose`
-- **Note**: Verbose flag provides detailed installation logs
-
-### 4. Build
-
-- **Purpose**: Compiles and builds the application
-- **Command**: `npm run build`
-- **Output**: Creates production build in `dist/` directory
-
-### 5. Deploy to S3
-
-- **Purpose**: Uploads built files to AWS S3
-- **Command**: `aws s3 sync dist/ s3://${S3_BUCKET} --delete`
-- **Note**: `-delete` flag removes files in S3 that don't exist locally
-
-### 6. Invalidate CloudFront
-
-- **Purpose**: Invalidates CloudFront cache to serve new content
-- **Command**: `aws cloudfront create-invalidation`
-- **Path**: Invalidates all paths (`/*`)
-
-### Post Actions
-
-- **Success**: Logs successful pipeline completion
-- **Failure**: Logs pipeline failure
+This repository contains Jenkins pipeline configurations for a Node.js application with automated build and deployment to AWS S3 and CloudFront. The pipeline is split into two parts: Continuous Integration (CI) and Continuous Delivery (CD).
 
 ## Prerequisites
 
-### Jenkins Configuration
+**Required Tools**
+- Jenkins server
+- Node.js 20
+- AWS CLI
+- Git
 
-1. **Plugins Required**:
-   - NodeJS Plugin
-   - AWS Credentials Plugin
-   - Pipeline Plugin
-     - Pipeline: AWS Steps
-     - Pipeline: GitHub
-     - Pipeline: Stageview
-   - Git Plugin
-     - GitHub Integration
-2. **Credentials Required**:
-   - AWS credentials with ID 'aws-credentials'
-   - Git credentials (if repository is private)
-3. **Tools Configuration**:
-   - NodeJS 20.x installation
+**Jenkins Plugins**
+- NodeJS Plugin
+- AWS Steps Plugin
+- Copy Artifacts Plugin
+- Credentials Plugin
+- Email Extension Plugin
+
+## Environment Variables
+
+**CI Pipeline**
+```groovy
+NODE_VERSION = '20'
+SMTP_CREDS = credentials('smtp-credentials')
+```
+
+**CD Pipeline**
+```groovy
+AWS_REGION = 'ap-southeast-2'
+S3_BUCKET = 'devops-fan'
+CLOUDFRONT_DISTRIBUTION_ID = 'E2BQAOIVAQ515Q'
+SMTP_CREDS = credentials('smtp-credentials')
+```
+
+## Pipeline Stages
+
+**CI Pipeline (Jenkinsfile.ci)**
+1. Checkout: Retrieves source code
+2. Configure NPM: Sets up NPM settings
+3. Install Dependencies: Installs project dependencies
+4. Build: Compiles the application
+5. Archive Artifacts: Stores build artifacts
+
+**CD Pipeline (Jenkinsfile.cd)**
+1. Copy Artifacts: Retrieves built artifacts from CI
+2. Deploy to S3: Uploads artifacts to AWS S3
+3. Invalidate CloudFront: Updates CDN cache
+
+## Required Credentials
+
+**Jenkins Credentials**
+1. `smtp-credentials`: Gmail SMTP credentials
+   - Username: Your Gmail address
+   - Password: Gmail App Password
+2. `aws-credentials`: AWS IAM credentials
+   - Access Key ID
+   - Secret Access Key
+
+## AWS Configuration
+
+**Required Resources**
+- S3 bucket configured for static website hosting
+- CloudFront distribution connected to S3 bucket
+- IAM user with appropriate permissions
+
+**IAM Policy Requirements**
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject",
+                "s3:ListBucket",
+                "cloudfront:CreateInvalidation"
+            ],
+            "Resource": [
+                "arn:aws:s3:::devops-fan/*",
+                "arn:aws:cloudfront::*:distribution/E2BQAOIVAQ515Q"
+            ]
+        }
+    ]
+}
+```
+
+## Email Notifications
+
+The pipeline sends email notifications for:
+- Successful builds and deployments
+- Failed builds and deployments
+
+## Best Practices
+- Regularly rotate AWS and SMTP credentials
+- Monitor S3 bucket permissions
+- Review CloudFront cache settings
+- Maintain proper version control
+- Implement deployment approvals for production
+- Regular backup of Jenkins configuration
+
+## Troubleshooting
+
+**Common Issues**
+- SMTP Connection Issues: Verify Gmail App Password and firewall settings
+- AWS Authentication: Check IAM permissions and credentials
+- Build Failures: Verify Node.js version compatibility
+- Artifact Copy Issues: Ensure proper job naming and permissions
