@@ -6,13 +6,17 @@ pipeline {
         S3_BUCKET = 'devops-fan'
         CLOUDFRONT_DISTRIBUTION_ID = 'E2BQAOIVAQ515Q'
         SMTP_CREDS = credentials('smtp-credentials')
+        SMTP_HOST = 'smtp.gmail.com'
+        SMTP_PORT = '465'
     }
 
     stages {
         stage('Copy Artifacts') {
             steps {
                 copyArtifacts(
-                    projectName: '${JOB_NAME}',
+                    projectName: 'inff-frontend-ci',
+                    filter: 'dist/**/*',
+                    fingerprintArtifacts: true,
                     selector: upstream()
                 )
             }
@@ -44,7 +48,15 @@ pipeline {
                 Check console output at: ${env.BUILD_URL}""",
                 to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
-                charset: 'UTF-8'
+                charset: 'UTF-8',
+                smtp: [
+                    host: env.SMTP_HOST,
+                    port: env.SMTP_PORT,
+                    auth: true,
+                    ssl: true,
+                    username: "${SMTP_CREDS_USR}",
+                    password: "${SMTP_CREDS_PSW}"
+                ]
             )
         }
         failure {
@@ -55,7 +67,15 @@ pipeline {
                 Check console output at: ${env.BUILD_URL}""",
                 to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
-                charset: 'UTF-8'
+                charset: 'UTF-8',
+                smtp: [
+                    host: env.SMTP_HOST,
+                    port: env.SMTP_PORT,
+                    auth: true,
+                    ssl: true,
+                    username: "${SMTP_CREDS_USR}",
+                    password: "${SMTP_CREDS_PSW}"
+                ]
             )
         }
     }

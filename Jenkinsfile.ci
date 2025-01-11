@@ -4,6 +4,8 @@ pipeline {
     environment {
         NODE_VERSION = '20'
         SMTP_CREDS = credentials('smtp-credentials')
+        SMTP_HOST = 'smtp.gmail.com'
+        SMTP_PORT = '465'
     }
 
     tools {
@@ -43,6 +45,14 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/**/*', fingerprint: true
             }
         }
+
+        stage('Trigger CD Pipeline') {
+            steps {
+                build job: 'inff-frontend-cd', 
+                    wait: true,
+                    propagate: true
+            }
+        }
     }
 
     post {
@@ -54,7 +64,15 @@ pipeline {
                 Check console output at: ${env.BUILD_URL}""",
                 to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
-                charset: 'UTF-8'
+                charset: 'UTF-8',
+                smtp: [
+                    host: env.SMTP_HOST,
+                    port: env.SMTP_PORT,
+                    auth: true,
+                    ssl: true,
+                    username: "${SMTP_CREDS_USR}",
+                    password: "${SMTP_CREDS_PSW}"
+                ]
             )
         }
         failure {
@@ -65,7 +83,15 @@ pipeline {
                 Check console output at: ${env.BUILD_URL}""",
                 to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
-                charset: 'UTF-8'
+                charset: 'UTF-8',
+                smtp: [
+                    host: env.SMTP_HOST,
+                    port: env.SMTP_PORT,
+                    auth: true,
+                    ssl: true,
+                    username: "${SMTP_CREDS_USR}",
+                    password: "${SMTP_CREDS_PSW}"
+                ]
             )
         }
     }
