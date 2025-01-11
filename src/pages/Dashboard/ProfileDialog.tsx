@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { abbreviateName } from "@/utils/formatters";
+import { abbreviateName, ellipticalString } from "@/utils/formatters";
 
 type ProfileFormType = {
   profileName: string;
@@ -25,7 +25,6 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
     profileAvatarLink: "https://github.com/shadcn.png"
   });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const avaterPlaceholder = abbreviateName(formData.profileName);
   const avatarAlt = "@InnovateFoundation";
 
   const handleInputChange = (field: string, value: string) => {
@@ -71,7 +70,7 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
             className=" absolute top-6 left-8"
             avatarLink={formData.profileAvatarLink}
             avatarAlt={avatarAlt}
-            avaterPlaceholder={avaterPlaceholder}
+            avaterPlaceholder={abbreviateName(formData.profileName)}
             size={16}
             outline={true}
           />
@@ -79,8 +78,8 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
         <div className="p-8 pt-6">
           <DialogHeader>
             <div className="flex-col flex items-start">
-              <DialogTitle>{formData.profileName}</DialogTitle>
-              <DialogDescription>{formData.profileEmail}</DialogDescription>
+              <DialogTitle>{ellipticalString(formData.profileName, 20)}</DialogTitle>
+              <DialogDescription>{ellipticalString(formData.profileEmail, 20)}</DialogDescription>
             </div>
           </DialogHeader>
           <Separator className="my-4" />
@@ -100,7 +99,7 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
                 Profile photo
               </Label>
               <div className="flex gap-4 items-center">
-                <AppAvatar avatarLink={formData.profileAvatarLink} avatarAlt={avatarAlt} avaterPlaceholder={avaterPlaceholder} />
+                <AppAvatar avatarLink={formData.profileAvatarLink} avatarAlt={avatarAlt} avaterPlaceholder={abbreviateName(formData.profileName)} />
                 <Input id="profile-photo" type="file" onChange={handleUploadChange} ref={fileInputRef} />
               </div>
             </div>
