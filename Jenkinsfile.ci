@@ -1,0 +1,72 @@
+pipeline {
+    agent any
+
+    environment {
+        NODE_VERSION = '20'
+        SMTP_CREDS = credentials('smtp-credentials')
+    }
+
+    tools {
+        nodejs 'nodejs20'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Configure NPM') {
+            steps {
+                sh '''
+                    npm config set fetch-timeout 600000
+                    npm config set registry https://registry.npmjs.org/
+                '''
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install --verbose'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'dist/**/*', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI Pipeline completed successfully!'
+            mail (
+                subject: "SUCCESS: CI Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """SUCCESSFUL: CI Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+                Check console output at: ${env.BUILD_URL}""",
+                to: 'henrychienau@gmail.com',
+                from: "${SMTP_CREDS_USR}",
+                charset: 'UTF-8'
+            )
+        }
+        failure {
+            echo 'CI Pipeline failed!'
+            mail (
+                subject: "FAILED: CI Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """FAILED: CI Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+                Check console output at: ${env.BUILD_URL}""",
+                to: 'henrychienau@gmail.com',
+                from: "${SMTP_CREDS_USR}",
+                charset: 'UTF-8'
+            )
+        }
+    }
+}

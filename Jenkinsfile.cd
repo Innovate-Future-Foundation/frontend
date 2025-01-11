@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = 'ap-southeast-2'
+        S3_BUCKET = 'devops-fan'
+        CLOUDFRONT_DISTRIBUTION_ID = 'E2BQAOIVAQ515Q'
+        SMTP_CREDS = credentials('smtp-credentials')
+    }
+
+    stages {
+        stage('Copy Artifacts') {
+            steps {
+                copyArtifacts(
+                    projectName: '${JOB_NAME}',
+                    selector: upstream()
+                )
+            }
+        }
+
+        stage('Deploy to S3') {
+            steps {
+                withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                    sh 'aws s3 sync dist/ s3://${S3_BUCKET} --delete'
+                }
+            }
+        }
+
+        stage('Invalidate CloudFront') {
+            steps {
+                withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                    sh 'aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths "/*"'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CD Pipeline completed successfully!'
+            mail (
+                subject: "SUCCESS: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """SUCCESSFUL: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+                Check console output at: ${env.BUILD_URL}""",
+                to: 'henrychienau@gmail.com',
+                from: "${SMTP_CREDS_USR}",
+                charset: 'UTF-8'
+            )
+        }
+        failure {
+            echo 'CD Pipeline failed!'
+            mail (
+                subject: "FAILED: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """FAILED: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+                Check console output at: ${env.BUILD_URL}""",
+                to: 'henrychienau@gmail.com',
+                from: "${SMTP_CREDS_USR}",
+                charset: 'UTF-8'
+            )
+        }
+    }
+}
