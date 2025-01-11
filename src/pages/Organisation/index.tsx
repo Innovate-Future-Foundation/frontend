@@ -1,5 +1,11 @@
+import AppDataTable from "@/components/AppDataTable";
+
 const OrganisationPage = () => {
-  return <div className="w-full h-full bg-purple-200 flex justify-center ">OrganisationPage</div>;
+  return (
+    <div className="w-full flex justify-center ">
+      <AppDataTable />
+    </div>
+  );
 };
 
 export default OrganisationPage;
