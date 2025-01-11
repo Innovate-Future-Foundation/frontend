@@ -42,7 +42,7 @@ pipeline {
                 subject: "SUCCESS: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """SUCCESSFUL: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
-                to: 'henrychienau@gmail.com',
+                to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
                 charset: 'UTF-8'
             )
@@ -53,7 +53,7 @@ pipeline {
                 subject: "FAILED: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """FAILED: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
-                to: 'henrychienau@gmail.com',
+                to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
                 charset: 'UTF-8'
             )

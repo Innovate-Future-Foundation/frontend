@@ -52,7 +52,7 @@ pipeline {
                 subject: "SUCCESS: CI Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """SUCCESSFUL: CI Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
-                to: 'henrychienau@gmail.com',
+                to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
                 charset: 'UTF-8'
             )
@@ -63,7 +63,7 @@ pipeline {
                 subject: "FAILED: CI Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """FAILED: CI Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
-                to: 'henrychienau@gmail.com',
+                to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
                 charset: 'UTF-8'
             )
