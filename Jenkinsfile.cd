@@ -6,8 +6,6 @@ pipeline {
         S3_BUCKET = 'devops-fan'
         CLOUDFRONT_DISTRIBUTION_ID = 'E2BQAOIVAQ515Q'
         SMTP_CREDS = credentials('smtp-credentials')
-        SMTP_HOST = 'smtp.gmail.com'
-        SMTP_PORT = '465'
     }
 
     stages {
@@ -41,41 +39,25 @@ pipeline {
 
     post {
         success {
-            echo 'CD Pipeline completed successfully!'
+            echo 'Pipeline completed successfully!'
             mail (
-                subject: "SUCCESS: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                body: """SUCCESSFUL: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+                subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
                 to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
-                charset: 'UTF-8',
-                smtp: [
-                    host: env.SMTP_HOST,
-                    port: env.SMTP_PORT,
-                    auth: true,
-                    ssl: true,
-                    username: "${SMTP_CREDS_USR}",
-                    password: "${SMTP_CREDS_PSW}"
-                ]
+                charset: 'UTF-8'
             )
         }
         failure {
-            echo 'CD Pipeline failed!'
+            echo 'Pipeline failed!'
             mail (
-                subject: "FAILED: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                body: """FAILED: CD Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+                subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: """FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
                 Check console output at: ${env.BUILD_URL}""",
                 to: 'fanwangcareer@gmail.com',
                 from: "${SMTP_CREDS_USR}",
-                charset: 'UTF-8',
-                smtp: [
-                    host: env.SMTP_HOST,
-                    port: env.SMTP_PORT,
-                    auth: true,
-                    ssl: true,
-                    username: "${SMTP_CREDS_USR}",
-                    password: "${SMTP_CREDS_PSW}"
-                ]
+                charset: 'UTF-8'
             )
         }
     }
