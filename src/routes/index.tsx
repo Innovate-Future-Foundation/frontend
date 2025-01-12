@@ -1,19 +1,24 @@
-import App from "@/App";
-import AboutPage from "@/pages/AboutPage";
-import HomePage from "@/pages/HomePage";
+import DashboardPage from "@/pages/Dashboard";
+import HomePage from "@/pages/Home";
+import OrganisationPage from "@/pages/Organisation";
+// import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 const router = [
   {
     path: "/",
-    element: <App />,
+    element: <HomePage />
+  },
+  {
+    path: "dashboard",
+    element: (
+      // <ProtectedRoute>
+      <DashboardPage />
+      // </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
-        element: <HomePage />
-      },
-      {
-        path: "about",
-        element: <AboutPage />
+        element: <OrganisationPage />
       }
     ]
   }
