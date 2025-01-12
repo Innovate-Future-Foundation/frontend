@@ -19,7 +19,7 @@ pipeline{
                 script{
                     try{
                         echo "install dependencies using npm ci"                        
-                        sh 'npm ci --include=optional'
+                        sh 'npm install'
                     }catch(Exception e){
                         echo "npm ci failed. try npm install instead"
                         sh 'npm install'
