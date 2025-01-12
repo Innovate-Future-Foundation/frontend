@@ -8,7 +8,7 @@ interface Props {
 const MainLayout: React.FC<Props> = ({ children }) => (
   <div className="h-screen">
     <Header />
-    <div className="mt-12 ">{children}</div>
+    <div className="mt-14 ">{children}</div>
   </div>
 );
 export default MainLayout;
