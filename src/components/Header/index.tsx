@@ -15,7 +15,7 @@ const Header = () => {
           </Link>
         </div>
         <a href={COGNITO_LOGIN_URL}>
-          <button>Sign in</button>
+          <p>Sign in</p>
         </a>
       </nav>
     </header>
