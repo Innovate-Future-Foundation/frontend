@@ -15,3 +15,11 @@ export const ellipticalString = (sentence: string, digit: number): string => {
   if (sentence.length <= digit) return sentence;
   return `${sentence.substring(0, digit).trim()}...`;
 };
+
+export const formatDateToDDMMYYYY = (isoDate: string): string => {
+  const date = new Date(isoDate); // Convert ISO string to Date object
+  const day = String(date.getDate()).padStart(2, "0"); // Get day and pad with leading zero
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (0-indexed) and pad
+  const year = date.getFullYear(); // Get full year
+  return `${day}/${month}/${year}`;
+};

@@ -18,7 +18,7 @@ const DashboardContent: React.FC<roleType> = role => {
       <main className="w-full">
         <SidebarTrigger className="fixed p-4 ml-2 mt-2 z-20" />
         <AppBreadcrumb />
-        <div className="mt-12 px-4">
+        <div className="px-4 pt-12">
           <Outlet />
         </div>
       </main>

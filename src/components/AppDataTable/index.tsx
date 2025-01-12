@@ -1,11 +1,8 @@
-"use client";
-
 import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -17,60 +14,93 @@ import { ArrowUpDown, ChevronDown, MoreHorizontal, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AppPagenation from "../AppPagenation";
+import { abbreviateName, ellipticalString, formatDateToDDMMYYYY } from "@/utils/formatters";
+import { Badge } from "../ui/badge";
+import AppAvatar from "../AppAvatar";
 
-const data: Payment[] = [
+const data: Organisation[] = [
   {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com"
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    orgName: "Acme Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.acmecorp.com",
+    address: "123 Main Street, Springfield, USA",
+    email: "info@acmecorp.com",
+    subscription: "Premium",
+    status: "pending",
+    createdAt: "2023-12-10T12:34:56Z",
+    updatedAt: "2023-12-06T22:20:00Z"
   },
   {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com"
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae8",
+    orgName: "Globex Corporation",
+    logoUrl: null,
+    websiteUrl: "https://www.globex.com",
+    address: "456 Elm Street, Metropolis, USA",
+    email: "contact@globex.com",
+    subscription: "Basic",
+    status: "deactivated",
+    createdAt: "2023-12-09T15:00:00Z",
+    updatedAt: "2023-12-06T22:21:00Z"
   },
   {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com"
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
+    orgName: "Initech",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.initech.com",
+    address: "789 Oak Avenue, Gotham, USA",
+    email: "support@initech.com",
+    subscription: "Free",
+    status: "suspended",
+    createdAt: "2023-12-08T10:15:30Z",
+    updatedAt: "2023-12-06T22:22:00Z"
   },
   {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com"
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
+    orgName: "Umbrella Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.umbrella.com",
+    address: "321 Willow Lane, Racoon City, USA",
+    email: "info@umbrella.com",
+    subscription: "Premium",
+    status: "verified",
+    createdAt: "2023-12-07T08:45:00Z",
+    updatedAt: "2023-12-06T22:23:00Z"
   },
   {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com"
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
+    orgName: "Hooli",
+    logoUrl: null,
+    websiteUrl: "https://www.hooli.com",
+    address: "654 Maple Road, Silicon Valley, USA",
+    email: "contact@hooli.com",
+    subscription: "Basic",
+    status: "pending",
+    createdAt: "2023-12-06T22:30:00Z",
+    updatedAt: "2023-12-06T22:24:00Z"
   }
 ];
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
+export type Organisation = {
+  orgId: string;
+  orgName: string;
+  logoUrl: string | null;
+  websiteUrl: string | null;
+  address: string | null;
+  email: string | null;
+  subscription: string | null;
+  status: OrganisationStatus;
+  createdAt: string;
+  updatedAt: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export type OrganisationStatus = "pending" | "verified" | "suspended" | "deactivated";
+
+export const columns: ColumnDef<Organisation>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -82,45 +112,98 @@ export const columns: ColumnDef<Payment>[] = [
     ),
     cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={value => row.toggleSelected(!!value)} aria-label="Select row" />,
     enableSorting: false,
-    enableHiding: false
+    enableHiding: false,
+    enableColumnFilter: false
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>
-  },
-  {
-    accessorKey: "email",
+    accessorKey: "orgName",
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Email
+        <Button className="pl-0" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Organisation
           <ArrowUpDown />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>
+    cell: ({ row }) => (
+      <Badge variant="outline" className="rounded-full pl-[2px]">
+        <AppAvatar avatarLink={row.original.logoUrl ?? ""} avatarAlt={"@InnovateFuture"} avaterPlaceholder={abbreviateName(row.getValue("orgName"))} size={7} />
+        <div className="ml-1 lowercase">{ellipticalString(row.getValue("orgName"), 15)}</div>
+      </Badge>
+    ),
+    enableColumnFilter: false
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD"
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    }
+    accessorKey: "email",
+    header: "Email",
+    cell: ({ row }) => <div className="lowercase">{ellipticalString(row.getValue("email"), 20)}</div>,
+    enableColumnFilter: false
+  },
+  {
+    accessorKey: "subscription",
+    header: "Subscription",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("subscription")}</div>
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <Badge variant="secondary">
+        <div className="capitalize">{row.getValue("status")}</div>
+      </Badge>
+    )
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button className="pl-0" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Created At
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="lowercase">{formatDateToDDMMYYYY(row.getValue("createdAt"))}</div>,
+    sortingFn: (rowA, rowB) => {
+      const dateA = new Date(rowA.original.createdAt).getTime();
+      const dateB = new Date(rowB.original.createdAt).getTime();
+      return dateA - dateB;
+    },
+    enableColumnFilter: false
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return (
+        <Button className="pl-0" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Updated At
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="lowercase">{formatDateToDDMMYYYY(row.getValue("updatedAt"))}</div>,
+    sortingFn: (rowA, rowB) => {
+      const dateA = new Date(rowA.original.updatedAt).getTime();
+      const dateB = new Date(rowB.original.updatedAt).getTime();
+      return dateA - dateB;
+    },
+    enableColumnFilter: false
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const organisationDetail = row.original;
+
+      const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: Organisation; isEdit?: boolean }) => {
+        console.log("organisationDetail: ", organisationDetail);
+        console.log("isEdit", isEdit);
+        // TODO: pass to organisation detail page
+      };
+
+      const handleDelete = (orgId: string) => {
+        console.log("orgId about to delete: ", orgId);
+      };
 
       return (
         <DropdownMenu>
@@ -131,22 +214,22 @@ export const columns: ColumnDef<Payment>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>Copy payment ID</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleOperateDetail({ organisationDetail })}>View</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleOperateDetail({ organisationDetail, isEdit: true })}>Edit</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(organisationDetail.orgId)}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
-    }
+    },
+    enableColumnFilter: false
   }
 ];
 
 const AppDataTable = () => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -158,12 +241,10 @@ const AppDataTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
-      columnVisibility,
       rowSelection
     }
   });
@@ -172,78 +253,36 @@ const AppDataTable = () => {
     <div className="w-full">
       <div className="flex items-center justify-between py-4">
         <div className="flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter(column => column.getCanHide())
-                .map(column => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={value => column.toggleVisibility(!!value)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter(column => column.getCanHide())
-                .map(column => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={value => column.toggleVisibility(!!value)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter(column => column.getCanHide())
-                .map(column => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={value => column.toggleVisibility(!!value)}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {table
+            .getAllColumns()
+            .filter(column => column.getCanFilter())
+            .map(filteredColumn => {
+              return (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="ml-auto">
+                      {filteredColumn.getIndex()}
+                      <ChevronDown />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {/* {filteredColumn
+                      .map(column => {
+                        return (
+                          <DropdownMenuCheckboxItem
+                            key={column.id}
+                            className="capitalize"
+                            checked={column.getIsVisible()}
+                            onCheckedChange={value => column.toggleVisibility(!!value)}
+                          >
+                            {column.id}
+                          </DropdownMenuCheckboxItem>
+                        );
+                      })} */}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              );
+            })}
         </div>
         <div className="relative">
           <Input
