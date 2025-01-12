@@ -18,8 +18,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        echo "install dependencies using npm ci"
-                        sh 'rm -rf node_modules package-lock.json'
+                        echo "install dependencies using npm ci"                        
                         sh 'npm ci --include=optional'
                     }catch(Exception e){
                         echo "npm ci failed. try npm install instead"
