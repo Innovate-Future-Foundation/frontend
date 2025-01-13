@@ -30,10 +30,10 @@ export const Events: React.FC = () => {
     <section className="bg-[#f9f9f9] py-12">
       {/* 容器：标题+卡片 */}
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-[#1c2c4c] text-center mb-8">Past Events</h2>
+        <h2 className="text-4xl text-[#062B48] text-center mb-8">Past Events</h2>
 
-        {/* 网格布局，始终三列并列 */}
-        <div className="grid grid-cols-3 gap-8">
+        {/* 卡片区域 */}
+        <div className="flex flex-row justify-center items-start gap-8">
           {events.map((event, index) => (
             <div
               key={index}
@@ -56,9 +56,9 @@ export const Events: React.FC = () => {
 
               {/* 下半部分：文字区域 */}
               <div className="w-full h-1/2 p-4 flex flex-col justify-center">
-                <h3 className="text-lg font-bold text-gray-800">{event.title}</h3>
-                <p className="text-sm text-gray-400 mt-1">{event.description}</p>
-                <div className="flex items-center justify-center text-sm text-gray-600 mt-3 gap-4">
+                <h3 className="text-lg font-bold text-[#062B48]">{event.title}</h3>
+                <p className="text-sm text-[#9DABBE] mt-1">{event.description}</p>
+                <div className="flex items-center justify-center text-sm text-[#062B48] mt-3 gap-4">
                   <div className="flex items-center gap-1">
                     <img src="/src/assets/images/date.png" alt="Date Icon" className="w-4 h-4" />
                     <span>{event.date}</span>

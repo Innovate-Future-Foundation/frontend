@@ -23,7 +23,7 @@ const AboutUs: React.FC = () => {
 
         <section className="bg-[#f9f9f9] py-16">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-bold text-[#1c2c4c] mb-8">What We Do</h2>
+            <h2 className="text-4xl text-[#1c2c4c] mb-8">What We Do</h2>
             <div className="grid grid-cols-2 gap-8 justify-center items-center mx-auto max-w-4xl">
               {[
                 {

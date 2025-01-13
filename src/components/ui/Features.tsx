@@ -20,14 +20,14 @@ export const Features: React.FC = () => {
   return (
     <section className="bg-[#046FFB] py-12">
       {/* Container with a single row of three columns */}
-      <div className="container mx-auto flex text-white">
+      <div className="container mx-auto flex justify-between px-6 text-white">
         {features.map((feature, index) => (
           <div
             key={index}
             className={`
-              w-1/3 flex items-start gap-4 px-4 py-8
-              ${index < features.length - 1 ? "border-r border-white/40" : ""}
-            `}
+                w-1/3 flex items-start gap-4 px-4 
+                ${index < features.length - 1 ? "border-r border-white/40" : ""}
+              `}
           >
             {/* Icon */}
             <img src={feature.icon} alt={feature.title} className="w-12 h-12" />

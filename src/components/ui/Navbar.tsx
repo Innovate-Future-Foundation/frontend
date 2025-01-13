@@ -11,13 +11,13 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-8">
-          <a href="#" className="text-[#1c2c4c] hover:underline">
+          <a href="/" className="text-[#062B48] hover:underline">
             Home
           </a>
-          <a href="#" className="text-[#1c2c4c] hover:underline">
+          <a href="/about-us" className="text-[#062B48] hover:underline">
             About Us
           </a>
-          <a href="#" className="text-[#1c2c4c] hover:underline">
+          <a href="/contact-us" className="text-[#062B48] hover:underline">
             Contact Us
           </a>
           <button className="bg-[#046FFB] text-white px-4 py-2 rounded hover:bg-[#046FFB]">Sign In</button>

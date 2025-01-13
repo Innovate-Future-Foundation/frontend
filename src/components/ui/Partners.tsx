@@ -3,7 +3,7 @@ export const Partners: React.FC = () => {
     <section className="bg-white py-12">
       <div className="container mx-auto px-4 text-center">
         {/* Heading */}
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Our Partners</h2>
+        <h2 className="text-2xl text-gray-800 mb-6">Our Partners</h2>
 
         {/* Logos Container */}
         <div className="flex flex-wrap justify-center items-center gap-8">
