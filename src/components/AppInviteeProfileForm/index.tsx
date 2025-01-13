@@ -4,55 +4,37 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AppAvatar from "@/components/AppAvatar";
 import AppFormField from "@/components/AppFormField";
-import { OrganisationFormType, OrganisationStatus } from "@/types";
+import { OrganisationFormType, OrganisationStatus, OrganisationType } from "@/types";
 import { abbreviateName } from "@/utils/formatters";
 import FormWrapper from "./FormWrapper";
 import { Badge } from "../ui/badge";
 
-const data = {
-  orgName: "JR Academy",
-  email: "admin@jracademy.com.au",
-  logoUrl: "https://github.com/shadcn.png",
-  websiteUrl: "https://jiangren.com.au/",
-
-  address: {
-    street: "123 Main Street",
-    suburb: "Sydney",
-    state: "NSW",
-    postcode: "2000",
-    country: "Australia"
-  },
-
-  subscription: "free",
-  status: "pending"
-};
-
-const AppInviteeProfileForm = () => {
-  const [formData, setFormData] = useState<OrganisationFormType>({
-    orgName: data.orgName,
-    logoUrl: data.logoUrl,
-    websiteUrl: data.websiteUrl,
+const AppInviteeProfileForm: React.FC<OrganisationType> = orgProfileDetail => {
+  const [formorgProfileDetail, setFormorgProfileDetail] = useState<OrganisationFormType>({
+    orgName: orgProfileDetail.orgName,
+    logoUrl: orgProfileDetail.logoUrl,
+    websiteUrl: orgProfileDetail.websiteUrl,
     address: {
-      street: data.address?.street,
-      suburb: data.address?.suburb,
-      state: data.address?.state,
-      postcode: data.address?.postcode,
-      country: data.address?.country
+      street: orgProfileDetail.address?.street ?? "",
+      suburb: orgProfileDetail.address?.suburb ?? "",
+      state: orgProfileDetail.address?.state ?? "",
+      postcode: orgProfileDetail.address?.postcode ?? "",
+      country: orgProfileDetail.address?.country ?? ""
     },
-    email: data.email,
-    subscription: data.subscription,
-    status: data.status as OrganisationStatus
+    email: orgProfileDetail.email,
+    subscription: orgProfileDetail.subscription,
+    status: orgProfileDetail.status as OrganisationStatus
   });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const avatarAlt = "@InnovateFoundation";
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormorgProfileDetail(prev => ({ ...prev, [field]: value }));
   };
 
   const handleUploadChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData(prev => ({
+      setFormorgProfileDetail(prev => ({
         ...prev,
         // @ts-expect-error: 'files' might be null, but it's handled elsewhere
         profileAvatarLink: URL.createObjectURL(e.target.files[0])
@@ -64,33 +46,39 @@ const AppInviteeProfileForm = () => {
   return (
     <>
       <div className="h-16 bg-accent relative">
-        <div className="absolute top-12 left-8 flex gap-3 items-end">
-          <AppAvatar avatarLink={"https://github.com/shadcn.png"} size={20} avatarAlt={"avatarAlt"} avaterPlaceholder={"AC"} outline={true} />
+        <div className="absolute top-10 left-8 flex gap-3 items-end">
+          <AppAvatar avatarLink={"https://github.com/shadcn.png"} size={24} avatarAlt={"avatarAlt"} avaterPlaceholder={"AC"} outline={true} />
           <div className="flex flex-col">
             <p className="text-lg leading-none font-bold">JR Academy</p>
             <p className="text-xs">https://jiangren.com.au/</p>
             <div className="flex gap-2 mt-2">
               <Badge variant={"secondary"} className="p-0 px-2 rounded-full font-light text-xs text-red-400 bg-red-100">
-                {formData.status}
+                {formorgProfileDetail.status}
               </Badge>
               <Badge variant={"outline"} className="p-0 px-2 rounded-full font-light text-xs text-red-400  border-red-200">
-                {formData.subscription}
+                {formorgProfileDetail.subscription}
               </Badge>
             </div>
           </div>
         </div>
       </div>
-      <div className="h-20"></div>
+      <div className="h-24"></div>
       <div className="flex flex-col gap-4">
         <FormWrapper formTitle={"Company Information"}>
           <div className="flex gap-4 w-full">
-            <AppFormField id={"name"} label={"Name"} value={formData.orgName} onChange={e => handleInputChange("orgName", e.target.value)} />
-            <AppFormField id={"email"} type={"email"} label={"Email"} value={formData.email ?? ""} onChange={e => handleInputChange("email", e.target.value)} />
+            <AppFormField id={"name"} label={"Name"} value={formorgProfileDetail.orgName} onChange={e => handleInputChange("orgName", e.target.value)} />
+            <AppFormField
+              id={"email"}
+              type={"email"}
+              label={"Email"}
+              value={formorgProfileDetail.email ?? ""}
+              onChange={e => handleInputChange("email", e.target.value)}
+            />
           </div>
           <AppFormField
             id={"websiteUrl"}
             label={"Website Url"}
-            value={formData.websiteUrl ?? ""}
+            value={formorgProfileDetail.websiteUrl ?? ""}
             onChange={e => handleInputChange("websiteUrl", e.target.value)}
           />
           <div className="flex flex-col items-start gap-1">
@@ -98,27 +86,46 @@ const AppInviteeProfileForm = () => {
               Logo Image
             </Label>
             <div className="flex gap-4 items-center ">
-              <AppAvatar avatarLink={formData.logoUrl ?? ""} avatarAlt={avatarAlt} avaterPlaceholder={abbreviateName(formData.orgName)} />
+              <AppAvatar
+                avatarLink={formorgProfileDetail.logoUrl ?? ""}
+                avatarAlt={avatarAlt}
+                avaterPlaceholder={abbreviateName(formorgProfileDetail.orgName)}
+              />
               <Input className="flex-1" id="logoUrl" type="file" onChange={handleUploadChange} ref={fileInputRef} />
             </div>
           </div>
         </FormWrapper>
         <FormWrapper formTitle={"Address"}>
           <div className="flex gap-4 w-full">
-            <AppFormField id={"country"} label={"Country"} value={formData.address?.country} onChange={e => handleInputChange("country", e.target.value)} />
-            <AppFormField id={"state"} label={"State"} value={formData.address?.state} onChange={e => handleInputChange("state", e.target.value)} />
+            <AppFormField
+              id={"country"}
+              label={"Country"}
+              value={formorgProfileDetail.address?.country}
+              onChange={e => handleInputChange("country", e.target.value)}
+            />
+            <AppFormField id={"state"} label={"State"} value={formorgProfileDetail.address?.state} onChange={e => handleInputChange("state", e.target.value)} />
           </div>
           <div className="flex gap-4 w-full">
-            <AppFormField id={"suburb"} label={"Suburb"} value={formData.address?.suburb} onChange={e => handleInputChange("suburb", e.target.value)} />
+            <AppFormField
+              id={"suburb"}
+              label={"Suburb"}
+              value={formorgProfileDetail.address?.suburb}
+              onChange={e => handleInputChange("suburb", e.target.value)}
+            />
             <AppFormField
               id={"postcode"}
               type={"number"}
               label={"Postcode"}
-              value={formData.address?.postcode}
+              value={formorgProfileDetail.address?.postcode}
               onChange={e => handleInputChange("postcode", e.target.value)}
             />
           </div>
-          <AppFormField id={"street"} label={"Street"} value={formData.address?.street} onChange={e => handleInputChange("street", e.target.value)} />
+          <AppFormField
+            id={"street"}
+            label={"Street"}
+            value={formorgProfileDetail.address?.street}
+            onChange={e => handleInputChange("street", e.target.value)}
+          />
         </FormWrapper>
       </div>
     </>
