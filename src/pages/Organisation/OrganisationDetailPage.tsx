@@ -1,13 +1,17 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import AppAvatar from "@/components/AppAvatar";
 import AppFormField from "@/components/AppFormField";
 import { OrganisationFormType, OrganisationStatus } from "@/types";
-import { abbreviateName } from "@/utils/formatters";
+
 import { Badge } from "@/components/ui/badge";
 import FormWrapper from "@/components/AppFormWrapper.tsx";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 
 const orgProfileDetail = {
   orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -29,6 +33,25 @@ const orgProfileDetail = {
 };
 
 const OrganisationDetailPage = () => {
+  const schema = yup.object({
+    name: yup.string().required(),
+    email: yup.string().required(),
+    websiteUrl: yup.string().required()
+  });
+
+  type FormData = {
+    name: string;
+    email: string;
+    websiteUrl: string;
+  };
+
+  const form = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name: "Acme Corporation"
+    }
+  });
+
   const [formorgProfileDetail, setFormorgProfileDetail] = useState<OrganisationFormType>({
     orgName: orgProfileDetail.orgName,
     logoUrl: orgProfileDetail.logoUrl,
@@ -44,22 +67,27 @@ const OrganisationDetailPage = () => {
     subscription: orgProfileDetail.subscription,
     status: orgProfileDetail.status as OrganisationStatus
   });
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const avatarAlt = "@InnovateFoundation";
+  // const fileInputRef = useRef<HTMLInputElement | null>(null);
+  // const avatarAlt = "@InnovateFoundation";
 
   const handleInputChange = (field: string, value: string) => {
     setFormorgProfileDetail(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleUploadChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormorgProfileDetail(prev => ({
-        ...prev,
-        // @ts-expect-error: 'files' might be null, but it's handled elsewhere
-        profileAvatarLink: URL.createObjectURL(e.target.files[0])
-      }));
-    }
-    // TODO: Upload the image to the server
+  // const handleUploadChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     setFormorgProfileDetail(prev => ({
+  //       ...prev,
+  //       // @ts-expect-error: 'files' might be null, but it's handled elsewhere
+  //       profileAvatarLink: URL.createObjectURL(e.target.files[0])
+  //     }));
+  //   }
+  //   // TODO: Upload the image to the server
+  // };
+
+  const handleSubmit = (data: FormData) => {
+    console.log("Form Data Submitted: ", data);
+    // TODO: Perform actions such as sending the data to the server
   };
 
   return (
@@ -83,7 +111,7 @@ const OrganisationDetailPage = () => {
       </div>
       <div className="h-24"></div>
       <div className="flex flex-col gap-4">
-        <FormWrapper formTitle={"Company Information"}>
+        {/* <FormWrapper formTitle={"Company Information"}>
           <div className="flex gap-4 w-full">
             <AppFormField id={"name"} label={"Name"} value={formorgProfileDetail.orgName} onChange={e => handleInputChange("orgName", e.target.value)} />
             <AppFormField
@@ -113,7 +141,55 @@ const OrganisationDetailPage = () => {
               <Input className="flex-1" id="logoUrl" type="file" onChange={handleUploadChange} ref={fileInputRef} />
             </div>
           </div>
-        </FormWrapper>
+        </FormWrapper> */}
+
+        <Form {...form}>
+          <h2 className="text-lg font-bold">Company Information</h2>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Company Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="websiteUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Website Url</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Website Url" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+
         <FormWrapper formTitle={"Address"}>
           <div className="flex gap-4 w-full">
             <AppFormField
