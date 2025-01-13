@@ -9,9 +9,10 @@ type avatarType = {
   className?: string;
 };
 const AppAvatar: React.FC<avatarType> = ({ avatarLink, avatarAlt, avaterPlaceholder, size = 10, outline = false, className = "" }) => {
-  const avatarStyle = `w-${size} h-${size} ${outline && "outline outline-white"}`;
+  const avatarStyle = `w-${size} h-${size} ${outline && "outline outline-white"} ${className.trim()}`;
+
   return (
-    <Avatar className={`${avatarStyle} ${className}`.trim()}>
+    <Avatar className={avatarStyle}>
       <AvatarImage src={avatarLink} alt={avatarAlt} />
       <AvatarFallback>{avaterPlaceholder}</AvatarFallback>
     </Avatar>
