@@ -4,12 +4,31 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AppAvatar from "@/components/AppAvatar";
 import AppFormField from "@/components/AppFormField";
-import { OrganisationFormType, OrganisationStatus, OrganisationType } from "@/types";
+import { OrganisationFormType, OrganisationStatus } from "@/types";
 import { abbreviateName } from "@/utils/formatters";
-import FormWrapper from "./FormWrapper";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
+import FormWrapper from "@/components/AppFormWrapper.tsx";
 
-const AppInviteeProfileForm: React.FC<OrganisationType> = orgProfileDetail => {
+const orgProfileDetail = {
+  orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  orgName: "Acme Corporation",
+  logoUrl: "https://github.com/shadcn.png",
+  websiteUrl: "https://www.acmecorp.com",
+  address: {
+    street: "123 Main Street",
+    suburb: "Sydney",
+    state: "NSW",
+    postcode: "2000",
+    country: "Australia"
+  },
+  email: "info@acmecorp.com",
+  subscription: "Premium",
+  status: "pending",
+  createdAt: "2023-12-10T12:34:56Z",
+  updatedAt: "2023-12-06T22:20:00Z"
+};
+
+const OrganisationDetailPage = () => {
   const [formorgProfileDetail, setFormorgProfileDetail] = useState<OrganisationFormType>({
     orgName: orgProfileDetail.orgName,
     logoUrl: orgProfileDetail.logoUrl,
@@ -44,7 +63,7 @@ const AppInviteeProfileForm: React.FC<OrganisationType> = orgProfileDetail => {
   };
 
   return (
-    <>
+    <div className="w-full flex flex-col justify-center">
       <div className="h-16 bg-accent relative">
         <div className="absolute top-10 left-8 flex gap-3 items-end">
           <AppAvatar avatarLink={"https://github.com/shadcn.png"} size={24} avatarAlt={"avatarAlt"} avaterPlaceholder={"AC"} outline={true} />
@@ -128,7 +147,7 @@ const AppInviteeProfileForm: React.FC<OrganisationType> = orgProfileDetail => {
           />
         </FormWrapper>
       </div>
-    </>
+    </div>
   );
 };
-export default AppInviteeProfileForm;
+export default OrganisationDetailPage;
