@@ -7,6 +7,7 @@ import AppFormField from "@/components/AppFormField";
 import { OrganisationFormType, OrganisationStatus } from "@/types";
 import { abbreviateName } from "@/utils/formatters";
 import FormWrapper from "./FormWrapper";
+import { Badge } from "../ui/badge";
 
 const data = {
   orgName: "JR Academy",
@@ -63,11 +64,19 @@ const AppInviteeProfileForm = () => {
   return (
     <>
       <div className="h-16 bg-accent relative">
-        <div className="absolute top-12 left-8 flex gap-3 items-center">
+        <div className="absolute top-12 left-8 flex gap-3 items-end">
           <AppAvatar avatarLink={"https://github.com/shadcn.png"} size={20} avatarAlt={"avatarAlt"} avaterPlaceholder={"AC"} outline={true} />
           <div className="flex flex-col">
             <p className="text-lg leading-none font-bold">JR Academy</p>
             <p className="text-xs">https://jiangren.com.au/</p>
+            <div className="flex gap-2 mt-2">
+              <Badge variant={"secondary"} className="p-0 px-2 rounded-full font-light text-xs text-red-400 bg-red-100">
+                {formData.status}
+              </Badge>
+              <Badge variant={"outline"} className="p-0 px-2 rounded-full font-light text-xs text-red-400  border-red-200">
+                {formData.subscription}
+              </Badge>
+            </div>
           </div>
         </div>
       </div>
@@ -110,12 +119,6 @@ const AppInviteeProfileForm = () => {
             />
           </div>
           <AppFormField id={"street"} label={"Street"} value={formData.address?.street} onChange={e => handleInputChange("street", e.target.value)} />
-        </FormWrapper>
-        <FormWrapper formTitle={"Account Information"}>
-          <div className="flex gap-4 w-full">
-            <AppFormField id={"subscription"} label={"Subscription"} value={formData.subscription ?? ""} />
-            <AppFormField id={"status"} label={"status"} value={formData.status ?? ""} />
-          </div>
         </FormWrapper>
       </div>
     </>
