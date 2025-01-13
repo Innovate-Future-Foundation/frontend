@@ -6,9 +6,9 @@ interface Props {
 }
 
 const MainLayout: React.FC<Props> = ({ children }) => (
-  <div className="h-screen">
+  <div className="flex flex-col h-screen">
     <Header />
-    <div className="mt-14 ">{children}</div>
+    <div className="py-12">{children}</div>
   </div>
 );
 export default MainLayout;

@@ -8,13 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { abbreviateName, ellipticalString } from "@/utils/formatters";
-
-type ProfileFormType = {
-  profileName: string;
-  profileEmail: string;
-  profilePhone: string;
-  profileAvatarLink: string;
-};
+import { ProfileFormType } from "@/types/profile";
 
 const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
   // TODO: Will replace this data when get data from server
@@ -57,7 +51,7 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
     // Clear file input
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Reset file input to "no file selected"
+      fileInputRef.current.value = "";
     }
   };
 
@@ -67,11 +61,11 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
       <DialogContent className="p-0 max-w-[425px] rounded-md overflow-hidden">
         <div className="h-14 bg-accent">
           <AppAvatar
-            className=" absolute top-6 left-8"
+            className="absolute top-6 left-8"
             avatarLink={formData.profileAvatarLink}
             avatarAlt={avatarAlt}
             avaterPlaceholder={abbreviateName(formData.profileName)}
-            size={16}
+            size={14}
             outline={true}
           />
         </div>
@@ -104,7 +98,6 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
               </div>
             </div>
           </div>
-
           <Separator className="my-4" />
           <DialogFooter>
             <div className="flex gap-4 justify-end">

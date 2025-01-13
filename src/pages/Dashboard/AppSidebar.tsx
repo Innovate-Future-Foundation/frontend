@@ -12,9 +12,9 @@ const items = [
   }
 ];
 
-export function AppSidebar() {
+const AppSidebar = () => {
   return (
-    <Sidebar collapsible="icon" variant="sidebar" className="mt-14">
+    <Sidebar collapsible="icon" variant="sidebar" className="mt-12">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -35,4 +35,5 @@ export function AppSidebar() {
       </SidebarContent>
     </Sidebar>
   );
-}
+};
+export default AppSidebar;
