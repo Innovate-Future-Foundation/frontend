@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { LucideIcon } from "lucide-react";
 
 interface TitleWithIconProps {
@@ -6,7 +5,7 @@ interface TitleWithIconProps {
   title: string;
 }
 
-export const TitleWithIcon: FC<TitleWithIconProps> = ({ icon: Icon, title }) => {
+export const TitleWithIcon: React.FC<TitleWithIconProps> = ({ icon: Icon, title }) => {
   return (
     <div className="inline-flex items-center gap-3">
       <div className="p-2 border-2 border-gray-900 rounded-full">

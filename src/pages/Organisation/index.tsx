@@ -1,6 +1,6 @@
 import AppDataTable from "@/components/AppDataTable";
 import { orgColumns } from "./orgColumns";
-import { InviteeList } from "@/components/InviteList";
+import { InviteeList } from "@/components/InviteeList";
 
 const OrganisationPage = () => {
   return (

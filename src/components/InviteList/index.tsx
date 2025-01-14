@@ -1,4 +1,4 @@
-import { TitleWithIcon } from "../TitleWithIcon/GuestListTitle";
+import { TitleWithIcon } from "../TitleWithIcon";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Users, Plus, Search, Trash2 } from "lucide-react";
