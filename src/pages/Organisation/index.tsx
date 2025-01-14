@@ -1,13 +1,12 @@
 import AppDataTable from "@/components/AppDataTable";
-import { TitleWithIcon } from "@/components/TitleWithIcon/GuestListTitle";
-import { Users } from "lucide-react";
 import { orgColumns } from "./orgColumns";
+import { InviteeList } from "@/components/InviteList";
 
 const OrganisationPage = () => {
   return (
     <div className="w-full flex flex-col justify-center">
       <AppDataTable columns={orgColumns} />
-      <TitleWithIcon icon={Users} title="Organisation List" />
+      <InviteeList />
     </div>
   );
 };

@@ -9,7 +9,7 @@ export type roleType = {
   role: string;
 };
 
-const DashboardContent: React.FC<roleType> = role => {
+const DashboardContent: React.FC<roleType> = ({ role }) => {
   console.log("role", role);
 
   return (
