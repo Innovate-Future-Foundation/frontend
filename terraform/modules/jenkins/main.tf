@@ -2,6 +2,11 @@ provider "aws" {
   region = var.aws_region
 }
 
+provider "aws" {
+  alias  = "route53"
+  region = "ap-southeast-2"  # Route53 是全球服务，任何区域都可以
+}
+
 # Jenkins Master EC2
 resource "aws_instance" "jenkins_master" {
   ami           = var.ami_id
@@ -102,6 +107,7 @@ resource "aws_security_group_rule" "jenkins_egress" {
 resource "aws_route53_record" "jenkins" {
   count = var.create_dns_record ? 1 : 0
 
+  provider = aws.route53
   zone_id = var.route53_zone_id
   name    = "jenkins.${var.domain_name}"
   type    = "A"
