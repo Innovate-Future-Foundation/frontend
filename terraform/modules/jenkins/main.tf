@@ -33,7 +33,7 @@ resource "aws_instance" "jenkins_master" {
   }
 
   user_data = templatefile("${path.module}/templates/userdata.sh.tpl", {
-  domain_name = var.create_dns_record ? "jenkins.${var.domain_name}" : aws_instance.jenkins_master.public_ip
+  domain_name = var.create_dns_record ? "jenkins.${var.domain_name}" : ""
 })
 
   tags = merge(

@@ -23,6 +23,8 @@ coverage/
 *.tfvars
 *.tfplan
 crash.log
+# Terraform state lock file
+*.tfstate.lock.info
 
 # Ansible
 *.vault.yml
