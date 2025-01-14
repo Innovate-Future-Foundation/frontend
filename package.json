@@ -41,7 +41,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
-    "@shadcn/ui": "^0.0.4",
     "@tanstack/react-query-devtools": "^5.62.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
