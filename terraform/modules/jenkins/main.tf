@@ -1,10 +1,6 @@
-# modules/jenkins/main.tf
-
 provider "aws" {
   region = var.aws_region
 }
-
-# VPC相关资源使用已有的或创建新的
 
 # Jenkins Master EC2
 resource "aws_instance" "jenkins_master" {
@@ -15,6 +11,7 @@ resource "aws_instance" "jenkins_master" {
   subnet_id                   = var.subnet_id
   vpc_security_group_ids      = [aws_security_group.jenkins.id]
   associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.jenkins.name
 
   root_block_device {
     volume_size = local.storage_config[var.environment].root_volume.size
@@ -35,44 +32,100 @@ resource "aws_instance" "jenkins_master" {
     tags        = local.common_tags
   }
 
-  user_data = file("${path.module}/userdata.sh")
+  user_data = templatefile("${path.module}/userdata.sh", {
+    domain_name = var.create_dns_record ? "jenkins.${var.domain_name}" : aws_instance.jenkins_master.public_ip
+  })
 
-  tags = {
-    Name = "jenkins-master"
-  }
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "${local.name_prefix}-master"
+    }
+  )
 }
 
-# Jenkins安全组
+# Security Group
 resource "aws_security_group" "jenkins" {
-  name        = "jenkins-master-sg"
+  name_prefix = "${local.name_prefix}-sg"
   description = "Security group for Jenkins master"
   vpc_id      = var.vpc_id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  tags = local.common_tags
+}
 
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_security_group_rule" "jenkins_ssh" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.jenkins.id
+}
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+resource "aws_security_group_rule" "jenkins_http" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.jenkins.id
+}
+
+resource "aws_security_group_rule" "jenkins_https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.jenkins.id
+}
+
+resource "aws_security_group_rule" "jenkins_app" {
+  type              = "ingress"
+  from_port         = 8080
+  to_port           = 8080
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.jenkins.id
+}
+
+resource "aws_security_group_rule" "jenkins_egress" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.jenkins.id
+}
+
+# Route 53 Record
+resource "aws_route53_record" "jenkins" {
+  count = var.create_dns_record ? 1 : 0
+
+  zone_id = var.route53_zone_id
+  name    = "jenkins.${var.domain_name}"
+  type    = "A"
+  ttl     = "300"
+  records = [aws_instance.jenkins_master.public_ip]
+}
+
+# ACM Certificate
+resource "aws_acm_certificate" "jenkins" {
+  count = var.create_certificate ? 1 : 0
+
+  domain_name       = "jenkins.${var.domain_name}"
+  validation_method = "DNS"
+
+  tags = local.common_tags
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
-# IAM角色和实例配置文件
+# IAM Role and Instance Profile
 resource "aws_iam_role" "jenkins" {
-  name = "jenkins-master-role"
+  name = "${local.name_prefix}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -86,6 +139,11 @@ resource "aws_iam_role" "jenkins" {
       }
     ]
   })
+
+  tags = local.common_tags
 }
 
-# 添加必要的IAM策略
+resource "aws_iam_instance_profile" "jenkins" {
+  name = "${local.name_prefix}-profile"
+  role = aws_iam_role.jenkins.name
+}
