@@ -7,22 +7,65 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-coverage/*
-coverage
+# Node Modules and Build Output
+node_modules/
+dist/
+coverage/
 .env
 .env.*
 
-# Editor directories and files
+# Terraform
+**/.terraform/*
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.tfstate.d/
+*.tfvars
+*.tfplan
+crash.log
+
+# Ansible
+*.vault.yml
+*.facts
+*.key
+*.pem
+*.retry
+roles/
+collections/
+ansible.log
+
+# Docker
+*.pid
+docker-compose.override.yml
+*.sock
+docker-compose.*.override.yml
+build/
+
+# Kubernetes
+*.kubeconfig
+*.secret.yml
+*.config.yml
+*.k8s.yaml
+*.kubectl.yaml
+
+# Test and Lint Outputs
+.nyc_output/
+.cache/
+jest-test-results.json
+coverage-final.json
+
+# CI/CD Artifacts
+artifacts/
+.tmp/
+logs/
+*.ci-config.yml
+
+# IDE and OS-specific Files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Desktop.ini
+Thumbs.db
+.Trashes/
+.AppleDouble/
