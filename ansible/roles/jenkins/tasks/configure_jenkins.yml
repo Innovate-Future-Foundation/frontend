@@ -1,10 +1,44 @@
-# ansible/roles/jenkins/tasks/configure_jenkins.yml
-- name: Configure Jenkins home
+---
+- name: Stop Jenkins service
+  systemd:
+    name: jenkins
+    state: stopped
+
+- name: Configure Jenkins home in systemd override directory
+  file:
+    path: /etc/systemd/system/jenkins.service.d
+    state: directory
+    mode: '0755'
+
+- name: Create systemd override file
+  copy:
+    dest: /etc/systemd/system/jenkins.service.d/override.conf
+    content: |
+      [Service]
+      Environment="JENKINS_HOME=/data/jenkins"
+
+- name: Configure Jenkins home in defaults file
   lineinfile:
     path: /etc/default/jenkins
     regexp: '^JENKINS_HOME='
-    line: 'JENKINS_HOME={{ jenkins_home }}'
+    line: 'JENKINS_HOME=/data/jenkins'
     create: yes
+
+- name: Create init.groovy.d directory
+  file:
+    path: "{{ jenkins_home }}/init.groovy.d"
+    state: directory
+    mode: '0755'
+    owner: jenkins
+    group: jenkins
+
+# - name: Copy Jenkins initialization script
+#   template:
+#     src: basic-security.groovy.j2
+#     dest: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
+#     owner: jenkins
+#     group: jenkins
+#     mode: '0644'
 
 - name: Set Jenkins directory ownership
   file:
@@ -19,29 +53,15 @@
     groups: docker
     append: yes
 
-- name: Restart Jenkins service
+- name: Reload systemd configurations
   systemd:
-    name: jenkins
-    state: restarted
     daemon_reload: yes
 
-- name: Check Jenkins service status  # 添加此调试任务
-  command: systemctl status jenkins
-  register: jenkins_status
-  changed_when: false
-
-- name: Display Jenkins service status  # 添加此调试任务
-  debug:
-    var: jenkins_status.stdout_lines
-
-- name: Check Jenkins logs  # 添加此调试任务
-  command: journalctl -u jenkins --no-pager -n 50
-  register: jenkins_logs
-  changed_when: false
-
-- name: Display Jenkins logs  # 添加此调试任务
-  debug:
-    var: jenkins_logs.stdout_lines
+- name: Start and enable Jenkins
+  systemd:
+    name: jenkins
+    state: started
+    enabled: yes
 
 - name: Wait for Jenkins to start up
   uri:
@@ -57,4 +77,10 @@
   wait_for:
     path: "{{ jenkins_home }}/secrets/initialAdminPassword"
     state: present
-    timeout: 120  # 增加超时时间到 2 分钟
+    timeout: 120
+
+- name: Get Jenkins initial admin password
+  slurp:
+    src: "{{ jenkins_home }}/secrets/initialAdminPassword"
+  register: jenkins_admin_password
+  when: jenkins_service_status is success

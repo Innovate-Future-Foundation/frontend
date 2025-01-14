@@ -1,15 +1,21 @@
 ---
-- name: Get Jenkins initial admin password
-  slurp:
-    src: "{{ jenkins_home }}/secrets/initialAdminPassword"
-  register: jenkins_admin_password
+- name: Download Jenkins CLI
+  get_url:
+    url: "http://localhost:8080/jnlpJars/jenkins-cli.jar"
+    dest: "/tmp/jenkins-cli.jar"
+    mode: '0440'
 
 - name: Install Jenkins plugins
-  jenkins_plugin:
-    name: "{{ item }}"
-    url: "http://localhost:8080"
-    url_username: "{{ jenkins_admin_username }}"
-    url_password: "{{ jenkins_admin_password.content | b64decode }}"
-    timeout: 90
+  command: >
+    java -jar /tmp/jenkins-cli.jar -s http://localhost:8080/ 
+    -auth {{ jenkins_admin_username }}:{{ jenkins_admin_password.content | b64decode }}
+    install-plugin {{ item }} -deploy
   with_items: "{{ jenkins_plugins }}"
+  register: plugin_installation
+  changed_when: "'Installing' in plugin_installation.stdout"
   notify: restart jenkins
+
+- name: Display Jenkins initial admin password
+  debug:
+    msg: "Jenkins initial admin password: {{ jenkins_admin_password.content | b64decode }}"
+  when: jenkins_admin_password is defined
