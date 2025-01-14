@@ -1,0 +1,39 @@
+---
+- name: Create Jenkins data directory
+  file:
+    path: "{{ jenkins_home }}"
+    state: directory
+    mode: '0755'
+
+- name: Get EC2 instance metadata
+  uri:
+    url: http://169.254.169.254/latest/meta-data/instance-type
+    return_content: yes
+  register: instance_type
+
+- name: Set device name based on instance type
+  set_fact:
+    actual_device: "{{ '/dev/nvme1n1' if (instance_type.content.startswith('t3') or 
+                                         instance_type.content.startswith('c5') or 
+                                         instance_type.content.startswith('m5')) 
+                                    else '/dev/xvdf' }}"
+
+- name: Check if EBS volume exists
+  stat:
+    path: "{{ actual_device }}"
+  register: ebs_volume
+
+- name: Format EBS volume if it exists and is not mounted
+  filesystem:
+    fstype: ext4
+    dev: "{{ actual_device }}"
+  when: ebs_volume.stat.exists and ebs_volume.stat.isblk
+
+- name: Mount EBS volume
+  mount:
+    path: "{{ jenkins_home }}"
+    src: "{{ actual_device }}"
+    fstype: ext4
+    state: mounted
+    opts: defaults,nofail
+  when: ebs_volume.stat.exists

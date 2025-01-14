@@ -1,0 +1,11 @@
+---
+jenkins_home: /data/jenkins
+jenkins_http_port: 8080
+jenkins_admin_username: admin
+jenkins_plugins:
+  - git
+  - workflow-aggregator
+  - docker-workflow
+  - aws-credentials
+  - pipeline-aws
+  - blueocean

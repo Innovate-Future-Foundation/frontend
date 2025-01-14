@@ -32,7 +32,7 @@ crash.log
 *.key
 *.pem
 *.retry
-roles/
+# roles/
 collections/
 ansible.log
 

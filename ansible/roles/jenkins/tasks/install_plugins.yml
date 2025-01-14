@@ -1,0 +1,15 @@
+---
+- name: Get Jenkins initial admin password
+  slurp:
+    src: "{{ jenkins_home }}/secrets/initialAdminPassword"
+  register: jenkins_admin_password
+
+- name: Install Jenkins plugins
+  jenkins_plugin:
+    name: "{{ item }}"
+    url: "http://localhost:8080"
+    url_username: "{{ jenkins_admin_username }}"
+    url_password: "{{ jenkins_admin_password.content | b64decode }}"
+    timeout: 90
+  with_items: "{{ jenkins_plugins }}"
+  notify: restart jenkins
