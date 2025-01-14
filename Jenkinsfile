@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    
+
     tools {
-        nodejs "Node18"
+        nodejs 'Node18'
     }
 
     environment {
@@ -37,7 +37,7 @@ pipeline {
                 script {
                     withAWS(credentials: 'aws-credentials', region: 'ap-southeast-2') {
                         sh "aws s3 sync ./dist s3://${S3_BUCKET_NAME} --delete"
-                        
+
                         sh """
                             aws cloudfront create-invalidation \
                                 --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} \

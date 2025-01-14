@@ -20,7 +20,6 @@ coverage/
 *.tfstate
 *.tfstate.backup
 *.tfstate.d/
-*.tfvars
 *.tfplan
 crash.log
 # Terraform state lock file
