@@ -113,6 +113,8 @@ export const orgColumns: ColumnDef<Organisation>[] = [
       const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: Organisation; isEdit?: boolean }) => {
         console.log("organisationDetail: ", organisationDetail);
         console.log("isEdit", isEdit);
+        const path = isEdit ? `/organisation/${organisationDetail.orgId}/edit` : `/organisation/${organisationDetail.orgId}`;
+        window.location.href = path;
       };
 
       const handleDelete = (organisation: Organisation) => {

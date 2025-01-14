@@ -19,7 +19,7 @@ const data = {
   name: "John Doe",
   email: "johndoe@example.com",
   phone: "+61 400 123 456",
-  avatarLink: "https://example.com/avatar/johndoe.png",
+  avatarLink: "https://github.com/shadcn.png",
   isActive: true,
   createdAt: "2023-12-01T12:34:56Z",
   updatedAt: "2023-12-10T15:20:30Z"
@@ -64,7 +64,7 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
             className="absolute top-6 left-8"
             avatarLink={formData.avatarLink ?? ""}
             avatarAlt={avatarAlt}
-            avaterPlaceholder={abbreviateName(formData.name!)}
+            avatarPlaceholder={abbreviateName(formData.name!)}
             size={14}
             outline={true}
           />
@@ -93,7 +93,7 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
                 Profile photo
               </Label>
               <div className="flex gap-4 items-center">
-                <AppAvatar avatarLink={formData.avatarLink!} avatarAlt={avatarAlt} avaterPlaceholder={abbreviateName(formData.name!)} />
+                <AppAvatar avatarLink={formData.avatarLink!} avatarAlt={avatarAlt} avatarPlaceholder={abbreviateName(formData.name!)} />
                 <Input id="profile-photo" type="file" onChange={handleUploadChange} ref={fileInputRef} />
               </div>
             </div>

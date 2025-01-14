@@ -19,6 +19,10 @@ const router = [
       {
         index: true,
         element: <OrganisationPage />
+      },
+      {
+        path: "organisation/:id"
+        // element: <OrganisationDetailPage />
       }
     ]
   }
