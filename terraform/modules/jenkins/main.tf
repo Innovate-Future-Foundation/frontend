@@ -143,7 +143,7 @@ resource "aws_iam_role" "jenkins" {
   tags = local.common_tags
 }
 
-resource "aws_iam_instance_profile" "jenkins" {
-  name = "${local.name_prefix}-profile"
-  role = aws_iam_role.jenkins.name
-}
+# resource "aws_iam_instance_profile" "jenkins" {
+#   name = "${local.name_prefix}-profile"
+#   role = aws_iam_role.jenkins.name
+# }

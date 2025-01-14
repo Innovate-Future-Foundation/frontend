@@ -31,6 +31,12 @@ mkdir -p /data/jenkins
 chown -R jenkins:jenkins /data/jenkins
 sed -i 's/JENKINS_HOME=.*/JENKINS_HOME=\/data\/jenkins/' /etc/default/jenkins
 
+# Configure Jenkins URL (if using custom domain)
+if [ "${domain_name}" != "" ]; then
+    echo "JENKINS_ARGS=\"\$JENKINS_ARGS --prefix=/\"" >> /etc/default/jenkins
+    echo "JENKINS_URL=\"http://${domain_name}\"" >> /etc/default/jenkins
+fi
+
 # Install Docker
 apt-get install -y ca-certificates curl gnupg
 install -m 0755 -d /etc/apt/keyrings
@@ -38,8 +44,8 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/
 chmod a+r /etc/apt/keyrings/docker.gpg
 
 echo \
-  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  \"$(. /etc/os-release && echo "$VERSION_CODENAME")\" stable" | \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt-get update
