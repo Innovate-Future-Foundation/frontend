@@ -1,12 +1,3 @@
-provider "aws" {
-  region = var.aws_region
-}
-
-provider "aws" {
-  alias  = "route53"
-  region = "ap-southeast-2"  # Route53 是全球服务，任何区域都可以
-}
-
 # Jenkins Master EC2
 resource "aws_instance" "jenkins_master" {
   ami           = var.ami_id
@@ -37,9 +28,6 @@ resource "aws_instance" "jenkins_master" {
     tags        = local.common_tags
   }
 
-  user_data = templatefile("${path.module}/templates/userdata.sh.tpl", {
-  domain_name = var.create_dns_record ? "jenkins.${var.domain_name}" : ""
-})
 
   tags = merge(
     local.common_tags,
@@ -103,12 +91,19 @@ resource "aws_security_group_rule" "jenkins_egress" {
   security_group_id = aws_security_group.jenkins.id
 }
 
+# 使用域名查找 Hosted Zone
+data "aws_route53_zone" "selected" {
+  provider     = aws.route53
+  name         = var.domain_name
+  private_zone = false
+}
+
 # Route 53 Record
 resource "aws_route53_record" "jenkins" {
-  count = var.create_dns_record ? 1 : 0
-
+  count    = var.create_dns_record ? 1 : 0
   provider = aws.route53
-  zone_id = var.route53_zone_id
+
+  zone_id = data.aws_route53_zone.selected.zone_id
   name    = "jenkins.${var.domain_name}"
   type    = "A"
   ttl     = "300"
@@ -148,8 +143,3 @@ resource "aws_iam_role" "jenkins" {
 
   tags = local.common_tags
 }
-
-# resource "aws_iam_instance_profile" "jenkins" {
-#   name = "${local.name_prefix}-profile"
-#   role = aws_iam_role.jenkins.name
-# }
