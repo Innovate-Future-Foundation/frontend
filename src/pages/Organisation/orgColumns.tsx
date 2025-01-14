@@ -4,12 +4,12 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import AppAvatar from "@/components/Avatar";
+import AppDropdown from "@/components/Dropdown";
 import { abbreviateName, ellipticalString, formatDateToDDMMYYYY } from "@/utils/formatters";
-import { OrganisationType } from "@/types";
-import AppAvatar from "@/components/AppAvatar";
-import AppDropdown from "@/components/AppDropdown";
+import { Organisation } from "@/types";
 
-export const orgColumns: ColumnDef<OrganisationType>[] = [
+export const orgColumns: ColumnDef<Organisation>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -46,7 +46,7 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
           }
         }}
       >
-        <AppAvatar avatarLink={row.original.logoUrl ?? ""} avatarAlt="@InnovateFuture" avaterPlaceholder={abbreviateName(row.getValue("orgName"))} size={7} />
+        <AppAvatar avatarLink={row.original.logoUrl ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("orgName"))} size={7} />
         <div className="ml-1 lowercase">{ellipticalString(row.getValue("orgName"), 15)}</div>
       </Button>
     ),
@@ -82,8 +82,8 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
     ),
     cell: ({ row }) => <div className="lowercase">{formatDateToDDMMYYYY(row.getValue("createdAt"))}</div>,
     sortingFn: (rowA, rowB) => {
-      const dateA = new Date(rowA.original.createdAt).getTime();
-      const dateB = new Date(rowB.original.createdAt).getTime();
+      const dateA = new Date(rowA.original.createdAt ?? "").getTime();
+      const dateB = new Date(rowB.original.createdAt ?? "").getTime();
       return dateA - dateB;
     },
     enableColumnFilter: false
@@ -98,8 +98,8 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
     ),
     cell: ({ row }) => <div className="lowercase">{formatDateToDDMMYYYY(row.getValue("updatedAt"))}</div>,
     sortingFn: (rowA, rowB) => {
-      const dateA = new Date(rowA.original.updatedAt).getTime();
-      const dateB = new Date(rowB.original.updatedAt).getTime();
+      const dateA = new Date(rowA.original.updatedAt ?? "").getTime();
+      const dateB = new Date(rowB.original.updatedAt ?? "").getTime();
       return dateA - dateB;
     },
     enableColumnFilter: false
@@ -110,12 +110,12 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
     cell: ({ row }) => {
       const organisationDetail = row.original;
 
-      const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: OrganisationType; isEdit?: boolean }) => {
+      const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: Organisation; isEdit?: boolean }) => {
         console.log("organisationDetail: ", organisationDetail);
         console.log("isEdit", isEdit);
       };
 
-      const handleDelete = (organisation: OrganisationType) => {
+      const handleDelete = (organisation: Organisation) => {
         console.log("orgId about to delete: ", organisation.orgId);
       };
 
@@ -136,7 +136,7 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
       ];
 
       return (
-        <AppDropdown<OrganisationType> item={organisationDetail} menuItems={menuItems}>
+        <AppDropdown<Organisation> item={organisationDetail} menuItems={menuItems}>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal />

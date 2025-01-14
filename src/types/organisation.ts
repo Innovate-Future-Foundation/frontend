@@ -1,5 +1,5 @@
-export type OrganisationType = {
-  orgId: string;
+export interface Organisation {
+  orgId?: string;
   orgName: string;
   logoUrl: string | null;
   websiteUrl: string | null;
@@ -7,8 +7,8 @@ export type OrganisationType = {
   email: string | null;
   subscription: string | null;
   status: OrganisationStatus;
-  createdAt: string;
-  updatedAt: string;
-};
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export type OrganisationStatus = "pending" | "verified" | "suspended" | "deactivated";

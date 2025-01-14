@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 
-// Menu items.
 const items = [
   {
     title: "Organisations",

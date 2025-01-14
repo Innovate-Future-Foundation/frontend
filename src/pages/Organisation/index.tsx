@@ -1,11 +1,267 @@
-import AppDataTable from "@/components/AppDataTable";
-import { orgColumns } from "./orgColumns";
 import { InviteeList } from "@/components/InviteeList";
+import { Organisation } from "@/types";
+import DataTable from "@/components/DataTable";
+import { orgColumns } from "./orgColumns";
+
+const data: Organisation[] = [
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    orgName: "Acme Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.acmecorp.com",
+    address: "123 Main Street, Springfield, USA",
+    email: "info@acmecorp.com",
+    subscription: "Premium",
+    status: "pending",
+    createdAt: "2023-12-10T12:34:56Z",
+    updatedAt: "2023-12-06T22:20:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae8",
+    orgName: "Globex Corporation",
+    logoUrl: null,
+    websiteUrl: "https://www.globex.com",
+    address: "456 Elm Street, Metropolis, USA",
+    email: "contact@globex.com",
+    subscription: "Basic",
+    status: "deactivated",
+    createdAt: "2023-12-09T15:00:00Z",
+    updatedAt: "2023-12-06T22:21:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
+    orgName: "Initech",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.initech.com",
+    address: "789 Oak Avenue, Gotham, USA",
+    email: "support@initech.com",
+    subscription: "Free",
+    status: "suspended",
+    createdAt: "2023-12-08T10:15:30Z",
+    updatedAt: "2023-12-06T22:22:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
+    orgName: "Initech",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.initech.com",
+    address: "789 Oak Avenue, Gotham, USA",
+    email: "support@initech.com",
+    subscription: "Free",
+    status: "suspended",
+    createdAt: "2023-12-08T10:15:30Z",
+    updatedAt: "2023-12-06T22:22:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
+    orgName: "Hooli",
+    logoUrl: null,
+    websiteUrl: "https://www.hooli.com",
+    address: "654 Maple Road, Silicon Valley, USA",
+    email: "contact@hooli.com",
+    subscription: "Basic",
+    status: "pending",
+    createdAt: "2023-12-06T22:30:00Z",
+    updatedAt: "2023-12-06T22:24:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
+    orgName: "Umbrella Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.umbrella.com",
+    address: "321 Willow Lane, Racoon City, USA",
+    email: "info@umbrella.com",
+    subscription: "Premium",
+    status: "verified",
+    createdAt: "2023-12-07T08:45:00Z",
+    updatedAt: "2023-12-06T22:23:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
+    orgName: "Hooli",
+    logoUrl: null,
+    websiteUrl: "https://www.hooli.com",
+    address: "654 Maple Road, Silicon Valley, USA",
+    email: "contact@hooli.com",
+    subscription: "Basic",
+    status: "pending",
+    createdAt: "2023-12-06T22:30:00Z",
+    updatedAt: "2023-12-06T22:24:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    orgName: "Acme Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.acmecorp.com",
+    address: "123 Main Street, Springfield, USA",
+    email: "info@acmecorp.com",
+    subscription: "Premium",
+    status: "pending",
+    createdAt: "2023-12-10T12:34:56Z",
+    updatedAt: "2023-12-06T22:20:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
+    orgName: "Initech",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.initech.com",
+    address: "789 Oak Avenue, Gotham, USA",
+    email: "support@initech.com",
+    subscription: "Free",
+    status: "suspended",
+    createdAt: "2023-12-08T10:15:30Z",
+    updatedAt: "2023-12-06T22:22:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
+    orgName: "Hooli",
+    logoUrl: null,
+    websiteUrl: "https://www.hooli.com",
+    address: "654 Maple Road, Silicon Valley, USA",
+    email: "contact@hooli.com",
+    subscription: "Basic",
+    status: "pending",
+    createdAt: "2023-12-06T22:30:00Z",
+    updatedAt: "2023-12-06T22:24:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
+    orgName: "Umbrella Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.umbrella.com",
+    address: "321 Willow Lane, Racoon City, USA",
+    email: "info@umbrella.com",
+    subscription: "Premium",
+    status: "verified",
+    createdAt: "2023-12-07T08:45:00Z",
+    updatedAt: "2023-12-06T22:23:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
+    orgName: "Hooli",
+    logoUrl: null,
+    websiteUrl: "https://www.hooli.com",
+    address: "654 Maple Road, Silicon Valley, USA",
+    email: "contact@hooli.com",
+    subscription: "Basic",
+    status: "pending",
+    createdAt: "2023-12-06T22:30:00Z",
+    updatedAt: "2023-12-06T22:24:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae8",
+    orgName: "Globex Corporation",
+    logoUrl: null,
+    websiteUrl: "https://www.globex.com",
+    address: "456 Elm Street, Metropolis, USA",
+    email: "contact@globex.com",
+    subscription: "Basic",
+    status: "deactivated",
+    createdAt: "2023-12-09T15:00:00Z",
+    updatedAt: "2023-12-06T22:21:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
+    orgName: "Initech",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.initech.com",
+    address: "789 Oak Avenue, Gotham, USA",
+    email: "support@initech.com",
+    subscription: "Free",
+    status: "suspended",
+    createdAt: "2023-12-08T10:15:30Z",
+    updatedAt: "2023-12-06T22:22:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
+    orgName: "Hooli",
+    logoUrl: null,
+    websiteUrl: "https://www.hooli.com",
+    address: "654 Maple Road, Silicon Valley, USA",
+    email: "contact@hooli.com",
+    subscription: "Basic",
+    status: "pending",
+    createdAt: "2023-12-06T22:30:00Z",
+    updatedAt: "2023-12-06T22:24:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    orgName: "Acme Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.acmecorp.com",
+    address: "123 Main Street, Springfield, USA",
+    email: "info@acmecorp.com",
+    subscription: "Premium",
+    status: "pending",
+    createdAt: "2023-12-10T12:34:56Z",
+    updatedAt: "2023-12-06T22:20:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
+    orgName: "Umbrella Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.umbrella.com",
+    address: "321 Willow Lane, Racoon City, USA",
+    email: "info@umbrella.com",
+    subscription: "Premium",
+    status: "verified",
+    createdAt: "2023-12-07T08:45:00Z",
+    updatedAt: "2023-12-06T22:23:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    orgName: "Acme Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.acmecorp.com",
+    address: "123 Main Street, Springfield, USA",
+    email: "info@acmecorp.com",
+    subscription: "Premium",
+    status: "pending",
+    createdAt: "2023-12-10T12:34:56Z",
+    updatedAt: "2023-12-06T22:20:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae8",
+    orgName: "Globex Corporation",
+    logoUrl: null,
+    websiteUrl: "https://www.globex.com",
+    address: "456 Elm Street, Metropolis, USA",
+    email: "contact@globex.com",
+    subscription: "Basic",
+    status: "deactivated",
+    createdAt: "2023-12-09T15:00:00Z",
+    updatedAt: "2023-12-06T22:21:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
+    orgName: "Umbrella Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.umbrella.com",
+    address: "321 Willow Lane, Racoon City, USA",
+    email: "info@umbrella.com",
+    subscription: "Premium",
+    status: "verified",
+    createdAt: "2023-12-07T08:45:00Z",
+    updatedAt: "2023-12-06T22:23:00Z"
+  },
+  {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
+    orgName: "Hooli",
+    logoUrl: null,
+    websiteUrl: "https://www.hooli.com",
+    address: "654 Maple Road, Silicon Valley, USA",
+    email: "contact@hooli.com",
+    subscription: "Basic",
+    status: "pending",
+    createdAt: "2023-12-06T22:30:00Z",
+    updatedAt: "2023-12-06T22:24:00Z"
+  }
+];
 
 const OrganisationPage = () => {
   return (
     <div className="w-full flex flex-col justify-center">
-      <AppDataTable columns={orgColumns} />
+      <DataTable columns={orgColumns} data={data} />
       <InviteeList />
     </div>
   );

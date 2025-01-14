@@ -1,7 +1,8 @@
-import AppAvatar from "../AppAvatar";
-import { abbreviateName } from "@/utils/formatters";
-import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
+
+import { abbreviateName } from "@/utils/formatters";
+import AppAvatar from "../Avatar";
+import { Button } from "../ui/button";
 
 interface InviteeItemProps {
   name: string;
@@ -12,7 +13,7 @@ interface InviteeItemProps {
 const InviteeItem = ({ name, email, avatarLink }: InviteeItemProps) => (
   <div className="flex items-center justify-between py-3 px-4 hover:bg-gray-50">
     <div className="flex items-center gap-3">
-      <AppAvatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} avaterPlaceholder={abbreviateName(name)} />
+      <AppAvatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} avatarPlaceholder={abbreviateName(name)} />
       <div>
         <p className="font-medium">{name}</p>
         <p className="text-sm text-gray-500">{email}</p>

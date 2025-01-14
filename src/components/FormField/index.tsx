@@ -1,17 +1,17 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-type FormFieldProps = {
+interface FormFieldProps {
   id: string;
   label: string;
   value?: string;
   type?: FormType;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
 type FormType = "text" | "number" | "email" | "file";
 
-const AppFormField: React.FC<FormFieldProps> = ({ id, label, value = "", type = "text", onChange }) => {
+const FormField: React.FC<FormFieldProps> = ({ id, label, value = "", type = "text", onChange }) => {
   return (
     <div className="flex flex-col items-start gap-1">
       <Label htmlFor={id} className="text-right text-sm">
@@ -22,4 +22,4 @@ const AppFormField: React.FC<FormFieldProps> = ({ id, label, value = "", type = 
   );
 };
 
-export default AppFormField;
+export default FormField;

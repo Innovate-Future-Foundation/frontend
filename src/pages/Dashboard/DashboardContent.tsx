@@ -4,12 +4,9 @@ import { Outlet } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppBreadcrumb from "./AppBreadcrumb";
 import AppSidebar from "./AppSidebar";
+import { Role } from "@/types/role";
 
-export type roleType = {
-  role: string;
-};
-
-const DashboardContent: React.FC<roleType> = ({ role }) => {
+const DashboardContent: React.FC<Role> = ({ ...role }) => {
   console.log("role", role);
 
   return (

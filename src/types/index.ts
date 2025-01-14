@@ -1,3 +1,4 @@
 export * from "./tour";
-export * from "./auth";
 export * from "./organisation";
+export * from "./profile";
+export * from "./role";
