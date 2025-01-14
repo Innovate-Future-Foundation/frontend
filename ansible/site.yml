@@ -1,0 +1,141 @@
+---
+# ansible/site.yml
+
+- name: Install and configure Jenkins
+  hosts: tag_Name_jenkins_master  # 使用AWS EC2动态清单标签
+  become: true  # 使用sudo权限
+  vars:
+    jenkins_home: /data/jenkins
+    jenkins_http_port: 8080
+    java_package: java-11-amazon-corretto
+    jenkins_admin_username: admin
+    jenkins_plugins:
+      - git
+      - workflow-aggregator
+      - docker-workflow
+      - aws-credentials
+      - pipeline-aws
+      - blueocean
+
+  pre_tasks:
+    - name: Update apt cache
+      yum:
+        update_cache: yes
+      
+    - name: Install EPEL repository
+      yum:
+        name: epel-release
+        state: present
+
+  tasks:
+    - name: Install required system packages
+      yum:
+        name:
+          - "{{ java_package }}"
+          - git
+          - docker
+          - unzip
+          - wget
+        state: present
+
+    - name: Create Jenkins data directory
+      file:
+        path: "{{ jenkins_home }}"
+        state: directory
+        owner: jenkins
+        group: jenkins
+        mode: '0755'
+
+    - name: Add Jenkins repository
+      get_url:
+        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        dest: /etc/yum.repos.d/jenkins.repo
+
+    - name: Import Jenkins GPG key
+      rpm_key:
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+        state: present
+
+    - name: Install Jenkins
+      yum:
+        name: jenkins
+        state: present
+
+    - name: Configure Jenkins systemd service
+      template:
+        src: templates/jenkins.service.j2
+        dest: /etc/systemd/system/jenkins.service
+        mode: '0644'
+      notify: restart jenkins
+
+    - name: Ensure Jenkins service is started and enabled
+      systemd:
+        name: jenkins
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+    - name: Wait for Jenkins to start up
+      uri:
+        url: "http://localhost:{{ jenkins_http_port }}/login"
+        status_code: 200
+        timeout: 5
+      register: jenkins_service_status
+      until: jenkins_service_status.status == 200
+      retries: 60
+      delay: 5
+
+    - name: Get Jenkins initial admin password
+      slurp:
+        src: /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_admin_password
+      when: jenkins_service_status.status == 200
+
+    - name: Install Jenkins plugins
+      jenkins_plugin:
+        name: "{{ item }}"
+        url: "http://localhost:{{ jenkins_http_port }}"
+        url_username: "{{ jenkins_admin_username }}"
+        url_password: "{{ jenkins_admin_password.content | b64decode }}"
+        timeout: 90
+      with_items: "{{ jenkins_plugins }}"
+      notify: restart jenkins
+      when: jenkins_service_status.status == 200
+
+    - name: Configure Docker group membership
+      user:
+        name: jenkins
+        groups: docker
+        append: yes
+      notify: restart jenkins
+
+    - name: Start and enable Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: restart jenkins
+      systemd:
+        name: jenkins
+        state: restarted
+        daemon_reload: yes
+
+# templates/jenkins.service.j2 文件内容：
+# [Unit]
+# Description=Jenkins Continuous Integration Server
+# Requires=network.target
+# After=network.target
+#
+# [Service]
+# Type=notify
+# Environment="JENKINS_HOME={{ jenkins_home }}"
+# Environment="JENKINS_PORT={{ jenkins_http_port }}"
+# ExecStart=/usr/bin/jenkins
+# User=jenkins
+# Restart=on-failure
+# RestartSec=10
+# 
+# [Install]
+# WantedBy=multi-user.target
