@@ -1,20 +1,19 @@
 ---
 jenkins_home: /data/jenkins
 jenkins_http_port: 8080
-jenkins_admin_username: admin
-jenkins_admin_password: admin123  # 添加固定初始密码
+jenkins_admin_username: "admin"
+jenkins_admin_password: "admin123"
 jenkins_url: "http://{{ ansible_host }}:{{ jenkins_http_port }}"
 
 # Node.js configuration
 jenkins_nodejs_version: "18.19.0"
 
-# Plugin list
+# Plugin list - 移除了 configuration-as-code-support
 jenkins_plugins:
   - git
   - workflow-aggregator
   - docker-workflow
   - configuration-as-code
-  - configuration-as-code-support
   - nodejs
   - aws-credentials
   - pipeline-aws

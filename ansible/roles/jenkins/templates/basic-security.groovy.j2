@@ -11,7 +11,7 @@ instance.setInstallState(InstallState.INITIAL_SETUP_COMPLETED)
 
 // 创建管理员用户
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-hudsonRealm.createAccount('{{ jenkins_admin_username }}', '{{ jenkins_admin_password }}')
+hudsonRealm.createAccount("{{ jenkins_admin_username }}", "{{ jenkins_admin_password }}")
 instance.setSecurityRealm(hudsonRealm)
 
 // 配置授权策略

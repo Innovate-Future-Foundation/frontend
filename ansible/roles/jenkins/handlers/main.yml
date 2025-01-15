@@ -16,16 +16,3 @@
   until: result.status in [200, 403]
   retries: 60
   delay: 5
-  notify: reload jenkins configuration
-
-- name: reload jenkins configuration
-  uri:
-    url: "{{ jenkins_url }}/configuration-as-code/reload"
-    method: POST
-    user: "{{ jenkins_admin_username }}"
-    password: "{{ jenkins_admin_password }}"
-    force_basic_auth: yes
-    status_code: [200, 403]
-    validate_certs: no
-    follow_redirects: yes
-  ignore_errors: true

@@ -11,19 +11,32 @@
   retries: 60
   delay: 5
 
-- name: Install Jenkins plugins
-  jenkins_plugin:
-    name: "{{ item }}"
-    url: "{{ jenkins_url }}"
-    url_username: "{{ jenkins_admin_username }}"
-    url_password: "{{ jenkins_admin_password }}"
-    timeout: 120
+- name: Ensure plugins directory exists
+  file:
+    path: "{{ jenkins_home }}/plugins"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+
+- name: Download plugin files
+  get_url:
+    url: "https://updates.jenkins.io/latest/{{ item }}.hpi"
+    dest: "{{ jenkins_home }}/plugins/{{ item }}.hpi"
+    owner: jenkins
+    group: jenkins
+    mode: '0644'
     validate_certs: no
   with_items: "{{ jenkins_plugins }}"
-  notify: 
-    - restart jenkins
-    - wait for jenkins
-  register: plugin_result
-  until: plugin_result is success
-  retries: 3
-  delay: 5
+  register: plugin_download
+  notify: restart jenkins
+
+- name: Set plugins permissions
+  file:
+    path: "{{ jenkins_home }}/plugins"
+    owner: jenkins
+    group: jenkins
+    mode: '0755'
+    recurse: yes
+  when: plugin_download.changed
+  notify: restart jenkins
