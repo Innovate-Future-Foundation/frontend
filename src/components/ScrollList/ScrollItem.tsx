@@ -4,13 +4,13 @@ import { abbreviateName } from "@/utils/formatters";
 import AppAvatar from "../Avatar";
 import { Button } from "../ui/button";
 
-interface InviteeItemProps {
+interface ScrollItemProps {
   name: string;
   email: string;
   avatarLink: string;
 }
 
-const InviteeItem = ({ name, email, avatarLink }: InviteeItemProps) => (
+const ScrollItem = ({ name, email, avatarLink }: ScrollItemProps) => (
   <div className="flex items-center justify-between py-3 px-4 hover:bg-gray-50">
     <div className="flex items-center gap-3">
       <AppAvatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} avatarPlaceholder={abbreviateName(name)} />
@@ -25,4 +25,4 @@ const InviteeItem = ({ name, email, avatarLink }: InviteeItemProps) => (
   </div>
 );
 
-export default InviteeItem;
+export default ScrollItem;
