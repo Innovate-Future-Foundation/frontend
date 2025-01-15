@@ -29,10 +29,13 @@ resource "aws_instance" "jenkins_master" {
   }
 
 
-  tags = merge(
+   tags = merge(
     local.common_tags,
     {
-      Name = "${local.name_prefix}-master"
+      Name = "${local.name_prefix}-master",
+      Role = "jenkins-master",
+      Component = "ci-cd",
+      Service = "jenkins"
     }
   )
 }

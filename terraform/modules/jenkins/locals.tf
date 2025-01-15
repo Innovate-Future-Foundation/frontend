@@ -36,8 +36,11 @@ locals {
       Environment = var.environment
       Terraform   = "true"
       Service     = "jenkins"
-      ManagedBy  = "terraform"
-      Project    = "jenkins-infrastructure"
+      ManagedBy   = "terraform"
+      Project     = "jenkins-infrastructure"
+      Component   = "ci-cd"          # 添加组件标签
+      Role        = "jenkins-master"  # 添加角色标签
+      Team        = "devops"         # 添加团队标签
     }
   )
 }

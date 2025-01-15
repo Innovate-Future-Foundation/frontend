@@ -3,7 +3,7 @@
   file:
     path: /usr/share/keyrings
     state: directory
-    mode: '0755'
+    mode: "0755"
 
 - name: Download and add Jenkins GPG key
   shell: |
@@ -23,3 +23,73 @@
     name: jenkins
     state: present
     update_cache: yes
+
+- name: Create init.groovy.d directory
+  file:
+    path: "{{ jenkins_home }}/init.groovy.d"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: "0755"
+
+- name: Copy security initialization script
+  template:
+    src: basic-security.groovy.j2
+    dest: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: "0644"
+  notify: restart jenkins
+
+- name: Create JCasC directory
+  file:
+    path: "{{ jenkins_home }}/casc_configs"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: "0755"
+
+- name: Set Jenkins environment variables
+  lineinfile:
+    path: /etc/default/jenkins
+    line: "{{ item }}"
+    create: yes
+  with_items:
+    - 'JENKINS_HOME="{{ jenkins_home }}"'
+    - 'JENKINS_ADMIN_USER="{{ jenkins_admin_username }}"'
+    - 'JENKINS_ADMIN_PASSWORD="{{ jenkins_admin_password }}"'
+    - 'CASC_JENKINS_CONFIG="{{ jenkins_home }}/casc_configs"'
+    - 'JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Dcasc.jenkins.config={{ jenkins_home }}/casc_configs ${JAVA_OPTS}"'
+  notify: restart jenkins
+
+- name: Copy JCasC configuration
+  template:
+    src: jenkins.yml.j2
+    dest: "{{ jenkins_home }}/casc_configs/jenkins.yaml"
+    owner: jenkins
+    group: jenkins
+    mode: "0644"
+  notify: 
+    - restart jenkins
+    - wait for jenkins
+    - reload jenkins configuration
+
+- name: Ensure Jenkins is started and enabled
+  systemd:
+    name: jenkins
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  notify: wait for jenkins
+
+- name: Wait for Jenkins to start and be available
+  uri:
+    url: "{{ jenkins_url }}/login"
+    method: GET
+    status_code: [200, 403]
+    follow_redirects: yes
+    validate_certs: no
+  register: jenkins_start_status
+  until: jenkins_start_status.status in [200, 403]
+  retries: 60
+  delay: 5

@@ -1,21 +1,29 @@
 ---
-- name: Download Jenkins CLI
-  get_url:
-    url: "http://localhost:8080/jnlpJars/jenkins-cli.jar"
-    dest: "/tmp/jenkins-cli.jar"
-    mode: '0440'
+- name: Wait for Jenkins to be fully operational
+  uri:
+    url: "{{ jenkins_url }}/login"
+    method: GET
+    status_code: [200, 403]
+    validate_certs: no
+    follow_redirects: yes
+  register: jenkins_check
+  until: jenkins_check.status in [200, 403]
+  retries: 60
+  delay: 5
 
 - name: Install Jenkins plugins
-  command: >
-    java -jar /tmp/jenkins-cli.jar -s http://localhost:8080/ 
-    -auth {{ jenkins_admin_username }}:{{ jenkins_admin_password.content | b64decode }}
-    install-plugin {{ item }} -deploy
+  jenkins_plugin:
+    name: "{{ item }}"
+    url: "{{ jenkins_url }}"
+    url_username: "{{ jenkins_admin_username }}"
+    url_password: "{{ jenkins_admin_password }}"
+    timeout: 120
+    validate_certs: no
   with_items: "{{ jenkins_plugins }}"
-  register: plugin_installation
-  changed_when: "'Installing' in plugin_installation.stdout"
-  notify: restart jenkins
-
-- name: Display Jenkins initial admin password
-  debug:
-    msg: "Jenkins initial admin password: {{ jenkins_admin_password.content | b64decode }}"
-  when: jenkins_admin_password is defined
+  notify: 
+    - restart jenkins
+    - wait for jenkins
+  register: plugin_result
+  until: plugin_result is success
+  retries: 3
+  delay: 5

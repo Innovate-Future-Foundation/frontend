@@ -1,0 +1,51 @@
+jenkins:
+  systemMessage: "Jenkins configured automatically by Configuration as Code plugin"
+  
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: ${JENKINS_ADMIN_USER}
+          password: ${JENKINS_ADMIN_PASSWORD}
+  
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+  numExecutors: 2
+
+  globalNodeProperties:
+    - envVars:
+        env:
+          - key: JENKINS_URL
+            value: http://{{ ansible_host }}:{{ jenkins_http_port }}
+
+  tool:
+    nodejs:
+      installations:
+        - name: "Node18"
+          properties:
+            - installSource:
+                installers:
+                  - nodeJS:
+                      id: "{{ jenkins_nodejs_version }}"
+
+    git:
+      installations:
+        - name: "Default"
+          home: "git"
+
+  credentials:
+    system:
+      domainCredentials:
+        - credentials:
+            - usernamePassword:
+                scope: GLOBAL
+                id: "aws-credentials"
+                username: ${AWS_ACCESS_KEY_ID}
+                password: ${AWS_SECRET_ACCESS_KEY}
+                description: "AWS credentials"
+
+unclassified:
+  location:
+    url: http://{{ ansible_host }}:{{ jenkins_http_port }}/

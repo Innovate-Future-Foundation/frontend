@@ -1,6 +1,6 @@
 ---
 - name: Install and configure Jenkins on Ubuntu
-  hosts: tag_Name_jenkins_prod_master
+  hosts: service_jenkins  # 使用当前存在的 Service 标签
   become: true
   roles:
     - jenkins
