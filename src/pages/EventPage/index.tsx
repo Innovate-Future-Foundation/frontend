@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
-import WhyAttend from "@/components/ui/WhyAttend";
+import WhyAttend from "@/pages/EventPage/WhyAttend";
 
 const EventPage: React.FC = () => {
   return (

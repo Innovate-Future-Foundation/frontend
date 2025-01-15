@@ -4,7 +4,6 @@ export const SupportSection = () => {
   return (
     <section className="bg-[#f9f9f9] py-20 px-8">
       <div className="container mx-auto flex items-center justify-between">
-        {/* Left Column: Text & Button */}
         <div className="w-1/2 pr-16">
           <h1 className="text-4xl text-[#062B48] mb-6"> Support IFA </h1>
           <br />
@@ -14,9 +13,7 @@ export const SupportSection = () => {
           </p>
           <Button className="bg-[#F36D26] hover:bg-orange-600 text-white px-8 py-3 rounded-md"> Donate Now </Button>
         </div>
-
-        {/* Right Column: Image */}
-        <div className="w-1/2 pl-16">
+        <div className="w-1/2 flex justify-center">
           <img src="/src/assets/images/amico 2.png" alt="Support" className="w-full h-auto" />
         </div>
       </div>

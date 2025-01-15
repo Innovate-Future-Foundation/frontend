@@ -19,7 +19,6 @@ export const Features: React.FC = () => {
 
   return (
     <section className="bg-[#046FFB] py-12">
-      {/* Container with a single row of three columns */}
       <div className="container mx-auto flex justify-between px-6 text-white">
         {features.map((feature, index) => (
           <div
@@ -29,10 +28,7 @@ export const Features: React.FC = () => {
                 ${index < features.length - 1 ? "border-r border-white/40" : ""}
               `}
           >
-            {/* Icon */}
             <img src={feature.icon} alt={feature.title} className="w-12 h-12" />
-
-            {/* Title & Description */}
             <div>
               <h6 className="text-lg font-bold mb-1">{feature.title}</h6>
               <p className="leading-relaxed text-sm"> {feature.description} </p>

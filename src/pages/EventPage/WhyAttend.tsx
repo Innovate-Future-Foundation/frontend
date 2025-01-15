@@ -26,14 +26,14 @@ const WhyAttend: React.FC = () => {
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center text-[#05224F] mb-10">Why Attend</h2>
-        <div className="flex justify-center gap-8">
+        <h2 className="text-4xl text-center text-[#05224F] mb-12">Why Attend</h2>
+        <div className="flex flex-row justify-center items-start gap-8">
           {cards.map((card, index) => (
-            <div key={index} className="bg-white border-2 border-gray-200 rounded-lg shadow-lg p-6 flex flex-col items-center text-center w-[333px] h-[640px]">
-              <div className={`${card.bgColor} w-full h-[240px] flex justify-center items-center rounded-t-lg`}>
+            <div key={index} className="bg-white border-2 border-gray-200 rounded-lg shadow-lg p-6 flex flex-col items-center text-center w-[250px] h-[435px]">
+              <div className={`${card.bgColor} w-full flex justify-center items-center rounded-t-lg p-4`}>
                 <img src={card.imgSrc} alt={card.title} className="w-[191px] h-[172px]" />
               </div>
-              <h3 className="text-2xl text-[#05224F] font-bold my-4">{card.title}</h3>
+              <h4 className="text-2xl text-[#05224F] font-bold mb-4">{card.title}</h4>
               <p className="text-sm text-gray-600">{card.description}</p>
             </div>
           ))}

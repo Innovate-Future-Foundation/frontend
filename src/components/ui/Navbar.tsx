@@ -1,7 +1,7 @@
 export const Navbar: React.FC = () => {
   return (
     <nav className="bg-white border-b border-white">
-      <div className="container mx-auto flex items-center justify-between py-4 px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <div className="flex items-center gap-2">
           <img src="/src/assets/images/logo.png" alt="Innovative Future Association Logo" className="h-10 w-10" />
           <div className="leading-5">
@@ -14,7 +14,7 @@ export const Navbar: React.FC = () => {
           <a href="/" className="text-[#062B48] hover:underline">
             Home
           </a>
-          <a href="/about-us" className="text-[#062B48] hover:underline">
+          <a href="/about-us" className=" text-[#062B48] hover:underline">
             About Us
           </a>
           <a href="/contact-us" className="text-[#062B48] hover:underline">

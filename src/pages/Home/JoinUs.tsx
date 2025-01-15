@@ -2,7 +2,7 @@ export const JoinUs: React.FC = () => {
   return (
     <section className="bg-white py-20">
       <div className="container mx-auto px-8 flex items-center">
-        <div className="w-1/2 pr-16">
+        <div className="w-1/2 flex justify-center">
           <img src="/src/assets/images/amico.png" alt="Support or engineering illustration" className="w-full h-auto" />
         </div>
         <div className="w-1/2 pl-16 text-left">
@@ -13,7 +13,7 @@ export const JoinUs: React.FC = () => {
             create opportunities, empower communities, and build a future fueled by technology.
           </p>
 
-          <div className="flex justify-center gap-6">
+          <div className="flex justify-center gap-4">
             <button className="bg-[#F36D26] text-white text-base px-8 py-3 rounded-md shadow hover:bg-orange-600 transition-colors duration-300">
               Become Member
             </button>
