@@ -19,7 +19,7 @@ const data = {
   name: "John Doe",
   email: "johndoe@example.com",
   phone: "+61 400 123 456",
-  avatarLink: "https://github.com/shadcn.png",
+  avatarLink: "https://github.com/davidmiller.png",
   isActive: true,
   createdAt: "2023-12-01T12:34:56Z",
   updatedAt: "2023-12-10T15:20:30Z"

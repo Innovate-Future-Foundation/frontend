@@ -51,7 +51,7 @@ export const InviteeList = () => {
           </div>
         </div>
       </div>
-      <ScrollArea className="h-96 w-full rounded-md border">
+      <ScrollArea className="h-96 w-full rounded-md">
         <div className="divide-y">
           {filteredData.map((item, index) => (
             <InviteeItem key={index} name={item.name} email={item.email} avatarLink={item.avatarLink} />

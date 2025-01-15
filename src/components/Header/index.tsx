@@ -17,7 +17,7 @@ const Header = () => {
         {/* <a href={COGNITO_LOGIN_URL}>
           <p>Sign in</p>
         </a> */}
-        <SignInAvatar name={"Admin01"} email={"admin01@example.com"} avatarLink={"https://github.com/lisawang.png"} />
+        <SignInAvatar name={"John Doe"} email={"johndoe@example.com"} avatarLink={"https://github.com/davidmiller.png"} />
       </nav>
     </header>
   );

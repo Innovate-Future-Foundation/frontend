@@ -13,7 +13,7 @@ type FormType = "text" | "number" | "email" | "file";
 
 const FormField: React.FC<FormFieldProps> = ({ id, label, value = "", type = "text", onChange }) => {
   return (
-    <div className="flex flex-col items-start gap-1">
+    <div className="flex flex-col items-start gap-1 w-full">
       <Label htmlFor={id} className="text-right text-sm">
         {label}
       </Label>
