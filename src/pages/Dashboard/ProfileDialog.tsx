@@ -1,6 +1,6 @@
 import { ReactNode, useRef, useState } from "react";
 
-import AppAvatar from "@/components/Avatar";
+import Avatar from "@/components/Avatar";
 import AppFormField from "@/components/FormField";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -60,7 +60,7 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="p-0 max-w-[425px] rounded-md overflow-hidden">
         <div className="h-14 bg-accent">
-          <AppAvatar
+          <Avatar
             className="absolute top-6 left-8"
             avatarLink={formData.avatarLink ?? ""}
             avatarAlt={avatarAlt}
@@ -93,7 +93,7 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
                 Profile photo
               </Label>
               <div className="flex gap-4 items-center">
-                <AppAvatar avatarLink={formData.avatarLink!} avatarAlt={avatarAlt} avatarPlaceholder={abbreviateName(formData.name!)} />
+                <Avatar avatarLink={formData.avatarLink!} avatarAlt={avatarAlt} avatarPlaceholder={abbreviateName(formData.name!)} />
                 <Input id="profile-photo" type="file" onChange={handleUploadChange} ref={fileInputRef} />
               </div>
             </div>
