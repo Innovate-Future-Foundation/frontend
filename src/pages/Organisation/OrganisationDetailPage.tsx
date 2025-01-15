@@ -7,7 +7,7 @@ import { Organisation, OrganisationStatus } from "@/types";
 
 import { Badge } from "@/components/ui/badge";
 import FormWrapper from "@/components/FormWrapper.tsx";
-import { InviteeList } from "@/components/InviteeList";
+import { ScrollList } from "@/components/ScrollList";
 // import { yupResolver } from "@hookform/resolvers/yup";
 // import * as yup from "yup";
 // import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -219,7 +219,7 @@ const OrganisationDetailPage = () => {
           <FormField id={"street"} label={"Street"} value={formorgProfileDetail.address?.street} onChange={e => handleInputChange("street", e.target.value)} />
         </FormWrapper>
       </div>
-      <InviteeList />
+      <ScrollList />
     </div>
   );
 };
