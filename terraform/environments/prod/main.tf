@@ -43,6 +43,7 @@ module "jenkins" {
 
   vpc_id             = var.vpc_id
   subnet_id          = var.subnet_id
+  public_subnet_ids  = var.public_subnet_ids 
   key_name           = var.key_name
   create_dns_record  = true
   domain_name        = var.domain_name

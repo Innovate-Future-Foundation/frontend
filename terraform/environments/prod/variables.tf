@@ -26,7 +26,7 @@ variable "frontend_s3_bucket" {
 variable "vpc_id" {
   description = "ID of the VPC"
   type        = string
-  
+
   validation {
     condition     = can(regex("^vpc-", var.vpc_id))
     error_message = "VPC ID must begin with 'vpc-'"
@@ -36,11 +36,16 @@ variable "vpc_id" {
 variable "subnet_id" {
   description = "ID of the subnet"
   type        = string
-  
+
   validation {
     condition     = can(regex("^subnet-", var.subnet_id))
     error_message = "Subnet ID must begin with 'subnet-'"
   }
+}
+
+variable "public_subnet_ids" {
+  description = "List of public subnet IDs for ALB"
+  type        = list(string)
 }
 
 variable "key_name" {

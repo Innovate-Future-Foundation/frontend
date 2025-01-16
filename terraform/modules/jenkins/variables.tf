@@ -76,3 +76,12 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+variable "public_subnet_ids" {
+  description = "List of public subnet IDs for ALB"
+  type        = list(string)
+  
+  validation {
+    condition     = length(var.public_subnet_ids) > 0
+    error_message = "At least one public subnet ID must be provided"
+  }
+}
