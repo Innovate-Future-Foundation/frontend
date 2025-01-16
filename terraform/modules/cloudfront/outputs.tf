@@ -1,5 +1,3 @@
-# terraform/modules/cloudfront/outputs.tf
-
 output "distribution_id" {
   value       = aws_cloudfront_distribution.frontend.id
   description = "CloudFront distribution ID"

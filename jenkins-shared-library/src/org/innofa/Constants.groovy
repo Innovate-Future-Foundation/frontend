@@ -1,5 +1,3 @@
-// jenkins-shared-library/src/org/innofa/Constants.groovy
-
 package org.innofa
 
 class Constants {
