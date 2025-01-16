@@ -1,0 +1,64 @@
+#!groovy
+import jenkins.model.*
+import org.jenkinsci.plugins.workflow.job.WorkflowJob
+import org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition
+import hudson.plugins.git.GitSCM
+import hudson.plugins.git.BranchSpec
+import hudson.plugins.git.UserRemoteConfig
+import com.cloudbees.hudson.plugins.folder.Folder
+import hudson.triggers.SCMTrigger
+import com.coravy.hudson.plugins.github.GithubProjectProperty
+
+def jenkins = Jenkins.instance
+
+// 创建 pipeline job
+def jobName = 'frontend-pipeline'
+def job = jenkins.getItem(jobName)
+
+try {
+    // 如果 job 不存在，创建它
+    if (job == null) {
+        // 创建 pipeline job
+        def pipelineJob = jenkins.createProject(WorkflowJob, jobName)
+        
+        // 配置 Git
+        def gitScm = new GitSCM(
+            [new UserRemoteConfig("https://github.com/innovate-Future-Foundation/Frontend.git", "origin", null, "github-credentials")],
+            [new BranchSpec("*/devops/dylan-v2")],
+            false,
+            [],
+            null,
+            null,
+            []
+        )
+        
+        // 设置 pipeline 定义
+        def flowDefinition = new CpsScmFlowDefinition(gitScm, "Jenkinsfile")
+        flowDefinition.setLightweight(true) // 启用轻量级检出
+        pipelineJob.setDefinition(flowDefinition)
+        
+        // 设置描述
+        pipelineJob.setDescription('Frontend CI/CD Pipeline')
+        
+        // 配置 GitHub 项目 URL
+        def githubProject = new GithubProjectProperty("https://github.com/innovate-Future-Foundation/Frontend/")
+        pipelineJob.addProperty(githubProject)
+        
+        // 配置构建触发器
+        pipelineJob.addTrigger(new SCMTrigger("H/5 * * * *"))
+        
+        // 保存配置
+        pipelineJob.save()
+        
+        println "Created pipeline job: ${jobName}"
+    } else {
+        println "Job ${jobName} already exists"
+    }
+} catch (Exception e) {
+    println "Error creating pipeline job: ${e.message}"
+    e.printStackTrace()
+    throw e
+}
+
+// 强制保存所有更改
+jenkins.save()

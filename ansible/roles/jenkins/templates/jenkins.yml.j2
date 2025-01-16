@@ -8,9 +8,20 @@ jenkins:
         - id: "{{ jenkins_admin_username }}"
           password: "{{ jenkins_admin_password }}"
   
+  # authorizationStrategy:
+  #   loggedInUsersCanDoAnything:
+  #     allowAnonymousRead: false
+
   authorizationStrategy:
-    loggedInUsersCanDoAnything:
-      allowAnonymousRead: false
+    globalMatrix:
+      permissions:
+        - "Overall/Administer:{{ jenkins_admin_username }}"
+        - "Overall/Read:authenticated"
+        - "Job/Create:{{ jenkins_admin_username }}"
+        - "Job/Delete:{{ jenkins_admin_username }}"
+        - "Job/Configure:{{ jenkins_admin_username }}"
+        - "Job/Read:authenticated"
+        - "Job/Build:authenticated"
 
   numExecutors: 2
 
@@ -24,6 +35,8 @@ jenkins:
   jobs:
     - script: >
         pipelineJob('frontend-pipeline') {
+          description('Frontend CI/CD Pipeline')
+          
           definition {
             cpsScm {
               scm {
@@ -33,21 +46,20 @@ jenkins:
                     credentials('github-credentials')
                   }
                   branch('*/devops/dylan-v2')
-                  extensions {
-                    cleanBeforeCheckout()
-                  }
                 }
               }
               scriptPath('Jenkinsfile')
             }
           }
           
-          triggers {
-            githubPush()
+          properties {
+            githubProjectProperty {
+              projectUrlStr('https://github.com/innovate-Future-Foundation/Frontend')
+            }
           }
           
-          properties {
-            githubProjectUrl('https://github.com/innovate-Future-Foundation/Frontend')
+          triggers {
+            githubPush()
           }
         }
 
@@ -86,3 +98,7 @@ jenkins:
 unclassified:
   location:
     url: "https://jenkins.{{ domain_name }}"  # 使用 HTTPS 和域名
+  gitHubPluginConfig:
+    configs:
+      - credentialsId: "github-credentials"
+        name: "GitHub"

@@ -32,13 +32,22 @@
     owner: jenkins
     group: jenkins
 
-# - name: Copy Jenkins initialization script
-#   template:
-#     src: basic-security.groovy.j2
-#     dest: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
-#     owner: jenkins
-#     group: jenkins
-#     mode: '0644'
+- name: Copy pipeline creation script
+  template:
+    src: create-pipeline.groovy.j2
+    dest: "{{ jenkins_home }}/init.groovy.d/create-pipeline.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: '0644'
+  notify: restart jenkins
+
+- name: Copy security initialization script
+  template:
+    src: basic-security.groovy.j2
+    dest: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: '0644'
 
 - name: Set Jenkins directory ownership
   file:
@@ -84,3 +93,24 @@
     src: "{{ jenkins_home }}/secrets/initialAdminPassword"
   register: jenkins_admin_password
   when: jenkins_service_status is success
+
+- name: Create JCasC directory
+  file:
+    path: "{{ jenkins_home }}/casc_configs"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: "0755"
+
+- name: Set Jenkins environment variables
+  lineinfile:
+    path: /etc/default/jenkins
+    line: "{{ item }}"
+    create: yes
+  with_items:
+    - 'JENKINS_HOME="{{ jenkins_home }}"'
+    - 'JENKINS_ADMIN_USER="{{ jenkins_admin_username }}"'
+    - 'JENKINS_ADMIN_PASSWORD="{{ jenkins_admin_password }}"'
+    - 'CASC_JENKINS_CONFIG="{{ jenkins_home }}/casc_configs"'
+    - 'JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Dcasc.jenkins.config={{ jenkins_home }}/casc_configs ${JAVA_OPTS}"'
+  notify: restart jenkins

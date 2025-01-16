@@ -84,12 +84,13 @@
 
 - name: Wait for Jenkins to start and be available
   uri:
-    url: "{{ jenkins_url }}/login"
+    url: "http://{{ ansible_host }}:8080/login"
     method: GET
     status_code: [200, 403]
     follow_redirects: yes
     validate_certs: no
-  register: jenkins_start_status
-  until: jenkins_start_status.status in [200, 403]
+  register: result
+  until: result.status in [200, 403]
   retries: 60
   delay: 5
+  # ignore_errors: true

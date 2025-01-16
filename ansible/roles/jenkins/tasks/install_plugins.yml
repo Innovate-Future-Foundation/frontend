@@ -41,6 +41,7 @@
       --war /usr/share/java/jenkins.war
       --plugin-download-directory ./plugins
       --plugin-file /tmp/plugins.txt
+      --latest-specified
       --verbose
   args:
     chdir: "{{ jenkins_home }}"

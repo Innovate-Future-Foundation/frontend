@@ -1,4 +1,13 @@
-# Jenkins Master EC2 (保持不变)
+# 获取当前 IP 地址
+data "http" "current_ip" {
+  url = "http://ipv4.icanhazip.com"
+}
+
+locals {
+  ansible_controller_ip = chomp(data.http.current_ip.response_body)
+}
+
+# Jenkins Master EC2
 resource "aws_instance" "jenkins_master" {
   ami           = var.ami_id
   instance_type = var.instance_type
@@ -94,7 +103,7 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-# ACM Certificate (修改)
+# ACM Certificate
 resource "aws_acm_certificate" "jenkins" {
   count    = var.create_certificate ? 1 : 0
 
@@ -169,6 +178,7 @@ resource "aws_security_group_rule" "alb_http_ingress" {
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.jenkins_alb.id
+  description       = "Allow HTTP access from internet"
 }
 
 resource "aws_security_group_rule" "alb_https_ingress" {
@@ -178,6 +188,7 @@ resource "aws_security_group_rule" "alb_https_ingress" {
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.jenkins_alb.id
+  description       = "Allow HTTPS access from internet"
 }
 
 resource "aws_security_group_rule" "alb_egress" {
@@ -187,6 +198,7 @@ resource "aws_security_group_rule" "alb_egress" {
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.jenkins_alb.id
+  description       = "Allow all outbound traffic"
 }
 
 # Jenkins Security Group
@@ -203,17 +215,29 @@ resource "aws_security_group_rule" "jenkins_ssh" {
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = ["${local.ansible_controller_ip}/32"]
   security_group_id = aws_security_group.jenkins.id
+  description       = "Allow SSH access from Ansible controller"
 }
 
-resource "aws_security_group_rule" "jenkins_app" {
+resource "aws_security_group_rule" "jenkins_ansible_access" {
+  type              = "ingress"
+  from_port         = 8080
+  to_port           = 8080
+  protocol          = "tcp"
+  cidr_blocks       = ["${local.ansible_controller_ip}/32"]
+  security_group_id = aws_security_group.jenkins.id
+  description       = "Allow Jenkins access from Ansible controller"
+}
+
+resource "aws_security_group_rule" "jenkins_alb_access" {
   type                     = "ingress"
   from_port                = 8080
   to_port                  = 8080
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.jenkins_alb.id
   security_group_id        = aws_security_group.jenkins.id
+  description             = "Allow access from ALB"
 }
 
 resource "aws_security_group_rule" "jenkins_egress" {
@@ -223,6 +247,7 @@ resource "aws_security_group_rule" "jenkins_egress" {
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.jenkins.id
+  description       = "Allow all outbound traffic"
 }
 
 # 使用域名查找 Hosted Zone

@@ -1,4 +1,3 @@
----
 - name: restart jenkins
   systemd:
     name: jenkins
@@ -24,5 +23,16 @@
     user: "{{ jenkins_admin_username }}"
     password: "{{ jenkins_admin_password }}"
     force_basic_auth: yes
+    status_code: [200, 302, 403]
     validate_certs: no
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+      Accept: "application/json"
+    body_format: form-urlencoded
+    body: "Jenkins-Crumb={{ crumb.stdout }}"
+    timeout: 30
+  register: reload_result
+  retries: 3
+  delay: 10
+  until: reload_result is success
   ignore_errors: true

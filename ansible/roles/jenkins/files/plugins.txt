@@ -1,33 +1,43 @@
 # Core plugins
 workflow-aggregator:latest
 git:latest
-docker-workflow:latest
 configuration-as-code:latest
 
-# Additional functionality
+# Job and folder management
+cloudbees-folder:latest
+job-dsl:latest
+workflow-job:latest
+workflow-cps:latest
+workflow-cps-global-lib:latest
+
+# GitHub integration
+github:latest
+github-branch-source:latest
+git-client:latest
+
+# Build and pipeline
+pipeline-build-step:latest
+pipeline-graph-analysis:latest
+pipeline-input-step:latest
+pipeline-milestone-step:latest
+pipeline-model-api:latest
+pipeline-model-definition:latest
+pipeline-model-extensions:latest
+pipeline-stage-step:latest
+pipeline-stage-tags-metadata:latest
+workflow-scm-step:latest          # 添加：支持 SCM 操作
+workflow-basic-steps:latest       # 添加：基本的流水线步骤
+workflow-durable-task-step:latest # 添加：持久化任务支持
+workflow-api:latest              # 添加：Pipeline API 支持
+workflow-support:latest          # 添加：Pipeline 支持库
+
+# Security and authorization
+matrix-auth:latest
+script-security:latest
+
+# Build tools and utilities
 nodejs:latest
 aws-credentials:latest
-pipeline-aws:latest
-blueocean:latest
-ansible:latest
-cloudbees-folder:latest
-antisamy-markup-formatter:latest
-build-timeout:latest
+credentials:latest
 credentials-binding:latest
 timestamper:latest
-ws-cleanup:latest
-ant:latest
-gradle:latest
-github-branch-source:latest
-pipeline-github-lib:latest
-pipeline-graph-view:latest
-ssh-slaves:latest
-matrix-auth:latest
-pam-auth:latest
-ldap:latest
-email-ext:latest
-mailer:latest
-dark-theme:latest
-envinject:latest
-build-user-vars-plugin:latest
-discord-notifier:latest
