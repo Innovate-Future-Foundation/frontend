@@ -22,7 +22,10 @@ resource "aws_iam_role_policy" "jenkins_policy" {
           "ecr:BatchGetImage",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:GetParametersByPath"
         ]
         Resource = "*"
       }

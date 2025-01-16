@@ -1,3 +1,5 @@
+@Library('jenkins-shared-library') _
+
 pipeline {
     agent any
 
@@ -6,14 +8,38 @@ pipeline {
     }
 
     environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-credentials')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-credentials')
-        S3_BUCKET_NAME = 'if-devops-front-personal-test'
-        CLOUDFRONT_DISTRIBUTION_ID = credentials('cloudfront-dist-id')
-        NODE_OPTIONS = '--max-old-space-size=4096' // 增加 Node.js 内存限制
+        AWS_CREDENTIALS = credentials('aws-credentials')
+        AWS_REGION = 'ap-southeast-2'
     }
 
     stages {
+        stage('Load Configuration') {
+            steps {
+                script {
+                    // 从 SSM 加载所有配置
+                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                        env.S3_BUCKET_NAME = sh(
+                            script: "aws ssm get-parameter --name '/frontend/prod/s3_bucket_name' --query 'Parameter.Value' --output text",
+                            returnStdout: true
+                        ).trim()
+                        
+                        env.CLOUDFRONT_DISTRIBUTION_ID = sh(
+                            script: "aws ssm get-parameter --name '/frontend/prod/cloudfront_distribution_id' --query 'Parameter.Value' --output text",
+                            returnStdout: true
+                        ).trim()
+                        
+                        env.BUILD_MEMORY = sh(
+                            script: "aws ssm get-parameter --name '/frontend/prod/build_memory' --query 'Parameter.Value' --output text",
+                            returnStdout: true
+                        ).trim()
+                        
+                        // 设置 Node.js 内存限制
+                        env.NODE_OPTIONS = "--max-old-space-size=${env.BUILD_MEMORY}"
+                    }
+                }
+            }
+        }
+
         stage('Cleanup Workspace') {
             steps {
                 cleanWs()
@@ -50,27 +76,16 @@ pipeline {
         stage('Deploy to S3') {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
-                    script {
-                        withAWS(credentials: 'aws-credentials', region: 'ap-southeast-2') {
-                            // 确保构建目录存在
-                            sh 'test -d dist || (echo "Build directory not found" && exit 1)'
-                            
-                            // 部署到 S3
-                            sh """
-                                echo "Starting S3 sync..."
-                                aws s3 sync ./dist s3://${S3_BUCKET_NAME} --delete
-                                echo "S3 sync completed"
-                            """
-
-                            // 清除 CloudFront 缓存
-                            sh """
-                                echo "Invalidating CloudFront cache..."
-                                aws cloudfront create-invalidation \
-                                    --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} \
-                                    --paths "/*"
-                                echo "CloudFront invalidation initiated"
-                            """
-                        }
+                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                        echo "Deploying to S3 bucket: ${env.S3_BUCKET_NAME}"
+                        sh "aws s3 sync ./dist s3://${env.S3_BUCKET_NAME} --delete"
+                        
+                        echo "Invalidating CloudFront cache for distribution: ${env.CLOUDFRONT_DISTRIBUTION_ID}"
+                        sh """
+                            aws cloudfront create-invalidation \
+                                --distribution-id ${env.CLOUDFRONT_DISTRIBUTION_ID} \
+                                --paths "/*"
+                        """
                     }
                 }
             }
@@ -86,9 +101,6 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed! Check the logs for details.'
-        }
-        unstable {
-            echo 'Pipeline is unstable. Some tests may have failed.'
         }
     }
 }

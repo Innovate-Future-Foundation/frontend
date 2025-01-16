@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "CompileStatic": {
+      "enabled": false
+    },
+    "NoDef": {
+      "enabled": false
+    },
+    "UnusedVariable": {
+      "enabled": false
+    }
+  },
+  "ignorePatterns": [
+    "**/Jenkinsfile",
+    "**/my-pipeline/*.groovy"
+  ]
+}
