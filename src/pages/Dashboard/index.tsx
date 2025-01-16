@@ -38,7 +38,7 @@ const DashboardPage = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout needFooter={false}>
       <DashboardContent name={roleName} codeName={"1"} />
     </MainLayout>
   );
