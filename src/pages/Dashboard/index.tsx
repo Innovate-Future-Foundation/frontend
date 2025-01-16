@@ -39,7 +39,7 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      <DashboardContent role={roleName} />
+      <DashboardContent name={roleName} codeName={"1"} />
     </MainLayout>
   );
 };

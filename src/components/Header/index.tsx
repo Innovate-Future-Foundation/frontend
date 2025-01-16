@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { COGNITO_LOGIN_URL } from "@/constants/apiConfig";
+// import { COGNITO_LOGIN_URL } from "@/constants/apiConfig";
+import SignInAvatar from "./SignInAvatar";
 
 const Header = () => {
   return (
@@ -13,9 +14,10 @@ const Header = () => {
             <p>Dashboard</p>
           </Link>
         </div>
-        <a href={COGNITO_LOGIN_URL}>
+        {/* <a href={COGNITO_LOGIN_URL}>
           <p>Sign in</p>
-        </a>
+        </a> */}
+        <SignInAvatar name={"John Doe"} email={"johndoe@example.com"} avatarLink={"https://github.com/davidmiller.png"} />
       </nav>
     </header>
   );

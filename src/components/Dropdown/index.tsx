@@ -1,5 +1,6 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ReactNode } from "react";
+
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface DropdownMenuItemType<T> {
   label: string;
@@ -13,7 +14,7 @@ interface TableActionsDropdownProps<T> {
   children: ReactNode;
 }
 
-const AppDropdown = <T,>({ item, menuItems, children }: TableActionsDropdownProps<T>) => {
+const Dropdown = <T,>({ item, menuItems, children }: TableActionsDropdownProps<T>) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -28,4 +29,4 @@ const AppDropdown = <T,>({ item, menuItems, children }: TableActionsDropdownProp
   );
 };
 
-export default AppDropdown;
+export default Dropdown;

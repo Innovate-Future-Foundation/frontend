@@ -13,7 +13,6 @@ const appRequest = axios.create({
   withCredentials: true
 });
 
-// handle response
 appRequest.interceptors.response.use(
   res => {
     // get 2** response
