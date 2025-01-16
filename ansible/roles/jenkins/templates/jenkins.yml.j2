@@ -18,7 +18,38 @@ jenkins:
     - envVars:
         env:
           - key: JENKINS_URL
-            value: http://{{ ansible_host }}:{{ jenkins_http_port }}
+            value: "https://jenkins.{{ domain_name }}"  # 使用 HTTPS 和域名
+
+  # 添加 jobs 配置
+  jobs:
+    - script: >
+        pipelineJob('frontend-pipeline') {
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url('https://github.com/innovate-Future-Foundation/Frontend.git')
+                    credentials('github-credentials')
+                  }
+                  branch('*/devops/dylan-v2')
+                  extensions {
+                    cleanBeforeCheckout()
+                  }
+                }
+              }
+              scriptPath('Jenkinsfile')
+            }
+          }
+          
+          triggers {
+            githubPush()
+          }
+          
+          properties {
+            githubProjectUrl('https://github.com/innovate-Future-Foundation/Frontend')
+          }
+        }
 
   tool:
     nodejs:
@@ -42,10 +73,16 @@ jenkins:
             - usernamePassword:
                 scope: GLOBAL
                 id: "aws-credentials"
-                username: ${AWS_ACCESS_KEY_ID}
-                password: ${AWS_SECRET_ACCESS_KEY}
+                username: "{{ jenkins_aws_access_key }}"
+                password: "{{ jenkins_aws_secret_key }}"
                 description: "AWS credentials"
+            - usernamePassword:
+                scope: GLOBAL
+                id: "github-credentials"
+                username: "{{ jenkins_github_username }}"
+                password: "{{ jenkins_github_token }}"
+                description: "GitHub credentials"
 
 unclassified:
   location:
-    url: http://{{ ansible_host }}:{{ jenkins_http_port }}/
+    url: "https://jenkins.{{ domain_name }}"  # 使用 HTTPS 和域名

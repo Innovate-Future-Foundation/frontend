@@ -1,3 +1,4 @@
+# ansible/roles/jenkins/handlers/main.yml
 ---
 - name: restart jenkins
   systemd:
@@ -7,7 +8,7 @@
 
 - name: wait for jenkins
   uri:
-    url: "{{ jenkins_url }}/login"
+    url: "http://{{ ansible_host }}:{{ jenkins_http_port }}/login"
     method: GET
     status_code: [200, 403]
     validate_certs: no
@@ -16,3 +17,13 @@
   until: result.status in [200, 403]
   retries: 60
   delay: 5
+
+- name: reload jenkins configuration
+  uri:
+    url: "http://{{ ansible_host }}:{{ jenkins_http_port }}/reload"
+    method: POST
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    validate_certs: no
+  ignore_errors: true

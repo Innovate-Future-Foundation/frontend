@@ -1,9 +1,16 @@
 ---
+# 基础配置
 jenkins_home: /data/jenkins
 jenkins_http_port: 8080
 jenkins_admin_username: "admin"
 jenkins_admin_password: "admin123"
 jenkins_url: "http://{{ ansible_host }}:{{ jenkins_http_port }}"
+
+# 凭证配置（从 vault 引用）
+jenkins_github_username: "{{ vault_jenkins_github_username | default('') }}"
+jenkins_github_token: "{{ vault_jenkins_github_token | default('') }}"
+jenkins_aws_access_key: "{{ vault_jenkins_aws_access_key | default('') }}"
+jenkins_aws_secret_key: "{{ vault_jenkins_aws_secret_key | default('') }}"
 
 # Node.js configuration
 jenkins_nodejs_version: "18.19.0"

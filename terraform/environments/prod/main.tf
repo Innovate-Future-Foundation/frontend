@@ -24,8 +24,13 @@ provider "aws" {
   }
 }
 
-locals {
-  s3_domain_name = "${var.frontend_s3_bucket}.s3.${var.aws_region}.amazonaws.com"
+# 添加 S3 模块
+module "frontend_s3" {
+  source = "../../modules/s3"
+  
+  bucket_name        = var.frontend_s3_bucket
+  cloudfront_oai_arn = module.cloudfront.origin_access_identity_arn
+  tags              = var.default_tags
 }
 
 module "jenkins" {
@@ -67,7 +72,7 @@ module "cloudfront" {
   
   project_name            = var.project_name
   environment            = var.environment
-  s3_bucket_domain_name  = local.s3_domain_name
+  s3_bucket_domain_name  = module.frontend_s3.bucket_domain_name  # 使用 S3 模块输出
   domain_names           = [var.domain_name]
   acm_certificate_arn    = module.acm.certificate_arn
   tags                   = var.default_tags
