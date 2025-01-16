@@ -8,7 +8,7 @@ jenkins_url: "http://{{ ansible_host }}:{{ jenkins_http_port }}"
 # Node.js configuration
 jenkins_nodejs_version: "18.19.0"
 
-# Plugin list - 移除了 configuration-as-code-support
+# Plugin list 
 jenkins_plugins:
   - git
   - workflow-aggregator
