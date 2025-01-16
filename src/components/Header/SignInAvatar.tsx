@@ -1,6 +1,6 @@
 import { abbreviateName, ellipticalString } from "@/utils/formatters";
-import AppAvatar from "../AppAvatar";
 import { ChevronDown } from "lucide-react";
+import Avatar from "../Avatar";
 
 type avatarType = {
   name: string;
@@ -14,7 +14,7 @@ const SignInAvatar: React.FC<avatarType> = ({ name, email, avatarLink }) => (
       <p className="text-secondary font-bold text-sm leading-3">{ellipticalString(name, 16)}</p>
       <p className="text-secondary text-[12px] leading-3">{ellipticalString(email, 24)}</p>
     </div>
-    <AppAvatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} size={8} avaterPlaceholder={abbreviateName(name)} />
+    <Avatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} size={8} avaterPlaceholder={abbreviateName(name)} />
     <ChevronDown size={16} className="text-secondary" />
   </div>
 );

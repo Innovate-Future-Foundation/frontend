@@ -5,7 +5,7 @@ import { TitleWithIcon } from "../TitleWithIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import InviteeItem from "./InviteeItem";
+import ScrollItem from "./ScrollItem";
 
 const data = [
   { name: "Ray Clarke", email: "ray.c@acme.com", avatarLink: "https://github.com/rayclarke.png" },
@@ -25,7 +25,7 @@ const data = [
   { name: "Qian duoduo", email: "qian.duoduo@acme.com", avatarLink: "https://github.com/qian.duoduo.png" }
 ];
 
-export const InviteeList = () => {
+export const ScrollList = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // the search function
@@ -51,10 +51,10 @@ export const InviteeList = () => {
           </div>
         </div>
       </div>
-      <ScrollArea className="h-96 w-full rounded-md border">
+      <ScrollArea className="h-96 w-full rounded-md">
         <div className="divide-y">
           {filteredData.map((item, index) => (
-            <InviteeItem key={index} name={item.name} email={item.email} avatarLink={item.avatarLink} />
+            <ScrollItem key={index} name={item.name} email={item.email} avatarLink={item.avatarLink} />
           ))}
         </div>
       </ScrollArea>

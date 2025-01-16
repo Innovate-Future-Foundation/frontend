@@ -1,5 +1,6 @@
+import { Updater } from "@tanstack/react-table";
 import {
-  Pagination,
+  Pagination as CNPagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
@@ -7,9 +8,8 @@ import {
   PaginationNext,
   PaginationPrevious
 } from "@/components/ui/pagination";
-import { Updater } from "@tanstack/react-table";
 
-interface AppPaginationProps {
+interface PaginationProps {
   currentPage: number;
   totalItems: number;
   itemsPerPage: number;
@@ -20,7 +20,7 @@ interface AppPaginationProps {
   getCanNextPage: () => boolean;
 }
 
-const AppPagenation: React.FC<AppPaginationProps> = ({
+const Pagenation: React.FC<PaginationProps> = ({
   currentPage,
   totalItems,
   itemsPerPage,
@@ -61,7 +61,7 @@ const AppPagenation: React.FC<AppPaginationProps> = ({
     return pages;
   };
   return (
-    <Pagination>
+    <CNPagination>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
@@ -81,7 +81,7 @@ const AppPagenation: React.FC<AppPaginationProps> = ({
           />
         </PaginationItem>
       </PaginationContent>
-    </Pagination>
+    </CNPagination>
   );
 };
-export default AppPagenation;
+export default Pagenation;

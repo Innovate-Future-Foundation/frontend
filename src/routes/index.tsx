@@ -1,6 +1,7 @@
 import DashboardPage from "@/pages/Dashboard";
 import HomePage from "@/pages/Home";
 import OrganisationPage from "@/pages/Organisation";
+import OrganisationDetailPage from "@/pages/Organisation/OrganisationDetailPage";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 const router = [
@@ -19,6 +20,10 @@ const router = [
       {
         index: true,
         element: <OrganisationPage />
+      },
+      {
+        path: "organisation/:id",
+        element: <OrganisationDetailPage />
       }
     ]
   }

@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+import { Footer } from "@/components/Footer";
 import MainLayout from "@/layouts/MainLayout";
 
 const HomePage: React.FC = () => {
