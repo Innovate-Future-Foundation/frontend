@@ -1,8 +1,23 @@
+- name: get jenkins crumb
+  uri:
+    url: "http://{{ ansible_host }}:{{ jenkins_http_port }}/crumbIssuer/api/json"
+    method: GET
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+  register: jenkins_crumb
+  until: jenkins_crumb.status == 200
+  retries: 12
+  delay: 10
+
 - name: restart jenkins
   systemd:
     name: jenkins
     state: restarted
     daemon_reload: yes
+  notify: wait for jenkins
 
 - name: wait for jenkins
   uri:
@@ -14,7 +29,23 @@
   register: result
   until: result.status in [200, 403]
   retries: 60
-  delay: 5
+  delay: 10
+  notify: verify jenkins ready
+
+- name: verify jenkins ready
+  uri:
+    url: "http://{{ ansible_host }}:{{ jenkins_http_port }}/api/json"
+    method: GET
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    status_code: [200, 403]
+    validate_certs: no
+  register: jenkins_api
+  until: jenkins_api.status in [200, 403]
+  retries: 30
+  delay: 10
+  notify: reload jenkins configuration
 
 - name: reload jenkins configuration
   uri:
@@ -28,9 +59,10 @@
     headers:
       Content-Type: "application/x-www-form-urlencoded"
       Accept: "application/json"
-    timeout: 30
+      Jenkins-Crumb: "{{ jenkins_crumb.json.crumb }}"
+    timeout: 60
   register: reload_result
-  retries: 3
-  delay: 10
+  retries: 5
+  delay: 15
   until: reload_result is success
   ignore_errors: true
