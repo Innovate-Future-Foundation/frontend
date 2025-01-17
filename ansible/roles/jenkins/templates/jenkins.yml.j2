@@ -27,29 +27,33 @@ jenkins:
 
   # 简化的 frontend pipeline 配置
   jobs:
-    - script: >
-        pipelineJob('frontend-pipeline') {
-          description('Frontend CI/CD Pipeline')
-          
-          definition {
-            cpsScm {
-              scm {
-                git {
-                  remote {
-                    url('https://github.com/innovate-Future-Foundation/Frontend.git')
-                    credentials('github-credentials')
-                  }
-                  branch('*/devops/dylan-v2')
+  - script: >
+      pipelineJob('frontend-pipeline') {
+        description('Frontend CI/CD Pipeline')
+        
+        // 添加 GitHub 触发器
+        triggers {
+          githubTrigger {
+            permitAll()
+          }
+        }
+        
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote {
+                  url('https://github.com/Innovate-Future-Foundation/Frontend.git')
+                  // 移除 credentials 配置，因为不需要
                 }
+                branch('*/devops/dylan-v2')
+                extensions {}
               }
               scriptPath('Jenkinsfile')
             }
           }
-          
-          triggers {
-            githubPush()
-          }
         }
+      }
 
   # 工具配置
   tool:
