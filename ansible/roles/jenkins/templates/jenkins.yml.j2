@@ -44,14 +44,63 @@ jenkins:
     system:
       domainCredentials:
         - credentials:
-            - usernamePassword:
+            # AWS 凭证
+            - aws:
                 scope: GLOBAL
                 id: "aws-credentials"
-                username: "{{ jenkins_aws_access_key }}"
-                password: "{{ jenkins_aws_secret_key }}"
+                accessKey: "{{ jenkins_aws_access_key }}"
+                secretKey: "{{ jenkins_aws_secret_key }}"
                 description: "AWS credentials"
+                iamRoleArn: ""
+                iamMfaSerialNumber: ""
+            # GitHub 凭证
+            - usernamePassword:
+                scope: GLOBAL
+                id: "github-credentials"
+                username: "{{ jenkins_github_username }}"
+                password: "{{ jenkins_github_token }}"
+                description: "GitHub credentials"
 
 # 系统配置
 unclassified:
   location:
     url: "https://jenkins.{{ domain_name }}"
+  gitHubPluginConfig:
+    configs:
+      - credentialsId: "github-credentials"
+        name: "GitHub"
+
+# 安全配置
+security:
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "acceptFirstConnectionStrategy"
+  queueItemAuthenticator:
+    authenticators:
+      - global:
+          strategy: "triggeringUsersAuthorizationStrategy"
+
+# 云配置
+clouds:
+  []
+
+# 通知配置
+notifier:
+  mail:
+    recipientList: ""
+    defaultSuffix: ""
+
+tool:
+  git:
+    installations:
+      - name: "Default"
+        home: "git"
+  nodejs:
+    installations:
+      - name: "Node18"
+        home: ""
+        properties:
+          - installSource:
+              installers:
+                - nodeJS:
+                    id: "18.19.0"
+                    acceptLicense: true

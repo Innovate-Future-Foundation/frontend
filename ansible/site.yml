@@ -2,5 +2,7 @@
 - name: Install and configure Jenkins on Ubuntu
   hosts: service_jenkins  # 使用当前存在的 Service 标签
   become: true
+  vars_files:
+    - "inventory/group_vars/prod/vault.yml"
   roles:
     - jenkins
