@@ -28,8 +28,6 @@
     headers:
       Content-Type: "application/x-www-form-urlencoded"
       Accept: "application/json"
-    body_format: form-urlencoded
-    body: "Jenkins-Crumb={{ crumb.stdout }}"
     timeout: 30
   register: reload_result
   retries: 3

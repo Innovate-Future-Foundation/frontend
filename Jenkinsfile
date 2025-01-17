@@ -1,33 +1,34 @@
-@Library('jenkins-shared-library') _
-
 pipeline {
     agent any
-
+    
     tools {
         nodejs 'Node18'
     }
-
+    
     environment {
         AWS_CREDENTIALS = credentials('aws-credentials')
         AWS_REGION = 'ap-southeast-2'
     }
-
+    
     stages {
         stage('Load Configuration') {
             steps {
                 script {
-                    // 从 SSM 加载所有配置
+                    // 从 AWS SSM 加载配置
                     withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                        // 加载 S3 配置
                         env.S3_BUCKET_NAME = sh(
                             script: "aws ssm get-parameter --name '/frontend/prod/s3_bucket_name' --query 'Parameter.Value' --output text",
                             returnStdout: true
                         ).trim()
                         
+                        // 加载 CloudFront 配置
                         env.CLOUDFRONT_DISTRIBUTION_ID = sh(
                             script: "aws ssm get-parameter --name '/frontend/prod/cloudfront_distribution_id' --query 'Parameter.Value' --output text",
                             returnStdout: true
                         ).trim()
                         
+                        // 加载构建内存配置
                         env.BUILD_MEMORY = sh(
                             script: "aws ssm get-parameter --name '/frontend/prod/build_memory' --query 'Parameter.Value' --output text",
                             returnStdout: true
@@ -39,15 +40,15 @@ pipeline {
                 }
             }
         }
-
-        stage('Cleanup Workspace') {
+        
+        stage('Prepare Workspace') {
             steps {
                 cleanWs()
                 checkout scm
             }
         }
-
-        stage('Verify Tools') {
+        
+        stage('Verify Environment') {
             steps {
                 sh '''
                     echo "Node version: $(node -v)"
@@ -56,7 +57,7 @@ pipeline {
                 '''
             }
         }
-
+        
         stage('Install Dependencies') {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
@@ -64,7 +65,7 @@ pipeline {
                 }
             }
         }
-
+        
         stage('Build') {
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
@@ -72,14 +73,16 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy to S3') {
+        
+        stage('Deploy') {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
+                        // 部署到 S3
                         echo "Deploying to S3 bucket: ${env.S3_BUCKET_NAME}"
                         sh "aws s3 sync ./dist s3://${env.S3_BUCKET_NAME} --delete"
                         
+                        // 清除 CloudFront 缓存
                         echo "Invalidating CloudFront cache for distribution: ${env.CLOUDFRONT_DISTRIBUTION_ID}"
                         sh """
                             aws cloudfront create-invalidation \
@@ -91,7 +94,7 @@ pipeline {
             }
         }
     }
-
+    
     post {
         always {
             cleanWs()
