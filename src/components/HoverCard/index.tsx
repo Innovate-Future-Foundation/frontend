@@ -1,19 +1,19 @@
 import { HoverCard as CNHoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 interface HoverCardProps {
-  trigger: ReactNode;
+  children: ReactNode;
   content: ReactNode;
   className?: string;
 }
 
-const HoverCard: React.FC<HoverCardProps> = ({ trigger, content, className }) => {
-  const contentStyle = `w-80 ${className || ""}`;
+const HoverCard: React.FC<HoverCardProps> = ({ children, content, className }) => {
   return (
     <CNHoverCard>
-      <HoverCardTrigger asChild>{trigger}</HoverCardTrigger>
-      <HoverCardContent className={contentStyle}>{content}</HoverCardContent>
+      <HoverCardTrigger asChild>{children}</HoverCardTrigger>
+      <HoverCardContent className={className}>{content}</HoverCardContent>
     </CNHoverCard>
   );
 };
+
 export default HoverCard;
