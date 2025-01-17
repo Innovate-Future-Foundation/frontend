@@ -1,11 +1,11 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import { Building2, PersonStanding, Users } from "lucide-react";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import Breadcrumb from "./Breadcrumb";
 import Sidebar, { SidebarItem } from "./Sidebar";
+import Breadcrumb from "@/components/Breadcurmb";
 import { Role } from "@/types/role";
-import { Building2, PersonStanding, Users } from "lucide-react";
 
 interface DashboardMenuItem {
   sidebarItem: SidebarItem;
