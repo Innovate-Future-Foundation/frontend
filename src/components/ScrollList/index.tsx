@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Users, Plus, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 
-import { TitleWithIcon } from "../TitleWithIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -36,17 +35,16 @@ export const ScrollList = () => {
   return (
     <div className="rounded-lg border bg-white">
       <div className="p-4 border-b">
-        <div className="flex items-center justify-between">
-          <TitleWithIcon title="Members" icon={Users} />
+        <div className="flex items-center justify-end">
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">{filteredData.length} members</span>
+            <span className="text-sm text-gray-500">{filteredData.length} admins</span>
             <div className="relative w-64">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
               <Input placeholder="Search by name or email" className="pl-8" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
             </div>
             <Button className="active:scale-95 transition-transform duration-100" onClick={() => console.log("Add member clicked")}>
               <Plus className="h-4 w-4 mr-2" />
-              Add member
+              Add admin
             </Button>
           </div>
         </div>
