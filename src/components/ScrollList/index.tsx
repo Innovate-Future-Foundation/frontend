@@ -36,7 +36,6 @@ export const ScrollList = () => {
     <div className="rounded-lg border bg-white">
       <div className="p-4 border-b">
         <div className="flex items-center justify-end">
-          {/* <TitleWithIcon title="Members" icon={Users} /> */}
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-500">{filteredData.length} admins</span>
             <div className="relative w-64">
