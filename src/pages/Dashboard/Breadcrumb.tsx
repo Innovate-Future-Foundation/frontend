@@ -1,16 +1,31 @@
 import { Breadcrumb as CNBreadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { matchPath, useLocation } from "react-router-dom";
 
-const Breadcrumb = () => {
+interface BreadcrumbItem {
+  label: string;
+  href: string;
+}
+
+interface BreadcrumbProps {
+  breadcrumbs: BreadcrumbItem[];
+}
+
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ breadcrumbs }) => {
+  const location = useLocation();
   return (
     <CNBreadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/dashboard">Organisations</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/dashboard/organisation/:id">Details</BreadcrumbLink>
-        </BreadcrumbItem>
+      <BreadcrumbList className="capitalize">
+        {breadcrumbs.map(breadcrumb => {
+          const isMatch = matchPath(breadcrumb.href, location.pathname) || location.pathname.startsWith(breadcrumb.href);
+          return (
+            isMatch && (
+              <BreadcrumbItem key={breadcrumb.href}>
+                <BreadcrumbSeparator />
+                <BreadcrumbLink href={breadcrumb.href}>{breadcrumb.label}</BreadcrumbLink>
+              </BreadcrumbItem>
+            )
+          );
+        })}
       </BreadcrumbList>
     </CNBreadcrumb>
   );
