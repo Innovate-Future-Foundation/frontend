@@ -22,7 +22,8 @@ jenkins_plugins:
   - workflow-aggregator
   - docker-workflow
   - configuration-as-code
-  - nodejs
+  # - nodejs
+  - NodeJS
   - aws-credentials
   - pipeline-aws
   - blueocean
