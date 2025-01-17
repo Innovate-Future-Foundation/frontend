@@ -6,10 +6,9 @@ import hudson.plugins.git.GitSCM
 import hudson.plugins.git.BranchSpec
 import hudson.plugins.git.UserRemoteConfig
 import hudson.triggers.SCMTrigger
-import org.jenkinsci.plugins.github.GitHubPlugin
+import com.cloudbees.github.hook.GitHubRepositoryNameContributor
 import org.jenkinsci.plugins.github.config.GitHubPluginConfig
-import com.cloudbees.hudson.plugins.folder.Folder
-import hudson.triggers.TimerTrigger
+import com.cloudbees.jenkins.GitHubPushTrigger
 
 def jenkins = Jenkins.instance
 
@@ -42,8 +41,8 @@ try {
         // 设置描述
         pipelineJob.setDescription('Frontend CI/CD Pipeline')
         
-        // 添加 GitHub 触发器
-        pipelineJob.addTrigger(new SCMTrigger(""))
+        // 添加 GitHub hook trigger
+        pipelineJob.addTrigger(new GitHubPushTrigger())
         
         // 保存配置
         pipelineJob.save()
