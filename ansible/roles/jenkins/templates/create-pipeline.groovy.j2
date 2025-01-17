@@ -5,54 +5,58 @@ import org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition
 import hudson.plugins.git.GitSCM
 import hudson.plugins.git.BranchSpec
 import hudson.plugins.git.UserRemoteConfig
-import hudson.triggers.SCMTrigger
-import com.cloudbees.github.hook.GitHubRepositoryNameContributor
-import org.jenkinsci.plugins.github.config.GitHubPluginConfig
 import com.cloudbees.jenkins.GitHubPushTrigger
 
 def jenkins = Jenkins.instance
 
-// 创建 pipeline job
+// 创建或获取 pipeline job
 def jobName = 'frontend-pipeline'
 def job = jenkins.getItem(jobName)
+def pipelineJob
 
 try {
-    // 如果 job 不存在，创建它
     if (job == null) {
-        // 创建 pipeline job
-        def pipelineJob = jenkins.createProject(WorkflowJob, jobName)
-        
-        // 配置 Git，不使用凭据
-        def gitScm = new GitSCM(
-            [new UserRemoteConfig("https://github.com/Innovate-Future-Foundation/Frontend.git", "origin", null, null)],
-            [new BranchSpec("*/devops/dylan-v2")],
-            false,
-            [],
-            null,
-            null,
-            []
-        )
-        
-        // 设置 pipeline 定义
-        def flowDefinition = new CpsScmFlowDefinition(gitScm, "Jenkinsfile")
-        flowDefinition.setLightweight(true)
-        pipelineJob.setDefinition(flowDefinition)
-        
-        // 设置描述
-        pipelineJob.setDescription('Frontend CI/CD Pipeline')
-        
-        // 添加 GitHub hook trigger
-        pipelineJob.addTrigger(new GitHubPushTrigger())
-        
-        // 保存配置
-        pipelineJob.save()
-        
-        println "Created pipeline job: ${jobName}"
+        // 创建新的 pipeline job
+        pipelineJob = jenkins.createProject(WorkflowJob, jobName)
+        println "Created new pipeline job: ${jobName}"
     } else {
-        println "Job ${jobName} already exists"
+        // 使用现有的 job
+        pipelineJob = job
+        println "Updating existing pipeline job: ${jobName}"
     }
+    
+    // 配置 Git
+    def gitScm = new GitSCM(
+        [new UserRemoteConfig("https://github.com/Innovate-Future-Foundation/Frontend.git", "origin", null, null)],
+        [new BranchSpec("*/devops/dylan-v2")],
+        false,
+        [],
+        null,
+        null,
+        []
+    )
+    
+    // 设置 pipeline 定义
+    def flowDefinition = new CpsScmFlowDefinition(gitScm, "Jenkinsfile")
+    flowDefinition.setLightweight(true)
+    pipelineJob.setDefinition(flowDefinition)
+    
+    // 设置描述
+    pipelineJob.setDescription('Frontend CI/CD Pipeline')
+    
+    // 删除现有的触发器
+    pipelineJob.getTriggers().clear()
+    
+    // 添加 GitHub hook trigger
+    pipelineJob.addTrigger(new GitHubPushTrigger())
+    
+    // 保存配置
+    pipelineJob.save()
+    
+    println "Pipeline job configuration updated successfully"
+    
 } catch (Exception e) {
-    println "Error creating pipeline job: ${e.message}"
+    println "Error configuring pipeline job: ${e.message}"
     e.printStackTrace()
     throw e
 }
