@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     tools {
-        NodeJS 'Node18'
+        nodejs 'Node18'
     }
     
     environment {
