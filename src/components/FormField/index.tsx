@@ -1,25 +1,35 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Control, FieldPath, FieldValues } from "react-hook-form";
 
-interface FormFieldProps {
-  id: string;
+import { Input } from "@/components/ui/input";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+
+interface FormFieldItemProps<T extends FieldValues> {
+  fieldControl: Control<T>;
+  name: FieldPath<T>;
   label: string;
-  value?: string;
-  type?: FormType;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
 }
 
-type FormType = "text" | "number" | "email" | "file";
-
-const FormField: React.FC<FormFieldProps> = ({ id, label, value = "", type = "text", onChange }) => {
+export const FormFieldItem = <T extends FieldValues>({ fieldControl, name, label, placeholder }: FormFieldItemProps<T>) => {
   return (
-    <div className="flex-1 flex flex-col items-start gap-1">
-      <Label htmlFor={id} className="text-right text-sm">
-        {label}
-      </Label>
-      <Input id={id} type={type} value={value} className="py-2" onChange={onChange} />
-    </div>
+    <FormField
+      control={fieldControl}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="w-full">
+          <FormLabel>{label}</FormLabel>
+          <FormControl>
+            <Input
+              placeholder={placeholder}
+              {...field}
+              onChange={e => {
+                field.onChange(e);
+              }}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 };
-
-export default FormField;
