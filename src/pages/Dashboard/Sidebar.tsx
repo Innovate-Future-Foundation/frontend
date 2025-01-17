@@ -1,4 +1,4 @@
-import { Building2 } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import {
@@ -11,27 +11,28 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar";
 
-const items = [
-  {
-    title: "Organisations",
-    url: "/dashboard",
-    icon: Building2
-  }
-];
+export interface SidebarItem {
+  title: string;
+  url: string;
+  icon: LucideIcon;
+}
+export interface SidebarProps {
+  sidebarItems: SidebarItem[];
+}
 
-const Sidebar = () => {
+const Sidebar: React.FC<SidebarProps> = ({ sidebarItems }) => {
   return (
     <CNSidebar collapsible="icon" variant="sidebar" className="mt-12">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map(item => (
+              {sidebarItems.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                      <item.icon className="w-5 h-5" />
+                      <span className="capitalize font-medium text-sm">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
