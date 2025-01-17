@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Avatar from "../Avatar";
 import { abbreviateName } from "@/utils/formatters";
 
 interface RemoveInviteeModalProps {
@@ -33,10 +33,7 @@ export const RemoveInviteeModal = ({ isOpen, onClose, onConfirm, member }: Remov
           </DialogHeader>
 
           <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
-              <AvatarImage src={member.avatarLink} />
-              <AvatarFallback>{abbreviateName(member.name)}</AvatarFallback>
-            </Avatar>
+            <Avatar avatarLink={member.avatarLink || ""} avatarAlt={"InnovateFuture"} avatarPlaceholder={abbreviateName(member.name)} />
             <div>
               <p className="font-medium text-base">{member.name}</p>
               <p className="text-sm text-gray-500">{member.email}</p>
