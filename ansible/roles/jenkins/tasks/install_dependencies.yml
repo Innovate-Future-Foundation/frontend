@@ -16,9 +16,46 @@
       - gnupg
       - lsb-release
       - git
+      - unzip  # 添加 unzip，AWS CLI 安装需要
+      - python3-pip  # 添加 pip3
     state: present
 
 - name: Install Java 17
   apt:
     name: openjdk-17-jre
     state: present
+
+# 安装 AWS CLI
+- name: Download AWS CLI installer
+  get_url:
+    url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    dest: "/tmp/awscliv2.zip"
+    mode: '0644'
+
+- name: Extract AWS CLI installer
+  unarchive:
+    src: "/tmp/awscliv2.zip"
+    dest: "/tmp"
+    remote_src: yes
+
+- name: Install AWS CLI
+  command: "/tmp/aws/install"
+  args:
+    creates: "/usr/local/bin/aws"
+
+- name: Clean up AWS CLI installer
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/tmp/awscliv2.zip"
+    - "/tmp/aws"
+
+- name: Verify AWS CLI installation
+  command: "aws --version"
+  register: aws_version
+  changed_when: false
+
+- name: Display AWS CLI version
+  debug:
+    var: aws_version.stdout
