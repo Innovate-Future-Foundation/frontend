@@ -1,4 +1,4 @@
-
+# 常规配置参数
 resource "aws_ssm_parameter" "frontend_config" {
   for_each = {
     s3_bucket               = "/frontend/${var.environment}/s3_bucket_name"
@@ -24,6 +24,30 @@ resource "aws_ssm_parameter" "frontend_config" {
   )
 }
 
+# AWS 凭证参数
+resource "aws_ssm_parameter" "frontend_aws_credentials" {
+  for_each = {
+    aws_access_key = "/frontend/${var.environment}/aws_access_key"
+    aws_secret_key = "/frontend/${var.environment}/aws_secret_key"
+  }
+
+  name        = each.value
+  type        = "SecureString"
+  value       = lookup(local.aws_credentials, each.key)
+  description = "Frontend AWS credentials for ${var.environment}"
+  tier        = "Standard"
+  
+  tags = merge(
+    var.tags,
+    {
+      Environment = var.environment
+      Service     = "frontend"
+      ManagedBy   = "terraform"
+      Sensitive   = "true"
+    }
+  )
+}
+
 locals {
   parameter_values = {
     s3_bucket               = var.s3_bucket_name
@@ -31,5 +55,10 @@ locals {
     aws_region             = var.aws_region
     node_version           = "Node18"
     build_memory           = "4096"
+  }
+
+  aws_credentials = {
+    aws_access_key = var.aws_access_key_id
+    aws_secret_key = var.aws_secret_access_key
   }
 }

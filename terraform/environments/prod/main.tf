@@ -86,5 +86,7 @@ module "frontend_config" {
   s3_bucket_name            = var.frontend_s3_bucket
   cloudfront_distribution_id = module.cloudfront.distribution_id
   aws_region                = var.aws_region
+  aws_access_key_id         = var.aws_access_key_id
+  aws_secret_access_key     = var.aws_secret_access_key
   tags                      = var.default_tags
 }

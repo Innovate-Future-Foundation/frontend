@@ -58,3 +58,15 @@ variable "default_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "aws_access_key_id" {
+  description = "AWS Access Key ID for frontend deployment"
+  type        = string
+  sensitive   = true
+}
+
+variable "aws_secret_access_key" {
+  description = "AWS Secret Access Key for frontend deployment"
+  type        = string
+  sensitive   = true
+}

@@ -6,7 +6,6 @@ pipeline {
     }
     
     environment {
-        AWS_CREDENTIALS = credentials('aws-credentials')
         AWS_REGION = 'ap-southeast-2'
     }
     
@@ -14,28 +13,45 @@ pipeline {
         stage('Load Configuration') {
             steps {
                 script {
-                    // 从 AWS SSM 加载配置
-                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
-                        // 加载 S3 配置
-                        env.S3_BUCKET_NAME = sh(
-                            script: "aws ssm get-parameter --name '/frontend/prod/s3_bucket_name' --query 'Parameter.Value' --output text",
-                            returnStdout: true
-                        ).trim()
-                        
-                        // 加载 CloudFront 配置
-                        env.CLOUDFRONT_DISTRIBUTION_ID = sh(
-                            script: "aws ssm get-parameter --name '/frontend/prod/cloudfront_distribution_id' --query 'Parameter.Value' --output text",
-                            returnStdout: true
-                        ).trim()
-                        
-                        // 加载构建内存配置
-                        env.BUILD_MEMORY = sh(
-                            script: "aws ssm get-parameter --name '/frontend/prod/build_memory' --query 'Parameter.Value' --output text",
-                            returnStdout: true
-                        ).trim()
-                        
-                        // 设置 Node.js 内存限制
-                        env.NODE_OPTIONS = "--max-old-space-size=${env.BUILD_MEMORY}"
+                    // 从 SSM 获取所有必要的配置和凭证
+                    AWS_ACCESS_KEY = sh(
+                        script: "aws ssm get-parameter --name '/frontend/prod/aws_access_key' --with-decryption --query 'Parameter.Value' --output text",
+                        returnStdout: true
+                    ).trim()
+                    
+                    AWS_SECRET_KEY = sh(
+                        script: "aws ssm get-parameter --name '/frontend/prod/aws_secret_key' --with-decryption --query 'Parameter.Value' --output text",
+                        returnStdout: true
+                    ).trim()
+                    
+                    env.S3_BUCKET_NAME = sh(
+                        script: "aws ssm get-parameter --name '/frontend/prod/s3_bucket_name' --query 'Parameter.Value' --output text",
+                        returnStdout: true
+                    ).trim()
+                    
+                    env.CLOUDFRONT_DISTRIBUTION_ID = sh(
+                        script: "aws ssm get-parameter --name '/frontend/prod/cloudfront_distribution_id' --query 'Parameter.Value' --output text",
+                        returnStdout: true
+                    ).trim()
+                    
+                    env.BUILD_MEMORY = sh(
+                        script: "aws ssm get-parameter --name '/frontend/prod/build_memory' --query 'Parameter.Value' --output text",
+                        returnStdout: true
+                    ).trim()
+                    
+                    // 设置 AWS 临时凭证
+                    withEnv([
+                        "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}",
+                        "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY}",
+                        "AWS_DEFAULT_REGION=${AWS_REGION}",
+                        "NODE_OPTIONS=--max-old-space-size=${BUILD_MEMORY}"
+                    ]) {
+                        // 设置 AWS 凭证
+                        sh '''
+                            aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+                            aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+                            aws configure set default.region ${AWS_DEFAULT_REGION}
+                        '''
                     }
                 }
             }
@@ -43,7 +59,7 @@ pipeline {
         
         stage('Prepare Workspace') {
             steps {
-                cleanWs()
+                sh 'rm -rf *'
                 checkout scm
             }
         }
@@ -54,6 +70,7 @@ pipeline {
                     echo "Node version: $(node -v)"
                     echo "NPM version: $(npm -v)"
                     echo "Git version: $(git --version)"
+                    aws --version
                 '''
             }
         }
@@ -77,19 +94,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
-                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
-                        // 部署到 S3
-                        echo "Deploying to S3 bucket: ${env.S3_BUCKET_NAME}"
-                        sh "aws s3 sync ./dist s3://${env.S3_BUCKET_NAME} --delete"
-                        
-                        // 清除 CloudFront 缓存
-                        echo "Invalidating CloudFront cache for distribution: ${env.CLOUDFRONT_DISTRIBUTION_ID}"
-                        sh """
-                            aws cloudfront create-invalidation \
-                                --distribution-id ${env.CLOUDFRONT_DISTRIBUTION_ID} \
-                                --paths "/*"
-                        """
-                    }
+                    sh "aws s3 sync ./dist s3://${env.S3_BUCKET_NAME} --delete"
+                    sh """
+                        aws cloudfront create-invalidation \
+                            --distribution-id ${env.CLOUDFRONT_DISTRIBUTION_ID} \
+                            --paths "/*"
+                    """
                 }
             }
         }
