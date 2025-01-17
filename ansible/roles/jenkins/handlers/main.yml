@@ -11,11 +11,23 @@
     method: GET
     status_code: [200, 403]
     validate_certs: no
-    follow_redirects: yes
+    follow_redirects: true  # 使用 true 而不是 yes
+    timeout: 60  # 增加超时时间
   register: result
   until: result.status in [200, 403]
-  retries: 1
-  delay: 10
+  retries: 30  # 增加重试次数
+  delay: 10   # 增加延迟时间
+
+# 添加检查步骤
+- name: check jenkins process
+  shell: "ps aux | grep jenkins"
+  register: jenkins_process
+  when: result.failed is defined and result.failed
+
+- name: show jenkins status
+  shell: "systemctl status jenkins"
+  register: jenkins_status
+  when: jenkins_process is defined
 
 - name: get crumb for reload
   uri:

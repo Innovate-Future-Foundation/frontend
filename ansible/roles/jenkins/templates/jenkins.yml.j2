@@ -21,8 +21,12 @@ jenkins:
 
   numExecutors: 2
 
-  # 工具配置
+  # 工具配置（只定义一次）
   tool:
+    git:
+      installations:
+        - name: "Default"
+          home: "git"
     nodejs:
       installations:
         - name: "Node18"
@@ -31,20 +35,14 @@ jenkins:
             - installSource:
                 installers:
                   - nodeJS:
-                      id: "18.19.0"
-                      acceptLicense: true
-
-    git:
-      installations:
-        - name: "Default"
-          home: "git"
+                    id: "18.19.0"
+                    acceptLicense: true
 
   # 凭证配置
   credentials:
     system:
       domainCredentials:
         - credentials:
-            # AWS 凭证
             - aws:
                 scope: GLOBAL
                 id: "aws-credentials"
@@ -53,7 +51,6 @@ jenkins:
                 description: "AWS credentials"
                 iamRoleArn: ""
                 iamMfaSerialNumber: ""
-            # GitHub 凭证
             - usernamePassword:
                 scope: GLOBAL
                 id: "github-credentials"
@@ -80,27 +77,10 @@ security:
           strategy: "triggeringUsersAuthorizationStrategy"
 
 # 云配置
-clouds:
-  []
+clouds: []
 
 # 通知配置
 notifier:
   mail:
     recipientList: ""
     defaultSuffix: ""
-
-tool:
-  git:
-    installations:
-      - name: "Default"
-        home: "git"
-  nodejs:
-    installations:
-      - name: "Node18"
-        home: ""
-        properties:
-          - installSource:
-              installers:
-                - nodeJS:
-                    id: "18.19.0"
-                    acceptLicense: true
