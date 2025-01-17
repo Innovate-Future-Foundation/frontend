@@ -130,7 +130,7 @@ const OrganisationProfile = () => {
 
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className="h-16 bg-accent relative">
+      <div className="h-40 bg-accent relative">
         <div className="absolute top-10 left-8 flex gap-3 items-end">
           <Avatar
             avatarLink={companyInfoForm.watch("logoUrl")!}
@@ -153,7 +153,7 @@ const OrganisationProfile = () => {
           </div>
         </div>
       </div>
-      <div className="h-24"></div>
+      <div className="h-4"></div>
       <div className="flex flex-col gap-4">
         <FormWrapper formTitle={"Company Information"} onSave={companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
           <Form {...companyInfoForm}>
