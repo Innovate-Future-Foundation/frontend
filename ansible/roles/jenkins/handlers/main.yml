@@ -15,7 +15,7 @@
     timeout: 60  # 增加超时时间
   register: result
   until: result.status in [200, 403]
-  retries: 30  # 增加重试次数
+  retries: 3  # 增加重试次数
   delay: 10   # 增加延迟时间
 
 # 添加检查步骤
