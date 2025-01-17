@@ -94,3 +94,18 @@
   retries: 1
   delay: 5
   ignore_errors: true
+
+- name: Configure Jenkins Java options
+  lineinfile:
+    path: /etc/default/jenkins
+    line: 'JAVA_OPTS="-Xmx2048m -Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dcasc.jenkins.config={{ jenkins_home }}/casc_configs ${JAVA_OPTS}"'
+    regexp: '^JAVA_OPTS='
+    create: yes
+  notify: restart jenkins
+
+- name: Wait for system to settle
+  pause:
+    seconds: 30
+
+- name: Configure initial Jenkins
+  include_tasks: configure_jenkins.yml
