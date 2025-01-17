@@ -1,8 +1,4 @@
 jenkins:
-  location:
-    url: "https://jenkins.{{ domain_name }}"
-    adminEmail: "jenkins@{{ domain_name }}"
-
   systemMessage: "Jenkins configured automatically by Configuration as Code plugin"
   
   securityRealm:
@@ -25,36 +21,6 @@ jenkins:
 
   numExecutors: 2
 
-  # 简化的 frontend pipeline 配置
-  jobs:
-  - script: >
-      pipelineJob('frontend-pipeline') {
-        description('Frontend CI/CD Pipeline')
-        
-        // 添加 GitHub 触发器
-        triggers {
-          githubTrigger {
-            permitAll()
-          }
-        }
-        
-        definition {
-          cpsScm {
-            scm {
-              git {
-                remote {
-                  url('https://github.com/Innovate-Future-Foundation/Frontend.git')
-                  // 移除 credentials 配置，因为不需要
-                }
-                branch('*/devops/dylan-v2')
-                extensions {}
-              }
-              scriptPath('Jenkinsfile')
-            }
-          }
-        }
-      }
-
   # 工具配置
   tool:
     nodejs:
@@ -65,7 +31,7 @@ jenkins:
             - installSource:
                 installers:
                   - nodeJS:
-                      id: "{{ jenkins_nodejs_version }}"
+                      id: "18.19.0"
                       acceptLicense: true
 
     git:
@@ -84,18 +50,8 @@ jenkins:
                 username: "{{ jenkins_aws_access_key }}"
                 password: "{{ jenkins_aws_secret_key }}"
                 description: "AWS credentials"
-            - usernamePassword:
-                scope: GLOBAL
-                id: "github-credentials"
-                username: "{{ jenkins_github_username }}"
-                password: "{{ jenkins_github_token }}"
-                description: "GitHub credentials"
 
 # 系统配置
 unclassified:
   location:
     url: "https://jenkins.{{ domain_name }}"
-  gitHubPluginConfig:
-    configs:
-      - credentialsId: "github-credentials"
-        name: "GitHub"
