@@ -56,11 +56,13 @@ jenkins:
     nodejs:
       installations:
         - name: "Node18"
+          home: ""
           properties:
             - installSource:
                 installers:
                   - nodeJS:
                       id: "{{ jenkins_nodejs_version }}"
+                      acceptLicense: true
 
     git:
       installations:
