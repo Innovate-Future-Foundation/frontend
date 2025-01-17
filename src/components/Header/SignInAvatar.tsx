@@ -1,5 +1,6 @@
 import { abbreviateName, ellipticalString } from "@/utils/formatters";
 import { ChevronDown } from "lucide-react";
+import ProfileDialog from "@/pages/Dashboard/ProfileDialog";
 import Avatar from "../Avatar";
 
 type avatarType = {
@@ -14,8 +15,12 @@ const SignInAvatar: React.FC<avatarType> = ({ name, email, avatarLink }) => (
       <p className="text-secondary font-bold text-sm leading-3">{ellipticalString(name, 16)}</p>
       <p className="text-secondary text-[12px] leading-3">{ellipticalString(email, 24)}</p>
     </div>
-    <Avatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} size={8} avaterPlaceholder={abbreviateName(name)} />
-    <ChevronDown size={16} className="text-secondary" />
+    <ProfileDialog>
+      <button className="flex items-center gap-2">
+        <Avatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} size={8} avatarPlaceholder={abbreviateName(name)} />
+        <ChevronDown size={16} className="text-secondary" />
+      </button>
+    </ProfileDialog>
   </div>
 );
 
