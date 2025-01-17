@@ -25,11 +25,11 @@ pipeline-model-definition:latest
 pipeline-model-extensions:latest
 pipeline-stage-step:latest
 pipeline-stage-tags-metadata:latest
-workflow-scm-step:latest          # 添加：支持 SCM 操作
-workflow-basic-steps:latest       # 添加：基本的流水线步骤
-workflow-durable-task-step:latest # 添加：持久化任务支持
-workflow-api:latest              # 添加：Pipeline API 支持
-workflow-support:latest          # 添加：Pipeline 支持库
+workflow-scm-step:latest          
+workflow-basic-steps:latest       
+workflow-durable-task-step:latest 
+workflow-api:latest              
+workflow-support:latest          
 
 # Security and authorization
 matrix-auth:latest
@@ -40,4 +40,8 @@ nodejs:latest
 aws-credentials:latest
 credentials:latest
 credentials-binding:latest
-timestamper:latest
+timestamper:latest               # 修复：timestamper:lates -> timestamper:latest
+pipeline-aws:latest              # 新增：支持 AWS 步骤
+aws-java-sdk:latest             # 新增：AWS SDK 支持
+jackson2-api:latest             # 新增：AWS 插件依赖
+apache-httpcomponents-client-4-api:latest  # 新增：HTTP 客户端支持
