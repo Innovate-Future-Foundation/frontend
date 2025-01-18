@@ -1,12 +1,12 @@
-import { Control, FieldPath, FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Form } from "@/components/ui/form";
 import Avatar from "@/components/Avatar";
 import FormWrapper from "@/components/FormWrapper.tsx";
-import { Badge } from "@/components/ui/badge";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormFieldItem } from "@/components/FormField";
 
 const orgProfileDetail = {
   orgName: "JR Academy",
@@ -184,34 +184,3 @@ const OrganisationProfile = () => {
 };
 
 export default OrganisationProfile;
-
-interface FormFieldItemProps<T extends FieldValues> {
-  fieldControl: Control<T>;
-  name: FieldPath<T>;
-  label: string;
-  placeholder: string;
-}
-
-export const FormFieldItem = <T extends FieldValues>({ fieldControl, name, label, placeholder }: FormFieldItemProps<T>) => {
-  return (
-    <FormField
-      control={fieldControl}
-      name={name}
-      render={({ field }) => (
-        <FormItem className="w-full">
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input
-              placeholder={placeholder}
-              {...field}
-              onChange={e => {
-                field.onChange(e);
-              }}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-};

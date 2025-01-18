@@ -20,10 +20,12 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ breadcrumbs }) => {
           const isMatch = matchPath(breadcrumb.href, location.pathname) || location.pathname.startsWith(breadcrumb.href);
           return (
             isMatch && (
-              <BreadcrumbItem key={breadcrumb.href}>
+              <div className="flex" key={breadcrumb.href}>
                 <BreadcrumbSeparator />
-                <BreadcrumbLink href={breadcrumb.href}>{breadcrumb.label}</BreadcrumbLink>
-              </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href={breadcrumb.href}>{breadcrumb.label}</BreadcrumbLink>
+                </BreadcrumbItem>
+              </div>
             )
           );
         })}
