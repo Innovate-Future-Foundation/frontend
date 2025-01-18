@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { Building2, PersonStanding, Users } from "lucide-react";
+import { Backpack, BookUser, Building2, Users, UsersRound } from "lucide-react";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Sidebar, { SidebarItem } from "./Sidebar";
@@ -25,7 +25,7 @@ const dashboardMenu: DashboardMenuItem[] = [
     },
     breadCrumbs: [
       { label: "organisations list", href: "/dashboard" },
-      { label: "organisation profile & people", href: "/dashboard/organisation/:id" }
+      { label: "organisation profile & people", href: "/dashboard/organisations/:id" }
     ]
   },
   {
@@ -35,19 +35,31 @@ const dashboardMenu: DashboardMenuItem[] = [
       icon: Users
     },
     breadCrumbs: [
-      { label: "teachers", href: "/dashboard/teachers" },
-      { label: "profile details", href: "/dashboard/teacher/:id" }
+      { label: "teachers list", href: "/dashboard/teachers" },
+      { label: "profile details", href: "/dashboard/teachers/:id" }
     ]
   },
   {
     sidebarItem: {
-      title: "students",
-      url: "/dashboard/students",
-      icon: PersonStanding
+      title: "members",
+      url: "/dashboard/parents",
+      icon: BookUser,
+      children: [
+        {
+          title: "parents list",
+          url: "/dashboard/parents",
+          icon: UsersRound
+        },
+        {
+          title: "students list",
+          url: "/dashboard/students",
+          icon: Backpack
+        }
+      ]
     },
     breadCrumbs: [
-      { label: "students", href: "/dashboard/students" },
-      { label: "profile details", href: "/dashboard/student/:id" }
+      { label: "parents", href: "/dashboard/parents" },
+      { label: "students", href: "/dashboard/students" }
     ]
   }
 ];

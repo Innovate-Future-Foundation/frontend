@@ -3,6 +3,9 @@ import AuthenticationPage from "@/pages/Authentication";
 import DashboardPage from "@/pages/Dashboard";
 import OrganisationPage from "@/pages/Organisation";
 import OrganisationDetailPage from "@/pages/Organisation/OrganisationDetailPage";
+import TeacherPage from "@/pages/Teacher";
+import ParentsPage from "@/pages/Parents";
+import StudentPage from "@/pages/Student";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 const router = [
@@ -23,8 +26,20 @@ const router = [
         element: <OrganisationPage />
       },
       {
-        path: "organisation/:id",
+        path: "organisations/:id",
         element: <OrganisationDetailPage />
+      },
+      {
+        path: "teachers",
+        element: <TeacherPage />
+      },
+      {
+        path: "parents",
+        element: <ParentsPage />
+      },
+      {
+        path: "students",
+        element: <StudentPage />
       }
     ]
   }
