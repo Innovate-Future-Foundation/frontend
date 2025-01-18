@@ -1,5 +1,6 @@
-import DashboardPage from "@/pages/Dashboard";
 import HomePage from "@/pages/Home";
+import AuthenticationPage from "@/pages/Authentication";
+import DashboardPage from "@/pages/Dashboard";
 import OrganisationPage from "@/pages/Organisation";
 import OrganisationDetailPage from "@/pages/Organisation/OrganisationDetailPage";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
@@ -10,12 +11,12 @@ const router = [
     element: <HomePage />
   },
   {
+    path: "/auth",
+    element: <AuthenticationPage />
+  },
+  {
     path: "dashboard",
-    element: (
-      // <ProtectedRoute>
-      <DashboardPage />
-      // </ProtectedRoute>
-    ),
+    element: <DashboardPage />,
     children: [
       {
         index: true,
