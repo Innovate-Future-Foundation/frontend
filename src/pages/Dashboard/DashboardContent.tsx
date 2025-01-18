@@ -55,10 +55,7 @@ const dashboardMenuItemGroups: SidebarMenuGroup[] = [
           url: "/dashboard/teachers",
           icon: Users
         },
-        breadcrumbs: [
-          { label: "teachers list", href: "/dashboard/teachers" },
-          { label: "profile details", href: "/dashboard/teachers/:id" }
-        ]
+        breadcrumbs: [{ label: "teachers list", href: "/dashboard/teachers" }]
       },
       {
         sidebarItem: {
@@ -78,10 +75,7 @@ const dashboardMenuItemGroups: SidebarMenuGroup[] = [
             }
           ]
         },
-        breadcrumbs: [
-          { label: "parents", href: "/dashboard/parents" },
-          { label: "students", href: "/dashboard/students" }
-        ]
+        breadcrumbs: [{ label: "parents list", href: "/dashboard/parents" }]
       }
     ]
   }
@@ -91,7 +85,8 @@ const DashboardContent: React.FC<Role> = ({ ...role }) => {
   console.log("role", role);
   const location = useLocation();
   const breadcrumbs = findbreadcrumbs(dashboardMenuItemGroups, location.pathname);
-
+  console.log("location.pathname", location.pathname);
+  console.log("breadcrumbs", breadcrumbs);
   return (
     <SidebarProvider>
       <Sidebar
