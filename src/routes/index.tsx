@@ -6,6 +6,7 @@ import OrganisationDetailPage from "@/pages/Organisation/OrganisationDetailPage"
 import TeacherPage from "@/pages/Teacher";
 import ParentsPage from "@/pages/Parents";
 import StudentPage from "@/pages/Student";
+import TourPage from "@/pages/Tour";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 const router = [
@@ -40,6 +41,10 @@ const router = [
       {
         path: "students",
         element: <StudentPage />
+      },
+      {
+        path: "tours",
+        element: <TourPage />
       }
     ]
   }

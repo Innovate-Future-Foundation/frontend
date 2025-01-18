@@ -7,6 +7,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -16,6 +17,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
+import Avatar from "@/components/Avatar";
+import { ellipticalString } from "@/utils/formatters";
 
 export interface SidebarItemGroup {
   sidebarLabel?: string;
@@ -35,9 +38,30 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   return (
     <CNSidebar collapsible="icon" variant="sidebar" className="mt-12">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild className="h-auto" size={"lg"}>
+              <div className="flex items-center gap-2">
+                <Avatar
+                  size={8}
+                  className="inline-block"
+                  avatarLink={"https://github.com/shadcn.png"}
+                  avatarAlt={"@AcmeCorporation"}
+                  avatarPlaceholder={"AC"}
+                />
+                <div className="flex flex-col items-start gap-[2px]">
+                  <p className="text-primary font-bold text-sm leading-3">{ellipticalString("Acme Corporation", 16)}</p>
+                  <p className="text-primary text-[12px] leading-3">{ellipticalString("info@acmecorp.com", 24)}</p>
+                </div>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         {sidebarItemGroups.map(sidebarItemGroup => (
-          <SidebarGroup>
+          <SidebarGroup key={sidebarItemGroup.sidebarLabel}>
             {sidebarItemGroup.sidebarLabel && <SidebarGroupLabel>{sidebarItemGroup.sidebarLabel}</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
@@ -61,9 +85,9 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups }) => {
                         <CollapsibleContent>
                           {item.children &&
                             item.children.map(child => (
-                              <SidebarMenuSub>
+                              <SidebarMenuSub key={child.title}>
                                 <SidebarMenuSubItem>
-                                  <SidebarMenuSubButton className="flex items-center">
+                                  <SidebarMenuSubButton asChild className="flex items-center">
                                     <Link to={child.url}>
                                       <div className="flex items-center gap-2">
                                         <child.icon className="w-4 h-4 inline" />

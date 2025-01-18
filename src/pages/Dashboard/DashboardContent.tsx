@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { Backpack, BookUser, Building2, Users, UsersRound } from "lucide-react";
+import { Backpack, BookUser, Building2, TicketsPlane, Users, UsersRound } from "lucide-react";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Sidebar, { SidebarItem } from "./Sidebar";
@@ -27,48 +27,11 @@ const dashboardMenuItemGroups: SidebarMenuGroup[] = [
     subMenu: [
       {
         sidebarItem: {
-          title: "organisations",
-          url: "/dashboard",
-          icon: Building2
+          title: "tours",
+          url: "/dashboard/tours",
+          icon: TicketsPlane
         },
-        breadcrumbs: [
-          { label: "organisations list", href: "/dashboard" },
-          { label: "organisation profile & people", href: "/dashboard/organisations/:id" }
-        ]
-      },
-      {
-        sidebarItem: {
-          title: "teachers",
-          url: "/dashboard/teachers",
-          icon: Users
-        },
-        breadcrumbs: [
-          { label: "teachers list", href: "/dashboard/teachers" },
-          { label: "profile details", href: "/dashboard/teachers/:id" }
-        ]
-      },
-      {
-        sidebarItem: {
-          title: "members",
-          url: "/dashboard/parents",
-          icon: BookUser,
-          children: [
-            {
-              title: "parents list",
-              url: "/dashboard/parents",
-              icon: UsersRound
-            },
-            {
-              title: "students list",
-              url: "/dashboard/students",
-              icon: Backpack
-            }
-          ]
-        },
-        breadcrumbs: [
-          { label: "parents", href: "/dashboard/parents" },
-          { label: "students", href: "/dashboard/students" }
-        ]
+        breadcrumbs: [{ label: "tours list", href: "/dashboard/tours" }]
       }
     ]
   },
