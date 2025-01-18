@@ -1,10 +1,8 @@
----
 # 基础配置
 jenkins_home: /data/jenkins
 jenkins_http_port: 8080
 jenkins_admin_username: "admin"
 jenkins_admin_password: "admin123"
-# jenkins_url: "http://{{ ansible_host }}:{{ jenkins_http_port }}"
 jenkins_url: "https://jenkins.{{ domain_name }}"  # 使用 HTTPS 和域名
 
 # 凭证配置（从 vault 引用）
@@ -22,7 +20,6 @@ jenkins_plugins:
   - workflow-aggregator
   - docker-workflow
   - configuration-as-code
-  # - nodejs
   - NodeJS
   - aws-credentials
   - pipeline-aws

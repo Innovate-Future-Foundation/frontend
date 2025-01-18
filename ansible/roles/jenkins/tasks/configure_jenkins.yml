@@ -24,30 +24,29 @@
     line: 'JENKINS_HOME=/data/jenkins'
     create: yes
 
-- name: Create init.groovy.d directory
+- name: Create required directories
   file:
-    path: "{{ jenkins_home }}/init.groovy.d"
+    path: "{{ item }}"
     state: directory
+    owner: jenkins
+    group: jenkins
     mode: '0755'
-    owner: jenkins
-    group: jenkins
+  with_items:
+    - "{{ jenkins_home }}/init.groovy.d"
+    - "{{ jenkins_home }}/casc_configs"
 
-- name: Copy pipeline creation script
+- name: Copy configuration scripts
   template:
-    src: create-pipeline.groovy.j2
-    dest: "{{ jenkins_home }}/init.groovy.d/create-pipeline.groovy"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: jenkins
     group: jenkins
     mode: '0644'
+  with_items:
+    - { src: 'create-pipeline.groovy.j2', dest: '{{ jenkins_home }}/init.groovy.d/create-pipeline.groovy' }
+    - { src: 'basic-security.groovy.j2', dest: '{{ jenkins_home }}/init.groovy.d/basic-security.groovy' }
+    - { src: 'jenkins.yml.j2', dest: '{{ jenkins_home }}/casc_configs/jenkins.yaml' }
   notify: restart jenkins
-
-- name: Copy security initialization script
-  template:
-    src: basic-security.groovy.j2
-    dest: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
-    owner: jenkins
-    group: jenkins
-    mode: '0644'
 
 - name: Set Jenkins directory ownership
   file:
@@ -71,46 +70,4 @@
     name: jenkins
     state: started
     enabled: yes
-
-- name: Wait for Jenkins to start up
-  uri:
-    url: "http://localhost:8080/login"
-    status_code: 200
-    validate_certs: no
-  register: jenkins_service_status
-  until: jenkins_service_status.status == 200
-  retries: 1
-  delay: 5
-
-- name: Wait for initialAdminPassword file
-  wait_for:
-    path: "{{ jenkins_home }}/secrets/initialAdminPassword"
-    state: present
-    timeout: 120
-
-- name: Get Jenkins initial admin password
-  slurp:
-    src: "{{ jenkins_home }}/secrets/initialAdminPassword"
-  register: jenkins_admin_password
-  when: jenkins_service_status is success
-
-- name: Create JCasC directory
-  file:
-    path: "{{ jenkins_home }}/casc_configs"
-    state: directory
-    owner: jenkins
-    group: jenkins
-    mode: "0755"
-
-- name: Set Jenkins environment variables
-  lineinfile:
-    path: /etc/default/jenkins
-    line: "{{ item }}"
-    create: yes
-  with_items:
-    - 'JENKINS_HOME="{{ jenkins_home }}"'
-    - 'JENKINS_ADMIN_USER="{{ jenkins_admin_username }}"'
-    - 'JENKINS_ADMIN_PASSWORD="{{ jenkins_admin_password }}"'
-    - 'CASC_JENKINS_CONFIG="{{ jenkins_home }}/casc_configs"'
-    - 'JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Dcasc.jenkins.config={{ jenkins_home }}/casc_configs ${JAVA_OPTS}"'
-  notify: restart jenkins
+  notify: verify jenkins start

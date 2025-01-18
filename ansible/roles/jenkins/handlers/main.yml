@@ -3,35 +3,38 @@
     name: jenkins
     state: restarted
     daemon_reload: yes
+  notify: verify jenkins start
+
+- name: verify jenkins start
+  wait_for:
+    port: 8080
+    delay: 10
+    timeout: 30
   notify: wait for jenkins
 
 - name: wait for jenkins
   uri:
-    url: "http://{{ ansible_host }}:{{ jenkins_http_port }}/login"
+    url: "http://localhost:8080/login"
     method: GET
     status_code: [200, 403]
+    follow_redirects: true
     validate_certs: no
-    follow_redirects: true  # 使用 true 而不是 yes
-    timeout: 60  # 增加超时时间
+    timeout: 30
   register: result
   until: result.status in [200, 403]
-  retries: 3  # 增加重试次数
-  delay: 10   # 增加延迟时间
+  retries: 6
+  delay: 10
+  notify: get jenkins logs
 
-# 添加检查步骤
-- name: check jenkins process
-  shell: "ps aux | grep jenkins"
-  register: jenkins_process
-  when: result.failed is defined and result.failed
+- name: get jenkins logs
+  shell: "journalctl -u jenkins -n 50 --no-pager"
+  register: jenkins_logs
+  when: result.failed is defined
+  notify: get crumb
 
-- name: show jenkins status
-  shell: "systemctl status jenkins"
-  register: jenkins_status
-  when: jenkins_process is defined
-
-- name: get crumb for reload
+- name: get crumb
   uri:
-    url: "http://{{ ansible_host }}:{{ jenkins_http_port }}/crumbIssuer/api/json"
+    url: "http://localhost:8080/crumbIssuer/api/json"
     method: GET
     user: "{{ jenkins_admin_username }}"
     password: "{{ jenkins_admin_password }}"
@@ -40,16 +43,17 @@
     validate_certs: no
   register: crumb_result
   until: crumb_result.status in [200, 403]
-  retries: 12
+  retries: 6
   delay: 10
   when: result.status in [200, 403]
+  notify: reload jenkins configuration
 
 - name: reload jenkins configuration
   shell: |
     curl -X POST \
     -u {{ jenkins_admin_username }}:{{ jenkins_admin_password }} \
     -H "{{ crumb_result.json.crumbRequestField }}:{{ crumb_result.json.crumb }}" \
-    http://{{ ansible_host }}:{{ jenkins_http_port }}/reload
+    http://localhost:8080/reload
   args:
     warn: false
   register: reload_result

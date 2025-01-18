@@ -69,18 +69,19 @@ resource "aws_lb_target_group" "jenkins" {
   port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc_id
-
+  
   health_check {
     path                = "/login"
     healthy_threshold   = 2
     unhealthy_threshold = 10
-    timeout             = 5
+    timeout             = 10  # 增加超时时间
     interval            = 30
-    matcher             = "200,302"
+    matcher            = "200,302,403"  # 添加 403 作为有效响应
   }
 
   tags = local.common_tags
 }
+
 
 resource "aws_lb_target_group_attachment" "jenkins" {
   target_group_arn = aws_lb_target_group.jenkins.arn
@@ -157,7 +158,16 @@ resource "aws_lb_listener" "https" {
   depends_on = [aws_acm_certificate_validation.jenkins]
 }
 
-# ALB Security Group
+resource "aws_security_group_rule" "jenkins_ansible_access" {
+  type              = "ingress"
+  from_port         = 8080
+  to_port           = 8080
+  protocol          = "tcp"
+  cidr_blocks       = ["${local.ansible_controller_ip}/32"]
+  security_group_id = aws_security_group.jenkins.id
+  description       = "Allow Jenkins access from Ansible controller"
+}
+
 resource "aws_security_group" "jenkins_alb" {
   name_prefix = "${local.name_prefix}-alb-sg"
   description = "Security group for Jenkins ALB"
