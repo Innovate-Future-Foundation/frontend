@@ -1,4 +1,4 @@
-import { SidebarMenuGroup } from "@/pages/Dashboard/DashboardContent";
+import { SidebarMenuGroup } from "@/pages/Dashboard/SidebarMenu";
 
 export const findbreadcrumbs = (menuGroups: SidebarMenuGroup[], path: string) => {
   for (const group of menuGroups) {

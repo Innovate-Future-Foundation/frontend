@@ -19,6 +19,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useState } from "react";
 import Avatar from "@/components/Avatar";
 import { ellipticalString } from "@/utils/formatters";
+import { SidebarheaderAccess } from "./SidebarMenu";
 
 export interface SidebarItemGroup {
   sidebarLabel?: string;
@@ -32,33 +33,38 @@ export interface SidebarItem {
 }
 export interface SidebarProps {
   sidebarItemGroups: SidebarItemGroup[];
+  sidebarheader?: SidebarheaderAccess;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups }) => {
+const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   return (
     <CNSidebar collapsible="icon" variant="sidebar" className="mt-12">
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild className="h-auto" size={"lg"}>
-              <div className="flex items-center gap-2">
-                <Avatar
-                  size={8}
-                  className="inline-block"
-                  avatarLink={"https://github.com/shadcn.png"}
-                  avatarAlt={"@AcmeCorporation"}
-                  avatarPlaceholder={"AC"}
-                />
-                <div className="flex flex-col items-start gap-[2px]">
-                  <p className="text-primary font-bold text-sm leading-3">{ellipticalString("Acme Corporation", 16)}</p>
-                  <p className="text-primary text-[12px] leading-3">{ellipticalString("info@acmecorp.com", 24)}</p>
-                </div>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+      {sidebarheader && (
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild className="h-auto" size={"lg"}>
+                <Link to={sidebarheader.url ?? ""}>
+                  <div className="flex items-center gap-2">
+                    <Avatar
+                      size={8}
+                      className="inline-block"
+                      avatarLink={"https://github.com/shadcn.png"}
+                      avatarAlt={"@AcmeCorporation"}
+                      avatarPlaceholder={"AC"}
+                    />
+                    <div className="flex flex-col items-start gap-[2px]">
+                      <p className="text-primary font-bold text-sm leading-3">{ellipticalString("Acme Corporation", 16)}</p>
+                      <p className="text-primary text-[12px] leading-3">{ellipticalString("info@acmecorp.com", 24)}</p>
+                    </div>
+                  </div>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+      )}
       <SidebarContent>
         {sidebarItemGroups.map(sidebarItemGroup => (
           <SidebarGroup key={sidebarItemGroup.sidebarLabel}>

@@ -1,96 +1,25 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { Backpack, BookUser, Building2, TicketsPlane, Users, UsersRound } from "lucide-react";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import Sidebar, { SidebarItem } from "./Sidebar";
+import Sidebar from "./Sidebar";
 import Breadcrumb from "@/components/Breadcurmb";
 import { Role } from "@/types/role";
 import { findbreadcrumbs } from "@/utils/navigationHelpers";
-
-export interface SidebarMenuGroup {
-  sidebarLabel?: string;
-  subMenu: SidebarMenuItem[];
-}
-interface SidebarMenuItem {
-  sidebarItem: SidebarItem;
-  breadcrumbs: Breadcrumb[];
-}
-interface Breadcrumb {
-  label: string;
-  href: string;
-}
-
-const dashboardMenuItemGroups: SidebarMenuGroup[] = [
-  {
-    sidebarLabel: "tours",
-    subMenu: [
-      {
-        sidebarItem: {
-          title: "tours",
-          url: "/dashboard/tours",
-          icon: TicketsPlane
-        },
-        breadcrumbs: [{ label: "tours list", href: "/dashboard/tours" }]
-      }
-    ]
-  },
-  {
-    sidebarLabel: "users",
-    subMenu: [
-      {
-        sidebarItem: {
-          title: "organisations",
-          url: "/dashboard",
-          icon: Building2
-        },
-        breadcrumbs: [
-          { label: "organisations list", href: "/dashboard" },
-          { label: "organisation profile & people", href: "/dashboard/organisations/:id" }
-        ]
-      },
-      {
-        sidebarItem: {
-          title: "teachers",
-          url: "/dashboard/teachers",
-          icon: Users
-        },
-        breadcrumbs: [{ label: "teachers list", href: "/dashboard/teachers" }]
-      },
-      {
-        sidebarItem: {
-          title: "members",
-          url: "/dashboard/parents",
-          icon: BookUser,
-          children: [
-            {
-              title: "parents list",
-              url: "/dashboard/parents",
-              icon: UsersRound
-            },
-            {
-              title: "students list",
-              url: "/dashboard/students",
-              icon: Backpack
-            }
-          ]
-        },
-        breadcrumbs: [{ label: "parents list", href: "/dashboard/parents" }]
-      }
-    ]
-  }
-];
+import { filterMenuByRole } from "./SidebarMenu";
 
 const DashboardContent: React.FC<Role> = ({ ...role }) => {
   console.log("role", role);
+
+  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role.name);
   const location = useLocation();
-  const breadcrumbs = findbreadcrumbs(dashboardMenuItemGroups, location.pathname);
-  console.log("location.pathname", location.pathname);
-  console.log("breadcrumbs", breadcrumbs);
+  const breadcrumbs = findbreadcrumbs(roleBasedDashboardMenuItemGroups.sidebarMenuGroups, location.pathname);
+
   return (
     <SidebarProvider>
       <Sidebar
-        sidebarItemGroups={dashboardMenuItemGroups.map(dashboardMenuItem => ({
+        sidebarheader={roleBasedDashboardMenuItemGroups.sidebarHeader}
+        sidebarItemGroups={roleBasedDashboardMenuItemGroups.sidebarMenuGroups.map(dashboardMenuItem => ({
           sidebarLabel: dashboardMenuItem.sidebarLabel,
           items: dashboardMenuItem.subMenu.map(item => item.sidebarItem)
         }))}

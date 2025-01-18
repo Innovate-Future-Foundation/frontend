@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { Building2 } from "lucide-react";
 
-import { SidebarMenuGroup } from "@/pages/Dashboard/DashboardContent";
 import { findbreadcrumbs } from "./navigationHelpers";
+import { SidebarMenuGroup } from "@/pages/Dashboard/SidebarMenu";
 
 describe("findbreadcrumbs", () => {
   const mockMenuGroups: SidebarMenuGroup[] = [

@@ -4,7 +4,7 @@ import DashboardPage from "@/pages/Dashboard";
 import OrganisationPage from "@/pages/Organisation";
 import OrganisationDetailPage from "@/pages/Organisation/OrganisationDetailPage";
 import TeacherPage from "@/pages/Teacher";
-import ParentsPage from "@/pages/Parents";
+import ParentsPage from "@/pages/Parent";
 import StudentPage from "@/pages/Student";
 import TourPage from "@/pages/Tour";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
