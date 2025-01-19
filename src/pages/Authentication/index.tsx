@@ -1,10 +1,12 @@
+import LoginForm from "./loginform";
+
 const AuthenticationPage: React.FC = () => {
   return (
     <div className="flex min-h-screen">
       <div
         className="
         hidden lg:flex 
-        w-[35%] flex-col bg-blue-600 p-12 pt-16 text-white
+        w-[35%] flex-col bg-[#046FFB] p-12 pt-16 text-white
       "
       >
         <div className="mb-24 -ml-4">
@@ -18,8 +20,8 @@ const AuthenticationPage: React.FC = () => {
           </p>
         </div>
       </div>
-      <div className="flex flex-1 items-center justify-center">
-        <div className="text-4xl">Test Content</div>
+      <div className="flex flex-1 items-center justify-center px-6">
+        <LoginForm />
       </div>
     </div>
   );
