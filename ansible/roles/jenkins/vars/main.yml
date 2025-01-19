@@ -1,3 +1,6 @@
 ---
 # 引入加密的变量文件
 include_vars: secrets.yml
+
+jenkins_nodejs_versions:
+  - version: "20.0.0"

@@ -18,27 +18,22 @@ jenkins:
         - "Job/Configure:{{ jenkins_admin_username }}"
         - "Job/Read:authenticated"
         - "Job/Build:authenticated"
+        - "Job/Workspace:authenticated"
+        - "Overall/RunScripts:{{ jenkins_admin_username }}"
 
   numExecutors: 2
 
-  # 工具配置（只定义一次）
   tool:
-    git:
-      installations:
-        - name: "Default"
-          home: "git"
     nodejs:
       installations:
         - name: "Node20"
-          home: ""
           properties:
             - installSource:
                 installers:
                   - nodeJS:
-                    id: "20.0.0"
-                    acceptLicense: true
+                      id: "20.0.0"
+                      acceptLicense: true
 
-  # 凭证配置
   credentials:
     system:
       domainCredentials:
@@ -58,7 +53,6 @@ jenkins:
                 password: "{{ jenkins_github_token }}"
                 description: "GitHub credentials"
 
-# 系统配置
 unclassified:
   location:
     url: "https://jenkins.{{ domain_name }}"
@@ -67,7 +61,6 @@ unclassified:
       - credentialsId: "github-credentials"
         name: "GitHub"
 
-# 安全配置
 security:
   gitHostKeyVerificationConfiguration:
     sshHostKeyVerificationStrategy: "acceptFirstConnectionStrategy"
@@ -76,10 +69,8 @@ security:
       - global:
           strategy: "triggeringUsersAuthorizationStrategy"
 
-# 云配置
 clouds: []
 
-# 通知配置
 notifier:
   mail:
     recipientList: ""

@@ -14,7 +14,7 @@
 
 - name: wait for jenkins
   uri:
-    url: "http://localhost:8080/login"
+    url: "{{ jenkins_url }}/login"
     method: GET
     status_code: [200, 403]
     follow_redirects: true
@@ -34,7 +34,7 @@
 
 - name: get crumb
   uri:
-    url: "http://localhost:8080/crumbIssuer/api/json"
+    url: "{{ jenkins_url }}/crumbIssuer/api/json"
     method: GET
     user: "{{ jenkins_admin_username }}"
     password: "{{ jenkins_admin_password }}"
@@ -49,16 +49,33 @@
   notify: reload jenkins configuration
 
 - name: reload jenkins configuration
-  shell: |
-    curl -X POST \
-    -u {{ jenkins_admin_username }}:{{ jenkins_admin_password }} \
-    -H "{{ crumb_result.json.crumbRequestField }}:{{ crumb_result.json.crumb }}" \
-    http://localhost:8080/reload
-  args:
-    warn: false
+  uri:
+    url: "{{ jenkins_url }}/reload"
+    method: POST
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    headers:
+      "{{ crumb_result.json.crumbRequestField }}": "{{ crumb_result.json.crumb }}"
+    status_code: [200, 302]
+    validate_certs: no
   register: reload_result
   when: crumb_result.json is defined
   retries: 5
   delay: 15
-  until: reload_result.rc == 0
-  ignore_errors: true
+  until: reload_result.status in [200, 302]
+
+- name: verify nodejs installation
+  uri:
+    url: "{{ jenkins_url }}/manage/configureTools/"
+    method: GET
+    user: "{{ jenkins_admin_username }}"
+    password: "{{ jenkins_admin_password }}"
+    force_basic_auth: yes
+    validate_certs: no
+    return_content: yes
+  register: nodejs_verify
+  until: "'Node20' in nodejs_verify.content"
+  retries: 6
+  delay: 10
+  when: reload_result.status in [200, 302]
