@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { abbreviateName, ellipticalString } from "./formatters";
 import { formatDateToDDMMYYYY } from "./formatters";
 
-describe("abbreviateName function", async () => {
+describe("abbreviateName function", () => {
   it("should return correct abbreviation for full names", () => {
     expect(abbreviateName("John Doe")).toBe("JD");
     expect(abbreviateName("Alice Bob Carol")).toBe("AB");
