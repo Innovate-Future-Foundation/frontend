@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-=======
 import { RouteObject } from "react-router-dom";
 
-import DashboardPage from "@/pages/Dashboard";
->>>>>>> 64ad448 (fix: use router to config breadcurmb)
 import HomePage from "@/pages/Home";
 import AuthenticationPage from "@/pages/Authentication";
 import DashboardPage from "@/pages/Dashboard";
