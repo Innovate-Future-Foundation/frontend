@@ -18,7 +18,6 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
 import Avatar from "@/components/Avatar";
-import { ellipticalString } from "@/utils/formatters";
 import { SidebarheaderAccess } from "./SidebarMenu";
 
 export interface SidebarProps {
@@ -56,8 +55,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                       avatarPlaceholder={"AC"}
                     />
                     <div className="flex flex-col items-start gap-[2px]">
-                      <p className="text-primary font-bold text-sm leading-3">{ellipticalString("Acme Corporation", 16)}</p>
-                      <p className="text-primary text-[12px] leading-3">{ellipticalString("info@acmecorp.com", 24)}</p>
+                      <p className="text-primary font-bold text-sm leading-3 truncate max-w-20">{"Acme Corporation"}</p>
+                      <p className="text-primary text-[12px] leading-3 truncate max-w-40">{"info@acmecorp.com"}</p>
                     </div>
                   </div>
                 </Link>
