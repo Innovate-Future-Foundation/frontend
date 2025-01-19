@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     tools {
-        nodejs 'Node18'
+        nodejs 'Node20'
     }
     
     environment {
@@ -86,7 +86,14 @@ pipeline {
         stage('Build') {
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
-                    sh 'npm run build'
+                    sh '''
+                        # 清理并重新安装依赖
+                        rm -rf node_modules package-lock.json
+                        npm install
+                        # 确保安装rollup依赖
+                        npm install @rollup/rollup-linux-x64-gnu
+                        npm run build
+                    '''
                 }
             }
         }

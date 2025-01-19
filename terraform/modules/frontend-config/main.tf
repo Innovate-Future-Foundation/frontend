@@ -53,7 +53,7 @@ locals {
     s3_bucket               = var.s3_bucket_name
     cloudfront_distribution = var.cloudfront_distribution_id
     aws_region             = var.aws_region
-    node_version           = "Node18"
+    node_version: "Node20"
     build_memory           = "4096"
   }
 

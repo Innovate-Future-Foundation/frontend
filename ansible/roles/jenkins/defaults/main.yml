@@ -12,7 +12,7 @@ jenkins_aws_access_key: "{{ vault_jenkins_aws_access_key | default('') }}"
 jenkins_aws_secret_key: "{{ vault_jenkins_aws_secret_key | default('') }}"
 
 # Node.js configuration
-jenkins_nodejs_version: "18.19.0"
+jenkins_nodejs_version: "20.0.0"
 
 # Plugin list 
 jenkins_plugins:
