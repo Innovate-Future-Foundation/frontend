@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
 import AppDropdown from "@/components/Dropdown";
-import { abbreviateName, ellipticalString, formatDateToDDMMYYYY } from "@/utils/formatters";
+import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Organisation } from "@/types";
 
 export const orgColumns: ColumnDef<Organisation>[] = [
@@ -47,7 +47,7 @@ export const orgColumns: ColumnDef<Organisation>[] = [
         }}
       >
         <AppAvatar avatarLink={row.original.logoUrl ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("orgName"))} size={7} />
-        <div className="ml-1 lowercase">{ellipticalString(row.getValue("orgName"), 15)}</div>
+        <div className="ml-1 lowercase truncate max-w-20">{row.getValue("orgName")}</div>
       </Button>
     ),
     enableColumnFilter: false
@@ -55,7 +55,7 @@ export const orgColumns: ColumnDef<Organisation>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => <div className="lowercase">{ellipticalString(row.getValue("email"), 20)}</div>,
+    cell: ({ row }) => <div className="lowercase truncate max-w-40">{row.getValue("email")}</div>,
     enableColumnFilter: false
   },
   {

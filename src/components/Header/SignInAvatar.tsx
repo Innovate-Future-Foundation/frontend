@@ -1,4 +1,4 @@
-import { abbreviateName, ellipticalString } from "@/utils/formatters";
+import { abbreviateName } from "@/utils/formatters";
 import { ChevronDown, LogOut, User } from "lucide-react";
 import ProfileDialog from "@/components/Header/ProfileDialog";
 import Avatar from "../Avatar";
@@ -14,8 +14,8 @@ type avatarType = {
 const SignInAvatar: React.FC<avatarType> = ({ name, email, avatarLink }) => (
   <div className="flex gap-2 items-center">
     <div className="flex flex-col items-end gap-[2px]">
-      <p className="text-secondary font-bold text-sm leading-3">{ellipticalString(name, 16)}</p>
-      <p className="text-secondary text-[12px] leading-3">{ellipticalString(email, 24)}</p>
+      <p className="text-secondary font-bold text-sm leading-3 truncate max-w-20">{name}</p>
+      <p className="text-secondary text-[12px] leading-3 truncate max-w-40">{email}</p>
     </div>
     <HoverCard
       className="w-auto flex flex-col gap-2 p-2"
