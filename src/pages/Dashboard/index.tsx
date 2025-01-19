@@ -10,6 +10,11 @@ const DashboardPage = () => {
   const code = arr.length === 2 ? arr[1] : "";
 
   //todo: hardcode
+<<<<<<< HEAD
+=======
+  const roleName = "platform admin";
+
+>>>>>>> 582791b (Restore dashboard folder from dev)
   useEffect(() => {
     if (code) {
       const getToken = async () => {
@@ -30,9 +35,20 @@ const DashboardPage = () => {
     }
   }, [code]);
 
+<<<<<<< HEAD
   return (
     <MainLayout>
       <DashboardContent />
+=======
+  //todo: indicator
+  if (!roleName) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <MainLayout>
+      <DashboardContent name={roleName} codeName={"1"} />
+>>>>>>> 582791b (Restore dashboard folder from dev)
     </MainLayout>
   );
 };
