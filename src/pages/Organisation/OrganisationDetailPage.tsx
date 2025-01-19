@@ -1,7 +1,8 @@
-import { ScrollList } from "@/components/ScrollList";
-import OrganisationProfile from "./OrganisationProfile";
-import { TitleWithIcon } from "@/components/TitleWithIcon";
 import { Users, WalletCards } from "lucide-react";
+
+import { ScrollList } from "@/components/ScrollList";
+import { TitleWithIcon } from "@/components/TitleWithIcon";
+import OrganisationProfile from "./OrganisationProfile";
 
 const OrganisationDetailPage = () => {
   return (

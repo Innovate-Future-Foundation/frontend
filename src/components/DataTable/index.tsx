@@ -11,13 +11,14 @@ import {
   ColumnFiltersState,
   PaginationState
 } from "@tanstack/react-table";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
 import { ChevronDown, Filter, Search } from "lucide-react";
-import { Input } from "../ui/input";
+
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { ITEMS_PER_PAGE } from "@/constants/appConfig";
-import Pagenation from "../Pagenation";
+import Pagenation from "@/components/Pagenation";
 
 interface DataTableProps<T> {
   columns: ColumnDef<T>[];

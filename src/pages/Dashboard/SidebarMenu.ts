@@ -1,31 +1,19 @@
 import { TicketsPlane, Building2, Users, BookUser, UsersRound, Backpack } from "lucide-react";
-import { SidebarItem } from "./Sidebar";
 import { RoleType } from "@/types";
-
-export interface SidebarheaderAccess {
-  url?: string;
-  profieEditable?: boolean;
-  renderAdminList?: boolean;
-}
+import { SidebarItem } from "./Sidebar";
 
 export interface SidebarMenu {
   sidebarHeader?: SidebarheaderAccess;
   sidebarMenuGroups: SidebarMenuGroup[];
 }
-
+export interface SidebarheaderAccess {
+  url?: string;
+  profieEditable?: boolean;
+  renderAdminList?: boolean;
+}
 export interface SidebarMenuGroup {
   sidebarLabel?: string;
-  subMenu: SidebarMenuItem[];
-}
-
-export interface SidebarMenuItem {
-  sidebarItem: SidebarItem;
-  breadcrumbs: Breadcrumb[];
-}
-
-export interface Breadcrumb {
-  label: string;
-  href: string;
+  subMenu: SidebarItem[];
 }
 
 const platformAdminMenu: SidebarMenu = {
@@ -34,12 +22,9 @@ const platformAdminMenu: SidebarMenu = {
       sidebarLabel: "tours",
       subMenu: [
         {
-          sidebarItem: {
-            title: "tours",
-            url: "/dashboard/tours",
-            icon: TicketsPlane
-          },
-          breadcrumbs: [{ label: "tours list", href: "/dashboard/tours" }]
+          title: "tours",
+          url: "/dashboard",
+          icon: TicketsPlane
         }
       ]
     },
@@ -47,43 +32,31 @@ const platformAdminMenu: SidebarMenu = {
       sidebarLabel: "users",
       subMenu: [
         {
-          sidebarItem: {
-            title: "organisations",
-            url: "/dashboard",
-            icon: Building2
-          },
-          breadcrumbs: [
-            { label: "organisations list", href: "/dashboard" },
-            { label: "organisation profile & people", href: "/dashboard/organisations/:id" }
+          title: "organisations",
+          url: "/dashboard/organisations",
+          icon: Building2
+        },
+        {
+          title: "teachers",
+          url: "/dashboard/teachers",
+          icon: Users
+        },
+        {
+          title: "members",
+          url: "/dashboard/parents",
+          icon: BookUser,
+          children: [
+            {
+              title: "parents list",
+              url: "/dashboard/parents",
+              icon: UsersRound
+            },
+            {
+              title: "students list",
+              url: "/dashboard/students",
+              icon: Backpack
+            }
           ]
-        },
-        {
-          sidebarItem: {
-            title: "teachers",
-            url: "/dashboard/teachers",
-            icon: Users
-          },
-          breadcrumbs: [{ label: "teachers list", href: "/dashboard/teachers" }]
-        },
-        {
-          sidebarItem: {
-            title: "members",
-            url: "/dashboard/parents",
-            icon: BookUser,
-            children: [
-              {
-                title: "parents list",
-                url: "/dashboard/parents",
-                icon: UsersRound
-              },
-              {
-                title: "students list",
-                url: "/dashboard/students",
-                icon: Backpack
-              }
-            ]
-          },
-          breadcrumbs: [{ label: "parents list", href: "/dashboard/parents" }]
         }
       ]
     }
@@ -101,12 +74,9 @@ const organisationAdminMenu: SidebarMenu = {
       sidebarLabel: "tours",
       subMenu: [
         {
-          sidebarItem: {
-            title: "tours",
-            url: "/dashboard/tours",
-            icon: TicketsPlane
-          },
-          breadcrumbs: [{ label: "tours list", href: "/dashboard/tours" }]
+          title: "tours",
+          url: "/dashboard",
+          icon: TicketsPlane
         }
       ]
     },
@@ -114,32 +84,26 @@ const organisationAdminMenu: SidebarMenu = {
       sidebarLabel: "users",
       subMenu: [
         {
-          sidebarItem: {
-            title: "teachers",
-            url: "/dashboard/teachers",
-            icon: Users
-          },
-          breadcrumbs: [{ label: "teachers list", href: "/dashboard/teachers" }]
+          title: "teachers",
+          url: "/dashboard/teachers",
+          icon: Users
         },
         {
-          sidebarItem: {
-            title: "members",
-            url: "/dashboard/parents",
-            icon: BookUser,
-            children: [
-              {
-                title: "parents list",
-                url: "/dashboard/parents",
-                icon: UsersRound
-              },
-              {
-                title: "students list",
-                url: "/dashboard/students",
-                icon: Backpack
-              }
-            ]
-          },
-          breadcrumbs: [{ label: "parents list", href: "/dashboard/parents" }]
+          title: "members",
+          url: "/dashboard/parents",
+          icon: BookUser,
+          children: [
+            {
+              title: "parents list",
+              url: "/dashboard/parents",
+              icon: UsersRound
+            },
+            {
+              title: "students list",
+              url: "/dashboard/students",
+              icon: Backpack
+            }
+          ]
         }
       ]
     }
@@ -157,12 +121,9 @@ const organisationTeacherMenu: SidebarMenu = {
       sidebarLabel: "tours",
       subMenu: [
         {
-          sidebarItem: {
-            title: "tours",
-            url: "/dashboard/tours",
-            icon: TicketsPlane
-          },
-          breadcrumbs: [{ label: "tours list", href: "/dashboard/tours" }]
+          title: "tours",
+          url: "/dashboard",
+          icon: TicketsPlane
         }
       ]
     },
@@ -170,24 +131,21 @@ const organisationTeacherMenu: SidebarMenu = {
       sidebarLabel: "users",
       subMenu: [
         {
-          sidebarItem: {
-            title: "members",
-            url: "/dashboard/parents",
-            icon: BookUser,
-            children: [
-              {
-                title: "parents list",
-                url: "/dashboard/parents",
-                icon: UsersRound
-              },
-              {
-                title: "students list",
-                url: "/dashboard/students",
-                icon: Backpack
-              }
-            ]
-          },
-          breadcrumbs: [{ label: "parents list", href: "/dashboard/parents" }]
+          title: "members",
+          url: "/dashboard/parents",
+          icon: BookUser,
+          children: [
+            {
+              title: "parents list",
+              url: "/dashboard/parents",
+              icon: UsersRound
+            },
+            {
+              title: "students list",
+              url: "/dashboard/students",
+              icon: Backpack
+            }
+          ]
         }
       ]
     }
@@ -205,12 +163,9 @@ const parentMenu: SidebarMenu = {
       sidebarLabel: "tours",
       subMenu: [
         {
-          sidebarItem: {
-            title: "tours",
-            url: "/dashboard/tours",
-            icon: TicketsPlane
-          },
-          breadcrumbs: [{ label: "tours list", href: "/dashboard/tours" }]
+          title: "tours",
+          url: "/dashboard",
+          icon: TicketsPlane
         }
       ]
     }
@@ -228,12 +183,9 @@ const studentMenu: SidebarMenu = {
       sidebarLabel: "tours",
       subMenu: [
         {
-          sidebarItem: {
-            title: "tours",
-            url: "/dashboard/tours",
-            icon: TicketsPlane
-          },
-          breadcrumbs: [{ label: "tours list", href: "/dashboard/tours" }]
+          title: "tours",
+          url: "/dashboard",
+          icon: TicketsPlane
         }
       ]
     }

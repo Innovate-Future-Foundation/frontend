@@ -21,6 +21,11 @@ import Avatar from "@/components/Avatar";
 import { ellipticalString } from "@/utils/formatters";
 import { SidebarheaderAccess } from "./SidebarMenu";
 
+export interface SidebarProps {
+  sidebarheader?: SidebarheaderAccess;
+  sidebarItemGroups: SidebarItemGroup[];
+}
+
 export interface SidebarItemGroup {
   sidebarLabel?: string;
   items: SidebarItem[];
@@ -30,10 +35,6 @@ export interface SidebarItem {
   url: string;
   icon: LucideIcon;
   children?: SidebarItem[];
-}
-export interface SidebarProps {
-  sidebarItemGroups: SidebarItemGroup[];
-  sidebarheader?: SidebarheaderAccess;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) => {

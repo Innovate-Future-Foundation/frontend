@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+import { RouteObject } from "react-router-dom";
+
+import DashboardPage from "@/pages/Dashboard";
+>>>>>>> 64ad448 (fix: use router to config breadcurmb)
 import HomePage from "@/pages/Home";
 import AuthenticationPage from "@/pages/Authentication";
 import DashboardPage from "@/pages/Dashboard";
@@ -9,7 +15,13 @@ import StudentPage from "@/pages/Student";
 import TourPage from "@/pages/Tour";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
-const router = [
+export type AppRoute = RouteObject & {
+  handle?: {
+    breadcrumb?: string;
+  };
+};
+
+const router: AppRoute[] = [
   {
     path: "/",
     element: <HomePage />
@@ -24,27 +36,33 @@ const router = [
     children: [
       {
         index: true,
-        element: <OrganisationPage />
+        element: <TourPage />,
+        handle: { breadcrumb: "tours list" }
+      },
+      {
+        path: "organisations",
+        element: <OrganisationPage />,
+        handle: { breadcrumb: "organisations list" }
       },
       {
         path: "organisations/:id",
-        element: <OrganisationDetailPage />
+        element: <OrganisationDetailPage />,
+        handle: { breadcrumb: "organisation profile & members" }
       },
       {
         path: "teachers",
-        element: <TeacherPage />
+        element: <TeacherPage />,
+        handle: { breadcrumb: "teachers list" }
       },
       {
         path: "parents",
-        element: <ParentsPage />
+        element: <ParentsPage />,
+        handle: { breadcrumb: "parents list" }
       },
       {
         path: "students",
-        element: <StudentPage />
-      },
-      {
-        path: "tours",
-        element: <TourPage />
+        element: <StudentPage />,
+        handle: { breadcrumb: "students list" }
       }
     ]
   }

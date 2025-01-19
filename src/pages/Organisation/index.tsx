@@ -1,8 +1,9 @@
-import { Organisation } from "@/types";
-import DataTable from "@/components/DataTable";
-import { orgColumns } from "./orgColumns";
-import { TitleWithIcon } from "@/components/TitleWithIcon";
 import { Building2 } from "lucide-react";
+
+import DataTable from "@/components/DataTable";
+import { TitleWithIcon } from "@/components/TitleWithIcon";
+import { orgColumns } from "./orgColumns";
+import { Organisation } from "@/types";
 
 const data: Organisation[] = [
   {
