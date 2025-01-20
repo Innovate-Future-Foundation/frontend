@@ -1,7 +1,7 @@
 import { WalletCards } from "lucide-react";
 
 import { TitleWithIcon } from "@/components/TitleWithIcon";
-import TeacherProfile from "./TeacherProfile";
+import TeacherProfile from "./TeacherAdminProfile";
 
 const TeacherDetailPage = () => {
   return (

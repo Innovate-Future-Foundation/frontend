@@ -5,11 +5,11 @@ import AuthenticationPage from "@/pages/Authentication";
 import DashboardPage from "@/pages/Dashboard";
 import OrganisationPage from "@/pages/Organisation";
 import OrganisationDetailPage from "@/pages/Organisation/OrganisationDetailPage";
-import TeacherPage from "@/pages/Teacher";
+import OrganisationAdminTeacherPage from "@/pages/OrganisationAdminTeacher";
 import ParentsPage from "@/pages/Parent";
 import StudentPage from "@/pages/Student";
 import TourPage from "@/pages/Tour";
-import TeacherDetailPage from "@/pages/Teacher/TeacherDetailPage";
+import TeacherDetailPage from "@/pages/OrganisationAdminTeacher/TeacherAdminDetailPage";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 export type AppRoute = RouteObject & {
@@ -48,8 +48,13 @@ const router: AppRoute[] = [
       },
       {
         path: "teachers",
-        element: <TeacherPage />,
+        element: <OrganisationAdminTeacherPage fromMenu="teacher" />,
         handle: { breadcrumb: "teachers list" }
+      },
+      {
+        path: "orgadmins",
+        element: <OrganisationAdminTeacherPage fromMenu="admin" />,
+        handle: { breadcrumb: "organisation admins list" }
       },
       {
         path: "teachers/:id",

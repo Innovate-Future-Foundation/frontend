@@ -2,7 +2,7 @@ import { Plus, UserRoundPen } from "lucide-react";
 
 import DataTable from "@/components/DataTable";
 import { TitleWithIcon } from "@/components/TitleWithIcon";
-import { teacherColumns } from "./TeacherColumns";
+import { teacherAdminColumns } from "./teacherAdminColumns";
 import { Profile } from "@/types";
 import { Button } from "@/components/ui/button";
 
@@ -758,21 +758,24 @@ const data: Profile[] = [
     updatedAt: "2025-01-14T11:45:00Z"
   }
 ];
-
-const TeacherPage = () => {
+interface OrganisationAdminTeacherPageProps {
+  fromMenu: string;
+}
+const OrganisationAdminTeacherPage: React.FC<OrganisationAdminTeacherPageProps> = ({ fromMenu }) => {
+  const user = fromMenu === "teacher" ? "teacher" : "admin";
   return (
     <div className="w-full flex flex-col justify-center">
       <div className="flex justify-between items-center">
-        <TitleWithIcon icon={UserRoundPen} title={"teacher list"} />
-        <Button className="active:scale-95 transition-transform duration-100" onClick={() => console.log("Add member clicked")}>
+        <TitleWithIcon icon={UserRoundPen} title={`${user} list`} />
+        <Button className="capitalize active:scale-95 transition-transform duration-100" onClick={() => console.log("Add member clicked")}>
           <Plus className="h-4 w-4 mr-2" />
-          Invite Teacher
+          {`invite ${user}`}
         </Button>
       </div>
 
-      <DataTable columns={teacherColumns} data={data} searchPlaceholder="search by name and email" />
+      <DataTable columns={teacherAdminColumns} data={data} searchPlaceholder="search by name and email" />
     </div>
   );
 };
 
-export default TeacherPage;
+export default OrganisationAdminTeacherPage;

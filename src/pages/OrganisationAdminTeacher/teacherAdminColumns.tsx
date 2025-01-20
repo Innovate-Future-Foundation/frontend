@@ -9,7 +9,7 @@ import AppDropdown from "@/components/Dropdown";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Profile } from "@/types";
 
-export const teacherColumns: ColumnDef<Profile>[] = [
+export const teacherAdminColumns: ColumnDef<Profile>[] = [
   {
     id: "select",
     header: ({ table }) => (
