@@ -7,9 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
 import AppDropdown from "@/components/Dropdown";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
-import { Organisation } from "@/types";
+import { Profile } from "@/types";
 
-export const orgColumns: ColumnDef<Organisation>[] = [
+export const teacherColumns: ColumnDef<Profile>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -26,30 +26,18 @@ export const orgColumns: ColumnDef<Organisation>[] = [
     enableGlobalFilter: false
   },
   {
-    accessorKey: "orgName",
+    accessorKey: "name",
     header: ({ column }) => (
       <Button className="pl-0" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-        Organisation
+        Teacher Name
         <ArrowUpDown />
       </Button>
     ),
     cell: ({ row }) => (
-      <Button
-        variant="outline"
-        className="rounded-full pl-[2px]"
-        onClick={() => {
-          const websiteUrl = row.original.websiteUrl;
-
-          if (websiteUrl) {
-            window.open(websiteUrl, "_blank");
-          } else {
-            console.warn("Website URL is not available for this row.");
-          }
-        }}
-      >
-        <AppAvatar avatarLink={row.original.logoUrl ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("orgName"))} size={7} />
-        <div className="ml-1 lowercase truncate max-w-20">{row.getValue("orgName")}</div>
-      </Button>
+      <Badge variant="outline" className="rounded-full pl-[2px]">
+        <AppAvatar avatarLink={row.original.avatarLink ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("name"))} size={7} />
+        <div className="ml-1 lowercase truncate max-w-20">{row.getValue("name")}</div>
+      </Badge>
     ),
     enableColumnFilter: false
   },
@@ -60,10 +48,16 @@ export const orgColumns: ColumnDef<Organisation>[] = [
     enableColumnFilter: false
   },
   {
-    accessorKey: "subscription",
-    header: "Subscription",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("subscription")}</div>,
-    enableGlobalFilter: false
+    accessorKey: "org.orgName",
+    header: "Organisation",
+    cell: ({ row }) => <div className="capitalize truncate max-w-40">{row.original.org?.orgName}</div>,
+    enableColumnFilter: false
+  },
+  {
+    accessorKey: "invitedBy.name",
+    header: "Invited By",
+    cell: ({ row }) => <div className="capitalize truncate max-w-40">{row.original.invitedBy?.name}</div>,
+    enableColumnFilter: false
   },
   {
     accessorKey: "status",
@@ -113,27 +107,27 @@ export const orgColumns: ColumnDef<Organisation>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const organisationDetail = row.original;
+      const teacherDetail = row.original;
 
-      const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: Organisation; isEdit?: boolean }) => {
-        console.log("organisationDetail: ", organisationDetail);
+      const handleOperateDetail = ({ teacherDetail, isEdit = false }: { teacherDetail: Profile; isEdit?: boolean }) => {
+        console.log("teacherDetail: ", teacherDetail);
         console.log("isEdit", isEdit);
-        const path = isEdit ? `organisations/${organisationDetail.orgId}/edit` : `organisations/${organisationDetail.orgId}`;
+        const path = isEdit ? `teachers/${teacherDetail.profileId}/edit` : `teachers/${teacherDetail.profileId}`;
         window.location.href = path;
       };
 
-      const handleDelete = (organisation: Organisation) => {
-        console.log("orgId about to delete: ", organisation.orgId);
+      const handleDelete = (teacherDetail: Profile) => {
+        console.log("teacherId about to delete: ", teacherDetail.profileId);
       };
 
       const menuItems = [
         {
           label: "View",
-          onClick: () => handleOperateDetail({ organisationDetail })
+          onClick: () => handleOperateDetail({ teacherDetail })
         },
         {
           label: "Edit",
-          onClick: () => handleOperateDetail({ organisationDetail, isEdit: true })
+          onClick: () => handleOperateDetail({ teacherDetail, isEdit: true })
         },
         {
           label: "Delete",
@@ -143,7 +137,7 @@ export const orgColumns: ColumnDef<Organisation>[] = [
       ];
 
       return (
-        <AppDropdown<Organisation> item={organisationDetail} menuItems={menuItems}>
+        <AppDropdown<Profile> item={teacherDetail} menuItems={menuItems}>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal />

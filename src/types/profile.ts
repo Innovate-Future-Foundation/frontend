@@ -1,14 +1,22 @@
+import { Organisation } from "./organisation";
+
 export interface Profile {
   profileId?: string;
   orgId?: string;
+  org?: Organisation;
   roleId?: string;
-  invitedBy?: string;
-  supervisedBy?: string;
-  name: string | null;
-  email: string | null;
+  roleName?: string;
+  invitedById?: string | null;
+  invitedBy?: Profile | null;
+  supervisedId?: string | null;
+  supervisedBy?: Profile | null;
+  name: string;
+  email: string;
   phone: string | null;
   avatarLink: string | null;
-  isActive?: boolean;
+  status?: ProfileStatus;
   createdAt?: string;
   updatedAt?: string;
 }
+
+type ProfileStatus = "active" | "suspended";
