@@ -17,7 +17,7 @@ const SignInAvatar: React.FC<avatarType> = ({ name, email, avatarLink }) => (
     </div>
     <ProfileDialog>
       <button className="flex items-center gap-2">
-        <AppAvatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} size={8} avaterPlaceholder={abbreviateName(name)} />
+        <AppAvatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} size={8} avaterPlaceholder={abbreviateName(name)} clickable={false} />
         <ChevronDown size={16} className="text-secondary" />
       </button>
     </ProfileDialog>

@@ -94,7 +94,7 @@ const OrganisationDetailPage = () => {
     <div className="w-full flex flex-col justify-center">
       <div className="h-16 bg-accent relative">
         <div className="absolute top-10 left-8 flex gap-3 items-end">
-          <AppAvatar avatarLink={"https://github.com/shadcn.png"} size={24} avatarAlt={"avatarAlt"} avaterPlaceholder={"AC"} outline={true} />
+          <AppAvatar avatarLink={"https://github.com/shadcn.png"} size={24} avatarAlt={"avatarAlt"} avaterPlaceholder={"AC"} outline={true} clickable={true} />
           <div className="flex flex-col">
             <p className="text-lg leading-none font-bold">JR Academy</p>
             <p className="text-xs">https://jiangren.com.au/</p>
