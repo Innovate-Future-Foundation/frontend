@@ -112,10 +112,10 @@ const ProfileForm = () => {
       </div>
       <div className="h-4"></div>
       <div className="flex flex-col gap-4">
-        <FormWrapper formTitle={"Teacher Information"} onSave={profileInfoForm.handleSubmit(handleProfileInfoSubmit)}>
+        <FormWrapper formTitle={"Personal Information"} onSave={profileInfoForm.handleSubmit(handleProfileInfoSubmit)}>
           <Form {...profileInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={profileInfoForm.control} name="name" label="Name" placeholder="Teacher Name" />
+              <FormFieldItem fieldControl={profileInfoForm.control} name="name" label="Name" placeholder="Name" />
               <FormFieldItem fieldControl={profileInfoForm.control} name="email" label="Email" placeholder="Email" />
             </div>
             <FormFieldItem fieldControl={profileInfoForm.control} name="phone" label="Phone" placeholder="Phone Number" />
