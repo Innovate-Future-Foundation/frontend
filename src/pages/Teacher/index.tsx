@@ -1,9 +1,10 @@
-import { UserRoundPen } from "lucide-react";
+import { Plus, UserRoundPen } from "lucide-react";
 
 import DataTable from "@/components/DataTable";
 import { TitleWithIcon } from "@/components/TitleWithIcon";
 import { teacherColumns } from "./TeacherColumns";
 import { Profile } from "@/types";
+import { Button } from "@/components/ui/button";
 
 const data: Profile[] = [
   {
@@ -761,7 +762,14 @@ const data: Profile[] = [
 const TeacherPage = () => {
   return (
     <div className="w-full flex flex-col justify-center">
-      <TitleWithIcon icon={UserRoundPen} title={"teacher list"} />
+      <div className="flex justify-between items-center">
+        <TitleWithIcon icon={UserRoundPen} title={"teacher list"} />
+        <Button className="active:scale-95 transition-transform duration-100" onClick={() => console.log("Add member clicked")}>
+          <Plus className="h-4 w-4 mr-2" />
+          Invite Teacher
+        </Button>
+      </div>
+
       <DataTable columns={teacherColumns} data={data} searchPlaceholder="search by name and email" />
     </div>
   );

@@ -8,37 +8,56 @@ import Avatar from "@/components/Avatar";
 import FormWrapper from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
 
-const orgProfileDetail = {
-  orgName: "JR Academy",
-  email: "admin@jracademy.com.au",
-  logoUrl: "https://github.com/shadcn.png",
-  websiteUrl: "https://jiangren.com.au/",
-
-  address: {
-    street: "123 Main Street",
-    suburb: "Sydney",
-    state: "NSW",
-    postcode: "2000",
-    country: "Australia"
+const teacherProfileDetail = {
+  profileId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  org: {
+    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    orgName: "Acme Corporation",
+    logoUrl: "https://github.com/shadcn.png",
+    websiteUrl: "https://www.acmecorp.com",
+    address: null,
+    email: "info@acmecorp.com",
+    subscription: "Premium",
+    status: "pending",
+    createdAt: "2023-12-10T12:34:56Z",
+    updatedAt: "2023-12-06T22:20:00Z"
   },
-
-  subscription: "free",
-  status: "pending"
+  roleName: "organisation teacher",
+  invitedBy: {
+    name: "Mary Johnson",
+    email: "alice.Green@example.com",
+    phone: null,
+    avatarLink: "https://github.com/shadcn.png",
+    status: "active"
+  },
+  name: "Marry Johnson",
+  email: "alice.Green@example.com",
+  phone: "123-456-7890",
+  avatarLink: "https://github.com/shadcn.png",
+  status: "active",
+  createdAt: "2025-01-10T10:00:00Z",
+  updatedAt: "2025-01-15T14:30:00Z"
 };
 
-const companyInfoFormSchema = z.object({
-  logoUrl: z.string().optional(),
+const profileInfoFormSchema = z.object({
+  avatarLink: z.string().optional(),
   name: z
     .string()
     .min(2, {
-      message: "Company name must be at least 2 characters."
+      message: "User name must be at least 2 characters."
     })
     .max(50, {
-      message: "Company name must not exceed 50 characters." // Restrains max length
+      message: "User name must not exceed 50 characters."
     }),
   email: z.string().email({
     message: "Invalid email format."
   }),
+  phone: z
+    .string()
+    .optional()
+    .refine(value => !value || /^\+61 45\d{7}$/.test(value), {
+      message: "Phone number must start with +61 4 and be followed by 8 digits."
+    }),
   websiteUrl: z
     .string()
     .optional()
@@ -47,84 +66,22 @@ const companyInfoFormSchema = z.object({
     })
 });
 
-const addressInfoFormSchema = z.object({
-  street: z
-    .string()
-    .min(2, {
-      message: "Street must be at least 2 characters."
-    })
-    .max(100, {
-      message: "Street must not exceed 100 characters."
-    })
-    .optional(),
-  suburb: z
-    .string()
-    .min(2, {
-      message: "Suburb must be at least 2 characters."
-    })
-    .max(50, {
-      message: "Suburb must not exceed 50 characters."
-    })
-    .optional(),
-  state: z
-    .string()
-    .min(2, {
-      message: "State must be at least 2 characters."
-    })
-    .max(20, {
-      message: "State must not exceed 20 characters."
-    })
-    .optional(),
-  postcode: z
-    .string()
-    .regex(/^\d{4}$/, {
-      message: "Postcode must be a 4-digit number."
-    })
-    .optional(),
-  country: z
-    .string()
-    .min(2, {
-      message: "Country must be at least 2 characters."
-    })
-    .max(50, {
-      message: "Country must not exceed 50 characters."
-    })
-    .optional()
-});
-
 const TeacherProfile = () => {
-  const companyInfoForm = useForm<z.infer<typeof companyInfoFormSchema>>({
-    resolver: zodResolver(companyInfoFormSchema),
+  const profileInfoForm = useForm<z.infer<typeof profileInfoFormSchema>>({
+    resolver: zodResolver(profileInfoFormSchema),
     mode: "onChange",
     defaultValues: {
-      logoUrl: orgProfileDetail.logoUrl,
-      name: orgProfileDetail.orgName,
-      email: orgProfileDetail.email,
-      websiteUrl: orgProfileDetail.websiteUrl
-    }
-  });
-
-  const addressInfoForm = useForm<z.infer<typeof addressInfoFormSchema>>({
-    resolver: zodResolver(addressInfoFormSchema),
-    mode: "onChange",
-    defaultValues: {
-      street: orgProfileDetail.address?.street,
-      suburb: orgProfileDetail.address?.suburb,
-      state: orgProfileDetail.address?.state,
-      postcode: orgProfileDetail.address?.postcode,
-      country: orgProfileDetail.address?.country
+      avatarLink: teacherProfileDetail.avatarLink,
+      name: teacherProfileDetail.name,
+      email: teacherProfileDetail.email,
+      phone: teacherProfileDetail.phone
     }
   });
 
   const avatarAlt = "@InnovateFoundation";
 
-  const handleCompanyInfoSubmit = (data: z.infer<typeof companyInfoFormSchema>) => {
-    console.log("Company Info Submitted: ", data);
-    // TODO: Perform actions such as sending the data to the server
-  };
-
-  const handleAddressInfoSubmit = (data: z.infer<typeof addressInfoFormSchema>) => {
-    console.log("Address Info Submitted: ", data);
+  const handleProfileInfoSubmit = (data: z.infer<typeof profileInfoFormSchema>) => {
+    console.log("User Info Submitted: ", data);
     // TODO: Perform actions such as sending the data to the server
   };
 
@@ -133,21 +90,21 @@ const TeacherProfile = () => {
       <div className="h-40 bg-accent relative">
         <div className="absolute top-10 left-8 flex gap-3 items-end">
           <Avatar
-            avatarLink={companyInfoForm.watch("logoUrl")!}
+            avatarLink={profileInfoForm.watch("avatarLink")!}
             size={24}
             avatarAlt={avatarAlt}
-            avatarPlaceholder={companyInfoForm.watch("name")}
+            avatarPlaceholder={profileInfoForm.watch("name")}
             outline={true}
           />
           <div className="flex flex-col">
-            <p className="text-lg leading-none font-bold">{companyInfoForm.watch("name")}</p>
-            <p className="text-xs">{companyInfoForm.watch("websiteUrl")}</p>
+            <p className="text-lg leading-none font-bold">{profileInfoForm.watch("name")}</p>
+            <p className="text-xs">{profileInfoForm.watch("email")}</p>
             <div className="flex gap-2 mt-2">
               <Badge variant={"secondary"} className="p-0 px-2 rounded-full font-light text-xs text-red-400 bg-red-100">
-                {orgProfileDetail.status}
+                {teacherProfileDetail.status}
               </Badge>
               <Badge variant={"outline"} className="p-0 px-2 rounded-full font-light text-xs text-red-400  border-red-200">
-                {orgProfileDetail.subscription}
+                {teacherProfileDetail.org.orgName}
               </Badge>
             </div>
           </div>
@@ -155,27 +112,13 @@ const TeacherProfile = () => {
       </div>
       <div className="h-4"></div>
       <div className="flex flex-col gap-4">
-        <FormWrapper formTitle={"Company Information"} onSave={companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
-          <Form {...companyInfoForm}>
+        <FormWrapper formTitle={"Teacher Information"} onSave={profileInfoForm.handleSubmit(handleProfileInfoSubmit)}>
+          <Form {...profileInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={companyInfoForm.control} name="name" label="Name" placeholder="Company Name" />
-              <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" />
+              <FormFieldItem fieldControl={profileInfoForm.control} name="name" label="Name" placeholder="Teacher Name" />
+              <FormFieldItem fieldControl={profileInfoForm.control} name="email" label="Email" placeholder="Email" />
             </div>
-            <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" />
-          </Form>
-        </FormWrapper>
-
-        <FormWrapper formTitle={"Address"} onSave={addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
-          <Form {...addressInfoForm}>
-            <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="state" label="State" placeholder="New South Wales" />
-            </div>
-            <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" />
-            </div>
-            <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" />
+            <FormFieldItem fieldControl={profileInfoForm.control} name="phone" label="Phone" placeholder="Phone Number" />
           </Form>
         </FormWrapper>
       </div>
