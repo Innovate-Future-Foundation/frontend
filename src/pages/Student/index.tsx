@@ -1,11 +1,17 @@
-import { TitleWithIcon } from "@/components/TitleWithIcon";
 import { Backpack } from "lucide-react";
+import ProfilePage from "../Profile";
+import { profileColumns } from "../Profile/profileColumns";
 
 const StudentPage = () => {
   return (
-    <div className="w-full flex flex-col justify-center">
-      <TitleWithIcon icon={Backpack} title={"Students list"} />
-    </div>
+    <ProfilePage
+      icon={Backpack}
+      title="Student List"
+      inviteLabel="Invite Student"
+      columns={profileColumns({ profilePath: "students", hideRole: true, hideOrganisation: true })}
+      searchPlaceholder="Search by name, email, or organization"
+      onInviteClick={() => console.log("Invite Student clicked")}
+    />
   );
 };
 

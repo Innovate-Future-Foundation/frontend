@@ -37,8 +37,8 @@ const platformAdminMenu: SidebarMenu = {
           icon: Building2
         },
         {
-          title: "teachers",
-          url: "/dashboard/teachers",
+          title: "organisation stuffs",
+          url: "/dashboard/orgstuffs",
           icon: Users
         },
         {

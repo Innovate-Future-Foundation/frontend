@@ -24,10 +24,10 @@ export const FormFieldItem = <T extends FieldValues>({ fieldControl, name, label
           <FormControl>
             <div className="relative">
               <Input
-                {...inputProps}
                 {...field}
                 type={type === "password" ? (showPassword ? "text" : "password") : type}
                 className={type === "password" ? "pr-10" : ""}
+                {...inputProps}
               />
               {type === "password" && (
                 <button

@@ -5,4 +5,4 @@ export interface Role {
   description?: string | null;
 }
 
-export type RoleType = "platform admin" | "organisation admin" | "organisation teacher" | "parent" | "student";
+export type RoleType = "organisation stuff" | "platform admin" | "organisation admin" | "organisation teacher" | "parent" | "student";

@@ -1,11 +1,12 @@
 import { Organisation } from "./organisation";
+import { RoleType } from "./role";
 
 export interface Profile {
   profileId?: string;
   orgId?: string;
   org?: Organisation;
   roleId?: string;
-  roleName?: string;
+  role?: RoleType;
   invitedById?: string | null;
   invitedBy?: Profile | null;
   supervisedId?: string | null;
@@ -19,4 +20,6 @@ export interface Profile {
   updatedAt?: string;
 }
 
-type ProfileStatus = "active" | "suspended";
+export type ProfileStatus = "active" | "suspended";
+
+export type ProfilePathType = "orgstuffs" | "teachers" | "parents" | "students";
