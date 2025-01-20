@@ -15,13 +15,13 @@
     dest: /etc/systemd/system/jenkins.service.d/override.conf
     content: |
       [Service]
-      Environment="JENKINS_HOME=/data/jenkins"
+      Environment="JENKINS_HOME=/var/lib/jenkins"
 
 - name: Configure Jenkins home in defaults file
   lineinfile:
     path: /etc/default/jenkins
     regexp: '^JENKINS_HOME='
-    line: 'JENKINS_HOME=/data/jenkins'
+    line: 'JENKINS_HOME=/var/lib/jenkins'
     create: yes
 
 - name: Create required directories

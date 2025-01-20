@@ -1,5 +1,5 @@
 # 基础配置
-jenkins_home: /data/jenkins
+jenkins_home: /var/lib/jenkins
 jenkins_http_port: 8080
 jenkins_admin_username: "admin"
 jenkins_admin_password: "admin123"
