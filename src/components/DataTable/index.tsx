@@ -23,9 +23,10 @@ import Pagenation from "@/components/Pagenation";
 interface DataTableProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
+  searchPlaceholder: string;
 }
 
-const DataTable = <T,>({ columns, data }: DataTableProps<T>) => {
+const DataTable = <T,>({ columns, data, searchPlaceholder }: DataTableProps<T>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -54,7 +55,8 @@ const DataTable = <T,>({ columns, data }: DataTableProps<T>) => {
       pagination
     },
     onGlobalFilterChange: setGlobalFilter,
-    manualPagination: false
+    manualPagination: false,
+    manualFiltering: false
   });
 
   return (
@@ -105,7 +107,7 @@ const DataTable = <T,>({ columns, data }: DataTableProps<T>) => {
         {/* Search */}
         <div className="relative">
           <Input
-            placeholder="search by name or email"
+            placeholder={searchPlaceholder}
             value={(table.getState().globalFilter as string) ?? ""}
             onChange={event => {
               setGlobalFilter(String(event.target.value));

@@ -43,7 +43,7 @@ const userProfileInfoFormSchema = z.object({
     .string()
     .optional()
     .refine(value => !value || /^\+61 45\d{7}$/.test(value), {
-      message: "Phone number must start with +61 45 and be followed by 7 digits."
+      message: "Phone number must start with +61 4 and be followed by 8 digits."
     })
 });
 

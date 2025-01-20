@@ -264,7 +264,7 @@ const OrganisationPage = () => {
   return (
     <div className="w-full flex flex-col justify-center">
       <TitleWithIcon icon={Building2} title={"orgainsation list"} />
-      <DataTable columns={orgColumns} data={data} />
+      <DataTable columns={orgColumns} data={data} searchPlaceholder="search by name and email" />
     </div>
   );
 };

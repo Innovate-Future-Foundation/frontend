@@ -9,6 +9,7 @@ import TeacherPage from "@/pages/Teacher";
 import ParentsPage from "@/pages/Parent";
 import StudentPage from "@/pages/Student";
 import TourPage from "@/pages/Tour";
+import TeacherDetailPage from "@/pages/Teacher/TeacherDetailPage";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 export type AppRoute = RouteObject & {
@@ -49,6 +50,11 @@ const router: AppRoute[] = [
         path: "teachers",
         element: <TeacherPage />,
         handle: { breadcrumb: "teachers list" }
+      },
+      {
+        path: "teachers/:id",
+        element: <TeacherDetailPage />,
+        handle: { breadcrumb: "teacher profile" }
       },
       {
         path: "parents",
