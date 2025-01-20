@@ -8,7 +8,7 @@ import Avatar from "@/components/Avatar";
 import FormWrapper from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
 
-const teacherProfileDetail = {
+const ProfileDetail = {
   profileId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
   org: {
     orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -66,15 +66,15 @@ const profileInfoFormSchema = z.object({
     })
 });
 
-const TeacherProfile = () => {
+const ProfileForm = () => {
   const profileInfoForm = useForm<z.infer<typeof profileInfoFormSchema>>({
     resolver: zodResolver(profileInfoFormSchema),
     mode: "onChange",
     defaultValues: {
-      avatarLink: teacherProfileDetail.avatarLink,
-      name: teacherProfileDetail.name,
-      email: teacherProfileDetail.email,
-      phone: teacherProfileDetail.phone
+      avatarLink: ProfileDetail.avatarLink,
+      name: ProfileDetail.name,
+      email: ProfileDetail.email,
+      phone: ProfileDetail.phone
     }
   });
 
@@ -101,10 +101,10 @@ const TeacherProfile = () => {
             <p className="text-xs">{profileInfoForm.watch("email")}</p>
             <div className="flex gap-2 mt-2">
               <Badge variant={"secondary"} className="p-0 px-2 rounded-full font-light text-xs text-red-400 bg-red-100">
-                {teacherProfileDetail.status}
+                {ProfileDetail.status}
               </Badge>
               <Badge variant={"outline"} className="p-0 px-2 rounded-full font-light text-xs text-red-400  border-red-200">
-                {teacherProfileDetail.org.orgName}
+                {ProfileDetail.org.orgName}
               </Badge>
             </div>
           </div>
@@ -126,4 +126,4 @@ const TeacherProfile = () => {
   );
 };
 
-export default TeacherProfile;
+export default ProfileForm;

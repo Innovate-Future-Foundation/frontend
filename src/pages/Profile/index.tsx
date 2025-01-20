@@ -1,12 +1,12 @@
-import { Plus, UserRoundPen } from "lucide-react";
+import { LucideIcon, Plus } from "lucide-react";
 
 import DataTable from "@/components/DataTable";
 import { TitleWithIcon } from "@/components/TitleWithIcon";
-import { teacherAdminColumns } from "./teacherAdminColumns";
-import { Profile } from "@/types";
 import { Button } from "@/components/ui/button";
+import { Profile } from "@/types";
+import { ColumnDef } from "@tanstack/react-table";
 
-const data: Profile[] = [
+const profileData: Profile[] = [
   {
     profileId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
     org: {
@@ -21,7 +21,7 @@ const data: Profile[] = [
       createdAt: "2023-12-10T12:34:56Z",
       updatedAt: "2023-12-06T22:20:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation admin",
     invitedBy: {
       name: "Mary Johnson",
       email: "alice.Green@example.com",
@@ -51,7 +51,7 @@ const data: Profile[] = [
       createdAt: "2023-12-10T12:34:56Z",
       updatedAt: "2023-12-06T22:20:00Z"
     },
-    roleName: "organisation teacher",
+    role: "student",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -81,7 +81,7 @@ const data: Profile[] = [
       createdAt: "2023-12-09T15:00:00Z",
       updatedAt: "2023-12-06T22:21:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation admin",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -111,7 +111,7 @@ const data: Profile[] = [
       createdAt: "2023-12-09T15:00:00Z",
       updatedAt: "2023-12-06T22:21:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation admin",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -141,7 +141,7 @@ const data: Profile[] = [
       createdAt: "2023-12-09T15:00:00Z",
       updatedAt: "2023-12-06T22:21:00Z"
     },
-    roleName: "organisation teacher",
+    role: "student",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -171,7 +171,7 @@ const data: Profile[] = [
       createdAt: "2023-12-09T15:00:00Z",
       updatedAt: "2023-12-06T22:21:00Z"
     },
-    roleName: "organisation teacher",
+    role: "student",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -201,7 +201,7 @@ const data: Profile[] = [
       createdAt: "2023-12-09T15:00:00Z",
       updatedAt: "2023-12-06T22:21:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -231,7 +231,7 @@ const data: Profile[] = [
       createdAt: "2023-12-09T15:00:00Z",
       updatedAt: "2023-12-06T22:21:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -261,7 +261,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "student",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -291,7 +291,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "student",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -321,7 +321,7 @@ const data: Profile[] = [
       createdAt: "2023-12-07T08:45:00Z",
       updatedAt: "2023-12-06T22:23:00Z"
     },
-    roleName: "organisation teacher",
+    role: "parent",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -351,7 +351,7 @@ const data: Profile[] = [
       createdAt: "2023-12-07T08:45:00Z",
       updatedAt: "2023-12-06T22:23:00Z"
     },
-    roleName: "organisation teacher",
+    role: "parent",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -381,7 +381,7 @@ const data: Profile[] = [
       createdAt: "2023-12-10T12:34:56Z",
       updatedAt: "2023-12-06T22:20:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -411,7 +411,7 @@ const data: Profile[] = [
       createdAt: "2023-12-10T12:34:56Z",
       updatedAt: "2023-12-06T22:20:00Z"
     },
-    roleName: "organisation teacher",
+    role: "parent",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -441,7 +441,7 @@ const data: Profile[] = [
       createdAt: "2023-12-07T08:45:00Z",
       updatedAt: "2023-12-06T22:23:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -471,7 +471,7 @@ const data: Profile[] = [
       createdAt: "2023-12-07T08:45:00Z",
       updatedAt: "2023-12-06T22:23:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -501,7 +501,7 @@ const data: Profile[] = [
       createdAt: "2023-12-07T08:45:00Z",
       updatedAt: "2023-12-06T22:23:00Z"
     },
-    roleName: "organisation teacher",
+    role: "student",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -531,7 +531,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "parent",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -561,7 +561,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -591,7 +591,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -621,7 +621,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "parent",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -651,7 +651,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -681,7 +681,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "parent",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -711,7 +711,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -741,7 +741,7 @@ const data: Profile[] = [
       createdAt: "2023-12-08T10:15:30Z",
       updatedAt: "2023-12-06T22:22:00Z"
     },
-    roleName: "organisation teacher",
+    role: "organisation teacher",
     invitedBy: {
       name: "Alice Johnson",
       email: "alice.johnson@example.com",
@@ -758,24 +758,38 @@ const data: Profile[] = [
     updatedAt: "2025-01-14T11:45:00Z"
   }
 ];
-interface OrganisationAdminTeacherPageProps {
-  fromMenu: string;
+
+interface ProfilePageProps {
+  icon: LucideIcon;
+  title: string;
+  inviteLabel: string;
+  columns: ColumnDef<Profile>[];
+  data?: Profile[];
+  searchPlaceholder: string;
+  onInviteClick?: () => void;
 }
-const OrganisationAdminTeacherPage: React.FC<OrganisationAdminTeacherPageProps> = ({ fromMenu }) => {
-  const user = fromMenu === "teacher" ? "teacher" : "admin";
+
+const ProfilePage: React.FC<ProfilePageProps> = ({
+  icon: Icon,
+  title,
+  inviteLabel,
+  columns,
+  data = profileData,
+  searchPlaceholder,
+  onInviteClick = () => {}
+}) => {
   return (
     <div className="w-full flex flex-col justify-center">
       <div className="flex justify-between items-center">
-        <TitleWithIcon icon={UserRoundPen} title={`${user} list`} />
-        <Button className="capitalize active:scale-95 transition-transform duration-100" onClick={() => console.log("Add member clicked")}>
+        <TitleWithIcon icon={Icon} title={title} />
+        <Button className="capitalize active:scale-95 transition-transform duration-100" onClick={onInviteClick}>
           <Plus className="h-4 w-4 mr-2" />
-          {`invite ${user}`}
+          {inviteLabel}
         </Button>
       </div>
-
-      <DataTable columns={teacherAdminColumns} data={data} searchPlaceholder="search by name and email" />
+      <DataTable columns={columns} data={data} searchPlaceholder={searchPlaceholder} />
     </div>
   );
 };
 
-export default OrganisationAdminTeacherPage;
+export default ProfilePage;
