@@ -7,7 +7,7 @@ const EventPage: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <NavbarEvent />
       <main className="flex-grow">
-        <section className="text-center py-20 bg-[#BEE7F9]">
+        <section className="text-center py-20 bg-[#BEE7F9] justify-items-center">
           <h1 className="text-4xl text-[#05224F] font-bold mb-4">GenAI Professional Development</h1>
           <p className="text-md font-bold text-[#046FFB] mb-2">Future Engineer Program</p>
           <p className="text-sm mb-6 mt-2 bg-[#F36D26] text-white py-2 px-4 rounded-md inline-block shadow-lg">Thu, 23/01/2025 - Sat, 25/01/2025</p>
@@ -18,8 +18,8 @@ const EventPage: React.FC = () => {
         </section>
 
         <section className="bg-white py-12">
-          <div className="container mx-auto px-6">
-            <div className="grid md: grid-cols-2 gap-y-8 gap-x-16 items-center">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 sm:grid-cols3 lg:grid-cols-4 gap-8 justify-tems-center">
               <div className="flex justify-start">
                 <img src="/src/assets/images/inff logo.png" alt="INFF Logo" className="h-16 w-auto" />
               </div>
@@ -38,7 +38,7 @@ const EventPage: React.FC = () => {
 
         <section className="bg-white py-10 bg-cover bg-center" style={{ backgroundImage: "url('/src/assets/images/introduction-background.png')" }}>
           <div className="container mx-auto px-4">
-            <h1 className="text-[#05224F] text-3xl text-center mb-6">Introduction</h1>
+            <h1 className="text-[#05224F] text-4xl text-center mb-12">Introduction</h1>
             <p className="text-[#05224F] text-center mx-auto leading-relaxed max-w-4xl">
               We are embarking on an enriching journey through the world of artificial intelligence with our exclusive AI Immersion Program in Sydney,
               Australia. Over three dynamic days, participants will engage in hands-on workshops, cultural exchanges, and cutting-edge technology experiences.
@@ -48,7 +48,7 @@ const EventPage: React.FC = () => {
 
         <section className="py-20 bg-[#046FFB]">
           <div className="container mx-auto px-4">
-            <h2 className="text-4xl text-white text-center mb-10">Agenda At A Glance</h2>
+            <h2 className="text-4xl text-white text-center mb-12">Agenda At A Glance</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
               {/* Each day's agenda */}
               <div className="bg-[#046FFB] text-white rounded-lg p-6 shadow-lg border-2 border-white">
