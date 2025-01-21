@@ -33,7 +33,7 @@ export const Events: React.FC = () => {
     <section className="bg-[#f9f9f9] py-12">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl text-[#062B48] text-center mb-8">Upcoming Events</h2>
-        <div className="flex flex-row justify-center items-start gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
           {events.map((event, index) => {
             const cardContent = (
               <div

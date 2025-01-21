@@ -9,19 +9,16 @@ import { Footer } from "@/components/ui/Footer";
 
 const Home = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="w-full flex flex-col gap-4 justify-center">
       <Navbar />
-      <main className="flex-grow">
-        <div className="container mx-auto">
-          <HeroSection />
-          <Features />
-          <Partners />
-          <Events />
-          <JoinUs />
-          <SupportSection />
-        </div>
+      <main>
+        <HeroSection />
+        <Features />
+        <Partners />
+        <Events />
+        <JoinUs />
+        <SupportSection />
       </main>
-
       <Footer />
     </div>
   );

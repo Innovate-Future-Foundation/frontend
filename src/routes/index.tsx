@@ -1,6 +1,4 @@
-import DashboardPage from "@/pages/Dashboard";
 import HomePage from "@/pages/Home";
-import OrganisationPage from "@/pages/Organisation";
 import AboutUs from "@/pages/AboutUs";
 import EventPage from "@/pages/EventPage";
 import ContactUs from "@/pages/ContactUs";
@@ -22,20 +20,6 @@ const router = [
   {
     path: "eventpage",
     element: <EventPage />
-  },
-  {
-    path: "dashboard",
-    element: (
-      // <ProtectedRoute>
-      <DashboardPage />
-      // </ProtectedRoute>
-    ),
-    children: [
-      {
-        index: true,
-        element: <OrganisationPage />
-      }
-    ]
   }
 ];
 

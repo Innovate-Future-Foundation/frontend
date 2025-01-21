@@ -27,7 +27,7 @@ const WhyAttend: React.FC = () => {
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl text-center text-[#05224F] mb-12">Why Attend</h2>
-        <div className="flex flex-row justify-center items-start gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
           {cards.map((card, index) => (
             <div key={index} className="bg-white border-2 border-gray-200 rounded-lg shadow-lg p-6 flex flex-col items-center text-center w-[250px] h-[435px]">
               <div className={`${card.bgColor} w-full flex justify-center items-center rounded-t-lg p-4`}>

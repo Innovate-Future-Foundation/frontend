@@ -8,9 +8,9 @@ export const Footer = () => {
         {/* Logo & Branding */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <img src="/src/assets/images/logo.png" alt="Innovative Future logo" className="h-8 w-8" />
-            <div>
-              <div className="text-xl font-bold leading-5">INNOVATIVE FUTURE</div>
+            <img src="/src/assets/images/logo white.png" alt="Innovative Future logo" className="h-8 w-8" />
+            <div className="leading-5">
+              <div className="text-lg font-bold">INNOVATE FUTURE</div>
               <div className="text-sm">ASSOCIATION</div>
             </div>
           </div>
@@ -18,28 +18,42 @@ export const Footer = () => {
 
         {/* Navigation */}
         <div>
-          <h3 className="font-semibold mb-4">Navigation</h3>
+          <h3 className="text-lg font-bold mb-4">Navigation</h3>
           <ul className="space-y-2">
-            <li>Home</li>
-            <li>About us</li>
-            <li>Contact us</li>
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/about-us">About us</a>
+            </li>
+            <li>
+              <a href="/contact-us">Contact us</a>
+            </li>
           </ul>
         </div>
 
         {/* Partner Links */}
         <div>
-          <h3 className="font-semibold mb-4">Partner Links</h3>
+          <h3 className="text-lg font-bold mb-4">Partner Links</h3>
           <ul className="space-y-2">
-            <li>Sunflower AI</li>
-            <li>Bookwell AI</li>
-            <li>Beequant.AI</li>
-            <li>Jobpin AI</li>
+            <li>
+              <a href="https://www.sunflowerai.io/">Sunflower AI</a>
+            </li>
+            <li>
+              <a href="https://www.bookwell.ai/">Bookwell AI</a>
+            </li>
+            <li>
+              <a href="https://beequant.ai/">Beequant.AI</a>
+            </li>
+            <li>
+              <a href="https://jobpin.com.au/">Jobpin AI</a>
+            </li>
           </ul>
         </div>
 
         {/* Subscribe Newsletter */}
         <div>
-          <h3 className="font-semibold mb-4">Subscribe Newsletter</h3>
+          <h3 className="text-lg font-bold mb-4">Subscribe Newsletter</h3>
           <p className="mb-4"> Subscribe our newsletter to get updates about our services and offers. </p>
           <div className="flex gap-2">
             <Input type="email" placeholder="input your email" className="bg-white border-white/20 text-black" />

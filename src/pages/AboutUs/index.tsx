@@ -15,16 +15,19 @@ const AboutUs: React.FC = () => {
               mission is to bridge communities, foster talent, and create a thriving ecosystem where aspiring engineers, technologists, and entrepreneurs can
               learn, grow, and succeed.
             </p>
-            <div className="mt-8 flex justify-center">
-              <img src="/src/assets/images/cuate.png" alt="About Hero Illustration" className="w-full max-w-md h-auto" />
-            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="mt-8 flex justify-center">
+            <img src="/src/assets/images/cuate.png" alt="About Hero Illustration" className="w-full max-w-md h-auto" />
           </div>
         </section>
 
         <section className="bg-[#f9f9f9] py-16">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl text-[#1c2c4c] mb-8">What We Do</h2>
-            <div className="grid grid-cols-2 gap-8 justify-center items-center mx-auto max-w-4xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8 justify-center items-center mx-auto">
               {[
                 {
                   icon: "about-us-icon1.png",
