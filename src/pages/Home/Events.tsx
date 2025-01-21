@@ -7,7 +7,7 @@ export const Events: React.FC = () => {
       title: "Navi Kaur",
       date: "18/01/2024",
       location: "Sydney",
-      description: "Level 100-mapping to AI certification by Navi Kaur",
+      description: "Level 100-mapping to AI certification by Navi Kaur.",
       image: "/src/assets/images/Allura Online Searching.png",
       bgColor: "#9E58AA"
     },
@@ -23,7 +23,7 @@ export const Events: React.FC = () => {
       title: "Johnny Zhao",
       date: "01/03/2024",
       location: "Sydney",
-      description: "Redshift VEGA natural language query integration, generate sql query",
+      description: "Redshift VEGA natural language query integration.",
       image: "/src/assets/images/Allura Online Searching-2.png",
       bgColor: "#046FFB"
     }
@@ -31,14 +31,13 @@ export const Events: React.FC = () => {
 
   return (
     <section className="bg-[#f9f9f9] py-12">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl text-[#062B48] text-center mb-8">Upcoming Events</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
+        <h2 className="text-4xl text-[#062B48] text-center mb-12">Upcoming Events</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {events.map((event, index) => {
             const cardContent = (
               <div
                 className="
-                  w-64 h-80 
                   bg-white 
                   rounded-xl 
                   shadow-md 
@@ -48,17 +47,19 @@ export const Events: React.FC = () => {
                   text-center
                 "
               >
-                <div className="w-full h-1/2 flex items-center justify-center" style={{ backgroundColor: event.bgColor }}>
+                <div className="w-full h-40 flex items-center justify-center" style={{ backgroundColor: event.bgColor }}>
                   <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
                 </div>
 
-                <div className="w-full h-1/2 p-4 flex flex-col justify-center">
+                <div className="w-full p-4 flex flex-col justify-between">
                   <h3 className="text-lg font-bold text-[#062B48]">{event.title}</h3>
-                  <p className="text-sm text-[#9DABBE] mt-1">{event.description}</p>
+                  <p className="text-sm text-[#9DABBE] mt-2">{event.description}</p>
                   <div className="flex items-center justify-center text-sm text-[#062B48] mt-3 gap-4">
                     <div className="flex items-center gap-1">
                       <img src="/src/assets/images/date.png" alt="Date Icon" className="w-4 h-4" />
                       <span>{event.date}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
                       <img src="/src/assets/images/location.png" alt="Location Icon" className="w-4 h-4" />
                       <span>{event.location}</span>
                     </div>

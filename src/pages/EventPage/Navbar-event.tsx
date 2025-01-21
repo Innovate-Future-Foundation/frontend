@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 
-export const Navbar: React.FC = () => {
+export const NavbarEvent: React.FC = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white">
+    <nav className="bg-[#BEE7F9]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Logo Section */}
         <div className="flex items-center gap-2">
-          <img src="/src/assets/images/logo.png" alt="Innovative Future Association Logo" className="h-10 w-10" />
+          <img src="/src/assets/images/event logo.png" alt="Innovative Future Association Logo" className="h-10 w-10" />
           <div className="leading-5">
-            <div className="font-bold text-[#046FFB]">INNOVATE FUTURE</div>
-            <div className="text-xs text-[#046FFB]">ASSOCIATION</div>
+            <div className="font-bold text-[#05224F]">INNOVATE FUTURE</div>
+            <div className="text-xs text-[#05224F]">ASSOCIATION</div>
           </div>
         </div>
 
@@ -26,12 +26,12 @@ export const Navbar: React.FC = () => {
           <a href="/contact-us" className="text-[#062B48] hover:underline">
             Contact Us
           </a>
-          <button className="bg-[#046FFB] text-white px-4 py-2 rounded hover:bg-[#034cb4]">Sign In</button>
+          <button className="bg-[#062B48] text-white px-4 py-2 rounded">Sign In</button>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
-          <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} className="text-[#046FFB] focus:outline-none">
+          <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} className="text-[#062B48] focus:outline-none">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -59,7 +59,7 @@ export const Navbar: React.FC = () => {
               </a>
             </li>
             <li>
-              <button className="bg-[#046FFB] text-white px-8 py-2 rounded hover:bg-[#034cb4]">Sign In</button>
+              <button className="bg-[#062B48] text-white px-8 py-2 rounded">Sign In</button>
             </li>
           </ul>
         </div>

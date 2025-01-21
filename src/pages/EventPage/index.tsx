@@ -1,13 +1,13 @@
-import { Navbar } from "@/components/ui/Navbar";
+import { NavbarEvent } from "@/pages/EventPage/Navbar-event";
 import { Footer } from "@/components/ui/Footer";
 import WhyAttend from "@/pages/EventPage/WhyAttend";
 
 const EventPage: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-[#BEE7F9]">
-      <Navbar />
+    <div className="min-h-screen flex flex-col">
+      <NavbarEvent />
       <main className="flex-grow">
-        <section className="text-center py-20">
+        <section className="text-center py-20 bg-[#BEE7F9]">
           <h1 className="text-4xl text-[#05224F] font-bold mb-4">GenAI Professional Development</h1>
           <p className="text-md font-bold text-[#046FFB] mb-2">Future Engineer Program</p>
           <p className="text-sm mb-6 mt-2 bg-[#F36D26] text-white py-2 px-4 rounded-md inline-block shadow-lg">Thu, 23/01/2025 - Sat, 25/01/2025</p>
@@ -18,12 +18,20 @@ const EventPage: React.FC = () => {
         </section>
 
         <section className="bg-white py-12">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
-              <img src="/src/assets/images/inff logo.png" alt="inff logo" className="h-16 mx-auto" />
-              <img src="/src/assets/images/aws startups.png" alt="AWS Startups" className="h-16 max-auto" />
-              <img src="/src/assets/images/sydney uni logo.png" alt="sydney uni logo" className="h-16 max-auto" />
-              <img src="/src/assets/images/jr logo.png" alt="JR logo" className="h-16 max-auto" />
+          <div className="container mx-auto px-6">
+            <div className="grid md: grid-cols-2 gap-y-8 gap-x-16 items-center">
+              <div className="flex justify-start">
+                <img src="/src/assets/images/inff logo.png" alt="INFF Logo" className="h-16 w-auto" />
+              </div>
+              <div className="flex justify-end">
+                <img src="/src/assets/images/aws startups.png" alt="AWS Startups" className="h-16 w-auto" />
+              </div>
+              <div className="flex justify-start">
+                <img src="/src/assets/images/sydney uni logo.png" alt="Sydney Uni Logo" className="h-16 w-auto" />
+              </div>
+              <div className="flex justify-end">
+                <img src="/src/assets/images/jr logo.png" alt="JR Academy Logo" className="h-16 w-auto" />
+              </div>
             </div>
           </div>
         </section>
