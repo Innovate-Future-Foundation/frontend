@@ -37,7 +37,7 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] w-full space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] w-full space-y-6 motion-preset-fade motion-duration-2000 motion-delay-500">
         <div className="space-y-4">
           <h1 className="text-4xl font-semibold text-center">Login Now</h1>
           <p className="text-sm text-muted-foreground text-center">Please enter the details below to continue.</p>
