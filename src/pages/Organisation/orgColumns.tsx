@@ -4,12 +4,12 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { abbreviateName, ellipticalString, formatDateToDDMMYYYY } from "@/utils/formatters";
-import { OrganisationType } from "@/types";
-import AppAvatar from "@/components/AppAvatar";
-import AppDropdown from "@/components/AppDropdown";
+import AppAvatar from "@/components/Avatar";
+import AppDropdown from "@/components/Dropdown";
+import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
+import { Organisation } from "@/types";
 
-export const orgColumns: ColumnDef<OrganisationType>[] = [
+export const orgColumns: ColumnDef<Organisation>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -22,7 +22,8 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
     cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={value => row.toggleSelected(!!value)} aria-label="Select row" />,
     enableSorting: false,
     enableHiding: false,
-    enableColumnFilter: false
+    enableColumnFilter: false,
+    enableGlobalFilter: false
   },
   {
     accessorKey: "orgName",
@@ -46,8 +47,8 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
           }
         }}
       >
-        <AppAvatar avatarLink={row.original.logoUrl ?? ""} avatarAlt="@InnovateFuture" avaterPlaceholder={abbreviateName(row.getValue("orgName"))} size={7} />
-        <div className="ml-1 lowercase">{ellipticalString(row.getValue("orgName"), 15)}</div>
+        <AppAvatar avatarLink={row.original.logoUrl ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("orgName"))} size={7} />
+        <div className="ml-1 lowercase truncate max-w-20">{row.getValue("orgName")}</div>
       </Button>
     ),
     enableColumnFilter: false
@@ -55,13 +56,14 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => <div className="lowercase">{ellipticalString(row.getValue("email"), 20)}</div>,
+    cell: ({ row }) => <div className="lowercase truncate max-w-40">{row.getValue("email")}</div>,
     enableColumnFilter: false
   },
   {
     accessorKey: "subscription",
     header: "Subscription",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("subscription")}</div>
+    cell: ({ row }) => <div className="capitalize">{row.getValue("subscription")}</div>,
+    enableGlobalFilter: false
   },
   {
     accessorKey: "status",
@@ -70,7 +72,8 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
       <Badge variant="secondary">
         <div className="capitalize">{row.getValue("status")}</div>
       </Badge>
-    )
+    ),
+    enableGlobalFilter: false
   },
   {
     accessorKey: "createdAt",
@@ -82,11 +85,12 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
     ),
     cell: ({ row }) => <div className="lowercase">{formatDateToDDMMYYYY(row.getValue("createdAt"))}</div>,
     sortingFn: (rowA, rowB) => {
-      const dateA = new Date(rowA.original.createdAt).getTime();
-      const dateB = new Date(rowB.original.createdAt).getTime();
+      const dateA = new Date(rowA.original.createdAt ?? "").getTime();
+      const dateB = new Date(rowB.original.createdAt ?? "").getTime();
       return dateA - dateB;
     },
-    enableColumnFilter: false
+    enableColumnFilter: false,
+    enableGlobalFilter: false
   },
   {
     accessorKey: "updatedAt",
@@ -98,11 +102,12 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
     ),
     cell: ({ row }) => <div className="lowercase">{formatDateToDDMMYYYY(row.getValue("updatedAt"))}</div>,
     sortingFn: (rowA, rowB) => {
-      const dateA = new Date(rowA.original.updatedAt).getTime();
-      const dateB = new Date(rowB.original.updatedAt).getTime();
+      const dateA = new Date(rowA.original.updatedAt ?? "").getTime();
+      const dateB = new Date(rowB.original.updatedAt ?? "").getTime();
       return dateA - dateB;
     },
-    enableColumnFilter: false
+    enableColumnFilter: false,
+    enableGlobalFilter: false
   },
   {
     id: "actions",
@@ -110,12 +115,14 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
     cell: ({ row }) => {
       const organisationDetail = row.original;
 
-      const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: OrganisationType; isEdit?: boolean }) => {
+      const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: Organisation; isEdit?: boolean }) => {
         console.log("organisationDetail: ", organisationDetail);
         console.log("isEdit", isEdit);
+        const path = isEdit ? `organisations/${organisationDetail.orgId}/edit` : `organisations/${organisationDetail.orgId}`;
+        window.location.href = path;
       };
 
-      const handleDelete = (organisation: OrganisationType) => {
+      const handleDelete = (organisation: Organisation) => {
         console.log("orgId about to delete: ", organisation.orgId);
       };
 
@@ -136,7 +143,7 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
       ];
 
       return (
-        <AppDropdown<OrganisationType> item={organisationDetail} menuItems={menuItems}>
+        <AppDropdown<Organisation> item={organisationDetail} menuItems={menuItems}>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal />
@@ -144,6 +151,7 @@ export const orgColumns: ColumnDef<OrganisationType>[] = [
         </AppDropdown>
       );
     },
-    enableColumnFilter: false
+    enableColumnFilter: false,
+    enableGlobalFilter: false
   }
 ];

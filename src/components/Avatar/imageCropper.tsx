@@ -9,9 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 import "react-image-crop/dist/ReactCrop.css";
-import { FileWithPreview } from ".";
+// import { FileWithPreview } from ".";
+import { FileWithPath } from "react-dropzone";
 import { CropIcon, Trash2Icon } from "lucide-react";
-
+export type FileWithPreview = FileWithPath & {
+  preview: string;
+};
 interface ImageCropperProps {
   dialogOpen: boolean;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -69,7 +72,7 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
       alert(`Something went wrong! Error Message ${error}`);
     }
   }
-  const avatarStyle = `w-${10} h-${10} ${"".trim()}`;
+  const avatarStyle = `w-${24} h-${24}`;
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>

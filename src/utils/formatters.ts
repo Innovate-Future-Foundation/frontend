@@ -10,12 +10,6 @@ export const abbreviateName = (name: string): string => {
   return abbreviation;
 };
 
-export const ellipticalString = (sentence: string, digit: number): string => {
-  if (!sentence || digit <= 0) return "";
-  if (sentence.length <= digit) return sentence;
-  return `${sentence.substring(0, digit).trim()}...`;
-};
-
 export const formatDateToDDMMYYYY = (isoDate: string): string => {
   const date = new Date(isoDate); // Convert ISO string to Date object
   const day = String(date.getDate()).padStart(2, "0"); // Get day and pad with leading zero

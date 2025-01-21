@@ -1,26 +1,22 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FileWithPath, useDropzone } from "react-dropzone";
+import { Avatar as CNAvatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ImageCropper } from "./imageCropper";
+import { FileWithPath, useDropzone } from "react-dropzone";
+import { FileWithPreview } from "./imageCropper";
 import React from "react";
-// import SvgText from "@/components/svg-text"
-export type FileWithPreview = FileWithPath & {
-  preview: string;
-};
-type avatarType = {
+interface AvatarProps {
   avatarLink: string;
   avatarAlt: string;
-  avaterPlaceholder: string;
+  avatarPlaceholder: string;
   size?: number;
   outline?: boolean;
   className?: string;
   clickable?: boolean;
-};
-
+}
 const accept = {
   "image/*": []
 };
-const AppAvatar: React.FC<avatarType> = ({ size = 10, outline = false, className = "", clickable = false }) => {
-  const avatarStyle = `w-${size} h-${size} ${outline && "outline outline-white"} ${className.trim()}`;
+const Avatar: React.FC<AvatarProps> = ({ avatarLink, avatarAlt, avatarPlaceholder, size = 10, outline = false, className = "", clickable }) => {
+  const avatarStyle = `w-${size} h-${size} ${outline && "outline outline-white"}`;
   const [selectedFile, setSelectedFile] = React.useState<FileWithPreview | null>(null);
   const [isDialogOpen, setDialogOpen] = React.useState(false);
 
@@ -45,20 +41,20 @@ const AppAvatar: React.FC<avatarType> = ({ size = 10, outline = false, className
     onDrop,
     accept
   });
+
   return (
-    <div className="avatarStyle ">
+    <>
       {selectedFile ? (
         <ImageCropper dialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
       ) : (
-        <Avatar {...getRootProps()} className={avatarStyle}>
+        <CNAvatar {...getRootProps()} className={`${avatarStyle} ${className}`.trim()}>
           {clickable ? <input {...getInputProps()} /> : null}
-
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+          <AvatarImage src={avatarLink} alt={avatarAlt} />
+          <AvatarFallback>{avatarPlaceholder}</AvatarFallback>
+        </CNAvatar>
       )}
-    </div>
+    </>
   );
 };
 
-export default AppAvatar;
+export default Avatar;
