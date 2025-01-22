@@ -1,4 +1,4 @@
-import { TicketsPlane, Building2, Users, BookUser, UsersRound, Backpack } from "lucide-react";
+import { TicketsPlane, Building2, Users, BookUser, UsersRound, Backpack, Gauge } from "lucide-react";
 import { RoleType } from "@/types";
 import { SidebarItem } from "./Sidebar";
 
@@ -19,17 +19,26 @@ export interface SidebarMenuGroup {
 const platformAdminMenu: SidebarMenu = {
   sidebarMenuGroups: [
     {
-      sidebarLabel: "tours",
       subMenu: [
         {
-          title: "tours",
+          title: "dashboard",
           url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
+      sidebarLabel: "platform chores",
+      subMenu: [
+        {
+          title: "platform events",
+          url: "/dashboard/events",
           icon: TicketsPlane
         }
       ]
     },
     {
-      sidebarLabel: "users",
+      sidebarLabel: "organisation management",
       subMenu: [
         {
           title: "organisations",
@@ -37,26 +46,53 @@ const platformAdminMenu: SidebarMenu = {
           icon: Building2
         },
         {
-          title: "organisation stuffs",
-          url: "/dashboard/orgstuffs",
-          icon: Users
+          title: "organisation tours",
+          url: "/dashboard/tours",
+          icon: TicketsPlane
         },
         {
-          title: "members",
+          title: "organisation stuffs",
+          url: "/dashboard/orgadmins",
+          icon: BookUser,
+          children: [
+            {
+              title: "admins",
+              url: "/dashboard/orgadmins",
+              icon: Users
+            },
+            {
+              title: "teachers",
+              url: "/dashboard/orgteachers",
+              icon: Users
+            }
+          ]
+        },
+        {
+          title: "organisation clients",
           url: "/dashboard/parents",
           icon: BookUser,
           children: [
             {
-              title: "parents list",
+              title: "parents",
               url: "/dashboard/parents",
               icon: UsersRound
             },
             {
-              title: "students list",
+              title: "students",
               url: "/dashboard/students",
               icon: Backpack
             }
           ]
+        }
+      ]
+    },
+    {
+      sidebarLabel: "user management and contact",
+      subMenu: [
+        {
+          title: "User List",
+          url: "/dashboard/users",
+          icon: Users
         }
       ]
     }
@@ -71,25 +107,39 @@ const organisationAdminMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
-      sidebarLabel: "tours",
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
+      sidebarLabel: "tours management",
       subMenu: [
         {
           title: "tours",
-          url: "/dashboard",
+          url: "/dashboard/tours",
           icon: TicketsPlane
         }
       ]
     },
     {
-      sidebarLabel: "users",
+      sidebarLabel: "stuffs management",
       subMenu: [
         {
           title: "teachers",
-          url: "/dashboard/teachers",
+          url: "/dashboard/orgteachers",
           icon: Users
-        },
+        }
+      ]
+    },
+    {
+      sidebarLabel: "clients management",
+      subMenu: [
         {
-          title: "members",
+          title: "clients",
           url: "/dashboard/parents",
           icon: BookUser,
           children: [
@@ -106,6 +156,16 @@ const organisationAdminMenu: SidebarMenu = {
           ]
         }
       ]
+    },
+    {
+      sidebarLabel: "user management and contact",
+      subMenu: [
+        {
+          title: "User List",
+          url: "/dashboard/users",
+          icon: Users
+        }
+      ]
     }
   ]
 };
@@ -118,30 +178,39 @@ const organisationTeacherMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
-      sidebarLabel: "tours",
       subMenu: [
         {
-          title: "tours",
+          title: "dashboard",
           url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
+      sidebarLabel: "tours management",
+      subMenu: [
+        {
+          title: "my tours",
+          url: "/dashboard/tours",
           icon: TicketsPlane
         }
       ]
     },
     {
-      sidebarLabel: "users",
+      sidebarLabel: "clients management",
       subMenu: [
         {
-          title: "members",
+          title: "my clients",
           url: "/dashboard/parents",
           icon: BookUser,
           children: [
             {
-              title: "parents list",
+              title: "parents",
               url: "/dashboard/parents",
               icon: UsersRound
             },
             {
-              title: "students list",
+              title: "students",
               url: "/dashboard/students",
               icon: Backpack
             }
@@ -160,11 +229,20 @@ const parentMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
       sidebarLabel: "tours",
       subMenu: [
         {
-          title: "tours",
-          url: "/dashboard",
+          title: "my tours",
+          url: "/dashboard/tours",
           icon: TicketsPlane
         }
       ]
@@ -180,11 +258,20 @@ const studentMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
       sidebarLabel: "tours",
       subMenu: [
         {
-          title: "tours",
-          url: "/dashboard",
+          title: "my tours",
+          url: "/dashboard/tours",
           icon: TicketsPlane
         }
       ]
