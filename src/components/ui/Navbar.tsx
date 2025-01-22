@@ -53,11 +53,11 @@ export const Navbar: React.FC = () => {
                 About Us
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href="/contact-us" className="block text-[#062B48] hover:bg-[#f0f4f8] rounded px-4 py-2">
                 Contact Us
               </a>
-            </li>
+            </li> */}
             <li>
               <button className="bg-[#046FFB] text-white px-8 py-2 rounded hover:bg-[#034cb4]">Sign In</button>
             </li>
