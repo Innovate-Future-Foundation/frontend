@@ -23,9 +23,9 @@ export const Navbar: React.FC = () => {
           <a href="/about-us" className="text-[#062B48] hover:underline">
             About Us
           </a>
-          <a href="/contact-us" className="text-[#062B48] hover:underline">
+          {/* <a href="/contact-us" className="text-[#062B48] hover:underline">
             Contact Us
-          </a>
+          </a> */}
           <button className="bg-[#046FFB] text-white px-4 py-2 rounded hover:bg-[#034cb4]">Sign In</button>
         </div>
 
