@@ -20,16 +20,16 @@ const EventPage: React.FC = () => {
         <section className="bg-white py-12">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 sm:grid-cols3 lg:grid-cols-4 gap-8 justify-tems-center">
-              <div className="flex justify-start">
+              <div className="flex justify-center">
                 <img src="/images/inff logo.png" alt="INFF Logo" className="h-16 w-auto" />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-center">
                 <img src="/images/aws startups.png" alt="AWS Startups" className="h-16 w-auto" />
               </div>
-              <div className="flex justify-start">
+              <div className="flex justify-center">
                 <img src="/images/sydney uni logo.png" alt="Sydney Uni Logo" className="h-16 w-auto" />
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-center">
                 <img src="/images/jr logo.png" alt="JR Academy Logo" className="h-16 w-auto" />
               </div>
             </div>
