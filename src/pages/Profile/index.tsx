@@ -769,23 +769,17 @@ interface ProfilePageProps {
   onInviteClick?: () => void;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({
-  icon: Icon,
-  title,
-  inviteLabel,
-  columns,
-  data = profileData,
-  searchPlaceholder,
-  onInviteClick = () => {}
-}) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ icon: Icon, title, inviteLabel, columns, data = profileData, searchPlaceholder, onInviteClick }) => {
   return (
     <div className="w-full flex flex-col justify-center">
       <div className="flex justify-between items-center">
         <TitleWithIcon icon={Icon} title={title} />
-        <Button className="capitalize active:scale-95 transition-transform duration-100" onClick={onInviteClick}>
-          <Plus className="h-4 w-4 mr-2" />
-          {inviteLabel}
-        </Button>
+        {onInviteClick && (
+          <Button className="capitalize active:scale-95 transition-transform duration-100" onClick={onInviteClick}>
+            <Plus className="h-4 w-4 mr-2" />
+            {inviteLabel}
+          </Button>
+        )}
       </div>
       <DataTable columns={columns} data={data} searchPlaceholder={searchPlaceholder} />
     </div>

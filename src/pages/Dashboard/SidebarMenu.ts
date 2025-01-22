@@ -1,4 +1,4 @@
-import { TicketsPlane, Building2, Users, BookUser, UsersRound, Backpack } from "lucide-react";
+import { TicketsPlane, Building2, Users, BookUser, UsersRound, Backpack, Gauge } from "lucide-react";
 import { RoleType } from "@/types";
 import { SidebarItem } from "./Sidebar";
 
@@ -18,6 +18,15 @@ export interface SidebarMenuGroup {
 
 const platformAdminMenu: SidebarMenu = {
   sidebarMenuGroups: [
+    {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
     {
       sidebarLabel: "platform chores",
       subMenu: [
@@ -98,6 +107,15 @@ const organisationAdminMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
       sidebarLabel: "tours management",
       subMenu: [
         {
@@ -160,6 +178,15 @@ const organisationTeacherMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
       sidebarLabel: "tours management",
       subMenu: [
         {
@@ -202,6 +229,15 @@ const parentMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
       sidebarLabel: "tours",
       subMenu: [
         {
@@ -221,6 +257,15 @@ const studentMenu: SidebarMenu = {
     renderAdminList: false
   },
   sidebarMenuGroups: [
+    {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
     {
       sidebarLabel: "tours",
       subMenu: [

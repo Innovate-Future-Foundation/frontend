@@ -13,7 +13,8 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
-  SidebarMenuSubItem
+  SidebarMenuSubItem,
+  useSidebar
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
@@ -37,7 +38,25 @@ export interface SidebarItem {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const { state, isMobile } = useSidebar();
+
+  const hasChildrenWithTitle = sidebarItemGroups.reduce((groupAcc: Record<string, boolean>, sidebarItemGroup: SidebarItemGroup) => {
+    sidebarItemGroup.items.forEach(item => {
+      if (item.children) {
+        groupAcc[item.title] = true;
+      }
+    });
+    return groupAcc;
+  }, {});
+
+  const [isOpen, setIsOpen] = useState<Record<string, boolean>>(hasChildrenWithTitle);
+
+  const handleOpenChange = (title: string) => {
+    setIsOpen(prev => ({
+      ...prev,
+      [title]: !isOpen[title]
+    }));
+  };
   return (
     <CNSidebar collapsible="icon" variant="sidebar" className="mt-12">
       {sidebarheader && (
@@ -54,10 +73,12 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                       avatarAlt={"@AcmeCorporation"}
                       avatarPlaceholder={"AC"}
                     />
-                    <div className="flex flex-col items-start gap-[2px]">
-                      <p className="text-primary font-bold text-sm leading-3 truncate max-w-40">{"Acme Corporation"}</p>
-                      <p className="text-primary text-[12px] leading-3 truncate max-w-40">{"info@acmecorp.com"}</p>
-                    </div>
+                    {state === "collapsed" && !isMobile && (
+                      <div className="flex flex-col items-start gap-[2px]">
+                        <p className="text-primary font-bold text-sm leading-3 truncate max-w-40">{"Acme Corporation"}</p>
+                        <p className="text-primary text-[12px] leading-3 truncate max-w-40">{"info@acmecorp.com"}</p>
+                      </div>
+                    )}
                   </div>
                 </Link>
               </SidebarMenuButton>
@@ -73,7 +94,13 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
               <SidebarMenu>
                 {sidebarItemGroup.items.map(item =>
                   item.children ? (
-                    <Collapsible open={isOpen} onOpenChange={() => setIsOpen(!isOpen)} defaultOpen className="group/collapsible" key={item.title}>
+                    <Collapsible
+                      open={isOpen[item.title]}
+                      onOpenChange={() => handleOpenChange(item.title)}
+                      defaultOpen
+                      className="group/collapsible"
+                      key={item.title}
+                    >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton asChild>
@@ -81,7 +108,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                               <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-2">
                                   <item.icon className="w-4 h-4" />
-                                  <span className="capitalize font-medium text-sm">{item.title}</span>
+                                  {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{item.title}</span>}
                                 </div>
                                 <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-90" : "rotate-0"}`} />
                               </div>
@@ -97,7 +124,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                                     <Link to={child.url}>
                                       <div className="flex items-center gap-2">
                                         <child.icon className="w-4 h-4 inline" />
-                                        <span className="capitalize text-sm">{child.title}</span>
+                                        {state === "expanded" && !isMobile && <span className="capitalize text-sm">{child.title}</span>}
                                       </div>
                                     </Link>
                                   </SidebarMenuSubButton>
@@ -112,7 +139,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                       <SidebarMenuButton asChild>
                         <Link to={item.url}>
                           <item.icon className="w-5 h-5" />
-                          <span className="capitalize font-medium text-sm">{item.title}</span>
+                          {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{item.title}</span>}
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

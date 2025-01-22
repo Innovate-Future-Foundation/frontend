@@ -13,6 +13,7 @@ import OrgTeacherPage from "@/pages/OrgTeacher";
 import OrgAdminPage from "@/pages/OrgAdmin";
 import EventPage from "@/pages/Event";
 import UserPage from "@/pages/User";
+import DefaultDashboardPage from "@/pages/DefaultDashboard";
 
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
@@ -35,6 +36,11 @@ const router: AppRoute[] = [
     path: "dashboard",
     element: <DashboardPage />,
     children: [
+      {
+        index: true,
+        element: <DefaultDashboardPage />,
+        handle: { breadcrumb: "dashboard" }
+      },
       {
         path: "events",
         element: <EventPage />,
