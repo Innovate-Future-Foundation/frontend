@@ -5,7 +5,7 @@ export const Events: React.FC = () => {
   const events = [
     {
       title: "Navi Kaur",
-      date: "18/01/2024",
+      date: "18/01/2025",
       location: "Sydney",
       description: "Level 100-mapping to AI certification by Navi Kaur.",
       image: "/images/Allura Online Searching.png",
@@ -13,7 +13,7 @@ export const Events: React.FC = () => {
     },
     {
       title: "AWS Start Up",
-      date: "23/01/2024",
+      date: "23/01/2025",
       location: "Sydney",
       description: "How to apply for AWS credit for start up? Just in this AWS program.",
       image: "/images/Allura Online Searching-1.png",
@@ -21,7 +21,7 @@ export const Events: React.FC = () => {
     },
     {
       title: "Johnny Zhao",
-      date: "01/03/2024",
+      date: "01/03/2025",
       location: "Sydney",
       description: "Redshift VEGA natural language query integration.",
       image: "/images/Allura Online Searching-2.png",
