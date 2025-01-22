@@ -5,12 +5,14 @@ import AuthenticationPage from "@/pages/Authentication";
 import DashboardPage from "@/pages/Dashboard";
 import OrganisationPage from "@/pages/Organisation";
 import OrganisationDetailPage from "@/pages/Organisation/OrganisationDetailPage";
-import ParentsPage from "@/pages/Parent";
+import ParentPage from "@/pages/Parent";
 import StudentPage from "@/pages/Student";
 import TourPage from "@/pages/Tour";
 import ProfileDetailPage from "@/pages/Profile/ProfileDetailPage";
-import TeacherPage from "@/pages/Teacher";
-import StuffPage from "@/pages/Stuff";
+import OrgTeacherPage from "@/pages/OrgTeacher";
+import OrgAdminPage from "@/pages/OrgAdmin";
+import EventPage from "@/pages/Event";
+import UserPage from "@/pages/User";
 
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
@@ -34,7 +36,12 @@ const router: AppRoute[] = [
     element: <DashboardPage />,
     children: [
       {
-        index: true,
+        path: "events",
+        element: <EventPage />,
+        handle: { breadcrumb: "events list" }
+      },
+      {
+        path: "tours",
         element: <TourPage />,
         handle: { breadcrumb: "tours list" }
       },
@@ -49,28 +56,38 @@ const router: AppRoute[] = [
         handle: { breadcrumb: "organisation profile & members" }
       },
       {
-        path: "orgstuffs",
-        element: <StuffPage />,
-        handle: { breadcrumb: "organisation stuffs list" }
+        path: "users",
+        element: <UserPage />,
+        handle: { breadcrumb: "users list" }
       },
       {
-        path: "orgstuffs/:id",
-        element: <ProfileDetailPage role="organisation stuff" />,
-        handle: { breadcrumb: "organisation stuff profile" }
+        path: "users/:id",
+        element: <ProfileDetailPage role="user" />,
+        handle: { breadcrumb: "user profile" }
       },
       {
-        path: "teachers",
-        element: <TeacherPage />,
+        path: "orgadmins",
+        element: <OrgAdminPage />,
+        handle: { breadcrumb: "organisation admins list" }
+      },
+      {
+        path: "orgadmins/:id",
+        element: <ProfileDetailPage role="organisation admin" />,
+        handle: { breadcrumb: "organisation admin profile" }
+      },
+      {
+        path: "orgteachers",
+        element: <OrgTeacherPage />,
         handle: { breadcrumb: "organisation teachers list" }
       },
       {
-        path: "teachers/:id",
+        path: "orgteachers/:id",
         element: <ProfileDetailPage role="organisation teacher" />,
         handle: { breadcrumb: "organisation teacher profile" }
       },
       {
         path: "parents",
-        element: <ParentsPage />,
+        element: <ParentPage />,
         handle: { breadcrumb: "parents list" }
       },
       {

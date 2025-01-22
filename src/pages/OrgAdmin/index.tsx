@@ -2,17 +2,17 @@ import { UserRoundPen } from "lucide-react";
 import ProfilePage from "../Profile";
 import { profileColumns } from "../Profile/profileColumns";
 
-const StuffPage = () => {
+const OrgAdminPage = () => {
   return (
     <ProfilePage
       icon={UserRoundPen}
-      title="Stuff List"
-      inviteLabel="Invite Stuff"
-      columns={profileColumns({})}
+      title="Organisation Admin List"
+      inviteLabel="Invite org Admin"
+      columns={profileColumns({ hideRole: true })}
       searchPlaceholder="Search by name, email, or organization"
-      onInviteClick={() => console.log("Invite Stuff clicked")}
+      onInviteClick={() => console.log("Invite Admin clicked")}
     />
   );
 };
 
-export default StuffPage;
+export default OrgAdminPage;

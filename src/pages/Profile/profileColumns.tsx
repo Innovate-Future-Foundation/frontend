@@ -17,7 +17,7 @@ interface GenerateColumnsOptions {
 }
 
 export const profileColumns = ({
-  profilePath = "orgstuffs",
+  profilePath = "orgadmins",
   hideRole = false,
   hideOrganisation = false,
   includeChildren = false
