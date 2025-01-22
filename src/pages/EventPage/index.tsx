@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import { NavbarEvent } from "@/pages/EventPage/Navbar-event";
 import { Footer } from "@/components/ui/Footer";
 import WhyAttend from "@/pages/EventPage/WhyAttend";
 
 const EventPage: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <NavbarEvent />

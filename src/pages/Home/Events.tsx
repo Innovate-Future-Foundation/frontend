@@ -68,7 +68,7 @@ export const Events: React.FC = () => {
               </div>
             );
             return event.title === "AWS Start Up" ? (
-              <Link to="/eventpage" key={index}>
+              <Link to="eventpage" key={index}>
                 {cardContent}
               </Link>
             ) : (
