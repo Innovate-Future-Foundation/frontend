@@ -16,7 +16,7 @@ export const SupportSection = () => {
 
         {/* Image Section */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <img src="/src/assets/images/amico 2.png" alt="Support" className="w-full max-w-sm sm:max-w-md lg:max-w-lg h-auto" />
+          <img src="/images/amico 2.png" alt="Support" className="w-full max-w-sm sm:max-w-md lg:max-w-lg h-auto" />
         </div>
       </div>
     </section>

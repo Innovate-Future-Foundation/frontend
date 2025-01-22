@@ -8,7 +8,7 @@ export const Events: React.FC = () => {
       date: "18/01/2024",
       location: "Sydney",
       description: "Level 100-mapping to AI certification by Navi Kaur.",
-      image: "/src/assets/images/Allura Online Searching.png",
+      image: "/images/Allura Online Searching.png",
       bgColor: "#9E58AA"
     },
     {
@@ -16,7 +16,7 @@ export const Events: React.FC = () => {
       date: "23/01/2024",
       location: "Sydney",
       description: "How to apply for AWS credit for start up? Just in this AWS program.",
-      image: "/src/assets/images/Allura Online Searching-1.png",
+      image: "/images/Allura Online Searching-1.png",
       bgColor: "#F36D26"
     },
     {
@@ -24,7 +24,7 @@ export const Events: React.FC = () => {
       date: "01/03/2024",
       location: "Sydney",
       description: "Redshift VEGA natural language query integration.",
-      image: "/src/assets/images/Allura Online Searching-2.png",
+      image: "/images/Allura Online Searching-2.png",
       bgColor: "#046FFB"
     }
   ];
@@ -56,11 +56,11 @@ export const Events: React.FC = () => {
                   <p className="text-sm text-[#9DABBE] mt-2">{event.description}</p>
                   <div className="flex items-center justify-center text-sm text-[#062B48] mt-3 gap-4">
                     <div className="flex items-center gap-1">
-                      <img src="/src/assets/images/date.png" alt="Date Icon" className="w-4 h-4" />
+                      <img src="/images/date.png" alt="Date Icon" className="w-4 h-4" />
                       <span>{event.date}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <img src="/src/assets/images/location.png" alt="Location Icon" className="w-4 h-4" />
+                      <img src="/images/location.png" alt="Location Icon" className="w-4 h-4" />
                       <span>{event.location}</span>
                     </div>
                   </div>

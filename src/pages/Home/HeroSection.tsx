@@ -13,7 +13,7 @@ export const HeroSection = () => {
 
         {/* Image Section */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <img src="/src/assets/images/rafiki.png" alt="Welcome to Innovate Future" className="w-full max-w-sm sm:max-w-md lg:max-w-lg h-auto" />
+          <img src="/images/rafiki.png" alt="Welcome to Innovate Future" className="w-full max-w-sm sm:max-w-md lg:max-w-lg h-auto" />
         </div>
       </div>
     </section>

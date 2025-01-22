@@ -8,7 +8,7 @@ export const Footer = () => {
         {/* Logo & Branding */}
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <img src="/src/assets/images/logo white.png" alt="Innovative Future logo" className="h-8 w-8" />
+            <img src="/images/logo white.png" alt="Innovative Future logo" className="h-8 w-8" />
             <div className="leading-5">
               <div className="text-lg font-bold">INNOVATE FUTURE</div>
               <div className="text-sm">ASSOCIATION</div>

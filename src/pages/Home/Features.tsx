@@ -1,17 +1,17 @@
 export const Features: React.FC = () => {
   const features = [
     {
-      icon: "/src/assets/images/Vector1.png",
+      icon: "/images/Vector1.png",
       title: "Professional Development",
       description: "Offering workshops, events, and seminars on cutting-edge technologies like Generative AI, cloud computing, and more."
     },
     {
-      icon: "/src/assets/images/Vector2.png",
+      icon: "/images/Vector2.png",
       title: "Community Building",
       description: "Connecting individuals from diverse backgrounds to create a global network of innovators."
     },
     {
-      icon: "/src/assets/images/Vector3.png",
+      icon: "/images/Vector3.png",
       title: "Future-Ready Programs",
       description: "Preparing the next generation for careers in technology through mentorship, resources, and skill-building opportunities."
     }

@@ -8,7 +8,7 @@ export const NavbarEvent: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Logo Section */}
         <div className="flex items-center gap-2">
-          <img src="/src/assets/images/event logo.png" alt="Innovative Future Association Logo" className="h-10 w-10" />
+          <img src="/images/event logo.png" alt="Innovative Future Association Logo" className="h-10 w-10" />
           <div className="leading-5">
             <div className="font-bold text-[#05224F]">INNOVATE FUTURE</div>
             <div className="text-xs text-[#05224F]">ASSOCIATION</div>
