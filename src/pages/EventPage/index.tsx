@@ -13,7 +13,7 @@ const EventPage: React.FC = () => {
           <p className="text-sm mb-6 mt-2 bg-[#F36D26] text-white py-2 px-4 rounded-md inline-block shadow-lg">Thu, 23/01/2025 - Sat, 25/01/2025</p>
         </section>
 
-        <section>
+        <section className="bg-[#BEE7F9] justify-items-center">
           <img src="/images/event image.png" alt="event image" />
         </section>
 
