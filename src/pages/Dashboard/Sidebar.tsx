@@ -73,7 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                       avatarAlt={"@AcmeCorporation"}
                       avatarPlaceholder={"AC"}
                     />
-                    {state === "collapsed" && !isMobile && (
+                    {state === "expanded" && !isMobile && (
                       <div className="flex flex-col items-start gap-[2px]">
                         <p className="text-primary font-bold text-sm leading-3 truncate max-w-40">{"Acme Corporation"}</p>
                         <p className="text-primary text-[12px] leading-3 truncate max-w-40">{"info@acmecorp.com"}</p>
@@ -87,19 +87,19 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
         </SidebarHeader>
       )}
       <SidebarContent>
-        {sidebarItemGroups.map(sidebarItemGroup => (
-          <SidebarGroup key={sidebarItemGroup.sidebarLabel}>
+        {sidebarItemGroups.map((sidebarItemGroup, index) => (
+          <SidebarGroup key={`${sidebarItemGroup.sidebarLabel}${index}`}>
             {sidebarItemGroup.sidebarLabel && <SidebarGroupLabel>{sidebarItemGroup.sidebarLabel}</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
-                {sidebarItemGroup.items.map(item =>
+                {sidebarItemGroup.items.map((item, index) =>
                   item.children ? (
                     <Collapsible
                       open={isOpen[item.title]}
                       onOpenChange={() => handleOpenChange(item.title)}
                       defaultOpen
                       className="group/collapsible"
-                      key={item.title}
+                      key={`${item.title}${index}`}
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
@@ -117,8 +117,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           {item.children &&
-                            item.children.map(child => (
-                              <SidebarMenuSub key={child.title}>
+                            item.children.map((child, index) => (
+                              <SidebarMenuSub key={`${child.title}${index}`}>
                                 <SidebarMenuSubItem>
                                   <SidebarMenuSubButton asChild className="flex items-center">
                                     <Link to={child.url}>
