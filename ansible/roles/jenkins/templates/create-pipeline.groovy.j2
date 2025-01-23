@@ -9,23 +9,19 @@ import com.cloudbees.jenkins.GitHubPushTrigger
 
 def jenkins = Jenkins.instance
 
-// 创建或获取 pipeline job
 def jobName = 'frontend-pipeline'
 def job = jenkins.getItem(jobName)
 def pipelineJob
 
 try {
     if (job == null) {
-        // 创建新的 pipeline job
         pipelineJob = jenkins.createProject(WorkflowJob, jobName)
         println "Created new pipeline job: ${jobName}"
     } else {
-        // 使用现有的 job
         pipelineJob = job
         println "Updating existing pipeline job: ${jobName}"
     }
     
-    // 配置 Git
     def gitScm = new GitSCM(
         [new UserRemoteConfig("https://github.com/Innovate-Future-Foundation/Frontend.git", "origin", null, null)],
         [new BranchSpec("*/devops/dylan-v2")],
@@ -36,21 +32,16 @@ try {
         []
     )
     
-    // 设置 pipeline 定义
     def flowDefinition = new CpsScmFlowDefinition(gitScm, "Jenkinsfile")
     flowDefinition.setLightweight(true)
     pipelineJob.setDefinition(flowDefinition)
     
-    // 设置描述
     pipelineJob.setDescription('Frontend CI/CD Pipeline')
     
-    // 删除现有的触发器
     pipelineJob.getTriggers().clear()
     
-    // 添加 GitHub hook trigger
     pipelineJob.addTrigger(new GitHubPushTrigger())
     
-    // 保存配置
     pipelineJob.save()
     
     println "Pipeline job configuration updated successfully"
@@ -61,5 +52,4 @@ try {
     throw e
 }
 
-// 保存所有更改
 jenkins.save()
