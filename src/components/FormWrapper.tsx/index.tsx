@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 interface FormPieceProp {
   formTitle: string;
   children: ReactNode;
-  onSave: () => void;
+  onSave?: () => void;
 }
 
 const FormWrapper: React.FC<FormPieceProp> = ({ formTitle, children, onSave }) => {
@@ -16,11 +16,13 @@ const FormWrapper: React.FC<FormPieceProp> = ({ formTitle, children, onSave }) =
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg">{formTitle}</CardTitle>
-          <div className="flex gap-4">
-            <Button className="rounded-full" onClick={onSave}>
-              Save <Save />
-            </Button>
-          </div>
+          {onSave && (
+            <div className="flex gap-4">
+              <Button className="rounded-full" onClick={onSave}>
+                Save <Save />
+              </Button>
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent>

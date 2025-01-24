@@ -279,19 +279,122 @@ const studentMenu: SidebarMenu = {
   ]
 };
 
+const organisationManagerMenu: SidebarMenu = {
+  sidebarHeader: {
+    url: "/dashboard/organisations/:id",
+    profieEditable: true,
+    renderAdminList: false
+  },
+  sidebarMenuGroups: [
+    {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: Gauge
+        }
+      ]
+    },
+    {
+      sidebarLabel: "tours management",
+      subMenu: [
+        {
+          title: "my tours",
+          url: "/dashboard/tours",
+          icon: TicketsPlane
+        }
+      ]
+    },
+    {
+      sidebarLabel: "stuffs management",
+      subMenu: [
+        {
+          title: "teachers",
+          url: "/dashboard/orgteachers",
+          icon: Users
+        }
+      ]
+    },
+    {
+      sidebarLabel: "clients management",
+      subMenu: [
+        {
+          title: "my clients",
+          url: "/dashboard/parents",
+          icon: BookUser,
+          children: [
+            {
+              title: "parents",
+              url: "/dashboard/parents",
+              icon: UsersRound
+            },
+            {
+              title: "students",
+              url: "/dashboard/students",
+              icon: Backpack
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+const filterMenuItemsByPermission = (menu: SidebarMenu, role: RoleType): SidebarMenu => {
+  const filteredGroups = menu.sidebarMenuGroups
+    .map(group => ({
+      ...group,
+      subMenu: group.subMenu.filter(item => {
+        // 检查 URL 权限
+        if (item.url === "/dashboard/orgadmins") {
+          return ["platform admin", "organisation admin"].includes(role);
+        }
+        // 如果有子菜单，也需要过滤
+        if (item.children) {
+          item.children = item.children.filter(child => {
+            if (child.url === "/dashboard/orgadmins") {
+              return ["platform admin", "organisation admin"].includes(role);
+            }
+            return true;
+          });
+          // 如果过滤后没有子菜单，则不显示父菜单
+          return item.children.length > 0;
+        }
+        return true;
+      })
+    }))
+    .filter(group => group.subMenu.length > 0);
+
+  return {
+    ...menu,
+    sidebarMenuGroups: filteredGroups
+  };
+};
+
 export const filterMenuByRole = (role: RoleType): SidebarMenu => {
+  let baseMenu;
   switch (role) {
     case "platform admin":
-      return platformAdminMenu;
+      baseMenu = platformAdminMenu;
+      break;
     case "organisation admin":
-      return organisationAdminMenu;
+      baseMenu = organisationAdminMenu;
+      break;
+    case "organisation manager":
+      baseMenu = organisationManagerMenu;
+      break;
     case "organisation teacher":
-      return organisationTeacherMenu;
+      baseMenu = organisationTeacherMenu;
+      break;
     case "parent":
-      return parentMenu;
+      baseMenu = parentMenu;
+      break;
     case "student":
-      return studentMenu;
+      baseMenu = studentMenu;
+      break;
     default:
-      throw new Error("Invalid role provided to filterMenuByRole");
+      console.error(`Invalid role provided to filterMenuByRole: ${role}`);
+      baseMenu = studentMenu;
   }
+  return filterMenuItemsByPermission(baseMenu, role);
 };
