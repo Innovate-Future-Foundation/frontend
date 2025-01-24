@@ -22,14 +22,17 @@ import { Input } from "@/components/ui/input";
 import { ITEMS_PER_PAGE } from "@/constants/appConfig";
 import Pagenation from "@/components/Pagenation";
 import { TableBaseType } from "@/types/tablebase";
+import { Card } from "../ui/card";
 
 interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
   data: TableBaseType<T>[];
   searchPlaceholder: string;
+  locationListType?: LocationListType;
 }
+export type LocationListType = "cards" | "table";
 
-const DataTable = <T extends object>({ columns, data, searchPlaceholder }: DataTableProps<T>) => {
+const DataTable = <T extends object>({ columns, data, searchPlaceholder, locationListType = "table" }: DataTableProps<T>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -127,43 +130,66 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder }: DataT
           </span>
         </div>
       </div>
-
       {/* Table */}
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>;
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
+      {locationListType === "table" && (
+        <>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map(headerGroup => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map(header => {
+                      return (
+                        <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map(row => (
+                    <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className={row.depth === 0 ? "" : "bg-blue-50"}>
+                      {row.getVisibleCells().map(cell => (
+                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+          </div>
+        </>
+      )}
+      {/* cards */}
+      {locationListType === "cards" && (
+        <div className="rounded-md mb-4">
+          <div className="grid lg:grid-cols-4 gap-2 md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className={row.depth === 0 ? "" : "bg-blue-50"}>
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                  ))}
-                </TableRow>
+                <Card key={row.id} className={"w-full"}>
+                  {row.getVisibleCells().map(cell => {
+                    return <div key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>;
+                  })}
+                </Card>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
+              <div className="h-24 text-center">No results.</div>
             )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
         </div>
-      </div>
+      )}
       <Pagenation
         currentPage={table.getState().pagination.pageIndex + 1}
         totalItems={table.getFilteredRowModel().rows.length}

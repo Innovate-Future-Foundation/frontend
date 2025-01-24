@@ -87,10 +87,10 @@ const platformAdminMenu: SidebarMenu = {
       ]
     },
     {
-      sidebarLabel: "user management and contact",
+      sidebarLabel: "contacts",
       subMenu: [
         {
-          title: "User List",
+          title: "Users",
           url: "/dashboard/users",
           icon: Users
         }
@@ -158,10 +158,10 @@ const organisationAdminMenu: SidebarMenu = {
       ]
     },
     {
-      sidebarLabel: "user management and contact",
+      sidebarLabel: "contacts",
       subMenu: [
         {
-          title: "User List",
+          title: "Users",
           url: "/dashboard/users",
           icon: Users
         }
@@ -217,6 +217,16 @@ const organisationTeacherMenu: SidebarMenu = {
           ]
         }
       ]
+    },
+    {
+      sidebarLabel: "contacts",
+      subMenu: [
+        {
+          title: "Users",
+          url: "/dashboard/users",
+          icon: Users
+        }
+      ]
     }
   ]
 };
@@ -246,6 +256,16 @@ const parentMenu: SidebarMenu = {
           icon: TicketsPlane
         }
       ]
+    },
+    {
+      sidebarLabel: "contacts",
+      subMenu: [
+        {
+          title: "Users",
+          url: "/dashboard/users",
+          icon: Users
+        }
+      ]
     }
   ]
 };
@@ -273,6 +293,16 @@ const studentMenu: SidebarMenu = {
           title: "my tours",
           url: "/dashboard/tours",
           icon: TicketsPlane
+        }
+      ]
+    },
+    {
+      sidebarLabel: "contacts",
+      subMenu: [
+        {
+          title: "Users",
+          url: "/dashboard/users",
+          icon: Users
         }
       ]
     }
