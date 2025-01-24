@@ -9,7 +9,9 @@ import {
   getSortedRowModel,
   useReactTable,
   ColumnFiltersState,
-  PaginationState
+  PaginationState,
+  getExpandedRowModel,
+  ExpandedState
 } from "@tanstack/react-table";
 import { ChevronDown, Filter, Search } from "lucide-react";
 
@@ -19,14 +21,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ITEMS_PER_PAGE } from "@/constants/appConfig";
 import Pagenation from "@/components/Pagenation";
+import { TableBaseType } from "@/types/tablebase";
 
-interface DataTableProps<T> {
+interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
-  data: T[];
+  data: TableBaseType<T>[];
   searchPlaceholder: string;
 }
 
-const DataTable = <T,>({ columns, data, searchPlaceholder }: DataTableProps<T>) => {
+const DataTable = <T extends object>({ columns, data, searchPlaceholder }: DataTableProps<T>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -35,13 +38,17 @@ const DataTable = <T,>({ columns, data, searchPlaceholder }: DataTableProps<T>) 
     pageSize: ITEMS_PER_PAGE
   });
   const [globalFilter, setGlobalFilter] = React.useState("");
+  const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
-  const table = useReactTable<T>({
+  const table = useReactTable<TableBaseType<T>>({
     data,
     columns,
+    onExpandedChange: setExpanded,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
+    getSubRows: row => row.children,
+    getExpandedRowModel: getExpandedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -52,7 +59,8 @@ const DataTable = <T,>({ columns, data, searchPlaceholder }: DataTableProps<T>) 
       columnFilters,
       rowSelection,
       globalFilter,
-      pagination
+      pagination,
+      expanded
     },
     onGlobalFilterChange: setGlobalFilter,
     manualPagination: false,
@@ -135,7 +143,7 @@ const DataTable = <T,>({ columns, data, searchPlaceholder }: DataTableProps<T>) 
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className={row.depth === 0 ? "" : "bg-blue-50"}>
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}

@@ -8,7 +8,7 @@ const ParentPage = () => {
       icon={Backpack}
       title="Parent List"
       inviteLabel="Invite Parent"
-      columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: true, includeChildren: true })}
+      columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: true })}
       searchPlaceholder="Search by name, email, or organization"
       onInviteClick={() => console.log("Invite Parent clicked")}
     />
