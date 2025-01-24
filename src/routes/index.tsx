@@ -11,6 +11,7 @@ import TourPage from "@/pages/Tour";
 import ProfileDetailPage from "@/pages/Profile/ProfileDetailPage";
 import TeacherPage from "@/pages/Teacher";
 import StuffPage from "@/pages/Stuff";
+import OrganisationRegisterPage from "@/pages/Authentication/OrganisationRegister";
 
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
@@ -27,7 +28,16 @@ const router: AppRoute[] = [
   },
   {
     path: "/auth",
-    element: <AuthenticationPage />
+    children: [
+      {
+        index: true,
+        element: <AuthenticationPage />
+      },
+      {
+        path: "organisation-register",
+        element: <OrganisationRegisterPage />
+      }
+    ]
   },
   {
     path: "dashboard",

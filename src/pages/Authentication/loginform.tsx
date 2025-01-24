@@ -21,7 +21,12 @@ const loginFormSchema = z.object({
 // inferring the type from the schema
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
-const LoginForm = () => {
+// 添加 Props 接口
+interface LoginFormProps {
+  onRegisterClick: () => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     mode: "onBlur",
@@ -61,9 +66,9 @@ const LoginForm = () => {
 
         <div className="text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <a href="/register" className="text-blue-600 hover:text-blue-700">
+          <button type="button" onClick={onRegisterClick} className="text-blue-600 hover:text-blue-700">
             Register
-          </a>
+          </button>
         </div>
       </form>
     </Form>
