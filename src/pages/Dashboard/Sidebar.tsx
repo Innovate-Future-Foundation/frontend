@@ -110,7 +110,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                                   <item.icon className="w-4 h-4" />
                                   {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{item.title}</span>}
                                 </div>
-                                <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-90" : "rotate-0"}`} />
+                                <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${isOpen[item.title] ? "rotate-90" : "rotate-0"}`} />
                               </div>
                             </Link>
                           </SidebarMenuButton>
