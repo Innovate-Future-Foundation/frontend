@@ -7,6 +7,7 @@ import { Form } from "@/components/ui/form";
 import Avatar from "@/components/Avatar";
 import FormWrapper from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
+import { usePermissions } from "@/hooks/use-permissions";
 
 const orgProfileDetail = {
   orgName: "JR Academy",
@@ -92,14 +93,22 @@ const addressInfoFormSchema = z.object({
     .optional()
 });
 
+interface FormField {
+  name: keyof z.infer<typeof companyInfoFormSchema>;
+  label: string;
+  placeholder: string;
+  disabled: boolean;
+}
+
 const OrganisationProfile = () => {
+  const { canEditOrganisationProfile } = usePermissions();
+
   const companyInfoForm = useForm<z.infer<typeof companyInfoFormSchema>>({
     resolver: zodResolver(companyInfoFormSchema),
-    mode: "onChange",
     defaultValues: {
-      logoUrl: orgProfileDetail.logoUrl,
       name: orgProfileDetail.orgName,
       email: orgProfileDetail.email,
+      logoUrl: orgProfileDetail.logoUrl,
       websiteUrl: orgProfileDetail.websiteUrl
     }
   });
@@ -119,14 +128,34 @@ const OrganisationProfile = () => {
   const avatarAlt = "@InnovateFoundation";
 
   const handleCompanyInfoSubmit = (data: z.infer<typeof companyInfoFormSchema>) => {
-    console.log("Company Info Submitted: ", data);
-    // TODO: Perform actions such as sending the data to the server
+    console.log(data);
   };
 
   const handleAddressInfoSubmit = (data: z.infer<typeof addressInfoFormSchema>) => {
     console.log("Address Info Submitted: ", data);
     // TODO: Perform actions such as sending the data to the server
   };
+
+  const formFields: FormField[] = [
+    {
+      name: "name",
+      label: "Name",
+      placeholder: "Company Name",
+      disabled: !canEditOrganisationProfile
+    },
+    {
+      name: "email",
+      label: "Email",
+      placeholder: "company@example.com",
+      disabled: !canEditOrganisationProfile
+    },
+    {
+      name: "websiteUrl",
+      label: "Website Url",
+      placeholder: "Website Url",
+      disabled: !canEditOrganisationProfile
+    }
+  ];
 
   return (
     <div className="w-full flex flex-col justify-center">
@@ -158,26 +187,59 @@ const OrganisationProfile = () => {
       </div>
       <div className="h-4"></div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <FormWrapper formTitle={"Company Information"} onSave={companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
+        <FormWrapper formTitle="Company Information" onSave={canEditOrganisationProfile ? companyInfoForm.handleSubmit(handleCompanyInfoSubmit) : undefined}>
           <Form {...companyInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={companyInfoForm.control} name="name" label="Name" placeholder="Company Name" />
-              <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" />
+              {formFields.slice(0, 2).map(field => (
+                <FormFieldItem
+                  key={field.name}
+                  fieldControl={companyInfoForm.control}
+                  name={field.name}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                  disabled={field.disabled}
+                />
+              ))}
             </div>
-            <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" />
+            <FormFieldItem
+              fieldControl={companyInfoForm.control}
+              name={formFields[2].name}
+              label={formFields[2].label}
+              placeholder={formFields[2].placeholder}
+              disabled={formFields[2].disabled}
+            />
           </Form>
         </FormWrapper>
-        <FormWrapper formTitle={"Address"} onSave={addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
+
+        <FormWrapper formTitle={"Address"} onSave={canEditOrganisationProfile ? addressInfoForm.handleSubmit(handleAddressInfoSubmit) : undefined}>
           <Form {...addressInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="state" label="State" placeholder="New South Wales" />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" disabled={!canEditOrganisationProfile} />
+              <FormFieldItem
+                fieldControl={addressInfoForm.control}
+                name="state"
+                label="State"
+                placeholder="New South Wales"
+                disabled={!canEditOrganisationProfile}
+              />
             </div>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Sydney" disabled={!canEditOrganisationProfile} />
+              <FormFieldItem
+                fieldControl={addressInfoForm.control}
+                name="postcode"
+                label="Postcode"
+                placeholder="2000"
+                disabled={!canEditOrganisationProfile}
+              />
             </div>
-            <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" />
+            <FormFieldItem
+              fieldControl={addressInfoForm.control}
+              name="street"
+              label="Street"
+              placeholder="123 Main Street"
+              disabled={!canEditOrganisationProfile}
+            />
           </Form>
         </FormWrapper>
       </div>

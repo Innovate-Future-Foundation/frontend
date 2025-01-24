@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 interface FormPieceProp {
   formTitle: string;
   children: ReactNode;
-  onSave: () => void;
+  onSave?: () => void;
 }
 
 const FormWrapper: React.FC<FormPieceProp> = ({ formTitle, children, onSave }) => {

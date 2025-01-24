@@ -1,4 +1,5 @@
 import { RouteObject } from "react-router-dom";
+import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 import HomePage from "@/pages/Home";
 import AuthenticationPage from "@/pages/Authentication";
@@ -58,7 +59,11 @@ const router: AppRoute[] = [
       },
       {
         path: "organisations/:id",
-        element: <OrganisationDetailPage />,
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin", "organisation manager", "organisation teacher", "parent", "student"]}>
+            <OrganisationDetailPage />
+          </ProtectedRoute>
+        ),
         handle: { breadcrumb: "organisation profile & members" }
       },
       {
@@ -73,7 +78,11 @@ const router: AppRoute[] = [
       },
       {
         path: "orgadmins",
-        element: <OrgAdminPage />,
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin"]}>
+            <OrgAdminPage />
+          </ProtectedRoute>
+        ),
         handle: { breadcrumb: "organisation admins list" }
       },
       {
