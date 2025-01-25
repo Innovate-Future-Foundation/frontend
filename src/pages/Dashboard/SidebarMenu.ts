@@ -1,4 +1,4 @@
-import { TicketsPlane, Building2, Users, BookUser, UsersRound, Backpack, Gauge } from "lucide-react";
+import { TicketsPlane, Building2, Users, Map, BookUser, UsersRound, Backpack, Gauge, CalendarCheck2, LayoutGrid, Contact } from "lucide-react";
 import { RoleType } from "@/types";
 import { SidebarItem } from "./Sidebar";
 
@@ -23,22 +23,22 @@ const platformAdminMenu: SidebarMenu = {
         {
           title: "dashboard",
           url: "/dashboard",
-          icon: Gauge
+          icon: LayoutGrid
         }
       ]
     },
     {
-      sidebarLabel: "platform chores",
+      sidebarLabel: "PLATFORM",
       subMenu: [
         {
           title: "platform events",
           url: "/dashboard/events",
-          icon: TicketsPlane
+          icon: CalendarCheck2
         }
       ]
     },
     {
-      sidebarLabel: "organisation management",
+      sidebarLabel: "ORGs",
       subMenu: [
         {
           title: "organisations",
@@ -48,22 +48,22 @@ const platformAdminMenu: SidebarMenu = {
         {
           title: "organisation tours",
           url: "/dashboard/tours",
-          icon: TicketsPlane
+          icon: Map
         },
         {
           title: "organisation stuffs",
           url: "/dashboard/orgadmins",
-          icon: BookUser,
+          icon: Users,
           children: [
             {
               title: "admins",
               url: "/dashboard/orgadmins",
-              icon: Users
+              icon: "bg-secondary-foreground"
             },
             {
               title: "teachers",
               url: "/dashboard/orgteachers",
-              icon: Users
+              icon: "bg-secondary-foregroundYellow"
             }
           ]
         },
@@ -75,22 +75,17 @@ const platformAdminMenu: SidebarMenu = {
             {
               title: "parents",
               url: "/dashboard/parents",
-              icon: UsersRound
+              icon: "bg-secondary-foregroundPurple"
             },
             {
               title: "students",
               url: "/dashboard/students",
-              icon: Backpack
+              icon: "bg-secondary-foregroundGreen"
             }
           ]
-        }
-      ]
-    },
-    {
-      sidebarLabel: "contacts",
-      subMenu: [
+        },
         {
-          title: "Users",
+          title: "Contacts",
           url: "/dashboard/users",
           icon: Users
         }
@@ -163,7 +158,7 @@ const organisationAdminMenu: SidebarMenu = {
         {
           title: "Users",
           url: "/dashboard/users",
-          icon: Users
+          icon: Contact
         }
       ]
     }

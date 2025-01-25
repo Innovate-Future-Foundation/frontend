@@ -24,7 +24,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ className, itemProps = {}, link
       <BreadcrumbList className={cn("capitalize", className)}>
         {breadcrumbs.map(breadcrumb => (
           <div className="flex" key={breadcrumb!.href}>
-            <BreadcrumbSeparator {...separatorProps} />
+            <BreadcrumbSeparator {...separatorProps} className="mr-1" />
             <BreadcrumbItem {...itemProps}>
               <BreadcrumbLink {...linkProps} href={breadcrumb!.href}>
                 {breadcrumb!.label}

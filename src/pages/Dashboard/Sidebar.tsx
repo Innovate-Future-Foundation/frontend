@@ -1,5 +1,5 @@
 import { ChevronRight, LucideIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import {
   Sidebar as CNSidebar,
@@ -17,9 +17,9 @@ import {
   useSidebar
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState } from "react";
 import Avatar from "@/components/Avatar";
 import { SidebarheaderAccess } from "./SidebarMenu";
+import clsx from "clsx";
 
 export interface SidebarProps {
   sidebarheader?: SidebarheaderAccess;
@@ -33,12 +33,13 @@ export interface SidebarItemGroup {
 export interface SidebarItem {
   title: string;
   url: string;
-  icon: LucideIcon;
+  icon: LucideIcon | string;
   children?: SidebarItem[];
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) => {
   const { state, isMobile } = useSidebar();
+  const path = useLocation().pathname;
 
   const hasChildrenWithTitle = sidebarItemGroups.reduce((groupAcc: Record<string, boolean>, sidebarItemGroup: SidebarItemGroup) => {
     sidebarItemGroup.items.forEach(item => {
@@ -49,16 +50,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
     return groupAcc;
   }, {});
 
-  const [isOpen, setIsOpen] = useState<Record<string, boolean>>(hasChildrenWithTitle);
-
-  const handleOpenChange = (title: string) => {
-    setIsOpen(prev => ({
-      ...prev,
-      [title]: !isOpen[title]
-    }));
-  };
   return (
-    <CNSidebar collapsible="icon" variant="sidebar" className="mt-12">
+    <CNSidebar collapsible="icon" variant="sidebar" className={clsx(`mt-12 ${state === "expanded" && !isMobile && "px-4"} bg-background`)}>
       {sidebarheader && (
         <SidebarHeader>
           <SidebarMenu>
@@ -89,28 +82,38 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
       <SidebarContent>
         {sidebarItemGroups.map((sidebarItemGroup, index) => (
           <SidebarGroup key={`${sidebarItemGroup.sidebarLabel}${index}`}>
-            {sidebarItemGroup.sidebarLabel && <SidebarGroupLabel>{sidebarItemGroup.sidebarLabel}</SidebarGroupLabel>}
+            {sidebarItemGroup.sidebarLabel && (
+              <SidebarGroupLabel className="text-primary-foreground60 dark:text-foreground font-medium">{sidebarItemGroup.sidebarLabel}</SidebarGroupLabel>
+            )}
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="dark:text-foreground text-primary-foreground30">
                 {sidebarItemGroup.items.map((item, index) =>
                   item.children ? (
                     <Collapsible
-                      open={isOpen[item.title]}
-                      onOpenChange={() => handleOpenChange(item.title)}
-                      defaultOpen
-                      className="group/collapsible"
+                      disabled
+                      open={hasChildrenWithTitle[item.title]}
+                      // onOpenChange={() => handleOpenChange(item.title)}
+                      // defaultOpen
+                      className={clsx(
+                        `${item.children.map(child => child.url).includes(path) && "bg-secondary rounded-lg border-primary-light"} ${state === "expanded" && !isMobile && "pb-2"} group collapsible blur:bg-secondary hover:bg-secondary hover:rounded-lg hover:border-primary-light`
+                      )}
                       key={`${item.title}${index}`}
                     >
                       <SidebarMenuItem>
                         <CollapsibleTrigger asChild>
-                          <SidebarMenuButton asChild>
+                          <SidebarMenuButton
+                            asChild
+                            className={clsx(`${item.children.map(child => child.url).includes(path) && "text-secondary-foreground"} py-4`)}
+                          >
                             <Link to={item.url}>
                               <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-2">
                                   <item.icon className="w-4 h-4" />
                                   {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{item.title}</span>}
                                 </div>
-                                <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${isOpen[item.title] ? "rotate-90" : "rotate-0"}`} />
+                                <ChevronRight
+                                  className={`w-4 h-4 transition-transform duration-200 ${hasChildrenWithTitle[item.title] ? "rotate-90" : "rotate-0"}`}
+                                />
                               </div>
                             </Link>
                           </SidebarMenuButton>
@@ -120,11 +123,16 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                             item.children.map((child, index) => (
                               <SidebarMenuSub key={`${child.title}${index}`}>
                                 <SidebarMenuSubItem>
-                                  <SidebarMenuSubButton asChild className="flex items-center">
+                                  <SidebarMenuSubButton
+                                    asChild
+                                    className={clsx(
+                                      `${path === child.url && "bg-primary-light border-primary-light text-secondary-foreground"} flex items-center py-4 hover:bg-primary-light hover:text-secondary-foreground`
+                                    )}
+                                  >
                                     <Link to={child.url}>
                                       <div className="flex items-center gap-2">
-                                        <child.icon className="w-4 h-4 inline" />
-                                        {state === "expanded" && !isMobile && <span className="capitalize text-sm">{child.title}</span>}
+                                        <div className={clsx("w-3 h-3 rounded-sm", child.icon)}></div>
+                                        {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{child.title}</span>}
                                       </div>
                                     </Link>
                                   </SidebarMenuSubButton>
@@ -136,7 +144,12 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                     </Collapsible>
                   ) : (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
+                      <SidebarMenuButton
+                        asChild
+                        className={clsx(
+                          `${path === item.url && "bg-secondary border-primary-light text-secondary-foreground"} py-4 hover:bg-secondary hover:border-primary-light hover:text-secondary-foreground`
+                        )}
+                      >
                         <Link to={item.url}>
                           <item.icon className="w-5 h-5" />
                           {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{item.title}</span>}
