@@ -1,4 +1,4 @@
-import { TicketsPlane, Building2, Users, Map, BookUser, UsersRound, Backpack, Gauge, CalendarCheck2, LayoutGrid, Contact } from "lucide-react";
+import { TicketsPlane, Building2, Users, Map, BookUser, Gauge, CalendarCheck2, LayoutGrid, Contact } from "lucide-react";
 import { RoleType } from "@/types";
 import { SidebarItem } from "./Sidebar";
 
@@ -96,9 +96,7 @@ const platformAdminMenu: SidebarMenu = {
 
 const organisationAdminMenu: SidebarMenu = {
   sidebarHeader: {
-    url: "/dashboard/organisations/:id",
-    profieEditable: true,
-    renderAdminList: true
+    url: "/dashboard/organisations/:id"
   },
   sidebarMenuGroups: [
     {
@@ -106,57 +104,54 @@ const organisationAdminMenu: SidebarMenu = {
         {
           title: "dashboard",
           url: "/dashboard",
-          icon: Gauge
+          icon: LayoutGrid
         }
       ]
     },
     {
-      sidebarLabel: "tours management",
+      sidebarLabel: "TOURS",
       subMenu: [
         {
           title: "tours",
           url: "/dashboard/tours",
-          icon: TicketsPlane
+          icon: Map
         }
       ]
     },
     {
-      sidebarLabel: "stuffs management",
+      sidebarLabel: "USERS",
       subMenu: [
         {
-          title: "teachers",
-          url: "/dashboard/orgteachers",
-          icon: Users
-        }
-      ]
-    },
-    {
-      sidebarLabel: "clients management",
-      subMenu: [
+          title: "stuffs",
+          url: "/dashboard/orgadmins",
+          icon: Users,
+          children: [
+            {
+              title: "teachers",
+              url: "/dashboard/orgteachers",
+              icon: "bg-secondary-foregroundYellow"
+            }
+          ]
+        },
         {
           title: "clients",
           url: "/dashboard/parents",
           icon: BookUser,
           children: [
             {
-              title: "parents list",
+              title: "parents",
               url: "/dashboard/parents",
-              icon: UsersRound
+              icon: "bg-secondary-foregroundPurple"
             },
             {
-              title: "students list",
+              title: "students",
               url: "/dashboard/students",
-              icon: Backpack
+              icon: "bg-secondary-foregroundGreen"
             }
           ]
-        }
-      ]
-    },
-    {
-      sidebarLabel: "contacts",
-      subMenu: [
+        },
         {
-          title: "Users",
+          title: "contacts",
           url: "/dashboard/users",
           icon: Contact
         }
@@ -167,9 +162,7 @@ const organisationAdminMenu: SidebarMenu = {
 
 const organisationTeacherMenu: SidebarMenu = {
   sidebarHeader: {
-    url: "/dashboard/organisations/:id",
-    profieEditable: false,
-    renderAdminList: false
+    url: "/dashboard/organisations/:id"
   },
   sidebarMenuGroups: [
     {
@@ -177,22 +170,22 @@ const organisationTeacherMenu: SidebarMenu = {
         {
           title: "dashboard",
           url: "/dashboard",
-          icon: Gauge
+          icon: LayoutGrid
         }
       ]
     },
     {
-      sidebarLabel: "tours management",
+      sidebarLabel: "TOURS",
       subMenu: [
         {
           title: "my tours",
           url: "/dashboard/tours",
-          icon: TicketsPlane
+          icon: Map
         }
       ]
     },
     {
-      sidebarLabel: "clients management",
+      sidebarLabel: "USERS",
       subMenu: [
         {
           title: "my clients",
@@ -202,24 +195,19 @@ const organisationTeacherMenu: SidebarMenu = {
             {
               title: "parents",
               url: "/dashboard/parents",
-              icon: UsersRound
+              icon: "bg-secondary-foregroundPurple"
             },
             {
               title: "students",
               url: "/dashboard/students",
-              icon: Backpack
+              icon: "bg-secondary-foregroundGreen"
             }
           ]
-        }
-      ]
-    },
-    {
-      sidebarLabel: "contacts",
-      subMenu: [
+        },
         {
-          title: "Users",
+          title: "contacts",
           url: "/dashboard/users",
-          icon: Users
+          icon: Contact
         }
       ]
     }
@@ -228,9 +216,7 @@ const organisationTeacherMenu: SidebarMenu = {
 
 const parentMenu: SidebarMenu = {
   sidebarHeader: {
-    url: "/dashboard/organisations/:id",
-    profieEditable: false,
-    renderAdminList: false
+    url: "/dashboard/organisations/:id"
   },
   sidebarMenuGroups: [
     {
@@ -243,7 +229,7 @@ const parentMenu: SidebarMenu = {
       ]
     },
     {
-      sidebarLabel: "tours",
+      sidebarLabel: "TOURS",
       subMenu: [
         {
           title: "my tours",
@@ -253,12 +239,12 @@ const parentMenu: SidebarMenu = {
       ]
     },
     {
-      sidebarLabel: "contacts",
+      sidebarLabel: "CONTACTS",
       subMenu: [
         {
-          title: "Users",
+          title: "contacts",
           url: "/dashboard/users",
-          icon: Users
+          icon: Contact
         }
       ]
     }
@@ -267,9 +253,7 @@ const parentMenu: SidebarMenu = {
 
 const studentMenu: SidebarMenu = {
   sidebarHeader: {
-    url: "/dashboard/organisations/:id",
-    profieEditable: false,
-    renderAdminList: false
+    url: "/dashboard/organisations/:id"
   },
   sidebarMenuGroups: [
     {
@@ -282,7 +266,7 @@ const studentMenu: SidebarMenu = {
       ]
     },
     {
-      sidebarLabel: "tours",
+      sidebarLabel: "TOURS",
       subMenu: [
         {
           title: "my tours",
@@ -292,12 +276,12 @@ const studentMenu: SidebarMenu = {
       ]
     },
     {
-      sidebarLabel: "contacts",
+      sidebarLabel: "CONTACTS",
       subMenu: [
         {
-          title: "Users",
+          title: "contacts",
           url: "/dashboard/users",
-          icon: Users
+          icon: Contact
         }
       ]
     }

@@ -1,4 +1,4 @@
-import { ChevronRight, LucideIcon } from "lucide-react";
+import { ChevronRight, ChevronsUpDown, LucideIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
@@ -55,22 +55,25 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild className="h-auto" size={"lg"}>
+              <SidebarMenuButton asChild className="h-auto bg-accent border hover:bg-secondary-light" size={"lg"}>
                 <Link to={sidebarheader.url ?? ""}>
-                  <div className="flex items-center gap-2">
-                    <Avatar
-                      size={8}
-                      className="inline-block"
-                      avatarLink={"https://github.com/shadcn.png"}
-                      avatarAlt={"@AcmeCorporation"}
-                      avatarPlaceholder={"AC"}
-                    />
-                    {state === "expanded" && !isMobile && (
-                      <div className="flex flex-col items-start gap-[2px]">
-                        <p className="text-primary font-bold text-sm leading-3 truncate max-w-40">{"Acme Corporation"}</p>
-                        <p className="text-primary text-[12px] leading-3 truncate max-w-40">{"info@acmecorp.com"}</p>
-                      </div>
-                    )}
+                  <div className="w-full flex items-center gap-2 justify-between">
+                    <div className="flex items-center gap-2">
+                      <Avatar
+                        size={8}
+                        className="inline-block"
+                        avatarLink={"https://github.com/shadcn.png"}
+                        avatarAlt={"@AcmeCorporation"}
+                        avatarPlaceholder={"AC"}
+                      />
+                      {state === "expanded" && !isMobile && (
+                        <div className="flex flex-col items-start gap-[2px]">
+                          <p className="text-primary-foreground30 font-bold text-sm leading-3 truncate max-w-40">{"Acme Corporation"}</p>
+                          <p className="text-primary-foreground50 text-[12px] leading-3 truncate max-w-40">{"info@acmecorp.com"}</p>
+                        </div>
+                      )}
+                    </div>
+                    <ChevronsUpDown size={14} className="text-primary-foreground30" />
                   </div>
                 </Link>
               </SidebarMenuButton>
