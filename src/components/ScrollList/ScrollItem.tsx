@@ -17,12 +17,12 @@ const ScrollItem = ({ name, email, avatarLink }: ScrollItemProps) => {
 
   return (
     <>
-      <div className="flex items-center justify-between py-3 px-4 hover:bg-gray-50">
+      <div className="flex items-center justify-between py-3 px-4 hover:bg-secondary-light">
         <div className="flex items-center gap-3">
           <Avatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} avatarPlaceholder={abbreviateName(name)} />
-          <div>
-            <p className="font-medium">{name}</p>
-            <p className="text-sm text-gray-500">{email}</p>
+          <div className="flex flex-col gap-[1px]">
+            <p className="font-semibold text-sm leading-none capitalize">{name}</p>
+            <p className="text-sm text-primary-foreground50 leading-none">{email}</p>
           </div>
         </div>
         <Button variant="ghost" size="icon" className="text-gray-400 hover:text-red-600" onClick={() => setIsRemoveModalOpen(true)}>

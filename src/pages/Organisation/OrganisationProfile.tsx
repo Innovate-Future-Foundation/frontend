@@ -130,8 +130,8 @@ const OrganisationProfile = () => {
 
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className="h-40 bg-accent relative">
-        <div className="absolute top-10 left-8 flex gap-3 items-end">
+      <div className="h-32 bg-accent mt-4 rounded-md flex items-center pl-4">
+        <div className="top-10 left-8 flex gap-3 items-end">
           <Avatar
             avatarLink={companyInfoForm.watch("logoUrl")!}
             size={24}
@@ -140,21 +140,24 @@ const OrganisationProfile = () => {
             outline={true}
           />
           <div className="flex flex-col">
-            <p className="text-lg leading-none font-bold">{companyInfoForm.watch("name")}</p>
+            <p className="text-lg leading-none font-bold capitalize">{companyInfoForm.watch("name")}</p>
             <p className="text-xs">{companyInfoForm.watch("websiteUrl")}</p>
             <div className="flex gap-2 mt-2">
-              <Badge variant={"secondary"} className="p-0 px-2 rounded-full font-light text-xs text-red-400 bg-red-100">
+              <Badge variant={"secondary"} className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green">
                 {orgProfileDetail.status}
               </Badge>
-              <Badge variant={"outline"} className="p-0 px-2 rounded-full font-light text-xs text-red-400  border-red-200">
-                {orgProfileDetail.subscription}
+              <Badge
+                variant={"outline"}
+                className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foreground  border-primary-light bg-secondary"
+              >
+                {orgProfileDetail.orgName}
               </Badge>
             </div>
           </div>
         </div>
       </div>
       <div className="h-4"></div>
-      <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <FormWrapper formTitle={"Company Information"} onSave={companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
           <Form {...companyInfoForm}>
             <div className="flex gap-4 w-full">
@@ -164,7 +167,6 @@ const OrganisationProfile = () => {
             <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" />
           </Form>
         </FormWrapper>
-
         <FormWrapper formTitle={"Address"} onSave={addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
           <Form {...addressInfoForm}>
             <div className="flex gap-4 w-full">

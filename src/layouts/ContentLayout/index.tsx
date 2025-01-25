@@ -3,8 +3,8 @@ import { Plus } from "lucide-react";
 import { TitleWithIcon, TitleWithIconProps } from "@/components/TitleWithIcon";
 import { Button } from "@/components/ui/button";
 
-interface ContentLayoutProps extends TitleWithIconProps {
-  children: ReactNode;
+export interface ContentLayoutProps extends TitleWithIconProps {
+  children?: ReactNode;
   onInviteClick?: () => void;
   inviteLabel?: string;
 }

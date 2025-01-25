@@ -40,7 +40,6 @@ export interface SidebarItem {
 const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) => {
   const { state, isMobile } = useSidebar();
   const path = useLocation().pathname;
-
   const hasChildrenWithTitle = sidebarItemGroups.reduce((groupAcc: Record<string, boolean>, sidebarItemGroup: SidebarItemGroup) => {
     sidebarItemGroup.items.forEach(item => {
       if (item.children) {
@@ -51,7 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
   }, {});
 
   return (
-    <CNSidebar collapsible="icon" variant="sidebar" className={clsx(`mt-12 ${state === "expanded" && !isMobile && "px-4"} bg-background`)}>
+    <CNSidebar collapsible="icon" variant="sidebar" className={clsx(`mt-12 ${state === "expanded" && !isMobile && "p-2 px-4"} bg-background`)}>
       {sidebarheader && (
         <SidebarHeader>
           <SidebarMenu>
@@ -92,10 +91,8 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                     <Collapsible
                       disabled
                       open={hasChildrenWithTitle[item.title]}
-                      // onOpenChange={() => handleOpenChange(item.title)}
-                      // defaultOpen
                       className={clsx(
-                        `${item.children.map(child => child.url).includes(path) && "bg-secondary rounded-lg border-primary-light"} ${state === "expanded" && !isMobile && "pb-2"} group collapsible blur:bg-secondary hover:bg-secondary hover:rounded-lg hover:border-primary-light`
+                        `${item.children.some(child => path.includes(child.url)) && "bg-secondary rounded-lg border-primary-light"} ${state === "expanded" && !isMobile && "pb-2"} group collapsible blur:bg-secondary hover:bg-secondary hover:rounded-lg hover:border-primary-light`
                       )}
                       key={`${item.title}${index}`}
                     >
@@ -103,7 +100,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton
                             asChild
-                            className={clsx(`${item.children.map(child => child.url).includes(path) && "text-secondary-foreground"} py-4`)}
+                            className={clsx(`${item.children.some(child => path.includes(child.url)) && "text-secondary-foreground"} py-4`)}
                           >
                             <Link to={item.url}>
                               <div className="flex items-center justify-between w-full">
@@ -126,7 +123,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                                   <SidebarMenuSubButton
                                     asChild
                                     className={clsx(
-                                      `${path === child.url && "bg-primary-light border-primary-light text-secondary-foreground"} flex items-center py-4 hover:bg-primary-light hover:text-secondary-foreground`
+                                      `${path.includes(child.url) && "bg-primary-light border-primary-light text-secondary-foreground"} flex items-center py-4 hover:bg-primary-light hover:text-secondary-foreground`
                                     )}
                                   >
                                     <Link to={child.url}>
@@ -146,9 +143,12 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton
                         asChild
-                        className={clsx(
-                          `${path === item.url && "bg-secondary border-primary-light text-secondary-foreground"} py-4 hover:bg-secondary hover:border-primary-light hover:text-secondary-foreground`
-                        )}
+                        className={clsx(`${
+                          (item.url === "/dashboard" && path === "/dashboard") || (item.url !== "/dashboard" && path.includes(item.url))
+                            ? "bg-secondary border-primary-light text-secondary-foreground"
+                            : ""
+                        } 
+  py-4 hover:bg-secondary hover:border-primary-light hover:text-secondary-foreground`)}
                       >
                         <Link to={item.url}>
                           <item.icon className="w-5 h-5" />

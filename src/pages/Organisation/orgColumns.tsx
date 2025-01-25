@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
-import AppDropdown from "@/components/Dropdown";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Organisation } from "@/types";
+import Dropdown from "@/components/Dropdown";
 
 export const orgColumns: ColumnDef<Organisation>[] = [
   {
@@ -143,12 +143,12 @@ export const orgColumns: ColumnDef<Organisation>[] = [
       ];
 
       return (
-        <AppDropdown<Organisation> item={organisationDetail} menuItems={menuItems}>
+        <Dropdown<Organisation> item={organisationDetail} menuItems={menuItems}>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal />
           </Button>
-        </AppDropdown>
+        </Dropdown>
       );
     },
     enableColumnFilter: false,

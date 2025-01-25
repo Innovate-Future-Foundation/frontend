@@ -23,6 +23,7 @@ import { ITEMS_PER_PAGE } from "@/constants/appConfig";
 import Pagenation from "@/components/Pagenation";
 import { TableBaseType } from "@/types/tablebase";
 import { Card } from "../ui/card";
+import clsx from "clsx";
 
 interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
@@ -139,7 +140,7 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
                 <TableRow key={headerGroup.id} className="border-none ">
                   {headerGroup.headers.map(header => {
                     return (
-                      <TableHead className="text-primary-foreground50" key={header.id}>
+                      <TableHead className="text-primary-foreground50 text-sm " key={header.id}>
                         {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                       </TableHead>
                     );
@@ -150,11 +151,7 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map(row => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className={row.depth === 0 ? "hover:bg-secondary-light " : "bg-blue-50"}
-                  >
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className={clsx(`${row.depth != 0 && "bg-secondary-green"}`)}>
                     {row.getVisibleCells().map(cell => (
                       <TableCell className="h-18 font-medium" key={cell.id}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -184,7 +181,12 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
           <div className="grid lg:grid-cols-4 gap-2 md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <Card key={row.id} className={"w-full"}>
+                <Card
+                  key={row.id}
+                  className={
+                    "w-full border-primary-light rounded-md overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent"
+                  }
+                >
                   {row.getVisibleCells().map(cell => {
                     return <div key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>;
                   })}

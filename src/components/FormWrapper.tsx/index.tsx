@@ -15,16 +15,16 @@ const FormWrapper: React.FC<FormPieceProp> = ({ formTitle, children, onSave }) =
     <Card className="rounded-md shadow-none w-full overflow-hidden">
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle className="text-lg">{formTitle}</CardTitle>
+          <CardTitle className="text-lg text-primary-foreground30">{formTitle}</CardTitle>
           <div className="flex gap-4">
-            <Button className="rounded-full" onClick={onSave}>
+            <Button variant="secondary" className="rounded-full text-xs uppercase" onClick={onSave}>
               Save <Save />
             </Button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        <form className="flex flex-col gap-4 pb-4">{children}</form>
+        <form className="flex flex-col gap-4 pb-0">{children}</form>
       </CardContent>
     </Card>
   );

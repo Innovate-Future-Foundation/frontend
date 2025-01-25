@@ -31,7 +31,7 @@ const platformAdminMenu: SidebarMenu = {
       sidebarLabel: "PLATFORM",
       subMenu: [
         {
-          title: "platform events",
+          title: "events",
           url: "/dashboard/events",
           icon: CalendarCheck2
         }
@@ -85,9 +85,9 @@ const platformAdminMenu: SidebarMenu = {
           ]
         },
         {
-          title: "Contacts",
+          title: "contacts",
           url: "/dashboard/users",
-          icon: Users
+          icon: Contact
         }
       ]
     }
