@@ -1,9 +1,8 @@
-import { Building2 } from "lucide-react";
-
 import DataTable from "@/components/DataTable";
-import { TitleWithIcon } from "@/components/TitleWithIcon";
 import { orgColumns } from "./orgColumns";
 import { Organisation } from "@/types";
+import ContentLayout from "@/layouts/ContentLayout";
+import { Building2 } from "lucide-react";
 
 const data: Organisation[] = [
   {
@@ -262,10 +261,9 @@ const data: Organisation[] = [
 
 const OrganisationPage = () => {
   return (
-    <div className="w-full flex flex-col justify-center">
-      <TitleWithIcon icon={Building2} title={"orgainsation list"} />
+    <ContentLayout icon={Building2} title={"organisation list"}>
       <DataTable columns={orgColumns} data={data} searchPlaceholder="search by name and email" />
-    </div>
+    </ContentLayout>
   );
 };
 

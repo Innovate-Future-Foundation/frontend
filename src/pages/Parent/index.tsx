@@ -1,11 +1,11 @@
-import { Backpack } from "lucide-react";
+import { UsersRound } from "lucide-react";
 import ProfilePage from "../Profile";
 import { profileColumns } from "../Profile/profileColumns";
 
 const ParentPage = () => {
   return (
     <ProfilePage
-      icon={Backpack}
+      icon={UsersRound}
       title="Parent List"
       inviteLabel="Invite Parent"
       columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: true })}

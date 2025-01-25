@@ -1,11 +1,9 @@
-import { LucideIcon, Plus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { TitleWithIcon } from "@/components/TitleWithIcon";
-import { Button } from "@/components/ui/button";
 import DataTable, { LocationListType } from "@/components/DataTable";
 import { Profile } from "@/types";
 import { ProfileWithChildren } from "@/types";
+import ContentLayout, { ContentLayoutProps } from "@/layouts/ContentLayout";
 
 const profileData: ProfileWithChildren[] = [
   {
@@ -253,40 +251,18 @@ const profileData: ProfileWithChildren[] = [
     updatedAt: "2025-01-15T14:30:00Z"
   }
 ];
-interface ProfilePageProps {
-  icon: LucideIcon;
-  title: string;
-  inviteLabel?: string;
+interface ProfilePageProps extends ContentLayoutProps {
   columns: ColumnDef<Profile>[];
   data?: ProfileWithChildren[];
   searchPlaceholder: string;
   locationListType?: LocationListType;
-  onInviteClick?: () => void;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({
-  icon: Icon,
-  title,
-  inviteLabel,
-  columns,
-  data = profileData,
-  searchPlaceholder,
-  locationListType,
-  onInviteClick
-}) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ columns, data = profileData, searchPlaceholder, locationListType, ...props }) => {
   return (
-    <div className="w-full flex flex-col justify-center">
-      <div className="flex justify-between items-center">
-        <TitleWithIcon icon={Icon} title={title} />
-        {onInviteClick && (
-          <Button className="capitalize active:scale-95 transition-transform duration-100" onClick={onInviteClick}>
-            <Plus className="h-4 w-4 mr-2" />
-            {inviteLabel}
-          </Button>
-        )}
-      </div>
+    <ContentLayout {...props}>
       <DataTable columns={columns} data={data} locationListType={locationListType} searchPlaceholder={searchPlaceholder} />
-    </div>
+    </ContentLayout>
   );
 };
 

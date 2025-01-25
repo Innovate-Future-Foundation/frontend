@@ -33,11 +33,26 @@ export default {
 				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					light: 'hsl(var(--primary-light))',
+					dark: 'hsl(var(--primary-dark))',
+					foreground: 'hsl(var(--primary-foreground))',
+					foreground80: 'hsl(var(--primary-foreground-80))',
+					foreground60: 'hsl(var(--primary-foreground-60))',
+					foreground50: 'hsl(var(--primary-foreground-50))',
+					foreground30: 'hsl(var(--primary-foreground-30))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					light: 'hsl(var(--secondary-light))',
+					foreground: 'hsl(var(--secondary-foreground))',
+					purple: 'hsl(var(--secondary-purple))',
+					foregroundPurple: 'hsl(var(--secondary-foreground-purple))',
+					green: 'hsl(var(--secondary-green))',
+					foregroundGreen: 'hsl(var(--secondary-foreground-green))',
+					red: 'hsl(var(--secondary-red))',
+					foregroundRed: 'hsl(var(--secondary-foreground-red))',
+					yellow: 'hsl(var(--secondary-yellow))',
+					foregroundYellow: 'hsl(var(--secondary-foreground-yellow))',
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',

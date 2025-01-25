@@ -18,15 +18,17 @@ export const FormFieldItem = <T extends FieldValues>({ fieldControl, name, label
     <FormField
       control={fieldControl}
       name={name}
-      render={({ field }) => (
-        <FormItem className="w-full">
+      render={({ field, fieldState }) => (
+        <FormItem className="w-full text-primary-foreground30">
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <div className="relative">
               <Input
                 {...field}
                 type={type === "password" ? (showPassword ? "text" : "password") : type}
-                className={type === "password" ? "pr-10" : ""}
+                className={`${type === "password" ? "pr-10" : ""} ${
+                  fieldState?.error ? "border-destructive focus-visible:ring-destructive" : "focus-visible:ring-primary"
+                }`}
                 {...inputProps}
               />
               {type === "password" && (
@@ -40,7 +42,7 @@ export const FormFieldItem = <T extends FieldValues>({ fieldControl, name, label
               )}
             </div>
           </FormControl>
-          <FormMessage />
+          {fieldState?.error ? <FormMessage /> : <div className="h-4"></div>}
         </FormItem>
       )}
     />

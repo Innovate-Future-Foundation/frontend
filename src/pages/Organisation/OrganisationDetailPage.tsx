@@ -1,17 +1,16 @@
-import { Users, WalletCards } from "lucide-react";
+import { WalletCards } from "lucide-react";
 
-import { ScrollList } from "@/components/ScrollList";
-import { TitleWithIcon } from "@/components/TitleWithIcon";
 import OrganisationProfile from "./OrganisationProfile";
+import ContentLayout from "@/layouts/ContentLayout";
+import { ScrollList } from "@/components/ScrollList";
 
 const OrganisationDetailPage = () => {
   return (
-    <div className="w-full flex flex-col gap-4 justify-center">
-      <TitleWithIcon icon={WalletCards} title={"orgainsation profile"} />
+    <ContentLayout icon={WalletCards} title={"organisation profile"}>
       <OrganisationProfile />
-      <TitleWithIcon icon={Users} title={"admins list"} />
-      <ScrollList />
-    </div>
+      <div className="h-4"></div>
+      <ScrollList title="admin list" />
+    </ContentLayout>
   );
 };
 

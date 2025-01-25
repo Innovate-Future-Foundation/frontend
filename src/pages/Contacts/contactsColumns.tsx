@@ -13,12 +13,12 @@ export const contactsColumns: ColumnDef<Profile>[] = [
     header: "Name",
     cell: ({ row }) => {
       return (
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-secondary-light">
           <div className="flex items-center gap-2 p-3 pb-0">
             <Avatar avatarLink={row.original.avatarLink ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("name"))} size={8} />
-            <div className="capitalize text-sm truncate max-w-40 font-semibold">{row.getValue("name")}</div>
+            <div className="capitalize text-primary-foreground30 text-sm truncate max-w-40 font-semibold">{row.getValue("name")}</div>
           </div>
-          <Separator className="my-4" />
+          <Separator className="mt-2 bg-background h-1" />
         </div>
       );
     },
@@ -28,7 +28,7 @@ export const contactsColumns: ColumnDef<Profile>[] = [
     accessorKey: "email",
     header: "Email",
     cell: ({ row }) => (
-      <div className="flex gap-2 items-center m-3 mt-0">
+      <div className="flex gap-2 items-center m-3 mt-2 text-primary-foreground30">
         <Mail size={16} />
         <div className="text-sm lowercase truncate max-w-100">{row.getValue("email")}</div>
       </div>
@@ -39,7 +39,7 @@ export const contactsColumns: ColumnDef<Profile>[] = [
     accessorKey: "phone",
     header: "Phone",
     cell: ({ row }) => (
-      <div className="flex gap-2 items-center m-3">
+      <div className="flex gap-2 items-center m-3 text-primary-foreground30">
         <Smartphone size={16} />
         <div className="text-sm lowercase truncate max-w-40">{row.getValue("phone")}</div>
       </div>
@@ -56,9 +56,10 @@ export const contactsColumns: ColumnDef<Profile>[] = [
     accessorKey: "role",
     header: "Role",
     cell: ({ row }) => (
-      <div className="flex gap-2 items-center m-3">
+      <div className="flex gap-2 items-center m-3 text-primary-foreground30">
         <Tag size={16} />
-        <Badge variant={"outline"}>
+        <Badge variant={"secondary"} className="flex items-center gap-1">
+          <div className="w-1 h-1 rounded-full bg-secondary-foreground"></div>
           <div className="lowercase truncate max-w-40">{row.getValue("role")}</div>
         </Badge>
       </div>

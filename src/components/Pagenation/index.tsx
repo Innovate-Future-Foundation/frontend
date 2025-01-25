@@ -8,6 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from "@/components/ui/pagination";
+import clsx from "clsx";
 
 interface PaginationProps {
   currentPage: number;
@@ -39,6 +40,9 @@ const Pagenation: React.FC<PaginationProps> = ({
         pages.push(
           <PaginationItem key={i}>
             <PaginationLink
+              className={clsx(
+                `${i === currentPage && "bg-primary text-primary-foreground "} hover:bg-secondary hover:border-secondary-foreground hover:text-secondary-foreground`
+              )}
               href="#"
               isActive={i === currentPage}
               onClick={e => {
@@ -68,7 +72,7 @@ const Pagenation: React.FC<PaginationProps> = ({
             onClick={handlePrev}
             aria-disabled={!getCanPreviousPage()}
             tabIndex={currentPage <= 1 ? -1 : undefined}
-            className={currentPage <= 1 ? "pointer-events-none opacity-50" : undefined}
+            className={currentPage <= 1 ? "pointer-events-none opacity-50 border mr-1" : "border cursor-pointer mr-1"}
           />
         </PaginationItem>
         {renderPageNumbers()}
@@ -77,7 +81,7 @@ const Pagenation: React.FC<PaginationProps> = ({
             onClick={handleNext}
             aria-disabled={!getCanNextPage()}
             tabIndex={currentPage <= 1 ? -1 : undefined}
-            className={!getCanNextPage() ? "pointer-events-none opacity-50" : undefined}
+            className={!getCanNextPage() ? "pointer-events-none opacity-50 border ml-1" : "border cursor-pointer ml-1"}
           />
         </PaginationItem>
       </PaginationContent>

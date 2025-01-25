@@ -1,11 +1,12 @@
-import { TitleWithIcon } from "@/components/TitleWithIcon";
-import { UserRoundPen } from "lucide-react";
+import { CalendarCheck2 } from "lucide-react";
+
+import ContentLayout from "@/layouts/ContentLayout";
 
 const EventPage = () => {
   return (
-    <div className="w-full flex flex-col justify-center">
-      <TitleWithIcon icon={UserRoundPen} title={"Event list"} />
-    </div>
+    <ContentLayout icon={CalendarCheck2} title={"event list"}>
+      {" "}
+    </ContentLayout>
   );
 };
 

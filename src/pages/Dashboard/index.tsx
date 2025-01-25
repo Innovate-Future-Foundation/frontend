@@ -10,7 +10,7 @@ const DashboardPage = () => {
   const code = arr.length === 2 ? arr[1] : "";
 
   //todo: hardcode
-  const roleName = "organisation admin";
+  const roleName = "platform admin";
 
   useEffect(() => {
     if (code) {

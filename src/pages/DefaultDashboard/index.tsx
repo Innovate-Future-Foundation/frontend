@@ -1,11 +1,12 @@
-import { TitleWithIcon } from "@/components/TitleWithIcon";
-import { Gauge } from "lucide-react";
+import { LayoutGrid } from "lucide-react";
+
+import ContentLayout from "@/layouts/ContentLayout";
 
 const DefaultDashboardPage = () => {
   return (
-    <div className="w-full flex flex-col justify-center">
-      <TitleWithIcon icon={Gauge} title={"Dashboard"} />
-    </div>
+    <ContentLayout icon={LayoutGrid} title={"dashboard"}>
+      {" "}
+    </ContentLayout>
   );
 };
 
