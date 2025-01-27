@@ -1,6 +1,6 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { Loader2, SquareArrowOutUpRight } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +21,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ACFormFieldItem } from "./ACFormFieldItem";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/hooks/use-toast";
 
 export interface FormInputs {
   name: string;
@@ -31,14 +32,17 @@ export interface FormInputs {
 interface props {
   roleInvited: "teacher" | "admin" | "student" | "parent";
   onSubmit: (data: FormInputs) => Promise<void>;
+  children: React.ReactNode;
 }
 
 const isVowel = (word: string) => /^[aeiouAEIOU]/.test(word);
 
-const InviteModal: React.FC<props> = ({ roleInvited, onSubmit }) => {
+const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
+  const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [isParentEmailShowToggle, setIsParentEmailShowToggle] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const inviteUserFormSchema = (roleInvited: string) => {
     return z.object({
@@ -85,21 +89,29 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit }) => {
 
   const handleFormSubmit: SubmitHandler<FormInputs> = useCallback(
     async data => {
+      setIsLoading(true);
+      setIsAlertDialogOpen(false);
       if (roleInvited !== "student" || !isParentEmailShowToggle) {
         delete data.parentEmail;
       }
       try {
         await onSubmit(data);
+        toast({
+          title: "Successfully",
+          description: "You have invited a team member."
+        });
       } catch (error) {
-        console.error("Failed to submit:", error);
+        toast({
+          title: "Invite failed ",
+          description: `${error}`
+        });
       } finally {
         reset();
-        setIsAlertDialogOpen(false);
-        setIsDialogOpen(false);
+        setIsLoading(false);
         setIsParentEmailShowToggle(false);
       }
     },
-    [roleInvited, isParentEmailShowToggle, onSubmit, reset]
+    [roleInvited, isParentEmailShowToggle, onSubmit, toast, reset]
   );
 
   const onCheckedChangeHandler = (checked: boolean) => {
@@ -115,9 +127,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit }) => {
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={onOpenChangeHandler}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Invite</Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
@@ -127,16 +137,24 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit }) => {
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <Form {...inviteUserForm}>
-            <FormFieldItem fieldControl={inviteUserForm.control} name="name" label="Name" placeholder="example: John Doe" />
-            <FormFieldItem fieldControl={inviteUserForm.control} name="email" type="email" label="Email" placeholder="example: johndoe@example.com" />
+            <FormFieldItem disabled={isLoading} fieldControl={inviteUserForm.control} name="name" label="Name" placeholder="example: John Doe" />
+            <FormFieldItem
+              disabled={isLoading}
+              fieldControl={inviteUserForm.control}
+              name="email"
+              type="email"
+              label="Email"
+              placeholder="example: johndoe@example.com"
+            />
             {roleInvited === "student" && (
               <>
                 <div className="flex items-center space-x-2">
-                  <Switch id="parentEmailSwitch" checked={isParentEmailShowToggle} onCheckedChange={onCheckedChangeHandler} />
+                  <Switch disabled={isLoading} id="parentEmailSwitch" checked={isParentEmailShowToggle} onCheckedChange={onCheckedChangeHandler} />
                   <Label htmlFor="parentEmailSwitch">Parent Email</Label>
                 </div>
                 {isParentEmailShowToggle && (
                   <ACFormFieldItem
+                    disabled={isLoading}
                     name="parentEmail"
                     type="email"
                     label="Parent Email"
@@ -158,7 +176,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit }) => {
         <DialogFooter>
           <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
             <AlertDialogTrigger asChild>
-              <Button disabled={!inviteUserForm.formState.isValid}>Invite</Button>
+              <Button disabled={!inviteUserForm.formState.isValid || isLoading}>{isLoading ? <Loader2 className="animate-spin" /> : "Invite"}</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>

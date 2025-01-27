@@ -5,7 +5,6 @@ import Breadcrumb from "@/components/Breadcurmb";
 import { filterMenuByRole } from "./SidebarMenu";
 import { useAuth } from "@/hooks/useAuth";
 import Sidebar from "./Sidebar";
-import InviteModal, { FormInputs } from "./components/InviteModal";
 
 const DashboardContent = () => {
   const { role, organisationId } = useAuth();
@@ -29,12 +28,6 @@ const DashboardContent = () => {
         </div>
         <div className="pt-12 z-0">
           <Outlet />
-          <InviteModal
-            roleInvited="student"
-            onSubmit={async (data: FormInputs) => {
-              setTimeout(() => console.log("submit successfully", data), 1000);
-            }}
-          />
         </div>
       </main>
     </SidebarProvider>

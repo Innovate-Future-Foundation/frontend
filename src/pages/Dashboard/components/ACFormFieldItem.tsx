@@ -17,9 +17,10 @@ interface ACFormFieldItemProps<T extends FieldValues> extends ComponentProps<typ
   createSchema: UseFormReturn<T>;
   name: FieldPath<T>;
   label: string;
+  disabled: boolean;
 }
 
-export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, label, ...inputProps }: ACFormFieldItemProps<T>) => {
+export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, label, disabled, ...inputProps }: ACFormFieldItemProps<T>) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [details, setDetails] = useState<{ name: string; email: string; avatarLink: string }[]>([]);
   const [isSelecting, setIsSelecting] = useState(false);
@@ -82,7 +83,14 @@ export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, lab
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <div className="relative">
-              <Input {...inputProps} {...field} onChange={e => onInputChangeHandler(field, e)} onBlur={e => handleBlur(field, e)} value={inputValue} />
+              <Input
+                {...inputProps}
+                {...field}
+                disabled={disabled}
+                onChange={e => onInputChangeHandler(field, e)}
+                onBlur={e => handleBlur(field, e)}
+                value={inputValue}
+              />
               {isSuggestionOpen && (
                 <div className="absolute z-10 w-full bg-white border border-gray-300 rounded shadow max-h-48 overflow-y-auto">
                   {details.map((parent, index) => (
