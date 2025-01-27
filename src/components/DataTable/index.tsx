@@ -13,7 +13,7 @@ import {
   getExpandedRowModel,
   ExpandedState
 } from "@tanstack/react-table";
-import { ChevronDown, Filter, Search } from "lucide-react";
+import { ChevronDown, CircleOff, Filter, Search } from "lucide-react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -151,7 +151,13 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map(row => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className={clsx(`${row.depth != 0 && "bg-secondary-green"}`)}>
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={clsx(
+                      `${row.depth != 0 && "bg-accent border-none text-primary-foreground60 hover:bg-secondary-green hover:text-secondary-foregroundGreen data-[state=selected]:text-secondary-foregroundGreen data-[state=selected]:bg-secondary-green"}`
+                    )}
+                  >
                     {row.getVisibleCells().map(cell => (
                       <TableCell className="h-18 font-medium" key={cell.id}>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -161,7 +167,10 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                  <TableCell colSpan={columns.length} className="py-4 text-center text-primary-foreground50">
+                    <div className=" w-full mb-2 flex items-center justify-center">
+                      <CircleOff className="inline-block" />
+                    </div>
                     No results.
                   </TableCell>
                 </TableRow>

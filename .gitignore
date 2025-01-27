@@ -17,6 +17,7 @@ coverage
 .env.*
 .vite
 .vite.*
+db.*
 
 # Editor directories and files
 .vscode/*

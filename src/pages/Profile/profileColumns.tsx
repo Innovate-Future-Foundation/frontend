@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronsLeftRight, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, Baby, ChevronsLeftRight, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -35,10 +35,12 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
     {
       accessorKey: "name",
       header: ({ column, table }) => (
-        <div className="flex gap-2 justify-items-center">
-          <Button variant="ghost" onClick={table.getToggleAllRowsExpandedHandler()}>
-            <ChevronsLeftRight className={`w-4 h-4 transition-transform duration-200 ${table.getIsAllRowsExpanded() ? "rotate-90" : "rotate-0"}`} />
-          </Button>{" "}
+        <div className="flex gap-2 items-center">
+          {profilePath === "parents" && (
+            <Button variant="ghost" onClick={table.getToggleAllRowsExpandedHandler()}>
+              <ChevronsLeftRight className={`w-4 h-4 transition-transform duration-200 ${table.getIsAllRowsExpanded() ? "rotate-90" : "rotate-0"}`} />
+            </Button>
+          )}
           <Button className="pl-0" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
             Name
             <ArrowUpDown />
@@ -48,14 +50,18 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
       cell: ({ row }) => {
         return (
           <div className="flex">
-            {row.getCanExpand() ? (
-              <Button variant="ghost" className="cursor-pointer" onClick={row.getToggleExpandedHandler()}>
-                <ChevronsLeftRight className={`w-4 h-4 transition-transform duration-200 ${row.getIsExpanded() ? "rotate-90" : "rotate-0"}`} />
-              </Button>
+            {!row.getCanExpand() && row.depth != 0 ? (
+              <div className="mx-4 flex items-center">
+                <Baby size={16} />
+              </div>
             ) : (
-              <div className="mx-6"> </div>
+              row.getCanExpand() && (
+                <Button variant="ghost" className="cursor-pointer" onClick={row.getToggleExpandedHandler()}>
+                  <ChevronsLeftRight className={`w-4 h-4 transition-transform duration-200 ${row.getIsExpanded() ? "rotate-90" : "rotate-0"}`} />
+                </Button>
+              )
             )}
-            <Badge variant="outline" className="rounded-full pl-[2px]">
+            <Badge variant="outline" className="rounded-full pl-[2px] bg-background">
               <AppAvatar
                 avatarLink={row.original.avatarLink ?? ""}
                 avatarAlt="@InnovateFuture"
