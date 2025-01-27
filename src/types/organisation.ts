@@ -5,7 +5,7 @@ export interface Organisation {
   websiteUrl: string | null;
   address: Address | null;
   email: string | null;
-  subscription: string | null;
+  subscription: Subscription | null;
   status: OrganisationStatus;
   createdAt?: string;
   updatedAt?: string;
@@ -17,4 +17,5 @@ export interface Address {
   postcode: string;
   country: string;
 }
+export type Subscription = "premium" | "free" | "basic";
 export type OrganisationStatus = "pending" | "verified" | "suspended" | "deactivated";

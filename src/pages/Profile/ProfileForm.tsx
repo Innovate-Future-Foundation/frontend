@@ -40,7 +40,12 @@ const ProfileDetail = {
 };
 
 const profileInfoFormSchema = z.object({
-  avatarLink: z.string().optional(),
+  avatarLink: z
+    .string()
+    .optional()
+    .refine(value => !value || /^https?:\/\/[^\s$.?#].[^\s]*$/i.test(value), {
+      message: "Avatar URL must be a valid URL (e.g., https://example.com)."
+    }),
   name: z
     .string()
     .min(2, {
@@ -62,7 +67,7 @@ const profileInfoFormSchema = z.object({
     .string()
     .optional()
     .refine(value => !value || /^https?:\/\/[^\s$.?#].[^\s]*$/i.test(value), {
-      message: "Website URL must be a valid URL (e.g., https://example.com)."
+      message: "Avatar URL must be a valid URL (e.g., https://example.com)."
     })
 });
 
