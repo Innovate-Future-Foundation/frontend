@@ -18,5 +18,6 @@ export const API_ENDPOINTS = {
   ROLE: "/roles",
   AUTH: "/auth",
   INVITE: "/invite",
-  TOKEN: "/token"
+  TOKEN: "/token",
+  ORGANISATION: "/organisaitons"
 };

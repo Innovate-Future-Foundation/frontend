@@ -16,3 +16,8 @@ export interface MetaType {
   nextCursor?: string;
   hasNextPage?: boolean;
 }
+export interface OffsetPaginatedRequest {
+  offset?: number;
+  limit: number;
+  IsAscending?: boolean;
+}
