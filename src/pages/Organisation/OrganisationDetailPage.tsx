@@ -3,7 +3,7 @@ import { WalletCards } from "lucide-react";
 import OrganisationProfile from "./OrganisationProfile";
 import ContentLayout from "@/layouts/ContentLayout";
 import { ScrollList } from "@/components/ScrollList";
-import { usePermissions } from "@/hooks/use-permissions";
+import { usePermissions } from "@/hooks/usePermissions";
 
 const OrganisationDetailPage = () => {
   const { canEditOrganisationProfile, canViewManagerScrollList } = usePermissions();
