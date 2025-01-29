@@ -372,6 +372,9 @@ export const filterMenuByRole = (role: RoleType): SidebarMenu => {
     case "organisation admin":
       baseMenu = organisationAdminMenu;
       break;
+    case "organisation manager":
+      baseMenu = organisationManagerMenu;
+      break;
     case "organisation teacher":
       baseMenu = organisationTeacherMenu;
       break;

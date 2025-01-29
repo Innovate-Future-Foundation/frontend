@@ -1,5 +1,5 @@
 import { checkPermission, PermissionMap } from "@/constants/permissions";
-import { useAuth } from "./use-auth";
+import { useAuth } from "./useAuth";
 
 export function usePermissions() {
   const { role } = useAuth();
@@ -11,11 +11,8 @@ export function usePermissions() {
       console.log(`Permission check for ${permission}:`, hasPermission);
       return hasPermission;
     },
-    canViewOrganisationProfile: ["platform admin", "organisation admin", "organisation manager", "organisation teacher", "parent", "student"].includes(role),
     canEditOrganisationProfile: ["platform admin", "organisation admin"].includes(role),
-    canViewAdminList: ["platform admin", "organisation admin"].includes(role),
-    canManageAdminList: ["platform admin", "organisation admin"].includes(role),
-    canManageTeachers: ["platform admin", "organisation admin", "organisation manager"].includes(role)
+    canViewManagerScrollList: ["platform admin", "organisation admin"].includes(role)
   };
 
   console.log("Calculated permissions:", permissions);

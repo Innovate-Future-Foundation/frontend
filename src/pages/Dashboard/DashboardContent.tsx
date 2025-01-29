@@ -8,14 +8,13 @@ import { RoleType } from "@/types";
 import { filterMenuByRole } from "./SidebarMenu";
 
 interface DashboardContentProps {
-  name: RoleType;
-  codeName: string;
+  role: RoleType;
 }
 
-const DashboardContent: React.FC<DashboardContentProps> = ({ name }) => {
-  console.log("role", name);
+const DashboardContent: React.FC<DashboardContentProps> = ({ role }) => {
+  console.log("role", role);
 
-  const roleBasedDashboardMenuItemGroups = filterMenuByRole(name);
+  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role);
 
   return (
     <SidebarProvider>
