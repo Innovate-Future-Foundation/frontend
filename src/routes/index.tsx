@@ -15,6 +15,7 @@ import OrgAdminPage from "@/pages/OrgAdmin";
 import EventPage from "@/pages/Event";
 import UserPage from "@/pages/Contacts";
 import DefaultDashboardPage from "@/pages/DefaultDashboard";
+import OrgManagerPage from "@/pages/OrgManager";
 
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
@@ -89,6 +90,20 @@ const router: AppRoute[] = [
         path: "orgadmins/:id",
         element: <ProfileDetailPage role="organisation admin" />,
         handle: { breadcrumb: "organisation admin profile" }
+      },
+      {
+        path: "orgmanagers",
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin", "organisation manager"]}>
+            <OrgManagerPage />
+          </ProtectedRoute>
+        ),
+        handle: { breadcrumb: "organisation managers list" }
+      },
+      {
+        path: "orgmanagers/:id",
+        element: <ProfileDetailPage role="organisation manager" />,
+        handle: { breadcrumb: "organisation manager profile" }
       },
       {
         path: "orgteachers",

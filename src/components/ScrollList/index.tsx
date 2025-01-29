@@ -39,18 +39,18 @@ export const ScrollList: React.FC<ScrollListProps> = ({ title }) => {
   return (
     <div className="rounded-lg border bg-background">
       <div className="p-4 pl-6 border-b flex justify-between items-center">
-        <h2 className="font-semibold capitalize text-lg text-primary-foreground30">{title}</h2>
+        <h2 className="font-semibold capitalize text-lg text-primary-foreground30">{`${title} list`}</h2>
         <div className="flex items-center justify-end">
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">{filteredData.length} admins</span>
+            <span className="text-sm text-gray-500">{filteredData.length > 1 ? `${filteredData.length} ${title}s` : `${filteredData.length} ${title}`}</span>
             <div className="sm:flex gap-2">
               <div className="relative w-64 mb-2 sm:mb-0">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
                 <Input placeholder="Search by name or email" className="pl-8" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
               </div>
-              <Button className="active:scale-95 transition-transform duration-100" onClick={() => console.log("Add member clicked")}>
+              <Button className="active:scale-95 transition-transform duration-100 capitalize" onClick={() => console.log("Add member clicked")}>
                 <Plus className="h-4 w-4 mr-2" />
-                Add admin
+                {`add ${title}`}
               </Button>
             </div>
           </div>

@@ -25,4 +25,4 @@ export interface ProfileInfo {
 
 export type ProfileStatus = "active" | "suspended";
 
-export type ProfilePathType = "users" | "orgadmins" | "orgteachers" | "parents" | "students";
+export type ProfilePathType = "users" | "orgadmins" | "orgmanagers" | "orgteachers" | "parents" | "students";

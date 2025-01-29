@@ -32,7 +32,7 @@ const OrganisationDetailPage = () => {
       {canViewAdminList && (
         <>
           <div className="h-4"></div>
-          <ScrollList title="admin list" />
+          <ScrollList title="manager" />
         </>
       )}
     </ContentLayout>

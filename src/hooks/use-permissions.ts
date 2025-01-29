@@ -12,7 +12,7 @@ export function usePermissions() {
       return hasPermission;
     },
     canViewOrganisationProfile: ["platform admin", "organisation admin", "organisation manager", "organisation teacher", "parent", "student"].includes(role),
-    canEditOrganisationProfile: ["platform admin", "organisation admin", "organisation manager"].includes(role),
+    canEditOrganisationProfile: ["platform admin", "organisation admin"].includes(role),
     canViewAdminList: ["platform admin", "organisation admin"].includes(role),
     canManageAdminList: ["platform admin", "organisation admin"].includes(role),
     canManageTeachers: ["platform admin", "organisation admin", "organisation manager"].includes(role)
