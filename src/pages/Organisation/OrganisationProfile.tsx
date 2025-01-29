@@ -92,7 +92,10 @@ const addressInfoFormSchema = z.object({
     .optional()
 });
 
-const OrganisationProfile = () => {
+interface OrganisationProfileProps {
+  disabled?: boolean;
+}
+const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = false }) => {
   const companyInfoForm = useForm<z.infer<typeof companyInfoFormSchema>>({
     resolver: zodResolver(companyInfoFormSchema),
     mode: "onChange",
@@ -158,26 +161,26 @@ const OrganisationProfile = () => {
       </div>
       <div className="h-4"></div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <FormWrapper formTitle={"Company Information"} onSave={companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
+        <FormWrapper formTitle={"Company Information"} onSave={disabled ? undefined : companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
           <Form {...companyInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={companyInfoForm.control} name="name" label="Name" placeholder="Company Name" />
-              <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" />
+              <FormFieldItem fieldControl={companyInfoForm.control} name="name" label="Name" placeholder="Company Name" disabled={disabled} />
+              <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" disabled={disabled} />
             </div>
-            <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" />
+            <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" disabled={disabled} />
           </Form>
         </FormWrapper>
-        <FormWrapper formTitle={"Address"} onSave={addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
+        <FormWrapper formTitle={"Address"} onSave={disabled ? undefined : addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
           <Form {...addressInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="state" label="State" placeholder="New South Wales" />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" disabled={disabled} />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="state" label="State" placeholder="New South Wales" disabled={disabled} />
             </div>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" disabled={disabled} />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" disabled={disabled} />
             </div>
-            <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" />
+            <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" disabled={disabled} />
           </Form>
         </FormWrapper>
       </div>

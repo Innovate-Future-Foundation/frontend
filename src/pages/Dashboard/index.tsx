@@ -3,14 +3,13 @@ import { useEffect } from "react";
 import { authApis } from "@/services/apiServices/authApis";
 import MainLayout from "@/layouts/MainLayout";
 import DashboardContent from "./DashboardContent";
+import { useAuth } from "@/hooks/useAuth";
 
 const DashboardPage = () => {
+  const { role } = useAuth();
   const url = window.location.href;
   const arr = url.split("code=");
   const code = arr.length === 2 ? arr[1] : "";
-
-  //todo: hardcode
-  const roleName = "platform admin";
 
   useEffect(() => {
     if (code) {
@@ -32,14 +31,9 @@ const DashboardPage = () => {
     }
   }, [code]);
 
-  //todo: indicator
-  if (!roleName) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <MainLayout>
-      <DashboardContent name={roleName} codeName={"1"} />
+      <DashboardContent role={role} />
     </MainLayout>
   );
 };

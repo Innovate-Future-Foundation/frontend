@@ -4,13 +4,17 @@ import { Outlet } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Sidebar from "./Sidebar";
 import Breadcrumb from "@/components/Breadcurmb";
-import { Role } from "@/types/role";
+import { RoleType } from "@/types";
 import { filterMenuByRole } from "./SidebarMenu";
 
-const DashboardContent: React.FC<Role> = ({ ...role }) => {
+interface DashboardContentProps {
+  role: RoleType;
+}
+
+const DashboardContent: React.FC<DashboardContentProps> = ({ role }) => {
   console.log("role", role);
 
-  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role.name);
+  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role);
 
   return (
     <SidebarProvider>

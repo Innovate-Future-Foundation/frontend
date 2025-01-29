@@ -61,6 +61,11 @@ const platformAdminMenu: SidebarMenu = {
               icon: "bg-secondary-foreground"
             },
             {
+              title: "managers",
+              url: "/dashboard/orgmanagers",
+              icon: "bg-secondary-foregroundRed"
+            },
+            {
               title: "teachers",
               url: "/dashboard/orgteachers",
               icon: "bg-secondary-foregroundYellow"
@@ -95,6 +100,77 @@ const platformAdminMenu: SidebarMenu = {
 };
 
 const organisationAdminMenu: SidebarMenu = {
+  sidebarHeader: {
+    url: "/dashboard/organisations/:id"
+  },
+  sidebarMenuGroups: [
+    {
+      subMenu: [
+        {
+          title: "dashboard",
+          url: "/dashboard",
+          icon: LayoutGrid
+        }
+      ]
+    },
+    {
+      sidebarLabel: "TOURS",
+      subMenu: [
+        {
+          title: "tours",
+          url: "/dashboard/tours",
+          icon: Map
+        }
+      ]
+    },
+    {
+      sidebarLabel: "USERS",
+      subMenu: [
+        {
+          title: "stuffs",
+          url: "/dashboard/orgmanagers",
+          icon: Users,
+          children: [
+            {
+              title: "managers",
+              url: "/dashboard/orgmanagers",
+              icon: "bg-secondary-foregroundRed"
+            },
+            {
+              title: "teachers",
+              url: "/dashboard/orgteachers",
+              icon: "bg-secondary-foregroundYellow"
+            }
+          ]
+        },
+        {
+          title: "clients",
+          url: "/dashboard/parents",
+          icon: BookUser,
+          children: [
+            {
+              title: "parents",
+              url: "/dashboard/parents",
+              icon: "bg-secondary-foregroundPurple"
+            },
+            {
+              title: "students",
+              url: "/dashboard/students",
+              icon: "bg-secondary-foregroundGreen"
+            }
+          ]
+        },
+        {
+          title: "contacts",
+          url: "/dashboard/users",
+          icon: Contact
+        }
+      ]
+    }
+  ]
+};
+
+const organisationManagerMenu: SidebarMenu = {
   sidebarHeader: {
     url: "/dashboard/organisations/:id"
   },
@@ -159,7 +235,6 @@ const organisationAdminMenu: SidebarMenu = {
     }
   ]
 };
-
 const organisationTeacherMenu: SidebarMenu = {
   sidebarHeader: {
     url: "/dashboard/organisations/:id"
@@ -289,18 +364,29 @@ const studentMenu: SidebarMenu = {
 };
 
 export const filterMenuByRole = (role: RoleType): SidebarMenu => {
+  let baseMenu;
   switch (role) {
     case "platform admin":
-      return platformAdminMenu;
+      baseMenu = platformAdminMenu;
+      break;
     case "organisation admin":
-      return organisationAdminMenu;
+      baseMenu = organisationAdminMenu;
+      break;
+    case "organisation manager":
+      baseMenu = organisationManagerMenu;
+      break;
     case "organisation teacher":
-      return organisationTeacherMenu;
+      baseMenu = organisationTeacherMenu;
+      break;
     case "parent":
-      return parentMenu;
+      baseMenu = parentMenu;
+      break;
     case "student":
-      return studentMenu;
+      baseMenu = studentMenu;
+      break;
     default:
-      throw new Error("Invalid role provided to filterMenuByRole");
+      console.error(`Invalid role provided to filterMenuByRole: ${role}`);
+      baseMenu = studentMenu;
   }
+  return baseMenu;
 };

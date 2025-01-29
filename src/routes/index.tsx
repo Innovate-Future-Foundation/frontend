@@ -1,4 +1,5 @@
 import { RouteObject } from "react-router-dom";
+import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 import HomePage from "@/pages/Home";
 import AuthenticationPage from "@/pages/Authentication";
@@ -14,6 +15,7 @@ import OrgAdminPage from "@/pages/OrgAdmin";
 import EventPage from "@/pages/Event";
 import UserPage from "@/pages/Contacts";
 import DefaultDashboardPage from "@/pages/DefaultDashboard";
+import OrgManagerPage from "@/pages/OrgManager";
 
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
@@ -58,7 +60,11 @@ const router: AppRoute[] = [
       },
       {
         path: "organisations/:id",
-        element: <OrganisationDetailPage />,
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin", "organisation manager", "organisation teacher", "parent", "student"]}>
+            <OrganisationDetailPage />
+          </ProtectedRoute>
+        ),
         handle: { breadcrumb: "organisation profile & members" }
       },
       {
@@ -73,13 +79,31 @@ const router: AppRoute[] = [
       },
       {
         path: "orgadmins",
-        element: <OrgAdminPage />,
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin"]}>
+            <OrgAdminPage />
+          </ProtectedRoute>
+        ),
         handle: { breadcrumb: "organisation admins list" }
       },
       {
         path: "orgadmins/:id",
         element: <ProfileDetailPage role="organisation admin" />,
         handle: { breadcrumb: "organisation admin profile" }
+      },
+      {
+        path: "orgmanagers",
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin", "organisation manager"]}>
+            <OrgManagerPage />
+          </ProtectedRoute>
+        ),
+        handle: { breadcrumb: "organisation managers list" }
+      },
+      {
+        path: "orgmanagers/:id",
+        element: <ProfileDetailPage role="organisation manager" />,
+        handle: { breadcrumb: "organisation manager profile" }
       },
       {
         path: "orgteachers",
