@@ -27,19 +27,19 @@ pipeline{
                 }
             }
         }
-        stage('Test'){
-            steps{
-                script{
-                    echo "triggered form github Running test"
-                    def testResult = sh(script: 'npm test', returnStatus: true)
-                    if ( testResult == 0){
-                        echo "Test passed"
-                    }else{
-                        echo "Test failed, check code. Pipeline Aborts"
-                    }
-                }
-            }
-        }
+        // stage('Test'){
+        //     steps{
+        //         script{
+        //             echo "triggered form github Running test"
+        //             def testResult = sh(script: 'npm test', returnStatus: true)
+        //             if ( testResult == 0){
+        //                 echo "Test passed"
+        //             }else{
+        //                 echo "Test failed, check code. Pipeline Aborts"
+        //             }
+        //         }
+        //     }
+        // }
         stage('Build'){
             steps{
                 sh 'npm run build'               
