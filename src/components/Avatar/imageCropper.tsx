@@ -6,7 +6,7 @@ import ReactCrop, { centerCrop, makeAspectCrop, type Crop, type PixelCrop } from
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 import "react-image-crop/dist/ReactCrop.css";
 // import { FileWithPreview } from ".";
@@ -81,8 +81,9 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DialogTrigger>
-      <DialogContent className="p-0 gap-0">
-        <DialogTitle>Crop Your Avatar</DialogTitle>
+      <DialogContent className="p-5 gap-0">
+        <DialogTitle className="pl-5">Crop Your Avatar</DialogTitle>
+        <DialogDescription className="pl-5">Adjust the crop area to create your avatar.</DialogDescription>
         <div className="p-6 size-full">
           <ReactCrop crop={crop} onChange={(_, percentCrop) => setCrop(percentCrop)} onComplete={c => onCropComplete(c)} aspect={aspect} className="w-full">
             <Avatar className="size-full rounded-none">
@@ -103,7 +104,7 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
               }}
             >
               <Trash2Icon className="mr-1.5 size-4" />
-              Cancel
+              Re-Upload
             </Button>
           </DialogClose>
           <Button type="submit" size={"sm"} className="w-fit" onClick={onCrop}>
