@@ -19,8 +19,6 @@ export interface Address {
   postcode: string;
   country: string;
 }
-// export type Subscription = "premium" | "free" | "basic";
-// export type OrganisationStatus = "pending" | "verified" | "suspended" | "deactivated";
 
 export enum SubscriptionStatus {
   Premium = 0,
