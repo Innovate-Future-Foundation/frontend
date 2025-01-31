@@ -48,7 +48,7 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
   function getCroppedImg(image: HTMLImageElement, crop: PixelCrop): string {
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
+    const scaleY = scaleX;
 
     canvas.width = crop.width * scaleX;
     canvas.height = crop.height * scaleY;
@@ -77,7 +77,7 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>
         <Avatar className={avatarStyle}>
-          <AvatarImage src={croppedImage ? croppedImage : selectedFile?.preview} alt="@shadcn" />
+          <AvatarImage src={croppedImage ? croppedImage : null} alt="@shadcn" className="size-full rounded-all" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DialogTrigger>
@@ -87,7 +87,7 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
         <div className="p-6 size-full">
           <ReactCrop crop={crop} onChange={(_, percentCrop) => setCrop(percentCrop)} onComplete={c => onCropComplete(c)} aspect={aspect} className="w-full">
             <Avatar className="size-full rounded-none">
-              <AvatarImage ref={imgRef} className="size-full rounded-none " alt="Image Cropper Shell" src={selectedFile?.preview} onLoad={onImageLoad} />
+              <AvatarImage ref={imgRef} className="size-full rounded-none" alt="Image Cropper Shell" src={selectedFile?.preview} onLoad={onImageLoad} />
               <AvatarFallback className="size-full min-h-[460px] rounded-none">Loading...</AvatarFallback>
             </Avatar>
           </ReactCrop>
