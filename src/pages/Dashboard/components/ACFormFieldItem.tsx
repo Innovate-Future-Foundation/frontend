@@ -8,8 +8,6 @@ import useDebounce from "@/utils/debounce";
 import { dummyParentsData } from "./dummyData";
 
 const fetchParentsData = async (query: string) => {
-  // const response = await fetch(`/api/parents?query=${query}`);
-  // return await response.json();
   return dummyParentsData.filter(data => data.email.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
 };
 
@@ -78,7 +76,7 @@ export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, lab
     <FormField
       control={createSchema.control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem className="w-full">
           <FormLabel>{label}</FormLabel>
           <FormControl>
@@ -90,11 +88,12 @@ export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, lab
                 onChange={e => onInputChangeHandler(field, e)}
                 onBlur={e => handleBlur(field, e)}
                 value={inputValue}
+                className={`${fieldState?.error ? "border-destructive focus-visible:ring-destructive" : "focus-visible:ring-primary"}`}
               />
               {isSuggestionOpen && (
-                <div className="absolute z-10 w-full bg-white border border-gray-300 rounded shadow max-h-48 overflow-y-auto">
+                <div className="absolute top-10 z-10 w-full bg-background border rounded shadow-lg max-h-48 overflow-y-auto">
                   {details.map((parent, index) => (
-                    <div key={index} className="p-1 pl-[11px] hover:bg-gray-100 cursor-pointer" onClick={() => handleSelectSuggestion(field, parent.email)}>
+                    <div key={index} className="p-1 pl-[11px] hover:bg-accent cursor-pointer" onClick={() => handleSelectSuggestion(field, parent.email)}>
                       <ParentsDetail
                         avatarLink={parent.avatarLink}
                         avatarAlt="Parent Portrait"
@@ -108,7 +107,7 @@ export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, lab
               )}
             </div>
           </FormControl>
-          <FormMessage />
+          {fieldState?.error ? <FormMessage /> : <div className="h-4"></div>}
         </FormItem>
       )}
     />

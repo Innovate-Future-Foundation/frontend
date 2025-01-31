@@ -22,6 +22,7 @@ import { ACFormFieldItem } from "./ACFormFieldItem";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { RoleType } from "@/types";
 
 export interface FormInputs {
   name: string;
@@ -30,7 +31,7 @@ export interface FormInputs {
 }
 
 interface props {
-  roleInvited: "teacher" | "admin" | "student" | "parent";
+  roleInvited: RoleType;
   onSubmit: (data: FormInputs) => Promise<void>;
   children: React.ReactNode;
 }
@@ -61,10 +62,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
           message: "Invalid email format."
         })
         .min(1, "Email is required"),
-      parentEmail:
-        roleInvited === "student" && isParentEmailShowToggle
-          ? z.string().email("Invalid parent email").min(1, "Parent email is required")
-          : z.string().optional()
+      parentEmail: roleInvited === "student" && isParentEmailShowToggle ? z.string().min(1, "Email is required") : z.string().optional()
     });
   };
 
@@ -128,7 +126,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={onOpenChangeHandler}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-[425px] sm:min-w-[450px]">
         <DialogHeader>
           <DialogTitle>
             Invite {isVowel(roleInvited) ? "an" : "a"} {roleInvited}
@@ -178,7 +176,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
             <AlertDialogTrigger asChild>
               <Button disabled={!inviteUserForm.formState.isValid || isLoading}>{isLoading ? <Loader2 className="animate-spin" /> : "Invite"}</Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className="max-w-[380px] text-justify">
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>This action cannot be undone. This will permanently add the user specified into the server.</AlertDialogDescription>
