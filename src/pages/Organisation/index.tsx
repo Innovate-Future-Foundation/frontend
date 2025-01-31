@@ -56,55 +56,46 @@ const OrganisationPage = () => {
    * reset pagination index to 0 when filters/sortings update
    * reset sortings and pagination index when filters update
    */
-  const handleChangeColumnFilters = useCallback(
-    () => (columnFilters: ColumnFiltersState | Updater<ColumnFiltersState>) => {
-      setColumnFilters(columnFilters);
-      setSorting([]);
-      setPagination(prev => {
-        if (prev.pageIndex != 0) {
-          return {
-            ...prev,
-            pageIndex: 0
-          };
-        }
-        return prev;
-      });
-    },
-    []
-  );
+  const handleChangeColumnFilters = useCallback((columnFilters: ColumnFiltersState | Updater<ColumnFiltersState>) => {
+    setColumnFilters(columnFilters);
+    setSorting([]);
+    setPagination(prev => {
+      if (prev.pageIndex != 0) {
+        return {
+          ...prev,
+          pageIndex: 0
+        };
+      }
+      return prev;
+    });
+  }, []);
 
-  const handleChangeSearchFilters = useCallback(
-    () => (searchFilters: string) => {
-      setGlobalFilter(searchFilters);
-      setSorting([]);
-      setPagination(prev => {
-        if (prev.pageIndex != 0) {
-          return {
-            ...prev,
-            pageIndex: 0
-          };
-        }
-        return prev;
-      });
-    },
-    []
-  );
+  const handleChangeSearchFilters = useCallback((searchFilters: string) => {
+    setGlobalFilter(searchFilters);
+    setSorting([]);
+    setPagination(prev => {
+      if (prev.pageIndex != 0) {
+        return {
+          ...prev,
+          pageIndex: 0
+        };
+      }
+      return prev;
+    });
+  }, []);
 
-  const handleChangeSortings = useCallback(
-    () => (columnSortings: Updater<SortingState>) => {
-      setSorting(columnSortings);
-      setPagination(prev => {
-        if (prev.pageIndex != 0) {
-          return {
-            ...prev,
-            pageIndex: 0
-          };
-        }
-        return prev;
-      });
-    },
-    []
-  );
+  const handleChangeSortings = useCallback((columnSortings: Updater<SortingState>) => {
+    setSorting(columnSortings);
+    setPagination(prev => {
+      if (prev.pageIndex != 0) {
+        return {
+          ...prev,
+          pageIndex: 0
+        };
+      }
+      return prev;
+    });
+  }, []);
 
   /**
    * Invoke get organisations api

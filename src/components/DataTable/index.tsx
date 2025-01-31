@@ -15,6 +15,7 @@ import {
   Updater
 } from "@tanstack/react-table";
 import { ChevronDown, CircleOff, Filter, Search } from "lucide-react";
+import { debounce } from "lodash";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -25,6 +26,8 @@ import { TableBaseType } from "@/types/tablebase";
 import { Card } from "../ui/card";
 import clsx from "clsx";
 import { getFiltersItems } from "@/constants/mapper";
+import { useCallback, useEffect, useMemo } from "react";
+import { DEBOUNCE_TIME_MS } from "@/constants/appConfig";
 
 interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
@@ -94,6 +97,27 @@ const DataTable = <T extends object>({
     manualFiltering: true
   });
 
+  const debounceSearchChange = useMemo(
+    () =>
+      debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+        setGlobalFilter(String(event.target.value));
+      }, DEBOUNCE_TIME_MS),
+    [setGlobalFilter]
+  );
+
+  const handleSearchChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      debounceSearchChange(event);
+    },
+    [debounceSearchChange]
+  );
+
+  useEffect(() => {
+    return () => {
+      debounceSearchChange.cancel();
+    };
+  }, [debounceSearchChange]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center">
@@ -101,6 +125,7 @@ const DataTable = <T extends object>({
       </div>
     );
   }
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between py-4">
@@ -163,15 +188,7 @@ const DataTable = <T extends object>({
 
         {/* Search */}
         <div className="relative">
-          <Input
-            placeholder={searchPlaceholder}
-            value={(table.getState().globalFilter as string) ?? ""}
-            onChange={event => {
-              setGlobalFilter(String(event.target.value));
-            }}
-            className="max-w-sm pl-10 h-8 text-sm w-96"
-            {...inputProps}
-          />
+          <Input placeholder={searchPlaceholder} onChange={handleSearchChange} className="max-w-sm pl-10 h-8 text-sm w-96" {...inputProps} />
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
             <Search size={14} />
           </span>
