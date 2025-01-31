@@ -1,21 +1,32 @@
+import React from "react";
+import { FileWithPath, useDropzone } from "react-dropzone";
+
 import { Avatar as CNAvatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ImageCropper } from "./imageCropper";
-import { FileWithPath, useDropzone } from "react-dropzone";
 import { FileWithPreview } from "./imageCropper";
-import React from "react";
+import { cn } from "@/lib/utils";
+
 interface AvatarProps {
   avatarLink: string;
   avatarAlt: string;
   avatarPlaceholder: string;
   size?: number;
   outline?: boolean;
-  className?: string;
   clickable?: boolean;
+  className?: string;
+  imageProps?: React.ComponentProps<typeof AvatarImage>;
+  fallbackProps?: React.ComponentProps<typeof AvatarFallback>;
 }
+
 const accept = {
   "image/*": []
 };
-const Avatar: React.FC<AvatarProps> = ({ avatarLink, avatarAlt, avatarPlaceholder, size = 10, outline = false, className = "", clickable }) => {
+
+const Avatar: React.FC<AvatarProps> = ({ avatarLink, avatarAlt, avatarPlaceholder, size = 10, outline = false, clickable,className,
+  imageProps = {},
+  fallbackProps = {},
+  ...props }) => {
+  
   const avatarStyle = `w-${size} h-${size} ${outline && "outline outline-white"}`;
   const [selectedFile, setSelectedFile] = React.useState<FileWithPreview | null>(null);
   const [isDialogOpen, setDialogOpen] = React.useState(false);
@@ -47,10 +58,10 @@ const Avatar: React.FC<AvatarProps> = ({ avatarLink, avatarAlt, avatarPlaceholde
       {selectedFile ? (
         <ImageCropper dialogOpen={isDialogOpen} setDialogOpen={setDialogOpen} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
       ) : (
-        <CNAvatar {...getRootProps()} className={`${avatarStyle} ${className}`.trim()}>
+        <CNAvatar {...getRootProps()} className={cn(avatarStyle, className)} {...props}>
           {clickable ? <input {...getInputProps()} /> : null}
-          <AvatarImage src={avatarLink} alt={avatarAlt} />
-          <AvatarFallback>{avatarPlaceholder}</AvatarFallback>
+          <AvatarImage src={avatarLink} alt={avatarAlt} {...imageProps}/>
+          <AvatarFallback  {...fallbackProps}>{avatarPlaceholder}</AvatarFallback>
         </CNAvatar>
       )}
     </>

@@ -1,17 +1,23 @@
-import { Users, WalletCards } from "lucide-react";
+import { WalletCards } from "lucide-react";
 
-import { ScrollList } from "@/components/ScrollList";
-import { TitleWithIcon } from "@/components/TitleWithIcon";
 import OrganisationProfile from "./OrganisationProfile";
+import ContentLayout from "@/layouts/ContentLayout";
+import { ScrollList } from "@/components/ScrollList";
+import { usePermissions } from "@/hooks/usePermissions";
 
 const OrganisationDetailPage = () => {
+  const { canEditOrganisationProfile, canViewManagerScrollList } = usePermissions();
+
   return (
-    <div className="w-full flex flex-col gap-4 justify-center">
-      <TitleWithIcon icon={WalletCards} title={"orgainsation profile"} />
-      <OrganisationProfile />
-      <TitleWithIcon icon={Users} title={"admins list"} />
-      <ScrollList />
-    </div>
+    <ContentLayout icon={WalletCards} title={"organisation profile"}>
+      <OrganisationProfile disabled={!canEditOrganisationProfile} />
+      {canViewManagerScrollList && (
+        <>
+          <div className="h-4"></div>
+          <ScrollList title="manager" />
+        </>
+      )}
+    </ContentLayout>
   );
 };
 

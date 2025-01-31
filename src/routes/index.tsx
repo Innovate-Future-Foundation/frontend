@@ -1,16 +1,21 @@
 import { RouteObject } from "react-router-dom";
+import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 import HomePage from "@/pages/Home";
 import AuthenticationPage from "@/pages/Authentication";
 import DashboardPage from "@/pages/Dashboard";
 import OrganisationPage from "@/pages/Organisation";
 import OrganisationDetailPage from "@/pages/Organisation/OrganisationDetailPage";
-import ParentsPage from "@/pages/Parent";
+import ParentPage from "@/pages/Parent";
 import StudentPage from "@/pages/Student";
 import TourPage from "@/pages/Tour";
 import ProfileDetailPage from "@/pages/Profile/ProfileDetailPage";
-import TeacherPage from "@/pages/Teacher";
-import StuffPage from "@/pages/Stuff";
+import OrgTeacherPage from "@/pages/OrgTeacher";
+import OrgAdminPage from "@/pages/OrgAdmin";
+import EventPage from "@/pages/Event";
+import UserPage from "@/pages/Contacts";
+import DefaultDashboardPage from "@/pages/DefaultDashboard";
+import OrgManagerPage from "@/pages/OrgManager";
 
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
@@ -35,6 +40,16 @@ const router: AppRoute[] = [
     children: [
       {
         index: true,
+        element: <DefaultDashboardPage />,
+        handle: { breadcrumb: "dashboard" }
+      },
+      {
+        path: "events",
+        element: <EventPage />,
+        handle: { breadcrumb: "events list" }
+      },
+      {
+        path: "tours",
         element: <TourPage />,
         handle: { breadcrumb: "tours list" }
       },
@@ -45,32 +60,64 @@ const router: AppRoute[] = [
       },
       {
         path: "organisations/:id",
-        element: <OrganisationDetailPage />,
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin", "organisation manager", "organisation teacher", "parent", "student"]}>
+            <OrganisationDetailPage />
+          </ProtectedRoute>
+        ),
         handle: { breadcrumb: "organisation profile & members" }
       },
       {
-        path: "orgstuffs",
-        element: <StuffPage />,
-        handle: { breadcrumb: "organisation stuffs list" }
+        path: "users",
+        element: <UserPage />,
+        handle: { breadcrumb: "users list" }
       },
       {
-        path: "orgstuffs/:id",
-        element: <ProfileDetailPage role="organisation stuff" />,
-        handle: { breadcrumb: "organisation stuff profile" }
+        path: "users/:id",
+        element: <ProfileDetailPage role="user" />,
+        handle: { breadcrumb: "user profile" }
       },
       {
-        path: "teachers",
-        element: <TeacherPage />,
+        path: "orgadmins",
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin"]}>
+            <OrgAdminPage />
+          </ProtectedRoute>
+        ),
+        handle: { breadcrumb: "organisation admins list" }
+      },
+      {
+        path: "orgadmins/:id",
+        element: <ProfileDetailPage role="organisation admin" />,
+        handle: { breadcrumb: "organisation admin profile" }
+      },
+      {
+        path: "orgmanagers",
+        element: (
+          <ProtectedRoute allowedRoles={["platform admin", "organisation admin", "organisation manager"]}>
+            <OrgManagerPage />
+          </ProtectedRoute>
+        ),
+        handle: { breadcrumb: "organisation managers list" }
+      },
+      {
+        path: "orgmanagers/:id",
+        element: <ProfileDetailPage role="organisation manager" />,
+        handle: { breadcrumb: "organisation manager profile" }
+      },
+      {
+        path: "orgteachers",
+        element: <OrgTeacherPage />,
         handle: { breadcrumb: "organisation teachers list" }
       },
       {
-        path: "teachers/:id",
+        path: "orgteachers/:id",
         element: <ProfileDetailPage role="organisation teacher" />,
         handle: { breadcrumb: "organisation teacher profile" }
       },
       {
         path: "parents",
-        element: <ParentsPage />,
+        element: <ParentPage />,
         handle: { breadcrumb: "parents list" }
       },
       {

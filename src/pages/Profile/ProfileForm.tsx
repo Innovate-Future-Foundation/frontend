@@ -40,7 +40,12 @@ const ProfileDetail = {
 };
 
 const profileInfoFormSchema = z.object({
-  avatarLink: z.string().optional(),
+  avatarLink: z
+    .string()
+    .optional()
+    .refine(value => !value || /^https?:\/\/[^\s$.?#].[^\s]*$/i.test(value), {
+      message: "Avatar URL must be a valid URL (e.g., https://example.com)."
+    }),
   name: z
     .string()
     .min(2, {
@@ -62,7 +67,7 @@ const profileInfoFormSchema = z.object({
     .string()
     .optional()
     .refine(value => !value || /^https?:\/\/[^\s$.?#].[^\s]*$/i.test(value), {
-      message: "Website URL must be a valid URL (e.g., https://example.com)."
+      message: "Avatar URL must be a valid URL (e.g., https://example.com)."
     })
 });
 
@@ -87,8 +92,8 @@ const ProfileForm = () => {
 
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className="h-40 bg-accent relative">
-        <div className="absolute top-10 left-8 flex gap-3 items-end">
+      <div className="h-32 bg-accent mt-4 rounded-md flex items-center pl-4">
+        <div className="top-10 left-8 flex gap-3 items-end">
           <Avatar
             avatarLink={profileInfoForm.watch("avatarLink")!}
             size={24}
@@ -97,13 +102,16 @@ const ProfileForm = () => {
             outline={true}
           />
           <div className="flex flex-col">
-            <p className="text-lg leading-none font-bold">{profileInfoForm.watch("name")}</p>
-            <p className="text-xs">{profileInfoForm.watch("email")}</p>
+            <p className="text-lg leading-none font-bold capitalize">{profileInfoForm.watch("name")}</p>
+            <p className="text-xs lowercase">{profileInfoForm.watch("email")}</p>
             <div className="flex gap-2 mt-2">
-              <Badge variant={"secondary"} className="p-0 px-2 rounded-full font-light text-xs text-red-400 bg-red-100">
+              <Badge variant={"secondary"} className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green">
                 {ProfileDetail.status}
               </Badge>
-              <Badge variant={"outline"} className="p-0 px-2 rounded-full font-light text-xs text-red-400  border-red-200">
+              <Badge
+                variant={"outline"}
+                className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foreground  border-primary-light bg-secondary"
+              >
                 {ProfileDetail.org.orgName}
               </Badge>
             </div>

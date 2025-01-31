@@ -1,63 +1,130 @@
 import * as React from "react";
+import { BeatLoader } from "react-spinners";
 import {
   ColumnDef,
   SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
   ColumnFiltersState,
-  PaginationState
+  PaginationState,
+  getExpandedRowModel,
+  ExpandedState,
+  Updater
 } from "@tanstack/react-table";
-import { ChevronDown, Filter, Search } from "lucide-react";
+import { ChevronDown, CircleOff, Filter, Search } from "lucide-react";
+import { debounce } from "lodash";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ITEMS_PER_PAGE } from "@/constants/appConfig";
 import Pagenation from "@/components/Pagenation";
+import { TableBaseType } from "@/types/tablebase";
+import { Card } from "../ui/card";
+import clsx from "clsx";
+import { getFiltersItems } from "@/constants/mapper";
+import { useCallback, useEffect, useMemo } from "react";
+import { DEBOUNCE_TIME_MS } from "@/constants/appConfig";
 
-interface DataTableProps<T> {
+interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
-  data: T[];
+  data: TableBaseType<T>[];
   searchPlaceholder: string;
+  isLoading: boolean;
+  locationListType?: LocationListType;
+  totalItems?: number;
+  limit?: number;
+  columnFilters: ColumnFiltersState;
+  setColumnFilters: (updaterOrValue: ColumnFiltersState | Updater<ColumnFiltersState>) => void;
+  globalFilter: string;
+  setGlobalFilter: (globalFilter: string) => void;
+  sorting: SortingState;
+  setSorting: (updaterOrValue: Updater<SortingState>) => void;
+  pagination: PaginationState;
+  setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
+export type LocationListType = "cards" | "table";
 
-const DataTable = <T,>({ columns, data, searchPlaceholder }: DataTableProps<T>) => {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+const DataTable = <T extends object>({
+  columns,
+  data,
+  searchPlaceholder,
+  isLoading,
+  locationListType = "table",
+  totalItems = 0,
+  limit = 1,
+  columnFilters,
+  setColumnFilters,
+  globalFilter,
+  setGlobalFilter,
+  sorting,
+  setSorting,
+  pagination,
+  setPagination,
+  ...inputProps
+}: DataTableProps<T>) => {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: ITEMS_PER_PAGE
-  });
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
-  const table = useReactTable<T>({
+  const table = useReactTable<TableBaseType<T>>({
     data,
     columns,
+    onExpandedChange: setExpanded,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
+    onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
+    getSubRows: row => row.children,
+    getExpandedRowModel: getExpandedRowModel(),
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
       rowSelection,
       globalFilter,
-      pagination
+      pagination,
+      expanded
     },
-    onGlobalFilterChange: setGlobalFilter,
-    manualPagination: false,
-    manualFiltering: false
+    rowCount: totalItems,
+    pageCount: Math.ceil(totalItems / limit),
+    manualPagination: true,
+    manualFiltering: true
   });
+
+  const debounceSearchChange = useMemo(
+    () =>
+      debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+        setGlobalFilter(String(event.target.value));
+      }, DEBOUNCE_TIME_MS),
+    [setGlobalFilter]
+  );
+
+  const handleSearchChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      debounceSearchChange(event);
+    },
+    [debounceSearchChange]
+  );
+
+  useEffect(() => {
+    return () => {
+      debounceSearchChange.cancel();
+    };
+  }, [debounceSearchChange]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center">
+        <BeatLoader className="bg-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -84,7 +151,7 @@ const DataTable = <T,>({ columns, data, searchPlaceholder }: DataTableProps<T>) 
                   >
                     all
                   </DropdownMenuCheckboxItem>
-                  {[...new Set(data.map((row: any) => row[filteredColumn.id]))].map(filterData => (
+                  {getFiltersItems[filteredColumn.id].map(filterData => (
                     <DropdownMenuCheckboxItem
                       key={filterData}
                       className="capitalize text-xs"
@@ -106,60 +173,92 @@ const DataTable = <T,>({ columns, data, searchPlaceholder }: DataTableProps<T>) 
 
         {/* Search */}
         <div className="relative">
-          <Input
-            placeholder={searchPlaceholder}
-            value={(table.getState().globalFilter as string) ?? ""}
-            onChange={event => {
-              setGlobalFilter(String(event.target.value));
-            }}
-            className="max-w-sm pl-10 h-8 text-sm w-96"
-          />
+          <Input placeholder={searchPlaceholder} onChange={handleSearchChange} className="max-w-sm pl-10 h-8 text-sm w-96" {...inputProps} />
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
             <Search size={14} />
           </span>
         </div>
       </div>
-
       {/* Table */}
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>;
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
+      {locationListType === "table" && (
+        <div className="rounded-t-md overflow-hidden">
+          <Table>
+            <TableHeader className="bg-accent">
+              {table.getHeaderGroups().map(headerGroup => (
+                <TableRow key={headerGroup.id} className="border-none ">
+                  {headerGroup.headers.map(header => {
+                    return (
+                      <TableHead className="text-primary-foreground50 text-sm " key={header.id}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={clsx(
+                      `${row.depth != 0 && "bg-accent border-none text-primary-foreground60 hover:bg-secondary-green hover:text-secondary-foregroundGreen data-[state=selected]:text-secondary-foregroundGreen data-[state=selected]:bg-secondary-green"}`
+                    )}
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell className="h-18 font-medium" key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="py-4 text-center text-primary-foreground50">
+                    <div className=" w-full mb-2 flex items-center justify-center">
+                      <CircleOff className="inline-block" />
+                    </div>
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-sm text-primary-foreground50">
+              {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+          </div>
+        </div>
+      )}
+      {/* cards */}
+      {locationListType === "cards" && (
+        <div className="rounded-md mb-4">
+          <div className="grid lg:grid-cols-4 gap-2 md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                  ))}
-                </TableRow>
+                <Card
+                  key={row.id}
+                  className={
+                    "w-full border-primary-light rounded-md overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent"
+                  }
+                >
+                  {row.getVisibleCells().map(cell => {
+                    return <div key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>;
+                  })}
+                </Card>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
+              <div className="h-24 text-center">No results.</div>
             )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
         </div>
-      </div>
+      )}
       <Pagenation
         currentPage={table.getState().pagination.pageIndex + 1}
-        totalItems={table.getFilteredRowModel().rows.length}
-        itemsPerPage={table.getState().pagination.pageSize}
+        totalItems={totalItems}
+        itemsPerPage={limit}
         setPageIndex={table.setPageIndex}
         handlePrev={table.previousPage}
         getCanPreviousPage={table.getCanPreviousPage}

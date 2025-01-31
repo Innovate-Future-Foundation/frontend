@@ -92,7 +92,10 @@ const addressInfoFormSchema = z.object({
     .optional()
 });
 
-const OrganisationProfile = () => {
+interface OrganisationProfileProps {
+  disabled?: boolean;
+}
+const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = false }) => {
   const companyInfoForm = useForm<z.infer<typeof companyInfoFormSchema>>({
     resolver: zodResolver(companyInfoFormSchema),
     mode: "onChange",
@@ -130,8 +133,8 @@ const OrganisationProfile = () => {
 
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className="h-40 bg-accent relative">
-        <div className="absolute top-10 left-8 flex gap-3 items-end">
+      <div className="h-32 bg-accent mt-4 rounded-md flex items-center pl-4">
+        <div className="top-10 left-8 flex gap-3 items-end">
           <Avatar
             avatarLink={companyInfoForm.watch("logoUrl")!}
             size={24}
@@ -141,42 +144,44 @@ const OrganisationProfile = () => {
             clickable={true}
           />
           <div className="flex flex-col">
-            <p className="text-lg leading-none font-bold">{companyInfoForm.watch("name")}</p>
+            <p className="text-lg leading-none font-bold capitalize">{companyInfoForm.watch("name")}</p>
             <p className="text-xs">{companyInfoForm.watch("websiteUrl")}</p>
             <div className="flex gap-2 mt-2">
-              <Badge variant={"secondary"} className="p-0 px-2 rounded-full font-light text-xs text-red-400 bg-red-100">
+              <Badge variant={"secondary"} className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green">
                 {orgProfileDetail.status}
               </Badge>
-              <Badge variant={"outline"} className="p-0 px-2 rounded-full font-light text-xs text-red-400  border-red-200">
-                {orgProfileDetail.subscription}
+              <Badge
+                variant={"outline"}
+                className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foreground  border-primary-light bg-secondary"
+              >
+                {orgProfileDetail.orgName}
               </Badge>
             </div>
           </div>
         </div>
       </div>
       <div className="h-4"></div>
-      <div className="flex flex-col gap-4">
-        <FormWrapper formTitle={"Company Information"} onSave={companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <FormWrapper formTitle={"Company Information"} onSave={disabled ? undefined : companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
           <Form {...companyInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={companyInfoForm.control} name="name" label="Name" placeholder="Company Name" />
-              <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" />
+              <FormFieldItem fieldControl={companyInfoForm.control} name="name" label="Name" placeholder="Company Name" disabled={disabled} />
+              <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" disabled={disabled} />
             </div>
-            <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" />
+            <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" disabled={disabled} />
           </Form>
         </FormWrapper>
-
-        <FormWrapper formTitle={"Address"} onSave={addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
+        <FormWrapper formTitle={"Address"} onSave={disabled ? undefined : addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
           <Form {...addressInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="state" label="State" placeholder="New South Wales" />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" disabled={disabled} />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="state" label="State" placeholder="New South Wales" disabled={disabled} />
             </div>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" disabled={disabled} />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" disabled={disabled} />
             </div>
-            <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" />
+            <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" disabled={disabled} />
           </Form>
         </FormWrapper>
       </div>

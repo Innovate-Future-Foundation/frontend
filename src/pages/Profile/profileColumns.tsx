@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, Baby, ChevronsLeftRight, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,15 +13,9 @@ interface GenerateColumnsOptions {
   profilePath?: ProfilePathType;
   hideRole?: boolean;
   hideOrganisation?: boolean;
-  includeChildren?: boolean;
 }
 
-export const profileColumns = ({
-  profilePath = "orgstuffs",
-  hideRole = false,
-  hideOrganisation = false,
-  includeChildren = false
-}: GenerateColumnsOptions): ColumnDef<Profile>[] => {
+export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hideOrganisation = false }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
   const baseColumns: ColumnDef<Profile>[] = [
     {
       id: "select",
@@ -40,18 +34,45 @@ export const profileColumns = ({
     },
     {
       accessorKey: "name",
-      header: ({ column }) => (
-        <Button className="pl-0" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Name
-          <ArrowUpDown />
-        </Button>
+      header: ({ column, table }) => (
+        <div className="flex gap-2 items-center">
+          {profilePath === "parents" && (
+            <Button variant="ghost" onClick={table.getToggleAllRowsExpandedHandler()}>
+              <ChevronsLeftRight className={`w-4 h-4 transition-transform duration-200 ${table.getIsAllRowsExpanded() ? "rotate-90" : "rotate-0"}`} />
+            </Button>
+          )}
+          <Button className="pl-0" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Name
+            <ArrowUpDown />
+          </Button>
+        </div>
       ),
-      cell: ({ row }) => (
-        <Badge variant="outline" className="rounded-full pl-[2px]">
-          <AppAvatar avatarLink={row.original.avatarLink ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("name"))} size={7} />
-          <div className="ml-1 lowercase truncate max-w-20">{row.getValue("name")}</div>
-        </Badge>
-      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex">
+            {!row.getCanExpand() && row.depth != 0 ? (
+              <div className="mx-4 flex items-center">
+                <Baby size={16} />
+              </div>
+            ) : (
+              row.getCanExpand() && (
+                <Button variant="ghost" className="cursor-pointer" onClick={row.getToggleExpandedHandler()}>
+                  <ChevronsLeftRight className={`w-4 h-4 transition-transform duration-200 ${row.getIsExpanded() ? "rotate-90" : "rotate-0"}`} />
+                </Button>
+              )
+            )}
+            <Badge variant="outline" className="rounded-full pl-[2px] bg-background">
+              <AppAvatar
+                avatarLink={row.original.avatarLink ?? ""}
+                avatarAlt="@InnovateFuture"
+                avatarPlaceholder={abbreviateName(row.getValue("name"))}
+                size={7}
+              />
+              <div className="ml-1 lowercase truncate max-w-20">{row.getValue("name")}</div>
+            </Badge>
+          </div>
+        );
+      },
       enableColumnFilter: false
     },
     {
@@ -126,10 +147,6 @@ export const profileColumns = ({
       cell: ({ row }) => <div className="capitalize truncate max-w-40">{row.original.org?.orgName}</div>,
       enableColumnFilter: false
     });
-  }
-
-  if (includeChildren) {
-    //TODO: expand for parent
   }
 
   baseColumns.push({
