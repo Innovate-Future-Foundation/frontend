@@ -151,21 +151,6 @@ const DataTable = <T extends object>({
                   >
                     all
                   </DropdownMenuCheckboxItem>
-                  {/* {[...new Set(data.map((row: any) => row[filteredColumn.id]))].map(filterData => (
-                    <DropdownMenuCheckboxItem
-                      key={filterData}
-                      className="capitalize text-xs"
-                      checked={table.getState().columnFilters.some(state => state.id === filteredColumn.id && state.value === filterData)}
-                      onClick={() =>
-                        table.setColumnFilters(prevFilters => [
-                          ...prevFilters.filter(filter => filter.id != filteredColumn.id),
-                          { id: filteredColumn.id, value: filterData }
-                        ])
-                      }
-                    >
-                      {filterData}
-                    </DropdownMenuCheckboxItem>
-                  ))} */}
                   {getFiltersItems[filteredColumn.id].map(filterData => (
                     <DropdownMenuCheckboxItem
                       key={filterData}
