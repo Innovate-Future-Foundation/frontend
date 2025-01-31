@@ -7,12 +7,15 @@ export interface ApiResponse<T> {
 }
 
 export interface MetaType {
-  pageSize: number;
+  limit: number;
   totalItems: number;
-  // For off-set based pagination
-  currentPage?: number;
-  totalPages?: number;
   // For cursor based pagination
   nextCursor?: string;
-  hasNextPage?: boolean;
+  hasNext?: boolean;
+}
+export interface OffsetPaginatedRequest {
+  offset?: number;
+  limit: number;
+  filters?: any;
+  sortings?: any;
 }

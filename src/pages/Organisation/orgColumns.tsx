@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
-import { Organisation } from "@/types";
+import { Organisation, OrganisationStatus, SubscriptionStatus } from "@/types";
 import Dropdown from "@/components/Dropdown";
 
 export const orgColumns: ColumnDef<Organisation>[] = [
@@ -62,7 +62,7 @@ export const orgColumns: ColumnDef<Organisation>[] = [
   {
     accessorKey: "subscription",
     header: "Subscription",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("subscription")}</div>,
+    cell: ({ row }) => <div className="capitalize">{SubscriptionStatus[row.getValue("subscription") as SubscriptionStatus]}</div>,
     enableGlobalFilter: false
   },
   {
@@ -70,7 +70,7 @@ export const orgColumns: ColumnDef<Organisation>[] = [
     header: "Status",
     cell: ({ row }) => (
       <Badge variant="secondary">
-        <div className="capitalize">{row.getValue("status")}</div>
+        <div className="capitalize">{OrganisationStatus[row.getValue("status") as OrganisationStatus]}</div>
       </Badge>
     ),
     enableGlobalFilter: false

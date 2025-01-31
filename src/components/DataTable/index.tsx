@@ -1,47 +1,72 @@
 import * as React from "react";
+import { BeatLoader } from "react-spinners";
 import {
   ColumnDef,
   SortingState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
   ColumnFiltersState,
   PaginationState,
   getExpandedRowModel,
-  ExpandedState
+  ExpandedState,
+  Updater
 } from "@tanstack/react-table";
 import { ChevronDown, CircleOff, Filter, Search } from "lucide-react";
+import { debounce } from "lodash";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ITEMS_PER_PAGE } from "@/constants/appConfig";
 import Pagenation from "@/components/Pagenation";
 import { TableBaseType } from "@/types/tablebase";
 import { Card } from "../ui/card";
 import clsx from "clsx";
+import { getFiltersItems } from "@/constants/mapper";
+import { useCallback, useEffect, useMemo } from "react";
+import { DEBOUNCE_TIME_MS } from "@/constants/appConfig";
 
 interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
   data: TableBaseType<T>[];
   searchPlaceholder: string;
+  isLoading: boolean;
   locationListType?: LocationListType;
+  totalItems?: number;
+  limit?: number;
+  columnFilters: ColumnFiltersState;
+  setColumnFilters: (updaterOrValue: ColumnFiltersState | Updater<ColumnFiltersState>) => void;
+  globalFilter: string;
+  setGlobalFilter: (globalFilter: string) => void;
+  sorting: SortingState;
+  setSorting: (updaterOrValue: Updater<SortingState>) => void;
+  pagination: PaginationState;
+  setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
 export type LocationListType = "cards" | "table";
 
-const DataTable = <T extends object>({ columns, data, searchPlaceholder, locationListType = "table" }: DataTableProps<T>) => {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+const DataTable = <T extends object>({
+  columns,
+  data,
+  searchPlaceholder,
+  isLoading,
+  locationListType = "table",
+  totalItems = 0,
+  limit = 1,
+  columnFilters,
+  setColumnFilters,
+  globalFilter,
+  setGlobalFilter,
+  sorting,
+  setSorting,
+  pagination,
+  setPagination,
+  ...inputProps
+}: DataTableProps<T>) => {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: ITEMS_PER_PAGE
-  });
-  const [globalFilter, setGlobalFilter] = React.useState("");
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
   const table = useReactTable<TableBaseType<T>>({
@@ -51,13 +76,13 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: setPagination,
+    onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
     getSubRows: row => row.children,
     getExpandedRowModel: getExpandedRowModel(),
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
@@ -66,10 +91,40 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
       pagination,
       expanded
     },
-    onGlobalFilterChange: setGlobalFilter,
-    manualPagination: false,
-    manualFiltering: false
+    rowCount: totalItems,
+    pageCount: Math.ceil(totalItems / limit),
+    manualPagination: true,
+    manualFiltering: true
   });
+
+  const debounceSearchChange = useMemo(
+    () =>
+      debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+        setGlobalFilter(String(event.target.value));
+      }, DEBOUNCE_TIME_MS),
+    [setGlobalFilter]
+  );
+
+  const handleSearchChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      debounceSearchChange(event);
+    },
+    [debounceSearchChange]
+  );
+
+  useEffect(() => {
+    return () => {
+      debounceSearchChange.cancel();
+    };
+  }, [debounceSearchChange]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center">
+        <BeatLoader className="bg-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -96,7 +151,7 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
                   >
                     all
                   </DropdownMenuCheckboxItem>
-                  {[...new Set(data.map((row: any) => row[filteredColumn.id]))].map(filterData => (
+                  {getFiltersItems[filteredColumn.id].map(filterData => (
                     <DropdownMenuCheckboxItem
                       key={filterData}
                       className="capitalize text-xs"
@@ -118,14 +173,7 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
 
         {/* Search */}
         <div className="relative">
-          <Input
-            placeholder={searchPlaceholder}
-            value={(table.getState().globalFilter as string) ?? ""}
-            onChange={event => {
-              setGlobalFilter(String(event.target.value));
-            }}
-            className="max-w-sm pl-10 h-8 text-sm w-96"
-          />
+          <Input placeholder={searchPlaceholder} onChange={handleSearchChange} className="max-w-sm pl-10 h-8 text-sm w-96" {...inputProps} />
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
             <Search size={14} />
           </span>
@@ -209,8 +257,8 @@ const DataTable = <T extends object>({ columns, data, searchPlaceholder, locatio
       )}
       <Pagenation
         currentPage={table.getState().pagination.pageIndex + 1}
-        totalItems={table.getFilteredRowModel().rows.length}
-        itemsPerPage={table.getState().pagination.pageSize}
+        totalItems={totalItems}
+        itemsPerPage={limit}
         setPageIndex={table.setPageIndex}
         handlePrev={table.previousPage}
         getCanPreviousPage={table.getCanPreviousPage}
