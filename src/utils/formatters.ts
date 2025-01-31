@@ -17,3 +17,25 @@ export const formatDateToDDMMYYYY = (isoDate: string): string => {
   const year = date.getFullYear(); // Get full year
   return `${year}-${month}-${day}`;
 };
+
+export const convertToQueryParams = (obj: object): URLSearchParams => {
+  const params = new URLSearchParams();
+
+  function appendValues(key: string, value: any) {
+    if (Array.isArray(value)) {
+      value.forEach(item => params.append(key, item));
+    } else if (typeof value === "object" && value !== null) {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        appendValues(`${key}.${subKey}`, subValue);
+      });
+    } else if (value !== undefined && value !== null) {
+      params.append(key, value);
+    }
+  }
+
+  Object.entries(obj).forEach(([key, value]) => {
+    appendValues(key, value);
+  });
+
+  return params;
+};
