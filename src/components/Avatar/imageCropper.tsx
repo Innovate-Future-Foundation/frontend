@@ -77,7 +77,7 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>
         <Avatar className={avatarStyle}>
-          <AvatarImage src={croppedImage ? croppedImage : null} alt="@shadcn" className="size-full rounded-all" />
+          <AvatarImage src={croppedImage ? croppedImage : ""} alt="@shadcn" className="size-full rounded-all" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DialogTrigger>
