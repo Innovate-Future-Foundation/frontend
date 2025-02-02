@@ -141,6 +141,7 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
             avatarAlt={avatarAlt}
             avatarPlaceholder={companyInfoForm.watch("name")}
             outline={true}
+            clickable={true}
           />
           <div className="flex flex-col">
             <p className="text-lg leading-none font-bold capitalize">{companyInfoForm.watch("name")}</p>
