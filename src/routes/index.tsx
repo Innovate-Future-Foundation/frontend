@@ -1,7 +1,7 @@
 import HomePage from "@/pages/Home";
 import AboutUs from "@/pages/AboutUs";
 import EventPage from "@/pages/EventPage";
-import ContactUs from "@/pages/ContactUs";
+// import ContactUs from "@/pages/ContactUs";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 const router = [
@@ -13,10 +13,10 @@ const router = [
     path: "about-us",
     element: <AboutUs />
   },
-  {
-    path: "contact-us",
-    element: <ContactUs />
-  },
+  // {
+  //   path: "contact-us",
+  //   element: <ContactUs />
+  // },
   {
     path: "eventpage",
     element: <EventPage />
