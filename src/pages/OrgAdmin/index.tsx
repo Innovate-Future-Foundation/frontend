@@ -5,6 +5,7 @@ import DataTable from "@/components/DataTable";
 import { Profile, TableBaseType } from "@/types";
 import { useOrgAdmin } from "@/hooks/orgAdmins/useOrgAdmin";
 import { profileColumns } from "../Profile/profileColumns";
+<<<<<<< HEAD
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
 
@@ -24,6 +25,10 @@ const OrgAdminPage = () => {
     return Array.isArray(orgAdminsResponse?.data) ? orgAdminsResponse?.data : [];
   }, [orgAdminsResponse]);
 
+=======
+
+const OrgAdminPage = () => {
+>>>>>>> a3df7f2 (feat: add env example (#51))
   return (
     <ContentLayout icon={UserRoundPen} title={"organisation admin list"}>
       <DataTable
