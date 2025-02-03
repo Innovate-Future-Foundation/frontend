@@ -115,7 +115,7 @@ const OrganisationPage = () => {
     <ContentLayout icon={Building2} title={"organisation list"}>
       <DataTable
         totalItems={organisationsResponse?.meta?.totalItems}
-        limit={organisationsResponse?.meta?.limit}
+        limit={pagination.pageSize}
         columns={orgColumns}
         data={tableData}
         isLoading={isLoadingOrganisations}

@@ -9,12 +9,13 @@ import { filterMenuByRole } from "./SidebarMenu";
 
 interface DashboardContentProps {
   role: RoleType;
+  organisationId?: string;
 }
 
-const DashboardContent: React.FC<DashboardContentProps> = ({ role }) => {
+const DashboardContent: React.FC<DashboardContentProps> = ({ role, organisationId }) => {
   console.log("role", role);
 
-  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role);
+  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role, organisationId);
 
   return (
     <SidebarProvider>

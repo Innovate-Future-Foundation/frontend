@@ -7,9 +7,7 @@ export interface SidebarMenu {
   sidebarMenuGroups: SidebarMenuGroup[];
 }
 export interface SidebarheaderAccess {
-  url?: string;
-  profieEditable?: boolean;
-  renderAdminList?: boolean;
+  url: string;
 }
 export interface SidebarMenuGroup {
   sidebarLabel?: string;
@@ -363,7 +361,7 @@ const studentMenu: SidebarMenu = {
   ]
 };
 
-export const filterMenuByRole = (role: RoleType): SidebarMenu => {
+export const filterMenuByRole = (role: RoleType, organisationId?: string): SidebarMenu => {
   let baseMenu;
   switch (role) {
     case "platform admin":
@@ -388,5 +386,13 @@ export const filterMenuByRole = (role: RoleType): SidebarMenu => {
       console.error(`Invalid role provided to filterMenuByRole: ${role}`);
       baseMenu = studentMenu;
   }
-  return baseMenu;
+  return {
+    ...baseMenu,
+    sidebarHeader: baseMenu.sidebarHeader
+      ? {
+          ...baseMenu.sidebarHeader,
+          url: baseMenu.sidebarHeader.url.replace(":id", organisationId!)
+        }
+      : undefined
+  };
 };

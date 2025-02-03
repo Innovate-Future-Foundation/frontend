@@ -11,6 +11,8 @@ const DashboardPage = () => {
   const arr = url.split("code=");
   const code = arr.length === 2 ? arr[1] : "";
 
+  //todo: hardcode
+  const organisationId = "6a4f721b-f71c-4cc4-9b14-8777ffbe0e55";
   useEffect(() => {
     if (code) {
       const getToken = async () => {
@@ -33,7 +35,7 @@ const DashboardPage = () => {
 
   return (
     <MainLayout>
-      <DashboardContent role={role} />
+      <DashboardContent role={role} organisationId={organisationId} />
     </MainLayout>
   );
 };
