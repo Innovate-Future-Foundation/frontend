@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import { NavbarEvent } from "@/pages/EventPage/Navbar-event";
 import { Footer } from "@/components/ui/Footer";
 import WhyAttend from "@/pages/EventPage/WhyAttend";
 
 const EventPage: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="min-h-screen flex flex-col">
       <NavbarEvent />
@@ -13,30 +17,30 @@ const EventPage: React.FC = () => {
           <p className="text-sm mb-6 mt-2 bg-[#F36D26] text-white py-2 px-4 rounded-md inline-block shadow-lg">Thu, 23/01/2025 - Sat, 25/01/2025</p>
         </section>
 
-        <section>
-          <img src="/src/assets/images/event image.png" alt="event image" />
+        <section className="bg-[#BEE7F9] justify-items-center">
+          <img src="/images/event image.png" alt="event image" />
         </section>
 
         <section className="bg-white py-12">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 sm:grid-cols3 lg:grid-cols-4 gap-8 justify-tems-center">
               <div className="flex justify-start">
-                <img src="/src/assets/images/inff logo.png" alt="INFF Logo" className="h-16 w-auto" />
+                <img src="/images/inff logo.png" alt="INFF Logo" className="h-16 w-auto" />
               </div>
               <div className="flex justify-end">
-                <img src="/src/assets/images/aws startups.png" alt="AWS Startups" className="h-16 w-auto" />
+                <img src="/images/aws startups.png" alt="AWS Startups" className="h-16 w-auto" />
               </div>
               <div className="flex justify-start">
-                <img src="/src/assets/images/sydney uni logo.png" alt="Sydney Uni Logo" className="h-16 w-auto" />
+                <img src="/images/sydney uni logo.png" alt="Sydney Uni Logo" className="h-16 w-auto" />
               </div>
               <div className="flex justify-end">
-                <img src="/src/assets/images/jr logo.png" alt="JR Academy Logo" className="h-16 w-auto" />
+                <img src="/images/jr logo.png" alt="JR Academy Logo" className="h-16 w-auto" />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="bg-white py-10 bg-cover bg-center" style={{ backgroundImage: "url('/src/assets/images/introduction-background.png')" }}>
+        <section className="bg-white py-10 bg-cover bg-center" style={{ backgroundImage: "url('/images/introduction-background.png')" }}>
           <div className="container mx-auto px-4">
             <h1 className="text-[#05224F] text-4xl text-center mb-12">Introduction</h1>
             <p className="text-[#05224F] text-center mx-auto leading-relaxed max-w-4xl">

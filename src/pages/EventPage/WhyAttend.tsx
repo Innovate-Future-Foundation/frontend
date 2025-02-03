@@ -4,21 +4,21 @@ const WhyAttend: React.FC = () => {
       title: "LEARNING",
       description:
         "Students will participate in real-world projects via workshops, laying a solid foundation for their future academic and professional development.",
-      imgSrc: "/src/assets/images/rafiki2.png",
+      imgSrc: "/images/rafiki2.png",
       bgColor: "bg-[#BEE7F9]"
     },
     {
       title: "COMMUNICATING",
       description:
         "Students will engage in meaningful conversations with local students, learn about their study and lifestyle, and experience the authentic atmosphere of university life.",
-      imgSrc: "/src/assets/images/pana.png",
+      imgSrc: "/images/pana.png",
       bgColor: "bg-[#BEE7F9]"
     },
     {
       title: "VISITING",
       description:
         "Students will visit Sydney's iconic landmarks such as the Sydney Opera House, Royal Botanic Garden, and more, enjoying the natural beauty and urban scenery.",
-      imgSrc: "/src/assets/images/amico2.png",
+      imgSrc: "/images/amico2.png",
       bgColor: "bg-[#BEE7F9]"
     }
   ];

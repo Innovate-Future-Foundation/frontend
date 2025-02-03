@@ -4,7 +4,7 @@ export const JoinUs: React.FC = () => {
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 flex flex-col lg:flex-row items-center lg:items-start gap-16">
         {/* Image Section */}
         <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-          <img src="/src/assets/images/amico.png" alt="Support or engineering illustration" className="w-full max-w-sm sm:max-w-md lg:max-w-lg h-auto" />
+          <img src="/images/amico.png" alt="Support or engineering illustration" className="w-full max-w-sm sm:max-w-md lg:max-w-lg h-auto" />
         </div>
 
         {/* Text Section */}

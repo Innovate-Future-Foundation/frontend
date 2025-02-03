@@ -8,7 +8,7 @@ export const Navbar: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Logo Section */}
         <div className="flex items-center gap-2">
-          <img src="/src/assets/images/logo.png" alt="Innovative Future Association Logo" className="h-10 w-10" />
+          <img src="/images/logo.png" alt="Innovative Future Association Logo" className="h-10 w-10" />
           <div className="leading-5">
             <div className="font-bold text-[#046FFB]">INNOVATE FUTURE</div>
             <div className="text-xs text-[#046FFB]">ASSOCIATION</div>
@@ -23,9 +23,9 @@ export const Navbar: React.FC = () => {
           <a href="/about-us" className="text-[#062B48] hover:underline">
             About Us
           </a>
-          <a href="/contact-us" className="text-[#062B48] hover:underline">
+          {/* <a href="/contact-us" className="text-[#062B48] hover:underline">
             Contact Us
-          </a>
+          </a> */}
           <button className="bg-[#046FFB] text-white px-4 py-2 rounded hover:bg-[#034cb4]">Sign In</button>
         </div>
 
@@ -53,11 +53,11 @@ export const Navbar: React.FC = () => {
                 About Us
               </a>
             </li>
-            <li>
+            {/* <li>
               <a href="/contact-us" className="block text-[#062B48] hover:bg-[#f0f4f8] rounded px-4 py-2">
                 Contact Us
               </a>
-            </li>
+            </li> */}
             <li>
               <button className="bg-[#046FFB] text-white px-8 py-2 rounded hover:bg-[#034cb4]">Sign In</button>
             </li>

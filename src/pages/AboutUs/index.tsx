@@ -20,7 +20,7 @@ const AboutUs: React.FC = () => {
 
         <section>
           <div className="mt-8 flex justify-center">
-            <img src="/src/assets/images/cuate.png" alt="About Hero Illustration" className="w-full max-w-md h-auto" />
+            <img src="/images/cuate.png" alt="About Hero Illustration" className="w-full max-w-md h-auto" />
           </div>
         </section>
 
@@ -47,7 +47,7 @@ const AboutUs: React.FC = () => {
                 }
               ].map((item, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
-                  <img src={`/src/assets/images/${item.icon}`} alt={item.title} className="w-16 h-16 mb-4" />
+                  <img src={`/images/${item.icon}`} alt={item.title} className="w-16 h-16 mb-4" />
                   <h3 className="text-xl font-semibold text-[#1c2c4c]">{item.title}</h3>
                   <p className="text-gray-600 mt-2">{item.description}</p>
                 </div>
