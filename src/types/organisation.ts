@@ -2,7 +2,7 @@ import { OffsetPaginatedRequest } from "./apiReqResponse";
 
 export interface Organisation {
   orgId?: string;
-  orgName: string;
+  orgName?: string;
   logoUrl?: string | null;
   websiteUrl?: string | null;
   address?: Address | null;

@@ -7,5 +7,7 @@ export const ERROR_MESSAGES = {
   UNKNOWN: "An unknown error occurred. Please try again later.",
   DUPLICATE_REQUEST: "Request has been submitted.",
   LOGIN_FAILED: "Invalid username or password.",
-  FAIL_TO_FETCH_ORGANISATIONS: "Fail to get organisations"
+  FAIL_TO_FETCH_ORGANISATIONS: "Fail to get organisations",
+  FAIL_TO_FETCH_ORGANISATION: "Fail to get organisation",
+  FAIL_TO_SAVE_ORGANISATION: "Fail to save organisation"
 };

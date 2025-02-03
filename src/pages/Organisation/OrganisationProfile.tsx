@@ -7,28 +7,14 @@ import { Form } from "@/components/ui/form";
 import Avatar from "@/components/Avatar";
 import FormWrapper from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
-
-const orgProfileDetail = {
-  orgName: "JR Academy",
-  email: "admin@jracademy.com.au",
-  logoUrl: "https://github.com/shadcn.png",
-  websiteUrl: "https://jiangren.com.au/",
-
-  address: {
-    street: "123 Main Street",
-    suburb: "Sydney",
-    state: "NSW",
-    postcode: "2000",
-    country: "Australia"
-  },
-
-  subscription: "free",
-  status: "pending"
-};
+import { Organisation } from "@/types";
+import { abbreviateName } from "@/utils/formatters";
+import { useUpdateOrganisation } from "@/hooks/useUpdateOrganisation";
+import { useState } from "react";
 
 const companyInfoFormSchema = z.object({
   logoUrl: z.string().optional(),
-  name: z
+  orgName: z
     .string()
     .min(2, {
       message: "Company name must be at least 2 characters."
@@ -94,16 +80,19 @@ const addressInfoFormSchema = z.object({
 
 interface OrganisationProfileProps {
   disabled?: boolean;
+  orgProfileDetail: Organisation;
 }
-const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = false }) => {
+type FormName = "company" | "address" | null;
+const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = false, orgProfileDetail }) => {
+  const [handleFormName, setHandleFormName] = useState<FormName>(null);
   const companyInfoForm = useForm<z.infer<typeof companyInfoFormSchema>>({
     resolver: zodResolver(companyInfoFormSchema),
     mode: "onChange",
     defaultValues: {
-      logoUrl: orgProfileDetail.logoUrl,
-      name: orgProfileDetail.orgName,
-      email: orgProfileDetail.email,
-      websiteUrl: orgProfileDetail.websiteUrl
+      logoUrl: orgProfileDetail.logoUrl ?? "",
+      orgName: orgProfileDetail.orgName ?? "",
+      email: orgProfileDetail.email ?? "",
+      websiteUrl: orgProfileDetail.websiteUrl ?? ""
     }
   });
 
@@ -111,24 +100,67 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
     resolver: zodResolver(addressInfoFormSchema),
     mode: "onChange",
     defaultValues: {
-      street: orgProfileDetail.address?.street,
-      suburb: orgProfileDetail.address?.suburb,
-      state: orgProfileDetail.address?.state,
-      postcode: orgProfileDetail.address?.postcode,
-      country: orgProfileDetail.address?.country
+      street: orgProfileDetail.address?.street ?? "",
+      suburb: orgProfileDetail.address?.suburb ?? "",
+      state: orgProfileDetail.address?.state ?? "",
+      postcode: orgProfileDetail.address?.postcode ?? "",
+      country: orgProfileDetail.address?.country ?? ""
     }
   });
 
   const avatarAlt = "@InnovateFoundation";
 
+  const handleSuccess = () => {
+    if (companyInfoForm.formState.isDirty) {
+      companyInfoForm.reset(companyInfoForm.getValues());
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+    if (addressInfoForm.formState.isDirty) {
+      addressInfoForm.reset(addressInfoForm.getValues());
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+  };
+
+  const handleError = () => {
+    if (companyInfoForm.formState.isDirty) {
+      companyInfoForm.reset();
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+    if (addressInfoForm.formState.isDirty) {
+      addressInfoForm.reset();
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+  };
+
+  const mutation = useUpdateOrganisation({ handleSuccess, handleError });
+
   const handleCompanyInfoSubmit = (data: z.infer<typeof companyInfoFormSchema>) => {
-    console.log("Company Info Submitted: ", data);
-    // TODO: Perform actions such as sending the data to the server
+    setHandleFormName("company");
+    mutation.mutate({ id: orgProfileDetail.orgId!, bodyData: { ...data } });
   };
 
   const handleAddressInfoSubmit = (data: z.infer<typeof addressInfoFormSchema>) => {
-    console.log("Address Info Submitted: ", data);
-    // TODO: Perform actions such as sending the data to the server
+    setHandleFormName("address");
+    mutation.mutate({
+      id: orgProfileDetail.orgId!,
+      bodyData: {
+        address: {
+          street: data.street ?? "",
+          suburb: data.suburb ?? "",
+          state: data.state ?? "",
+          postcode: data.postcode ?? "",
+          country: data.country ?? ""
+        }
+      }
+    });
   };
 
   return (
@@ -139,12 +171,12 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
             avatarLink={companyInfoForm.watch("logoUrl")!}
             size={24}
             avatarAlt={avatarAlt}
-            avatarPlaceholder={companyInfoForm.watch("name")}
+            avatarPlaceholder={abbreviateName(companyInfoForm.watch("orgName"))}
             outline={true}
             clickable={true}
           />
           <div className="flex flex-col">
-            <p className="text-lg leading-none font-bold capitalize">{companyInfoForm.watch("name")}</p>
+            <p className="text-lg leading-none font-bold capitalize">{companyInfoForm.watch("orgName")}</p>
             <p className="text-xs">{companyInfoForm.watch("websiteUrl")}</p>
             <div className="flex gap-2 mt-2">
               <Badge variant={"secondary"} className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green">
@@ -162,16 +194,30 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
       </div>
       <div className="h-4"></div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <FormWrapper formTitle={"Company Information"} onSave={disabled ? undefined : companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
+        <FormWrapper
+          disabled={!companyInfoForm.formState.isDirty}
+          isPending={handleFormName === "company" && mutation.isPending}
+          isSuccess={handleFormName === "company" && !companyInfoForm.formState.isDirty && mutation.isSuccess}
+          isError={handleFormName === "company" && !companyInfoForm.formState.isDirty && mutation.isError}
+          formTitle={"Company Information"}
+          onSave={disabled ? undefined : companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}
+        >
           <Form {...companyInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={companyInfoForm.control} name="name" label="Name" placeholder="Company Name" disabled={disabled} />
+              <FormFieldItem fieldControl={companyInfoForm.control} name="orgName" label="Company Name" placeholder="Company Name" disabled={disabled} />
               <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" disabled={disabled} />
             </div>
             <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" disabled={disabled} />
           </Form>
         </FormWrapper>
-        <FormWrapper formTitle={"Address"} onSave={disabled ? undefined : addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
+        <FormWrapper
+          disabled={!addressInfoForm.formState.isDirty}
+          isPending={handleFormName === "address" && mutation.isPending}
+          isSuccess={handleFormName === "address" && !addressInfoForm.formState.isDirty && mutation.isSuccess}
+          isError={handleFormName === "address" && !addressInfoForm.formState.isDirty && mutation.isError}
+          formTitle={"Address"}
+          onSave={disabled ? undefined : addressInfoForm.handleSubmit(handleAddressInfoSubmit)}
+        >
           <Form {...addressInfoForm}>
             <div className="flex gap-4 w-full">
               <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" disabled={disabled} />

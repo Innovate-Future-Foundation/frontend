@@ -121,7 +121,7 @@ const DataTable = <T extends object>({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center">
-        <BeatLoader className="bg-primary" />
+        <BeatLoader className="text-primary" />
       </div>
     );
   }

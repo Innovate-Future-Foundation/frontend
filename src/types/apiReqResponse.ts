@@ -7,7 +7,6 @@ export interface ApiResponse<T> {
 }
 
 export interface MetaType {
-  limit: number;
   totalItems: number;
   // For cursor based pagination
   nextCursor?: string;
