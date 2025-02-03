@@ -7,7 +7,7 @@ interface AuthState {
 }
 
 export const useAuth = create<AuthState>(set => ({
-  role: "organisation admin",
+  role: "platform admin",
   setRole: (role: RoleType) => {
     console.log("Setting role to:", role);
     set({ role });
