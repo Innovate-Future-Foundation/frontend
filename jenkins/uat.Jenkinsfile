@@ -27,7 +27,9 @@ pipeline {
                     echo "- Setting args and env vars"
                     sh 'cp .env.example ${ENV_FILE}'
                     // Update existing
-                    sh "sed -i "s|VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=.*|VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=${env.API_URL}|g" ${ENV_FILE}"
+                    sh ("""
+                    sed -i "s|VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=.*|VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=${env.API_URL}|g" ${ENV_FILE}
+                    """)
                     // Add new vars
                     // echo "REACT_APP_API_KEY=${REACT_APP_API_KEY}" >> ${ENV_FILE}
                 }
