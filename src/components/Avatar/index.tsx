@@ -22,11 +22,18 @@ const accept = {
   "image/*": []
 };
 
-const Avatar: React.FC<AvatarProps> = ({ avatarLink, avatarAlt, avatarPlaceholder, size = 10, outline = false, clickable,className,
+const Avatar: React.FC<AvatarProps> = ({
+  avatarLink,
+  avatarAlt,
+  avatarPlaceholder,
+  size = 10,
+  outline = false,
+  clickable,
+  className,
   imageProps = {},
   fallbackProps = {},
-  ...props }) => {
-  
+  ...props
+}) => {
   const avatarStyle = `w-${size} h-${size} ${outline && "outline outline-white"}`;
   const [selectedFile, setSelectedFile] = React.useState<FileWithPreview | null>(null);
   const [isDialogOpen, setDialogOpen] = React.useState(false);
@@ -60,8 +67,8 @@ const Avatar: React.FC<AvatarProps> = ({ avatarLink, avatarAlt, avatarPlaceholde
       ) : (
         <CNAvatar {...getRootProps()} className={cn(avatarStyle, className)} {...props}>
           {clickable ? <input {...getInputProps()} /> : null}
-          <AvatarImage src={avatarLink} alt={avatarAlt} {...imageProps}/>
-          <AvatarFallback  {...fallbackProps}>{avatarPlaceholder}</AvatarFallback>
+          <AvatarImage src={avatarLink} alt={avatarAlt} {...imageProps} />
+          <AvatarFallback {...fallbackProps}>{avatarPlaceholder}</AvatarFallback>
         </CNAvatar>
       )}
     </>
