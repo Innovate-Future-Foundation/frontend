@@ -13,6 +13,7 @@ pipeline {
         API_URL = 'https://uat.innovatefuture.foundation'
         WEBSITE_URL = 'https://uat.innovatefuture.foundation'
         ENV_FILE = '.env'
+        PATH = "$HOME/.nvm/versions/node/v22.13.1/bin:$PATH"
     }
     // parameters {
 
