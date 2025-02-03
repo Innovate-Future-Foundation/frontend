@@ -1,34 +1,33 @@
-"use client";
-
-import React, { type SyntheticEvent } from "react";
-
+import React, { ReactNode, type SyntheticEvent } from "react";
 import ReactCrop, { centerCrop, makeAspectCrop, type Crop, type PixelCrop } from "react-image-crop";
+import { FileWithPath } from "react-dropzone";
+import { CropIcon, Trash2Icon } from "lucide-react";
+import "react-image-crop/dist/ReactCrop.css";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar as CNAvatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
-import "react-image-crop/dist/ReactCrop.css";
-import { FileWithPath } from "react-dropzone";
-import { CropIcon, Trash2Icon } from "lucide-react";
 export type FileWithPreview = FileWithPath & {
   preview: string;
 };
+
 interface ImageCropperProps {
   dialogOpen: boolean;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   selectedFile: FileWithPreview | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<FileWithPreview | null>>;
+  children: ReactNode;
+  setCroppedImage: (croppedImage: string) => void;
 }
 
-export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelectedFile }: ImageCropperProps) {
+export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelectedFile, setCroppedImage, children }: ImageCropperProps) {
   const aspect = 1;
 
   const imgRef = React.useRef<HTMLImageElement | null>(null);
 
   const [crop, setCrop] = React.useState<Crop>();
   const [croppedImageUrl, setCroppedImageUrl] = React.useState<string>("");
-  const [croppedImage, setCroppedImage] = React.useState<string>("");
 
   function onImageLoad(e: SyntheticEvent<HTMLImageElement>) {
     if (aspect) {
@@ -71,24 +70,18 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
       alert(`Something went wrong! Error Message ${error}`);
     }
   }
-  const avatarStyle = `w-${24} h-${24}`;
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogTrigger>
-        <Avatar className={avatarStyle}>
-          <AvatarImage src={croppedImage ? croppedImage : "https://github.com/shadcn.png"} alt="@shadcn" className="size-full rounded-all" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-      </DialogTrigger>
+      <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="p-5 gap-0">
         <DialogTitle className="pl-5">Crop Your Avatar</DialogTitle>
         <DialogDescription className="pl-5">Adjust the crop area to create your avatar.</DialogDescription>
         <div className="p-6 size-full">
           <ReactCrop crop={crop} onChange={(_, percentCrop) => setCrop(percentCrop)} onComplete={c => onCropComplete(c)} aspect={aspect} className="w-full">
-            <Avatar className="size-full rounded-none">
+            <CNAvatar className="size-full rounded-none">
               <AvatarImage ref={imgRef} className="size-full rounded-none" alt="Image Cropper Shell" src={selectedFile?.preview} onLoad={onImageLoad} />
               <AvatarFallback className="size-full min-h-[460px] rounded-none">Loading...</AvatarFallback>
-            </Avatar>
+            </CNAvatar>
           </ReactCrop>
         </div>
         <DialogFooter className="p-6 pt-0 justify-center ">
