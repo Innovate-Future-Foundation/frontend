@@ -6,8 +6,6 @@ import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { OrganisationPaginatedRequest } from "@/types";
 
 export const useOrganisation = (organisationPaginatedRequest: OrganisationPaginatedRequest) => {
-  console.log("organisationPaginatedRequest", organisationPaginatedRequest);
-
   const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_ORGANISATIONS;
 
   const {

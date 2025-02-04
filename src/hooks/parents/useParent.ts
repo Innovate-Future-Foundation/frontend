@@ -4,10 +4,10 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { ProfilePaginatedRequest } from "@/types";
 import { parents } from "@/queries/parents";
+import { useAuth } from "../useAuth";
 
 export const useParent = (profilePaginatedRequest: ProfilePaginatedRequest) => {
-  console.log("profilePaginatedRequest", profilePaginatedRequest);
-
+  const { organisationId } = useAuth();
   const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_PARENT;
 
   const {
@@ -16,7 +16,7 @@ export const useParent = (profilePaginatedRequest: ProfilePaginatedRequest) => {
     error: errorParents,
     isError: isErrorParents
   } = useQuery({
-    ...parents.list(profilePaginatedRequest),
+    ...parents.list(profilePaginatedRequest, organisationId),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,

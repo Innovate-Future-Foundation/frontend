@@ -25,7 +25,7 @@ export const useUpdateProfile = ({ handleSuccess, handleError }: useUpdateProfil
     mutationFn: ({ id, bodyData }: { id: string; bodyData: ProfileInfo }) => profileApis.updateProfile(id, bodyData),
     onSuccess: () => {
       handleSuccess();
-      queryClient.invalidateQueries({ queryKey: ["students"] });
+      queryClient.invalidateQueries({ queryKey: ["profiles"] });
     },
     onError: error => {
       handleError();

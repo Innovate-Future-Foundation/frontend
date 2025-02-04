@@ -6,10 +6,10 @@ import { profileApis } from "@/services/apiServices";
 export const parents = createQueryKeys("parents", {
   all: null,
 
-  list: (params: ProfilePaginatedRequest) => ({
+  list: (params: ProfilePaginatedRequest, organisationId: string) => ({
     queryKey: [{ params }],
     queryFn: async () => {
-      const response = await profileApis.getParents(convertToQueryParams(params));
+      const response = await profileApis.getParents(convertToQueryParams(params), organisationId);
       return response.data as ApiResponse<Profile>;
     }
   }),

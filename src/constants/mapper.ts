@@ -23,8 +23,11 @@ export const getfilterTitle: Record<string, string> = {
   subscription: "subscription"
 };
 
-// export const mapStringToBoolean = (id: string, value: string): boolean =>{
-//   if(id === ""){
-
-//   }
-// }
+export const mapStringToBoolean = (id: string, value: string): boolean | undefined => {
+  if (id === "isActive") {
+    return value === "active" ? true : false;
+  } else if (id === "isConfirmed") {
+    return value === "accepted" ? true : false;
+  }
+  return undefined;
+};
