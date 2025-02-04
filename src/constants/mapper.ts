@@ -16,7 +16,6 @@ export const mapStringToEnum = (id: string, value: string): OrganisationStatus |
   return undefined;
 };
 
-<<<<<<< HEAD
 export const getfilterTitle: Record<string, string> = {
   isActive: "status",
   isConfirmed: "invitation confirmation",
@@ -32,10 +31,3 @@ export const mapStringToBoolean = (id: string, value: string): boolean | undefin
   }
   return undefined;
 };
-=======
-// export const mapStringToBoolean = (id: string, value: string): boolean =>{
-//   if(id === ""){
-
-//   }
-// }
->>>>>>> 52b4503 (feat: add profile apis)
