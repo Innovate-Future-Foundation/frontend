@@ -12,7 +12,7 @@ describe("Renders main page correctly", async () => {
         <App />
       </MemoryRouter>
     );
-    const homeNavElement = screen.getAllByText(/Home/i).find(element => element.tagName === "P");
+    const homeNavElement = screen.getAllByText(/Home/i).find(element => element.tagName === "H1");
     //assert
     expect(homeNavElement).toBeInTheDocument();
   });
