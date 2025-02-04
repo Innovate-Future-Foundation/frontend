@@ -95,7 +95,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userProfileDetail }) => {
                 variant={"outline"}
                 className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foreground  border-primary-light bg-secondary"
               >
-                {userProfileDetail.org?.orgName}
+                {userProfileDetail.organisation?.orgName}
               </Badge>
             </div>
           </div>

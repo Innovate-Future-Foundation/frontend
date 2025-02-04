@@ -25,7 +25,7 @@ import Pagenation from "@/components/Pagenation";
 import { TableBaseType } from "@/types/tablebase";
 import { Card } from "../ui/card";
 import clsx from "clsx";
-import { getFiltersItems } from "@/constants/mapper";
+import { getFiltersItems, getfilterTitle } from "@/constants/mapper";
 import { useCallback, useEffect, useMemo } from "react";
 import { DEBOUNCE_TIME_MS } from "@/constants/appConfig";
 
@@ -139,7 +139,7 @@ const DataTable = <T extends object>({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="ml-auto max-w-sm h-8 text-xs capitalize">
                     <Filter size={6} className="text-gray-500" />
-                    {filteredColumn.id}
+                    {getfilterTitle[filteredColumn.id]}
                     <ChevronDown />
                   </Button>
                 </DropdownMenuTrigger>

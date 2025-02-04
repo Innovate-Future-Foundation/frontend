@@ -86,7 +86,7 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
       header: "Status",
       cell: ({ row }) => (
         <Badge variant="secondary">
-          <div className="capitalize">{row.getValue("isActive")}</div>
+          <div className="capitalize">{row.getValue("isActive") ? "active" : "suspended"}</div>
         </Badge>
       ),
       enableGlobalFilter: false
@@ -96,7 +96,7 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
       header: "Invitation comfirmation",
       cell: ({ row }) => (
         <Badge variant="secondary">
-          <div className="capitalize">{row.getValue("isConfirmed")}</div>
+          <div className="capitalize">{row.getValue("isConfirmed") ? "accent" : "pending"}</div>
         </Badge>
       ),
       enableGlobalFilter: false

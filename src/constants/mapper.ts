@@ -16,6 +16,13 @@ export const mapStringToEnum = (id: string, value: string): OrganisationStatus |
   return undefined;
 };
 
+export const getfilterTitle: Record<string, string> = {
+  isActive: "status",
+  isConfirmed: "invitation confirmation",
+  status: "status",
+  subscription: "subscription"
+};
+
 // export const mapStringToBoolean = (id: string, value: string): boolean =>{
 //   if(id === ""){
 
