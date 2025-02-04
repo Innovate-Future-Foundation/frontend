@@ -16,13 +16,16 @@ const updateProfile = (id: string, bodyData: ProfileInfo) => appRequest.put(`${A
  */
 // const getPlatformAdminUsers = (queryData: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}`);
 
-// const getOrgAdminUsers = (queryData: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}`);
+// const getOrgAdminUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_manager,org_teacher,parent,student}&${queryData}`);
 
-// const getOrgManagerUsers = (queryData: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}`);
+// const getOrgManagerUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_admin,org_manager,org_teacher,parent,student}&${queryData}`);
 
-// const getPlatformAdminUsers = (queryData: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}`);
+// const getOrgTeacherUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_admin,org_manager,org_teacher,parent,student}&${queryData}`);
 
-// const getPlatformAdminUsers = (queryData: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}`);
+// const getParentUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_teacher,student(s=>s.supervisor===parent profileId)}&${queryData}`);
+
+// const getParentUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_teacher,student}&${queryData}`);
+
 /**
  * Organisation Admins
  */

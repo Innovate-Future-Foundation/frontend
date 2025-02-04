@@ -53,14 +53,14 @@ export const contactsColumns: ColumnDef<Profile>[] = [
     enableGlobalFilter: false
   },
   {
-    accessorKey: "role",
+    accessorKey: "roleName",
     header: "Role",
     cell: ({ row }) => (
       <div className="flex gap-2 items-center m-3 text-primary-foreground30">
         <Tag size={16} />
         <Badge variant={"secondary"} className="flex items-center gap-1">
           <div className="w-1 h-1 rounded-full bg-secondary-foreground"></div>
-          <div className="lowercase truncate max-w-40">{row.getValue("role")}</div>
+          <div className="lowercase truncate max-w-40">{row.getValue("roleName")}</div>
         </Badge>
       </div>
     ),
