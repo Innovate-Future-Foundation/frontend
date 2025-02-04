@@ -83,7 +83,7 @@ pipeline {
                 script {
                     echo 'Deploying...'
                     withAWS(credentials: 'uat_cd_access_key', region: env.AWS_REGION) {
-                        sh "aws s3 sync dist/ s3://${env.S3_BUCKET} --delete"
+                        sh "aws s3 sync dist/ s3://${env.FRONTEND_BUCKET} --delete"
                     }
                 }
             }
