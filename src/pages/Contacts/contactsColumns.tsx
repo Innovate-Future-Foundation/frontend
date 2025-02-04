@@ -15,7 +15,7 @@ export const contactsColumns: ColumnDef<Profile>[] = [
       return (
         <div className="flex flex-col bg-secondary-light">
           <div className="flex items-center gap-2 p-3 pb-0">
-            <Avatar avatarLink={row.original.avatarLink ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("name"))} size={8} />
+            <Avatar avatarLink={row.original.avatarUrl ?? ""} avatarAlt="@InnovateFuture" avatarPlaceholder={abbreviateName(row.getValue("name"))} size={8} />
             <div className="capitalize text-primary-foreground30 text-sm truncate max-w-40 font-semibold">{row.getValue("name")}</div>
           </div>
           <Separator className="mt-2 bg-background h-1" />

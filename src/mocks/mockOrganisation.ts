@@ -1,4 +1,4 @@
-import { Address, Organisation, OrganisationStatus, Subscription, TableBaseType } from "@/types";
+import { Address, Organisation, TableBaseType } from "@/types";
 import { faker, fakerEN_AU } from "@faker-js/faker";
 
 export const newOrganisation = (): TableBaseType<Organisation> => {
@@ -8,8 +8,6 @@ export const newOrganisation = (): TableBaseType<Organisation> => {
     orgName: orgName,
     address: faker.helpers.shuffle([newAddress(), null])[0],
     email: `${orgName}@gmail.com`,
-    subscription: faker.helpers.shuffle<Subscription | null>(["basic", "free", "premium", null])[0],
-    status: faker.helpers.shuffle<OrganisationStatus>(["pending", "verified", "suspended", "deactivated"])[0],
     logoUrl: faker.helpers.shuffle([faker.image.avatar(), null])[0],
     websiteUrl: faker.helpers.shuffle([faker.internet.url(), null])[0],
     createdAt: faker.date.past().toISOString(),

@@ -1,7 +1,7 @@
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { organisations } from "@/queries/organisations";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useErrorNotification } from "./useErrorNotification";
+import { useErrorNotification } from "../useErrorNotification";
 
 export const useOrganisationDetail = (organisationId: string) => {
   const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_ORGANISATIONS;

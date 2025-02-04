@@ -9,7 +9,7 @@ import FormWrapper from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
 import { Organisation } from "@/types";
 import { abbreviateName } from "@/utils/formatters";
-import { useUpdateOrganisation } from "@/hooks/useUpdateOrganisation";
+import { useUpdateOrganisation } from "@/hooks/organisations/useUpdateOrganisation";
 import { useState } from "react";
 
 const companyInfoFormSchema = z.object({

@@ -11,10 +11,10 @@ export const abbreviateName = (name: string): string => {
 };
 
 export const formatDateToDDMMYYYY = (isoDate: string): string => {
-  const date = new Date(isoDate); // Convert ISO string to Date object
-  const day = String(date.getDate()).padStart(2, "0"); // Get day and pad with leading zero
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (0-indexed) and pad
-  const year = date.getFullYear(); // Get full year
+  const date = new Date(isoDate);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
   return `${year}-${month}-${day}`;
 };
 

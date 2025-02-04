@@ -2,7 +2,7 @@ import DataTable from "@/components/DataTable";
 import { orgColumns } from "./orgColumns";
 import ContentLayout from "@/layouts/ContentLayout";
 import { Building2 } from "lucide-react";
-import { useOrganisation } from "@/hooks/useOrganisation";
+import { useOrganisation } from "@/hooks/organisations/useOrganisation";
 import { useCallback, useMemo, useState } from "react";
 import { Organisation, OrganisationPaginationFilter, OrganisationPaginationOrderByType, TableBaseType } from "@/types";
 import { ColumnFiltersState, PaginationState, SortingState, Updater } from "@tanstack/react-table";

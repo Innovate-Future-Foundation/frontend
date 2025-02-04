@@ -5,7 +5,7 @@ import ContentLayout from "@/layouts/ContentLayout";
 import { ScrollList } from "@/components/ScrollList";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useParams } from "react-router-dom";
-import { useOrganisationDetail } from "@/hooks/useOrganisationDetail";
+import { useOrganisationDetail } from "@/hooks/organisations/useOrganisationDetail";
 import { Organisation } from "@/types";
 import { useMemo } from "react";
 import { BeatLoader } from "react-spinners";

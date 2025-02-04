@@ -6,7 +6,8 @@ export function usePermissions() {
 
   const permissions = {
     canEditOrganisationProfile: ["platform admin", "organisation admin"].includes(role),
-    canViewManagerScrollList: ["platform admin", "organisation admin"].includes(role)
+    canViewManagerScrollList: ["platform admin", "organisation admin"].includes(role),
+    needViewOrganisationOfUser: ["platform admin"]
   };
 
   console.log("Calculated permissions:", permissions);

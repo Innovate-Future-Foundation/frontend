@@ -19,5 +19,6 @@ export const API_ENDPOINTS = {
   AUTH: "/auth",
   INVITE: "/invite",
   TOKEN: "/token",
-  ORGANISATION: "/organisations"
+  ORGANISATION: "/organisations",
+  PROFILE: "/profiles"
 };

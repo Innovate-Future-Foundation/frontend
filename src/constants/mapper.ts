@@ -2,7 +2,9 @@ import { OrganisationStatus, SubscriptionStatus } from "@/types";
 
 export const getFiltersItems: Record<string, string[]> = {
   status: ["pending", "verified", "suspended", "deactivated"],
-  subscription: ["premium", "free", "basic"]
+  subscription: ["premium", "free", "basic"],
+  isActive: ["active", "suspended"],
+  isConfirmed: ["accepted", "pending"]
 };
 
 export const mapStringToEnum = (id: string, value: string): OrganisationStatus | SubscriptionStatus | undefined => {
@@ -13,3 +15,9 @@ export const mapStringToEnum = (id: string, value: string): OrganisationStatus |
   }
   return undefined;
 };
+
+// export const mapStringToBoolean = (id: string, value: string): boolean =>{
+//   if(id === ""){
+
+//   }
+// }

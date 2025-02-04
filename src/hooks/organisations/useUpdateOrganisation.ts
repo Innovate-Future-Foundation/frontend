@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { organisations } from "@/queries/organisations";
 import { organisationApis } from "@/services/apiServices/organisationApis";
 import { Organisation } from "@/types";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
-import { useErrorNotification } from "./useErrorNotification";
+import { useErrorNotification } from "../useErrorNotification";
 import { useState } from "react";
 
 interface useUpdateOrganisationProps {
@@ -23,9 +22,9 @@ export const useUpdateOrganisation = ({ handleSuccess, handleError }: useUpdateO
 
   return useMutation({
     mutationFn: ({ id, bodyData }: { id: string; bodyData: Organisation }) => organisationApis.updateOrganisation(id, bodyData),
-    onSuccess: (updatedOrg: Organisation) => {
+    onSuccess: () => {
       handleSuccess();
-      queryClient.setQueryData(organisations.detail(updatedOrg.orgId!).queryKey, updatedOrg);
+      queryClient.invalidateQueries({ queryKey: ["organisations"] });
     },
     onError: error => {
       handleError();

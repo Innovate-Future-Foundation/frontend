@@ -1,6 +1,6 @@
 import { organisations } from "@/queries/organisations";
 import { useQuery } from "@tanstack/react-query";
-import { useErrorNotification } from "./useErrorNotification";
+import { useErrorNotification } from "../useErrorNotification";
 import { keepPreviousData } from "@tanstack/react-query";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { OrganisationPaginatedRequest } from "@/types";

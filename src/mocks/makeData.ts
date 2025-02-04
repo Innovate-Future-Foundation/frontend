@@ -86,11 +86,10 @@ export const fetchDataCursorPagination = async <T>({
         message: ["is success"],
         data: dbData.slice(0, size),
         meta: {
-          pageSize: size,
           totalItems: dbData.length,
           // For cursor based pagination
           nextCursor,
-          hasNextPage: startIndex + size < dbData.length
+          hasNext: startIndex + size < dbData.length
         }
       });
     }, 200)
@@ -150,10 +149,7 @@ export const fetchDataOffsetPagination = async <T>({
         message: ["is success"],
         data: dbData.slice(offset, offset + limit),
         meta: {
-          pageSize: limit,
-          totalItems: dbData.length,
-          currentPage: Math.floor(offset / limit) + 1,
-          totalPages: Math.ceil(dbData.length / limit)
+          totalItems: dbData.length
         }
       });
     }, 200)
