@@ -66,12 +66,12 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                         avatarAlt={"@AcmeCorporation"}
                         avatarPlaceholder={"AC"}
                       />
-                      {state === "expanded" && !isMobile && (
+                      {
                         <div className="flex flex-col items-start gap-[2px]">
                           <p className="text-primary-foreground30 font-bold text-sm leading-3 truncate max-w-40">{"Acme Corporation"}</p>
                           <p className="text-primary-foreground50 text-[12px] leading-3 truncate max-w-40">{"info@acmecorp.com"}</p>
                         </div>
-                      )}
+                      }
                     </div>
                     <ChevronsUpDown size={14} className="text-primary-foreground30" />
                   </div>
@@ -109,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                               <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-2">
                                   <item.icon className="w-4 h-4" />
-                                  {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{item.title}</span>}
+                                  {<span className="capitalize font-medium text-sm">{item.title}</span>}
                                 </div>
                                 <ChevronRight
                                   className={`w-4 h-4 transition-transform duration-200 ${hasChildrenWithTitle[item.title] ? "rotate-90" : "rotate-0"}`}
@@ -132,7 +132,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                                     <Link to={child.url}>
                                       <div className="flex items-center gap-2">
                                         <div className={clsx("w-3 h-3 rounded-sm", child.icon)}></div>
-                                        {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{child.title}</span>}
+                                        {<span className="capitalize font-medium text-sm">{child.title}</span>}
                                       </div>
                                     </Link>
                                   </SidebarMenuSubButton>
@@ -155,7 +155,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                       >
                         <Link to={item.url}>
                           <item.icon className="w-5 h-5" />
-                          {state === "expanded" && !isMobile && <span className="capitalize font-medium text-sm">{item.title}</span>}
+                          {<span className="capitalize font-medium text-sm">{item.title}</span>}
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

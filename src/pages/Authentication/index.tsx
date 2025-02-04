@@ -6,12 +6,11 @@ const AuthenticationPage: React.FC = () => {
       <div
         className="
         hidden lg:flex 
-        w-[35%] flex-col bg-[#046FFB] p-12 pt-16 text-white
+        w-[35%] flex-col bg-primary p-12 pt-16 text-primary-foreground
         motion-preset-slide-right-lg motion-duration-2000 
       "
       >
         <div className="mb-24 ">
-          {/* Logo placeholder */}
           <h1 className="text-2xl font-bold motion-preset-fade motion-duration-2000 motion-delay-500">Company Name</h1>
         </div>
         <div>
