@@ -82,7 +82,7 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying...'
-                    withAWS(credentials: 'aws_credentials', region: env.AWS_REGION) {
+                    withAWS(credentials: 'uat_cd_access_key', region: env.AWS_REGION) {
                         sh "aws s3 sync dist/ s3://${env.S3_BUCKET} --delete"
                     }
                 }
@@ -92,7 +92,7 @@ pipeline {
             steps {
                 script {
                     echo 'Invalidate CloudFront...'
-                    withAWS(credentials: 'aws_credentials', region: env.AWS_REGION) {
+                    withAWS(credentials: 'uat_cd_access_key', region: env.AWS_REGION) {
                         sh """
                             aws cloudfront create-invalidation --distribution-id ${env.CLOUD_FRONT_DISTRIBUTION_ID} --paths "/*"
                         """
