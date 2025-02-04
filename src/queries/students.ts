@@ -12,13 +12,5 @@ export const students = createQueryKeys("students", {
       const response = await profileApis.getStudents(convertToQueryParams(params), organisationId);
       return response.data as ApiResponse<Profile>;
     }
-  }),
-
-  detail: (profileId: string) => ({
-    queryKey: [profileId],
-    queryFn: async () => {
-      const response = await profileApis.getProfileById(profileId);
-      return response.data as ApiResponse<Profile>;
-    }
   })
 });

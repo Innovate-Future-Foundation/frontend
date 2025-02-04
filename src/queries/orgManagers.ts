@@ -12,13 +12,5 @@ export const orgManagers = createQueryKeys("orgManagers", {
       const response = await profileApis.getOrgManagers(convertToQueryParams(params), organisationId);
       return response.data as ApiResponse<Profile>;
     }
-  }),
-
-  detail: (profileId: string) => ({
-    queryKey: [profileId],
-    queryFn: async () => {
-      const response = await profileApis.getProfileById(profileId);
-      return response.data as ApiResponse<Profile>;
-    }
   })
 });
