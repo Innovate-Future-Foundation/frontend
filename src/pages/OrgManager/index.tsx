@@ -1,35 +1,48 @@
 import { UserRoundPen } from "lucide-react";
-import ProfilePage from "../Profile";
+import { useMemo } from "react";
+import ContentLayout from "@/layouts/ContentLayout";
+import DataTable from "@/components/DataTable";
+import { Profile, TableBaseType } from "@/types";
 import { profileColumns } from "../Profile/profileColumns";
-import { ProfileWithChildren } from "@/types";
-import { useEffect, useState } from "react";
-import { platformAdminMockApis } from "@/mocks/platformAdminMockApis";
+import { useOrgManager } from "@/hooks/orgManagers/useOrgManager";
+import { useTableFilters } from "@/hooks/useTableFilters";
+import { usePermissions } from "@/hooks/usePermissions";
 
 const OrgManagerPage = () => {
-  const [data, setData] = useState<ProfileWithChildren[]>([]);
+  const { needViewOrganisationOfUser } = usePermissions();
+  const { sorting, setSorting, columnFilters, setColumnFilters, pagination, setPagination, globalFilter, setGlobalFilter, offset, filters, sortings } =
+    useTableFilters();
 
-  //TODO: will link real api later
-  useEffect(() => {
-    (async () => {
-      const response = await platformAdminMockApis.getOrganisationAdmins({ offset: 0, sorting: [], filtering: [] });
-      console.log("organisationsList", response.data);
+  const { orgManagersResponse, isLoadingOrgManagers } = useOrgManager({
+    offset,
+    limit: pagination.pageSize,
+    filters,
+    sortings
+  });
 
-      if (Array.isArray(response.data)) {
-        setData(response.data);
-      }
-    })();
-  }, []);
+  const tableData: TableBaseType<Profile>[] = useMemo(() => {
+    return Array.isArray(orgManagersResponse?.data) ? orgManagersResponse?.data : [];
+  }, [orgManagersResponse]);
 
   return (
-    <ProfilePage
-      data={data}
-      icon={UserRoundPen}
-      title="Manager List"
-      inviteLabel="Invite Manager"
-      columns={profileColumns({ profilePath: "orgmanagers", hideRole: true })}
-      searchPlaceholder="Search by name, email, or organization"
-      onInviteClick={() => console.log("Invite Manager clicked")}
-    />
+    <ContentLayout icon={UserRoundPen} title={"organisation manager list"}>
+      <DataTable
+        totalItems={orgManagersResponse?.meta?.totalItems}
+        limit={pagination.pageSize}
+        columns={profileColumns({ profilePath: "orgmanagers", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        data={tableData}
+        isLoading={isLoadingOrgManagers}
+        searchPlaceholder="search by name, email or phone"
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+        sorting={sorting}
+        setSorting={setSorting}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
+    </ContentLayout>
   );
 };
 

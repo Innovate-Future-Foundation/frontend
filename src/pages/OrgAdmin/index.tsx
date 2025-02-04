@@ -1,18 +1,48 @@
 import { UserRoundPen } from "lucide-react";
-import ProfilePage from "../Profile";
+import { useMemo } from "react";
+import ContentLayout from "@/layouts/ContentLayout";
+import DataTable from "@/components/DataTable";
+import { Profile, TableBaseType } from "@/types";
+import { useOrgAdmin } from "@/hooks/orgAdmins/useOrgAdmin";
 import { profileColumns } from "../Profile/profileColumns";
+import { usePermissions } from "@/hooks/usePermissions";
+import { useTableFilters } from "@/hooks/useTableFilters";
 
 const OrgAdminPage = () => {
+  const { needViewOrganisationOfUser } = usePermissions();
+  const { sorting, setSorting, columnFilters, setColumnFilters, pagination, setPagination, globalFilter, setGlobalFilter, offset, filters, sortings } =
+    useTableFilters();
+
+  const { orgAdminsResponse, isLoadingOrgAdmins } = useOrgAdmin({
+    offset,
+    limit: pagination.pageSize,
+    filters,
+    sortings
+  });
+
+  const tableData: TableBaseType<Profile>[] = useMemo(() => {
+    return Array.isArray(orgAdminsResponse?.data) ? orgAdminsResponse?.data : [];
+  }, [orgAdminsResponse]);
+
   return (
-    <ProfilePage
-      data={data}
-      icon={UserRoundPen}
-      title="Admin List"
-      inviteLabel="Invite Admin"
-      columns={profileColumns({ hideRole: true })}
-      searchPlaceholder="Search by name, email, or organization"
-      onInviteClick={() => console.log("Invite Admin clicked")}
-    />
+    <ContentLayout icon={UserRoundPen} title={"organisation admin list"}>
+      <DataTable
+        totalItems={orgAdminsResponse?.meta?.totalItems}
+        limit={pagination.pageSize}
+        columns={profileColumns({ profilePath: "orgadmins", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        data={tableData}
+        isLoading={isLoadingOrgAdmins}
+        searchPlaceholder="search by name, email or phone"
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+        sorting={sorting}
+        setSorting={setSorting}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
+    </ContentLayout>
   );
 };
 

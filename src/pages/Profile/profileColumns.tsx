@@ -63,7 +63,7 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
             )}
             <Badge variant="outline" className="rounded-full pl-[2px] bg-background">
               <AppAvatar
-                avatarLink={row.original.avatarLink ?? ""}
+                avatarLink={row.original.avatarUrl ?? ""}
                 avatarAlt="@InnovateFuture"
                 avatarPlaceholder={abbreviateName(row.getValue("name"))}
                 size={7}
@@ -82,11 +82,21 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
       enableColumnFilter: false
     },
     {
-      accessorKey: "status",
+      accessorKey: "isActive",
       header: "Status",
       cell: ({ row }) => (
         <Badge variant="secondary">
-          <div className="capitalize">{row.getValue("status")}</div>
+          <div className="capitalize">{row.getValue("isActive") ? "active" : "suspended"}</div>
+        </Badge>
+      ),
+      enableGlobalFilter: false
+    },
+    {
+      accessorKey: "isConfirmed",
+      header: "Invitation comfirmation",
+      cell: ({ row }) => (
+        <Badge variant="secondary">
+          <div className="capitalize">{row.getValue("isConfirmed") ? "accent" : "pending"}</div>
         </Badge>
       ),
       enableGlobalFilter: false
@@ -144,7 +154,7 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
     baseColumns.push({
       accessorKey: "org.orgName",
       header: "Organisation",
-      cell: ({ row }) => <div className="capitalize truncate max-w-40">{row.original.org?.orgName}</div>,
+      cell: ({ row }) => <div className="capitalize truncate max-w-40">{row.original.organisation?.orgName}</div>,
       enableColumnFilter: false
     });
   }

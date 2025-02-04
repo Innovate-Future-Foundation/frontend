@@ -1,18 +1,13 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Sidebar from "./Sidebar";
 import Breadcrumb from "@/components/Breadcurmb";
-import { RoleType } from "@/types";
 import { filterMenuByRole } from "./SidebarMenu";
+import { useAuth } from "@/hooks/useAuth";
 
-interface DashboardContentProps {
-  role: RoleType;
-  organisationId?: string;
-}
-
-const DashboardContent: React.FC<DashboardContentProps> = ({ role, organisationId }) => {
+const DashboardContent = () => {
+  const { role, organisationId } = useAuth();
   console.log("role", role);
 
   const roleBasedDashboardMenuItemGroups = filterMenuByRole(role, organisationId);

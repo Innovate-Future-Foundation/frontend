@@ -1,34 +1,48 @@
-import { UsersRound } from "lucide-react";
-import ProfilePage from "../Profile";
+import { UserRoundPen } from "lucide-react";
+import { useMemo } from "react";
+import ContentLayout from "@/layouts/ContentLayout";
+import DataTable from "@/components/DataTable";
+import { Profile, TableBaseType } from "@/types";
 import { profileColumns } from "../Profile/profileColumns";
-import { useEffect, useState } from "react";
-import { ProfileWithChildren } from "@/types";
-import { platformAdminMockApis } from "@/mocks/platformAdminMockApis";
+import { useParent } from "@/hooks/parents/useParent";
+import { usePermissions } from "@/hooks/usePermissions";
+import { useTableFilters } from "@/hooks/useTableFilters";
 
 const ParentPage = () => {
-  const [data, setData] = useState<ProfileWithChildren[]>([]);
+  const { needViewOrganisationOfUser } = usePermissions();
+  const { sorting, setSorting, columnFilters, setColumnFilters, pagination, setPagination, globalFilter, setGlobalFilter, offset, filters, sortings } =
+    useTableFilters();
 
-  //TODO: will link real api later
-  useEffect(() => {
-    (async () => {
-      const response = await platformAdminMockApis.getParents({ offset: 0, sorting: [], filtering: [] });
-      console.log("Parent list", response?.data);
+  const { parentsResponse, isLoadingParents } = useParent({
+    offset,
+    limit: pagination.pageSize,
+    filters,
+    sortings
+  });
 
-      if (Array.isArray(response?.data)) {
-        setData(response.data);
-      }
-    })();
-  }, []);
+  const tableData: TableBaseType<Profile>[] = useMemo(() => {
+    return Array.isArray(parentsResponse?.data) ? parentsResponse?.data : [];
+  }, [parentsResponse]);
+
   return (
-    <ProfilePage
-      data={data}
-      icon={UsersRound}
-      title="Parent List"
-      inviteLabel="Invite Parent"
-      columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: true })}
-      searchPlaceholder="Search by name, email, or organization"
-      onInviteClick={() => console.log("Invite Parent clicked")}
-    />
+    <ContentLayout icon={UserRoundPen} title={"parent list"}>
+      <DataTable
+        totalItems={parentsResponse?.meta?.totalItems}
+        limit={pagination.pageSize}
+        columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        data={tableData}
+        isLoading={isLoadingParents}
+        searchPlaceholder="search by name, email or phone"
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+        sorting={sorting}
+        setSorting={setSorting}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
+    </ContentLayout>
   );
 };
 
