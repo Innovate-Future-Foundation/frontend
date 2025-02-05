@@ -95,7 +95,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                       disabled
                       open={hasChildrenWithTitle[item.title]}
                       className={clsx(
-                        `${item.children.some(child => path.includes(child.url)) && "bg-secondary rounded-lg border-primary-light"} ${state === "expanded" && !isMobile && "pb-2"} group collapsible blur:bg-secondary hover:bg-secondary hover:rounded-lg hover:border-primary-light`
+                        `${item.children.some(child => path.includes(child.url)) && "bg-secondary rounded-lg border-primary-light"} pb-2 group collapsible blur:bg-secondary hover:bg-secondary hover:rounded-lg hover:border-primary-light`
                       )}
                       key={`${item.title}${index}`}
                     >
@@ -109,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                               <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-2">
                                   <item.icon className="w-4 h-4" />
-                                  {<span className="capitalize font-medium text-sm">{item.title}</span>}
+                                  {(state === "expanded" || isMobile) && <span className="capitalize font-medium text-sm">{item.title}</span>}
                                 </div>
                                 <ChevronRight
                                   className={`w-4 h-4 transition-transform duration-200 ${hasChildrenWithTitle[item.title] ? "rotate-90" : "rotate-0"}`}
