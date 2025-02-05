@@ -10,7 +10,7 @@ on:
 
 env:
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-  DISCORD_THREAD_ID: 1332133384075481098
+  DISCORD_THREAD_ID: "1332133384075481098"
   SKIP_KEYWORD: '[skip notification]'
 
 jobs:
@@ -53,6 +53,8 @@ jobs:
           !contains(github.event.pull_request.title, env.SKIP_KEYWORD) &&
           !github.event.pull_request.draft
         uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           args: |
             {
@@ -85,16 +87,16 @@ jobs:
                   "text": "By ${{ github.actor }} • ${{ github.event.pull_request.updated_at }}"
                 }
               }],
-              "thread_id": "${{ toJSON(env.DISCORD_THREAD_ID) }}"
+              "thread_id": "${{ env.DISCORD_THREAD_ID }}"
             }
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
       - name: Push Notification
         if: |
           github.event_name == 'push' &&
           !contains(github.event.head_commit.message, env.SKIP_KEYWORD)
         uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           args: |
             {
@@ -118,10 +120,8 @@ jobs:
                   "text": "By ${{ github.actor }} • ${{ github.event.head_commit.timestamp }}"
                 }
               }],
-              "thread_id": "${{ toJSON(env.DISCORD_THREAD_ID) }}"
+              "thread_id": "${{ env.DISCORD_THREAD_ID }}"
             }
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
       - name: Error Notification
         if: failure() && github.event_name == 'pull_request'
