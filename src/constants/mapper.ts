@@ -44,7 +44,7 @@ export const mapStringToBoolean = (id: string, value: string): [string, boolean 
 
 export const mapTypeToId = (id: string, value: string): [string, string | undefined] => {
   if (id === "roleName") {
-    return ["roleId", ROLE_IDS[value as RoleType]];
+    return ["roleIds", ROLE_IDS[value as RoleType]];
   }
-  return ["roleId", undefined];
+  return ["roleIds", undefined];
 };

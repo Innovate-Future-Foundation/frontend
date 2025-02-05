@@ -9,12 +9,12 @@ interface AuthState {
 }
 
 export const useAuth = create<AuthState>(set => ({
-  role: "organisation admin",
+  role: "platform admin", //todo: hard code, will refactor later
   setRole: (role: RoleType) => {
     console.log("Setting role to:", role);
     set({ role });
   },
-  organisationId: "d96e643e-a7aa-42b0-a8cd-1cdd8610e857",
+  organisationId: "", //todo: platform admin has no organisationId
   setOrganisationId: (organisationId: string) => {
     console.log("Setting organisationId to:", organisationId);
     set({ organisationId });

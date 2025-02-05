@@ -40,7 +40,7 @@ const getStudents = (queryData: URLSearchParams, orgId?: string) => getUsersByRo
  * Fetches users by role with optional organisation ID.
  */
 const getUsersByRole = (roleId: string, queryData: URLSearchParams, orgId?: string) => {
-  const baseUrl = `${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?filters.roleId=${roleId}`;
+  const baseUrl = `${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?filters.roleIds=${roleId}`;
   const orgFilter = orgId ? `&filters.orgId=${orgId}` : "";
   const includeDetailFilter = !orgId ? `&includeDetails=true` : "";
   return appRequest.get(`${baseUrl}${orgFilter}${includeDetailFilter}&${queryData}`);
@@ -54,11 +54,11 @@ export const getContacts = (role: RoleType) => {
     const allowedRoles = CONTACT_ACCESS[role]?.map(r => ROLE_IDS[r]).join(",");
 
     const queryParams = new URLSearchParams(queryData);
-    if (orgId) queryParams.append("orgId", orgId);
+    if (orgId) queryParams.append("filters.orgId", orgId);
 
     // if queryData contains roleId do not append roleId again
-    if (allowedRoles && !queryParams.has("roleId")) {
-      queryParams.append("roleId", allowedRoles);
+    if (allowedRoles && !queryParams.has("roleIds")) {
+      queryParams.append("filters.roleIds", allowedRoles);
     }
 
     return appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?includeDetails=true&${queryParams.toString()}`);
