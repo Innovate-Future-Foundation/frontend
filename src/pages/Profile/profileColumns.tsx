@@ -15,7 +15,7 @@ interface GenerateColumnsOptions {
   hideOrganisation?: boolean;
 }
 
-export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hideOrganisation = false }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
+export const profileColumns = ({ profilePath = "users", hideRole = false, hideOrganisation = false }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
   const baseColumns: ColumnDef<Profile>[] = [
     {
       id: "select",
@@ -139,11 +139,11 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
 
   if (!hideRole) {
     baseColumns.push({
-      accessorKey: "role",
+      accessorKey: "roleName",
       header: "Role",
       cell: ({ row }) => (
         <Badge variant="secondary">
-          <div className="capitalize">{row.getValue("role")}</div>
+          <div className="capitalize">{row.getValue("roleName")}</div>
         </Badge>
       ),
       enableGlobalFilter: false

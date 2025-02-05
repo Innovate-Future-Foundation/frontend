@@ -46,12 +46,12 @@ export const contactsColumns: ColumnDef<Profile>[] = [
     ),
     enableColumnFilter: false
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: "",
-    enableGlobalFilter: false
-  },
+  // {
+  //   accessorKey: "status",
+  //   header: "Status",
+  //   cell: "",
+  //   enableGlobalFilter: false
+  // },
   {
     accessorKey: "roleName",
     header: "Role",

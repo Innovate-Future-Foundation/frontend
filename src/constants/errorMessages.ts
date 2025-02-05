@@ -26,5 +26,6 @@ export const ERROR_MESSAGES = {
   FAIL_TO_FETCH_STUDENT: "Fail to get student",
   FAIL_TO_SAVE_STUDENT: "Fail to save student",
   FAIL_TO_FETCH_PROFILE: "Fail to get profile",
-  FAIL_TO_SAVE_PROFILE: "Fail to save profile"
+  FAIL_TO_SAVE_PROFILE: "Fail to save profile",
+  FAIL_TO_FETCH_CONTACTS: "Fail to get contacts"
 };

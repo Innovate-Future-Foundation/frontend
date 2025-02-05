@@ -28,6 +28,7 @@ import clsx from "clsx";
 import { getFiltersItems, getfilterTitle } from "@/constants/mapper";
 import { useCallback, useEffect, useMemo } from "react";
 import { DEBOUNCE_TIME_MS } from "@/constants/appConfig";
+import { useAuth } from "@/hooks/useAuth";
 
 interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
@@ -68,7 +69,7 @@ const DataTable = <T extends object>({
 }: DataTableProps<T>) => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
-
+  const { role } = useAuth();
   const table = useReactTable<TableBaseType<T>>({
     data,
     columns,
@@ -112,6 +113,16 @@ const DataTable = <T extends object>({
     [debounceSearchChange]
   );
 
+  const getDropdownItems = (filterId: string): string[] => {
+    const res = getFiltersItems[filterId];
+    if (Array.isArray(res)) {
+      return res;
+    } else if (res && typeof res === "object") {
+      return res[role as keyof typeof res] ?? [];
+    }
+    return [];
+  };
+
   useEffect(() => {
     return () => {
       debounceSearchChange.cancel();
@@ -151,7 +162,7 @@ const DataTable = <T extends object>({
                   >
                     all
                   </DropdownMenuCheckboxItem>
-                  {getFiltersItems[filteredColumn.id].map(filterData => (
+                  {getDropdownItems(filteredColumn.id).map(filterData => (
                     <DropdownMenuCheckboxItem
                       key={filterData}
                       className="capitalize text-xs"

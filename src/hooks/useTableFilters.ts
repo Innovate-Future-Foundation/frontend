@@ -1,10 +1,12 @@
 import { useState, useMemo, useCallback } from "react";
 import { ColumnFiltersState, PaginationState, SortingState, Updater } from "@tanstack/react-table";
 import { ITEMS_PER_PAGE } from "@/constants/appConfig";
-import { ProfilePaginationFilter, ProfilePaginationOrderByType } from "@/types";
 import { mapStringToBoolean } from "@/constants/mapper";
 
-export const useTableFilters = () => {
+interface UseTableFiltersProps {
+  filterMapper?: (id: string, value: string) => [string, any];
+}
+export const useTableFilters = <T extends Record<string, any>, U extends string>({ filterMapper = mapStringToBoolean }: UseTableFiltersProps = {}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -17,25 +19,21 @@ export const useTableFilters = () => {
   const offset = useMemo(() => pagination.pageIndex * pagination.pageSize, [pagination]);
 
   // Convert filters to API format
-  const filters: ProfilePaginationFilter | undefined = useMemo(() => {
-    const result: Partial<ProfilePaginationFilter> = Object.fromEntries(
-      columnFilters.map(({ id, value }) => {
-        const booleanValue = mapStringToBoolean(id, value as string);
-        return [id, booleanValue];
-      })
-    );
+  const filters: Partial<T> = useMemo(() => {
+    const result = Object.fromEntries(columnFilters.map(({ id, value }) => filterMapper(id, value as string))) as Partial<T>;
 
     if (globalFilter) {
-      result["nameOrEmailOrPhone"] = globalFilter;
+      (result as any)["nameOrEmailOrPhone"] = globalFilter;
     }
-    return result as ProfilePaginationFilter;
-  }, [columnFilters, globalFilter]);
+
+    return result;
+  }, [columnFilters, globalFilter, filterMapper]);
 
   // Convert sorting to API format
   const sortings = useMemo(
     () =>
       sorting.map(({ id, desc }) => ({
-        orderBy: id as ProfilePaginationOrderByType,
+        orderBy: id as U,
         isAscending: !desc
       })),
     [sorting]

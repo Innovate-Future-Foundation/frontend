@@ -2,7 +2,7 @@ import { UserRoundPen } from "lucide-react";
 import { useMemo } from "react";
 import ContentLayout from "@/layouts/ContentLayout";
 import DataTable from "@/components/DataTable";
-import { Profile, TableBaseType } from "@/types";
+import { Profile, ProfilePaginationFilter, ProfilePaginationOrderByType, TableBaseType } from "@/types";
 import { profileColumns } from "../Profile/profileColumns";
 import { useOrgManager } from "@/hooks/orgManagers/useOrgManager";
 import { useTableFilters } from "@/hooks/useTableFilters";
@@ -11,7 +11,7 @@ import { usePermissions } from "@/hooks/usePermissions";
 const OrgManagerPage = () => {
   const { needViewOrganisationOfUser } = usePermissions();
   const { sorting, setSorting, columnFilters, setColumnFilters, pagination, setPagination, globalFilter, setGlobalFilter, offset, filters, sortings } =
-    useTableFilters();
+    useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
 
   const { orgManagersResponse, isLoadingOrgManagers } = useOrgManager({
     offset,
