@@ -12,23 +12,23 @@ jobs:
       - name: Discord notification
         if: github.event.pull_request.draft == false
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/xF1Ctgaci6HeOYjGnRYOmHLBRLWPn1WAXMtKe5c7bfC4r9MKssyE1rJZMZ_vuuMg92_Y"
         uses: Ilshidur/action-discord@master
         with:
           args: |
             {
-              "content": "${{ github.event.action == 'opened' && '🆕 New PR:' || '🔄 PR Updated:' }} ${{ github.event.pull_request.html_url }}\n**Title:** ${{ github.event.pull_request.title }}\n**Author:** ${{ github.event.pull_request.user.login }}",
+              "content": "${{ github.event.action == 'opened' && '🆕 新PR:' || '🔄 PR更新:' }} ${{ github.event.pull_request.html_url }}\n**标题:** ${{ github.event.pull_request.title }}\n**作者:** ${{ github.event.pull_request.user.login }}",
               "thread_id": "1330422313769893938"
             }
 
       - name: Discord merge notification
         if: github.event.pull_request.merged == true && github.event.pull_request.draft == false
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/xF1Ctgaci6HeOYjGnRYOmHLBRLWPn1WAXMtKe5c7bfC4r9MKssyE1rJZMZ_vuuMg92_Y"
         uses: Ilshidur/action-discord@master
         with:
           args: |
             {
-              "content": "🎉 PR Merged: ${{ github.event.pull_request.html_url }}\n**Title:** ${{ github.event.pull_request.title }}\n**Merged by:** ${{ github.event.pull_request.merged_by.login }}",
+              "content": "🎉 PR已合并: ${{ github.event.pull_request.html_url }}\n**标题:** ${{ github.event.pull_request.title }}\n**合并者:** ${{ github.event.pull_request.merged_by.login }}",
               "thread_id": "1330422313769893938"
             }
