@@ -85,7 +85,7 @@ jobs:
                   "text": "By ${{ github.actor }} • ${{ github.event.pull_request.updated_at }}"
                 }
               }],
-              "thread_id": "${{ env.DISCORD_THREAD_ID }}"
+              "thread_id": "${{ toJSON(env.DISCORD_THREAD_ID) }}"
             }
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -118,7 +118,7 @@ jobs:
                   "text": "By ${{ github.actor }} • ${{ github.event.head_commit.timestamp }}"
                 }
               }],
-              "thread_id": "${{ env.DISCORD_THREAD_ID }}"
+              "thread_id": "${{ toJSON(env.DISCORD_THREAD_ID) }}"
             }
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
