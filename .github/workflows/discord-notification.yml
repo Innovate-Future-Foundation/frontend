@@ -16,9 +16,10 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            ${{ github.event.action == 'opened' && '🆕 New PR:' || '🔄 PR Updated:' }} ${{ github.event.pull_request.html_url }}
-            **Title:** ${{ github.event.pull_request.title }}
-            **Author:** ${{ github.event.pull_request.user.login }}
+            {
+              "content": "${{ github.event.action == 'opened' && '🆕 New PR:' || '🔄 PR Updated:' }} ${{ github.event.pull_request.html_url }}\n**Title:** ${{ github.event.pull_request.title }}\n**Author:** ${{ github.event.pull_request.user.login }}",
+              "thread_id": "1330422313769893938"
+            }
 
       - name: Discord merge notification
         if: github.event.pull_request.merged == true && github.event.pull_request.draft == false
@@ -27,6 +28,7 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            🎉 PR Merged: ${{ github.event.pull_request.html_url }}
-            **Title:** ${{ github.event.pull_request.title }}
-            **Merged by:** ${{ github.event.pull_request.merged_by.login }}
+            {
+              "content": "🎉 PR Merged: ${{ github.event.pull_request.html_url }}\n**Title:** ${{ github.event.pull_request.title }}\n**Merged by:** ${{ github.event.pull_request.merged_by.login }}",
+              "thread_id": "1330422313769893938"
+            }
