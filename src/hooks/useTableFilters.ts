@@ -23,7 +23,7 @@ export const useTableFilters = <T extends Record<string, any>, U extends string>
     const result = Object.fromEntries(columnFilters.map(({ id, value }) => filterMapper(id, value as string))) as Partial<T>;
 
     if (globalFilter) {
-      (result as any)["nameOrEmailOrPhone"] = globalFilter;
+      (result as any)["nameOrEmailOrPhone"] = globalFilter; //todo: make this a general name for search
     }
 
     return result;

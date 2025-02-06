@@ -24,6 +24,31 @@ export const getfilterTitle: Record<string, string> = {
   roleName: "role"
 };
 
+export const getColorStyleByRole: Record<RoleType, string> = {
+  "platform admin": "",
+  "organisation admin": "text-secondary-foreground bg-secondary",
+  "organisation manager": "text-secondary-foregroundRed bg-secondary-red",
+  "organisation teacher": "text-secondary-foregroundYellow bg-secondary-yellow",
+  parent: "text-secondary-foregroundPurple bg-secondary-purple",
+  student: "text-secondary-foregroundGreen bg-secondary-green"
+};
+
+export const getColorStyleByIsActive = new Map<boolean, string>([
+  [true, "text-secondary-foreground bg-secondary border-primary-light"],
+  [false, "text-primary-foreground60 bg-muted"]
+]);
+
+export const getColorStyleByIsConfirmed = new Map<boolean, string>([
+  [true, "text-secondary-foregroundGreen bg-secondary-green border-secondary-greenLight"],
+  [false, "text-secondary-foregroundYellow bg-secondary-yellow border-secondary-yellowLight"]
+]);
+
+export const getImageBySubscription: Record<string, string> = {
+  premium: "/assets/images/goldMedal.png",
+  basic: "/assets/images/silverMedal.png",
+  free: "/assets/images/copperMedal.png"
+};
+
 export const mapStringToEnum = (id: string, value: string): [string, OrganisationStatus | SubscriptionStatus | undefined] => {
   if (id === "status") {
     return [id, OrganisationStatus[(value.charAt(0).toUpperCase() + value.slice(1)) as keyof typeof OrganisationStatus]];

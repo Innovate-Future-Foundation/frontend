@@ -252,7 +252,7 @@ const DataTable = <T extends object>({
                 <Card
                   key={row.id}
                   className={
-                    "w-full border-primary-light rounded-md overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent"
+                    "w-full border-none rounded-md overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent"
                   }
                 >
                   {row.getVisibleCells().map(cell => {

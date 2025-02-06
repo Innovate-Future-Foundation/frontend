@@ -8,6 +8,8 @@ import AppAvatar from "@/components/Avatar";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Organisation, OrganisationStatus, SubscriptionStatus } from "@/types";
 import Dropdown from "@/components/Dropdown";
+import Avatar from "@/components/Avatar";
+import { getImageBySubscription } from "@/constants/mapper";
 
 export const orgColumns: ColumnDef<Organisation>[] = [
   {
@@ -62,7 +64,16 @@ export const orgColumns: ColumnDef<Organisation>[] = [
   {
     accessorKey: "subscription",
     header: "Subscription",
-    cell: ({ row }) => <div className="capitalize">{SubscriptionStatus[row.getValue("subscription") as SubscriptionStatus]}</div>,
+    cell: ({ row }) => (
+      <Badge variant="secondary" className="text-muted-foreground bg-muted px-1">
+        <div className="capitalize mr-1">{SubscriptionStatus[row.getValue("subscription") as SubscriptionStatus]}</div>
+        <Avatar
+          avatarLink={getImageBySubscription[SubscriptionStatus[row.getValue("subscription") as SubscriptionStatus].toLowerCase()]}
+          avatarPlaceholder={abbreviateName(SubscriptionStatus[row.getValue("subscription") as SubscriptionStatus])}
+          size={4}
+        />
+      </Badge>
+    ),
     enableGlobalFilter: false
   },
   {

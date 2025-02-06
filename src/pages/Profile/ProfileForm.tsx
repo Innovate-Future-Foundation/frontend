@@ -9,6 +9,9 @@ import FormWrapper from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
 import { useUpdateProfile } from "@/hooks/profiles/useUpdateProfile";
 import { Profile } from "@/types";
+import { abbreviateName } from "@/utils/formatters";
+import { getColorStyleByIsActive } from "@/constants/mapper";
+import clsx from "clsx";
 
 const profileInfoFormSchema = z.object({
   avatarUrl: z
@@ -81,20 +84,20 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userProfileDetail }) => {
             avatarLink={profileInfoForm.watch("avatarUrl")!}
             size={24}
             avatarAlt={avatarAlt}
-            avatarPlaceholder={profileInfoForm.watch("name")}
+            avatarPlaceholder={abbreviateName(profileInfoForm.watch("name"))}
             outline={true}
           />
           <div className="flex flex-col">
             <p className="text-lg leading-none font-bold capitalize">{profileInfoForm.watch("name")}</p>
             <p className="text-xs lowercase">{profileInfoForm.watch("email")}</p>
             <div className="flex gap-2 mt-2">
-              <Badge variant={"secondary"} className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green">
-                {userProfileDetail.isActive}
-              </Badge>
               <Badge
-                variant={"outline"}
-                className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foreground  border-primary-light bg-secondary"
+                variant={"secondary"}
+                className={clsx(getColorStyleByIsActive.get(userProfileDetail.isActive ?? false), "lowercase p-0 px-2 rounded-full font-medium text-xs")}
               >
+                {userProfileDetail.isActive ? "active" : "suspended"}
+              </Badge>
+              <Badge variant={"outline"} className="lowercase p-0 px-2 rounded-full font-medium text-xs">
                 {userProfileDetail.organisation?.orgName}
               </Badge>
             </div>

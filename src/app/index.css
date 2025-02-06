@@ -42,12 +42,16 @@ body {
     --secondary-light: 218.82 100% 97.89%;
     --secondary-foreground: 214.01 96.86% 50%;
     --secondary-purple: 264 88.24% 93.33%;
+    --secondary-purple-light: 264 88.24% 83.33%;
     --secondary-foreground-purple: 262.71 85.51% 59.41%;
     --secondary-green: 154.67 54.22% 93.73%;
+    --secondary-green-light: 154.67 54.22% 83.33%;
     --secondary-foreground-green: 151.01 36.63% 47.65%;
     --secondary-red: 0 50% 91.37%;
+    --secondary-red-light: 0 50% 83.33%;
     --secondary-foreground-red: 3.72 57.77% 49.22%;
     --secondary-yellow: 38.82 89.47% 92.55%;
+    --secondary-yellow-light: 38.82 89.47% 83.33%;
     --secondary-foreground-yellow: 35.87 86.47% 59.41%;
     --accent: 210 20% 96.08%;
     --accent-foreground: 0 0% 0%;
