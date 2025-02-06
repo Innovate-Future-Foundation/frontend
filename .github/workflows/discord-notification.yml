@@ -17,7 +17,7 @@ jobs:
         with:
           webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
           thread-id: "1330422313769893938"
-          username: "FrontPR Bot"
+          username: "Front PR Bot"
           avatar-url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           content: |
             ${{ github.event.action == 'opened' && '🆕 New PR:' || '🔄 PR Updated:' }} ${{ github.event.pull_request.html_url }}
