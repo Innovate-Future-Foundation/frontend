@@ -9,7 +9,8 @@ import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Organisation, OrganisationStatus, SubscriptionStatus } from "@/types";
 import Dropdown from "@/components/Dropdown";
 import Avatar from "@/components/Avatar";
-import { getImageBySubscription } from "@/constants/mapper";
+import { getColorStyleByStatus, getImageBySubscription } from "@/constants/mapper";
+import clsx from "clsx";
 
 export const orgColumns: ColumnDef<Organisation>[] = [
   {
@@ -80,7 +81,7 @@ export const orgColumns: ColumnDef<Organisation>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant="secondary">
+      <Badge variant="outline" className={clsx(getColorStyleByStatus[OrganisationStatus[row.getValue("status") as OrganisationStatus].toLowerCase()])}>
         <div className="capitalize">{OrganisationStatus[row.getValue("status") as OrganisationStatus]}</div>
       </Badge>
     ),

@@ -2,7 +2,7 @@ import { OrganisationStatus, RoleType, SubscriptionStatus } from "@/types";
 import { CONTACT_ACCESS, ROLE_IDS } from "./appConfig";
 
 export const getFiltersItems: Record<string, string[] | Record<RoleType, string[]>> = {
-  status: ["pending", "verified", "suspended", "deactivated"],
+  status: ["pending", "active", "suspended"],
   subscription: ["premium", "free", "basic"],
   isActive: ["active", "suspended"],
   isConfirmed: ["accepted", "pending"],
@@ -47,6 +47,11 @@ export const getImageBySubscription: Record<string, string> = {
   premium: "/assets/images/goldMedal.png",
   basic: "/assets/images/silverMedal.png",
   free: "/assets/images/copperMedal.png"
+};
+export const getColorStyleByStatus: Record<string, string> = {
+  pending: "text-secondary-foregroundYellow bg-secondary-yellow border-secondary-yellowLight",
+  active: "text-secondary-foregroundGreen bg-secondary-green border-secondary-greenLight",
+  suspended: "text-primary-foreground60 bg-muted"
 };
 
 export const mapStringToEnum = (id: string, value: string): [string, OrganisationStatus | SubscriptionStatus | undefined] => {
