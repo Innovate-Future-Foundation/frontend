@@ -18,8 +18,9 @@ jobs:
           webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
           thread-id: "1330422313769893938"
           username: "FrontPR Bot"
+          avatar-url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           content: |
-            ${{ github.event.action == 'opened' && '🆕 New PR:' || '🔄 PR Update:' }} ${{ github.event.pull_request.html_url }}
+            ${{ github.event.action == 'opened' && '🆕 New PR:' || '🔄 PR Updated:' }} ${{ github.event.pull_request.html_url }}
             **Title:** ${{ github.event.pull_request.title }}
             **Author:** ${{ github.event.pull_request.user.login }}
 
@@ -30,6 +31,7 @@ jobs:
           webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
           thread-id: "1330422313769893938"
           username: "Front PR Bot"
+          avatar-url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           content: |
             🎉 PR Merged: ${{ github.event.pull_request.html_url }}
             **Title:** ${{ github.event.pull_request.title }}
