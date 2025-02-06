@@ -18,7 +18,7 @@ jobs:
         with:
           args: |
             {
-              "content": "${{ github.event.action == 'opened' && '🆕 新PR:' || '🔄 PR更新:' }} ${{ github.event.pull_request.html_url }}\n**标题:** ${{ github.event.pull_request.title }}\n**作者:** ${{ github.event.pull_request.user.login }}",
+              "content": "${{ github.event.action == 'opened' && '🆕 新PR :' || '🔄 PR更新 :' }} ${{ github.event.pull_request.html_url }}\n**标题:** ${{ github.event.pull_request.title }}\n**作者:** ${{ github.event.pull_request.user.login }}",
               "thread_id": "1330422313769893938"
             }
 
