@@ -12,23 +12,15 @@ jobs:
       - name: Discord notification
         if: github.event.pull_request.draft == false
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: "${{ secrets.DISCORD_WEBHOOK }}?thread_id=1330422313769893938"
         uses: Ilshidur/action-discord@master
         with:
-          args: >
-            {
-              "content": "${{ github.event.action == 'opened' && '🆕 新PR:' || '🔄 PR更新:' }} ${{ github.event.pull_request.html_url }}\n**标题:** ${{ github.event.pull_request.title }}\n**作者:** ${{ github.event.pull_request.user.login }}",
-              "thread_id": "1330422313769893938"
-            }
+          args: "${{ github.event.action == 'opened' && '🆕 新PR:' || '🔄 PR更新:' }} ${{ github.event.pull_request.html_url }}\n**标题:** ${{ github.event.pull_request.title }}\n**作者:** ${{ github.event.pull_request.user.login }}"
 
       - name: Discord merge notification
         if: github.event.pull_request.merged == true && github.event.pull_request.draft == false
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: "${{ secrets.DISCORD_WEBHOOK }}?thread_id=1330422313769893938"
         uses: Ilshidur/action-discord@master
         with:
-          args: >
-            {
-              "content": "🎉 PR已合并: ${{ github.event.pull_request.html_url }}\n**标题:** ${{ github.event.pull_request.title }}\n**合并者:** ${{ github.event.pull_request.merged_by.login }}",
-              "thread_id": "1330422313769893938"
-            }
+          args: "🎉 PR已合并: ${{ github.event.pull_request.html_url }}\n**标题:** ${{ github.event.pull_request.title }}\n**合并者:** ${{ github.event.pull_request.merged_by.login }}"
