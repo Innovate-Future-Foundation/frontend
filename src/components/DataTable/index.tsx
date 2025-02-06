@@ -158,7 +158,11 @@ const DataTable = <T extends object>({
                   <DropdownMenuCheckboxItem
                     className="capitalize text-xs"
                     checked={table.getState().columnFilters.length === 0}
-                    onClick={() => table.setColumnFilters([])}
+                    onClick={() =>
+                      table.setColumnFilters(prev => {
+                        return prev.filter(ele => ele.id !== filteredColumn.id);
+                      })
+                    }
                   >
                     all
                   </DropdownMenuCheckboxItem>

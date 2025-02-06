@@ -27,16 +27,14 @@ export enum SubscriptionStatus {
 }
 export enum OrganisationStatus {
   Pending = 0,
-  Verified = 1,
-  Suspended = 2,
-  Deactivated = 3
+  Active = 1,
+  Suspended = 2
 }
 export interface OrganisationPaginatedRequest extends OffsetPaginatedRequest {
   filters?: OrganisationPaginationFilter;
   sortings?: OrganisationPaginationOrderBy[];
 }
 export interface OrganisationPaginationFilter {
-  orgNameOrEmail?: string;
   status?: OrganisationStatus;
   subscription?: SubscriptionStatus;
 }

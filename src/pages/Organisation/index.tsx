@@ -9,14 +9,27 @@ import { mapStringToEnum } from "@/constants/mapper";
 import { useTableFilters } from "@/hooks/useTableFilters";
 
 const OrganisationPage = () => {
-  const { sorting, setSorting, columnFilters, setColumnFilters, pagination, setPagination, globalFilter, setGlobalFilter, offset, filters, sortings } =
-    useTableFilters<OrganisationPaginationFilter, OrganisationPaginationOrderByType>({ filterMapper: mapStringToEnum });
+  const {
+    searchKey,
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    pagination,
+    setPagination,
+    globalFilter,
+    setGlobalFilter,
+    offset,
+    filters,
+    sortings
+  } = useTableFilters<OrganisationPaginationFilter, OrganisationPaginationOrderByType>({ filterMapper: mapStringToEnum });
 
   const { organisationsResponse, isLoadingOrganisations } = useOrganisation({
     offset,
     limit: pagination.pageSize,
     filters,
-    sortings
+    sortings,
+    searchKey
   });
 
   const tableData: TableBaseType<Organisation>[] = useMemo(() => {

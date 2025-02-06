@@ -8,7 +8,7 @@ export const profiles = createQueryKeys("profiles", {
   detail: (profileId: string) => ({
     queryKey: [profileId],
     queryFn: async () => {
-      const response = await profileApis.getProfileById(profileId);
+      const response = await profileApis.getProfileByIdWithDetail(profileId);
       return response.data as ApiResponse<Profile>;
     }
   })

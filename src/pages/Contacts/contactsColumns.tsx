@@ -93,7 +93,7 @@ export const contactsColumns: ColumnDef<Profile>[] = [
             `${!row.getValue("isActive") ? "bg-muted text-primary-foreground60" : getColorStyleByRole[String(row.getValue("roleName")).toLowerCase() as RoleType]} flex items-center py-0 px-2 rounded-full`
           )}
         >
-          <Dot className="-m-1 -mx-2 -ml-3" />
+          <Dot className="-m-1 -mx-1 -ml-3" />
           <div className="lowercase truncate max-w-40">{row.getValue("roleName")}</div>
         </Badge>
       </div>

@@ -9,14 +9,27 @@ import { contactsColumns } from "./contactsColumns";
 import { mapTypeToId } from "@/constants/mapper";
 
 const ContactPage = () => {
-  const { sorting, setSorting, columnFilters, setColumnFilters, pagination, setPagination, globalFilter, setGlobalFilter, offset, filters, sortings } =
-    useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>({ filterMapper: mapTypeToId });
+  const {
+    searchKey,
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    pagination,
+    setPagination,
+    globalFilter,
+    setGlobalFilter,
+    offset,
+    filters,
+    sortings
+  } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>({ filterMapper: mapTypeToId });
 
   const { contactsResponse, isLoadingContacts } = useContact({
     offset,
     limit: pagination.pageSize,
     filters,
-    sortings
+    sortings,
+    searchKey
   });
 
   const tableData: TableBaseType<Profile>[] = useMemo(() => {

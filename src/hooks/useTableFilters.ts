@@ -21,13 +21,15 @@ export const useTableFilters = <T extends Record<string, any>, U extends string>
   // Convert filters to API format
   const filters: Partial<T> = useMemo(() => {
     const result = Object.fromEntries(columnFilters.map(({ id, value }) => filterMapper(id, value as string))) as Partial<T>;
-
-    if (globalFilter) {
-      (result as any)["nameOrEmailOrPhone"] = globalFilter; //todo: make this a general name for search
-    }
-
     return result;
-  }, [columnFilters, globalFilter, filterMapper]);
+  }, [columnFilters, filterMapper]);
+
+  // Convert global filters to API format
+  const searchKey = useMemo(() => {
+    if (globalFilter) {
+      return globalFilter;
+    }
+  }, [globalFilter]);
 
   // Convert sorting to API format
   const sortings = useMemo(
@@ -68,6 +70,7 @@ export const useTableFilters = <T extends Record<string, any>, U extends string>
     setGlobalFilter: handleChangeSearchFilters,
     offset,
     filters,
-    sortings
+    sortings,
+    searchKey
   };
 };

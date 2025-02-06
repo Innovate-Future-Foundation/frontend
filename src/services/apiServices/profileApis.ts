@@ -5,6 +5,8 @@ import { CONTACT_ACCESS, ROLE_IDS } from "@/constants/appConfig";
 
 const createProfile = (bodyData: Profile) => appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}`, bodyData);
 
+const getProfileByIdWithDetail = (id: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}/${id}?includeDetails=true`);
+
 const getProfileById = (id: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}/${id}`);
 
 const removeProfile = (id: string) => appRequest.put(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}/${id}`, { status: "suspended" });
@@ -68,6 +70,7 @@ export const getContacts = (role: RoleType) => {
 export const profileApis = {
   createProfile,
   getProfileById,
+  getProfileByIdWithDetail,
   removeProfile,
   updateProfile,
   getOrgAdmins,

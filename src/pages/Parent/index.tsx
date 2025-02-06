@@ -10,14 +10,27 @@ import { useTableFilters } from "@/hooks/useTableFilters";
 
 const ParentPage = () => {
   const { needViewOrganisationOfUser } = usePermissions();
-  const { sorting, setSorting, columnFilters, setColumnFilters, pagination, setPagination, globalFilter, setGlobalFilter, offset, filters, sortings } =
-    useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
+  const {
+    searchKey,
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    pagination,
+    setPagination,
+    globalFilter,
+    setGlobalFilter,
+    offset,
+    filters,
+    sortings
+  } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
 
   const { parentsResponse, isLoadingParents } = useParent({
     offset,
     limit: pagination.pageSize,
     filters,
-    sortings
+    sortings,
+    searchKey
   });
 
   const tableData: TableBaseType<Profile>[] = useMemo(() => {
