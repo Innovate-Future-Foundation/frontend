@@ -15,8 +15,8 @@ jobs:
         if: github.event.pull_request.draft == false
         uses: tsickert/discord-webhook@v6.0.0
         with:
-          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
-          thread-id: 1330422313769893938
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          thread-id: "1330422313769893938"
           username: "FrontPR Bot"
           avatar-url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           content: |
@@ -28,10 +28,9 @@ jobs:
         if: github.event.pull_request.merged == true && github.event.pull_request.draft == false
         uses: tsickert/discord-webhook@v6.0.0
         with:
-          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
-          thread-id: 1330422313769893938
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          thread-id: "1330422313769893938"
           username: "Front PR Bot"
-          avatar-url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           content: |
             🎉 PR已合并: ${{ github.event.pull_request.html_url }}
             **标题:** ${{ github.event.pull_request.title }}
