@@ -18,7 +18,6 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
     isError: isErrorParents
   } = useQuery({
     ...profiles.parentslist(profilePaginatedRequest, organisationId),
-    placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,
     retry: 3,
@@ -31,12 +30,13 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
   const totalItems = useMemo(() => parentsResponse?.meta?.totalItems ?? 0, [parentsResponse]);
 
   const parentsData: TableBaseType<Profile>[] = useMemo(() => {
-    return Array.isArray(parentsResponse?.data) ? parentsResponse?.data : [{ isActive: true }];
+    return Array.isArray(parentsResponse?.data) ? parentsResponse?.data : [];
   }, [parentsResponse]);
 
   const {
     data: childrenResponse,
     error: errorChildren,
+    isLoading: isLoadingChildren,
     isError: isErrorChildren
   } = useQuery({
     ...profiles.childrenlist(profilePaginatedRequest, parentsData),
@@ -49,10 +49,10 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
   });
 
   parentsData.forEach((p, index) => {
-    p.children = (childrenResponse ? (childrenResponse[index] ?? [{ isActive: true }]) : [{ isActive: true }]) as TableBaseType<Profile>[];
+    p.children = (childrenResponse ? (childrenResponse[index] ?? []) : []) as TableBaseType<Profile>[];
   });
 
   useErrorNotification(isErrorChildren, errorTitleChildren, errorChildren);
 
-  return { totalItems, parentsData, isLoadingParents, isErrorParents, errorParents };
+  return { totalItems, parentsData, isLoadingParents, isLoadingChildren, isErrorParents, errorParents };
 };

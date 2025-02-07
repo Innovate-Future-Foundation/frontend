@@ -24,15 +24,13 @@ const ParentPage = () => {
     sortings
   } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
 
-  const { totalItems, parentsData, isLoadingParents } = useParentWithChildren({
+  const { totalItems, parentsData, isLoadingParents, isLoadingChildren } = useParentWithChildren({
     offset,
     limit: pagination.pageSize,
     filters,
     sortings,
     searchKey
   });
-
-  console.log("parentsData", parentsData);
 
   return (
     <ContentLayout icon={UserRoundPen} title={"parent list"}>
@@ -41,7 +39,7 @@ const ParentPage = () => {
         limit={pagination.pageSize}
         columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
         data={parentsData}
-        isLoading={isLoadingParents}
+        isLoading={isLoadingParents || isLoadingChildren}
         searchPlaceholder="search by name, email or phone"
         columnFilters={columnFilters}
         setColumnFilters={setColumnFilters}
