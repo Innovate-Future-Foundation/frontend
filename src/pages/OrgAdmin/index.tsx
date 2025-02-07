@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import ContentLayout from "@/layouts/ContentLayout";
 import DataTable from "@/components/DataTable";
 import { Profile, ProfilePaginationFilter, ProfilePaginationOrderByType, TableBaseType } from "@/types";
-import { useOrgAdmin } from "@/hooks/orgAdmins/useOrgAdmin";
+import { useOrgAdmin } from "@/hooks/profiles/useOrgAdmin";
 import { profileColumns } from "../Profile/profileColumns";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
@@ -36,7 +36,7 @@ const OrgAdminPage = () => {
   const tableData: TableBaseType<Profile>[] = useMemo(() => {
     return Array.isArray(orgAdminsResponse?.data) ? orgAdminsResponse?.data : [];
   }, [orgAdminsResponse]);
-
+  console.log("tableData", tableData);
   return (
     <ContentLayout icon={UserRoundPen} title={"organisation admin list"}>
       <DataTable

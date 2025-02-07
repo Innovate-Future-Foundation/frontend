@@ -3,20 +3,20 @@ import { useErrorNotification } from "../useErrorNotification";
 import { keepPreviousData } from "@tanstack/react-query";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { ProfilePaginatedRequest } from "@/types";
-import { students } from "@/queries/students";
 import { useAuth } from "../useAuth";
+import { profiles } from "@/queries/profiles";
 
-export const useStudent = (profilePaginatedRequest: ProfilePaginatedRequest) => {
+export const useOrgManager = (profilePaginatedRequest: ProfilePaginatedRequest) => {
   const { organisationId } = useAuth();
-  const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_STUDENT;
+  const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_ORGMANEGERS;
 
   const {
-    data: studentsResponse,
-    isLoading: isLoadingStudents,
-    error: errorStudents,
-    isError: isErrorStudents
+    data: orgManagersResponse,
+    isLoading: isLoadingOrgManagers,
+    error: errorOrgManagers,
+    isError: isErrorOrgManagers
   } = useQuery({
-    ...students.list(profilePaginatedRequest, organisationId),
+    ...profiles.orgManagerslist(profilePaginatedRequest, organisationId),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,
@@ -25,7 +25,7 @@ export const useStudent = (profilePaginatedRequest: ProfilePaginatedRequest) => 
     enabled: !!profilePaginatedRequest.limit
   });
 
-  useErrorNotification(isErrorStudents, errorTitle, errorStudents);
+  useErrorNotification(isErrorOrgManagers, errorTitle, errorOrgManagers);
 
-  return { studentsResponse, isLoadingStudents, isErrorStudents, errorStudents };
+  return { orgManagersResponse, isLoadingOrgManagers, isErrorOrgManagers, errorOrgManagers };
 };

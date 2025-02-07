@@ -4,7 +4,7 @@ import ContentLayout from "@/layouts/ContentLayout";
 import DataTable from "@/components/DataTable";
 import { Profile, ProfilePaginationFilter, ProfilePaginationOrderByType, TableBaseType } from "@/types";
 import { profileColumns } from "../Profile/profileColumns";
-import { useStudent } from "@/hooks/students/useStudent";
+import { useStudent } from "@/hooks/profiles/useStudent";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
 

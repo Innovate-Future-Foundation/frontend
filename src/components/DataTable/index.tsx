@@ -24,7 +24,6 @@ import { Input } from "@/components/ui/input";
 import Pagenation from "@/components/Pagenation";
 import { TableBaseType } from "@/types/tablebase";
 import { Card } from "../ui/card";
-import clsx from "clsx";
 import { getFiltersItems, getfilterTitle } from "@/constants/mapper";
 import { useCallback, useEffect, useMemo } from "react";
 import { DEBOUNCE_TIME_MS } from "@/constants/appConfig";
@@ -70,6 +69,7 @@ const DataTable = <T extends object>({
   const [rowSelection, setRowSelection] = React.useState({});
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
   const { role } = useAuth();
+
   const table = useReactTable<TableBaseType<T>>({
     data,
     columns,
@@ -92,10 +92,10 @@ const DataTable = <T extends object>({
       pagination,
       expanded
     },
-    rowCount: totalItems,
     pageCount: Math.ceil(totalItems / limit),
     manualPagination: true,
-    manualFiltering: true
+    manualFiltering: true,
+    paginateExpandedRows: false
   });
 
   const debounceSearchChange = useMemo(
@@ -214,19 +214,30 @@ const DataTable = <T extends object>({
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map(row => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className={clsx(
-                      `${row.depth != 0 && "bg-accent border-none text-primary-foreground60 hover:bg-secondary-green hover:text-secondary-foregroundGreen data-[state=selected]:text-secondary-foregroundGreen data-[state=selected]:bg-secondary-green"}`
-                    )}
-                  >
-                    {row.getVisibleCells().map(cell => (
-                      <TableCell className="h-18 font-medium" key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                  <React.Fragment key={row.id}>
+                    <TableRow data-state={row.getIsSelected() && "selected"}>
+                      {row.getVisibleCells().map(cell => (
+                        <TableCell className="h-18 font-medium" key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                    {row.getIsExpanded() &&
+                      row.subRows.length > 0 &&
+                      row.subRows.map(subRow => (
+                        <TableRow
+                          key={subRow.id}
+                          data-state={subRow.getIsSelected() && "selected"}
+                          className="bg-accent border-none text-primary-foreground60 hover:bg-secondary-green hover:text-secondary-foregroundGreen data-[state=selected]:text-secondary-foregroundGreen data-[state=selected]:bg-secondary-green"
+                        >
+                          {subRow.getVisibleCells().map(cell => (
+                            <TableCell className="h-18 font-medium" key={cell.id}>
+                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                  </React.Fragment>
                 ))
               ) : (
                 <TableRow>

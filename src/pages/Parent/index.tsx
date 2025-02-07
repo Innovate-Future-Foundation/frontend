@@ -1,12 +1,11 @@
 import { UserRoundPen } from "lucide-react";
-import { useMemo } from "react";
 import ContentLayout from "@/layouts/ContentLayout";
 import DataTable from "@/components/DataTable";
-import { Profile, ProfilePaginationFilter, ProfilePaginationOrderByType, TableBaseType } from "@/types";
+import { ProfilePaginationFilter, ProfilePaginationOrderByType } from "@/types";
 import { profileColumns } from "../Profile/profileColumns";
-import { useParent } from "@/hooks/parents/useParent";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
+import { useParentWithChildren } from "@/hooks/profiles/useParentWithChildren";
 
 const ParentPage = () => {
   const { needViewOrganisationOfUser } = usePermissions();
@@ -25,7 +24,7 @@ const ParentPage = () => {
     sortings
   } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
 
-  const { parentsResponse, isLoadingParents } = useParent({
+  const { totalItems, parentsData, isLoadingParents } = useParentWithChildren({
     offset,
     limit: pagination.pageSize,
     filters,
@@ -33,17 +32,15 @@ const ParentPage = () => {
     searchKey
   });
 
-  const tableData: TableBaseType<Profile>[] = useMemo(() => {
-    return Array.isArray(parentsResponse?.data) ? parentsResponse?.data : [];
-  }, [parentsResponse]);
+  console.log("parentsData", parentsData);
 
   return (
     <ContentLayout icon={UserRoundPen} title={"parent list"}>
       <DataTable
-        totalItems={parentsResponse?.meta?.totalItems}
+        totalItems={totalItems}
         limit={pagination.pageSize}
         columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
-        data={tableData}
+        data={parentsData}
         isLoading={isLoadingParents}
         searchPlaceholder="search by name, email or phone"
         columnFilters={columnFilters}
