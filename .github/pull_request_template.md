@@ -11,4 +11,4 @@ This PR ...
 
 **Related Ticket**
 
-[JIRA Ticket: IF-Num](https://dext.atlassian.net/jira/software/c/projects/IF/boards/26?selectedIssue=IF-Num)
+[JIRA Ticket: IF-Num](https://dext.atlassian.net/browse/IF-Num)
