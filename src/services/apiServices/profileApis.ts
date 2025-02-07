@@ -1,9 +1,11 @@
 import { API_ENDPOINTS } from "@/constants/apiConfig";
-import { Profile, ProfileInfo } from "@/types";
+import { Profile, ProfileInfo, RoleType } from "@/types";
 import appRequest from "@/services/httpClient";
-import { ROLE_IDS } from "@/constants/appConfig";
+import { CONTACT_ACCESS, ROLE_IDS } from "@/constants/appConfig";
 
 const createProfile = (bodyData: Profile) => appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}`, bodyData);
+
+const getProfileByIdWithDetail = (id: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}/${id}?includeDetails=true`);
 
 const getProfileById = (id: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}/${id}`);
 
@@ -12,64 +14,73 @@ const removeProfile = (id: string) => appRequest.put(`${API_ENDPOINTS.API_V1}${A
 const updateProfile = (id: string, bodyData: ProfileInfo) => appRequest.put(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}/${id}`, bodyData);
 
 /**
- * platform admin Users
- */
-// const getPlatformAdminUsers = (queryData: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}`);
-
-// const getOrgAdminUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_manager,org_teacher,parent,student}&${queryData}`);
-
-// const getOrgManagerUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_admin,org_manager,org_teacher,parent,student}&${queryData}`);
-
-// const getOrgTeacherUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_admin,org_manager,org_teacher,parent,student}&${queryData}`);
-
-// const getParentUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_teacher,student(s=>s.supervisor===parent profileId)}&${queryData}`);
-
-// const getParentUsers = (queryData: URLSearchParams,orgId: string) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?orgId=${orgId}roleId=${should be a list: org_teacher,student}&${queryData}`);
-
-/**
  * Organisation Admins
  */
-const getOrgAdmins = (queryData: URLSearchParams) => getUsersByRole(ROLE_IDS.ORG_ADMIN, queryData);
+const getOrgAdmins = (queryData: URLSearchParams) => getUsersByRole(ROLE_IDS["organisation admin"], queryData);
 
 /**
  * Organisation Managers
  */
-const getOrgManagers = (queryData: URLSearchParams, orgId?: string) => getUsersByRole(ROLE_IDS.ORG_MANAGER, queryData, orgId);
+const getOrgManagers = (queryData: URLSearchParams, orgId?: string) => getUsersByRole(ROLE_IDS["organisation manager"], queryData, orgId);
 
 /**
  * Organisation Teachers
  */
-const getOrgTeachers = (queryData: URLSearchParams, orgId?: string) => getUsersByRole(ROLE_IDS.ORG_TEACHER, queryData, orgId);
+const getOrgTeachers = (queryData: URLSearchParams, orgId?: string) => getUsersByRole(ROLE_IDS["organisation teacher"], queryData, orgId);
 
 /**
  * Parents
  */
-const getParents = (queryData: URLSearchParams, orgId?: string) => getUsersByRole(ROLE_IDS.PARENT, queryData, orgId);
+const getParents = (queryData: URLSearchParams, orgId?: string) => getUsersByRole(ROLE_IDS["parent"], queryData, orgId);
 
 /**
  * Students
  */
-const getStudents = (queryData: URLSearchParams, orgId?: string) => getUsersByRole(ROLE_IDS.STUDENT, queryData, orgId);
+const getStudentsByParentId = (queryData: URLSearchParams, supervisor: string) =>
+  appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}&includeDetails=true&filters.supervisor=${supervisor}`);
+
+const getStudents = (queryData: URLSearchParams, orgId?: string) => getUsersByRole(ROLE_IDS["student"], queryData, orgId);
 
 /**
  * Fetches users by role with optional organisation ID.
  */
 const getUsersByRole = (roleId: string, queryData: URLSearchParams, orgId?: string) => {
-  const baseUrl = `${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?filters.roleId=${roleId}`;
+  const baseUrl = `${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?filters.roleIds=${roleId}`;
   const orgFilter = orgId ? `&filters.orgId=${orgId}` : "";
   const includeDetailFilter = !orgId ? `&includeDetails=true` : "";
   return appRequest.get(`${baseUrl}${orgFilter}${includeDetailFilter}&${queryData}`);
 };
 
+/**
+ * Fetch Users
+ */
+export const getContacts = (role: RoleType) => {
+  return (queryData: URLSearchParams, orgId?: string) => {
+    const allowedRoles = CONTACT_ACCESS[role]?.map(r => ROLE_IDS[r]).join(",");
+
+    const queryParams = new URLSearchParams(queryData);
+    if (orgId) queryParams.append("filters.orgId", orgId);
+
+    // if queryData contains roleId do not append roleId again
+    if (allowedRoles && !queryParams.has("roleIds")) {
+      queryParams.append("filters.roleIds", allowedRoles);
+    }
+
+    return appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?includeDetails=true&${queryParams.toString()}`);
+  };
+};
+
 export const profileApis = {
   createProfile,
   getProfileById,
+  getProfileByIdWithDetail,
   removeProfile,
   updateProfile,
   getOrgAdmins,
   getOrgManagers,
   getOrgTeachers,
   getParents,
-  getStudents
-  // getPlatformAdminUsers
+  getStudents,
+  getStudentsByParentId,
+  getContacts
 };

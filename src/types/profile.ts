@@ -32,8 +32,7 @@ export interface ProfilePaginatedRequest extends OffsetPaginatedRequest {
   sortings?: ProfilePaginationOrderBy[];
 }
 export interface ProfilePaginationFilter {
-  nameOrEmailOrPhone?: string;
-  roleId?: string;
+  roleIds?: string;
   orgId?: string;
   isActive?: boolean;
   isConfirmed?: boolean;

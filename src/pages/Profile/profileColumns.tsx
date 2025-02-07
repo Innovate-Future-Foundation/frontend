@@ -8,6 +8,8 @@ import AppAvatar from "@/components/Avatar";
 import AppDropdown from "@/components/Dropdown";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Profile, ProfilePathType } from "@/types";
+import clsx from "clsx";
+import { getColorStyleByIsActive, getColorStyleByIsConfirmed } from "@/constants/mapper";
 
 interface GenerateColumnsOptions {
   profilePath?: ProfilePathType;
@@ -15,7 +17,7 @@ interface GenerateColumnsOptions {
   hideOrganisation?: boolean;
 }
 
-export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hideOrganisation = false }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
+export const profileColumns = ({ profilePath = "users", hideRole = false, hideOrganisation = false }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
   const baseColumns: ColumnDef<Profile>[] = [
     {
       id: "select",
@@ -85,7 +87,7 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
       accessorKey: "isActive",
       header: "Status",
       cell: ({ row }) => (
-        <Badge variant="secondary">
+        <Badge variant="outline" className={clsx(getColorStyleByIsActive.get(row.getValue("isActive")))}>
           <div className="capitalize">{row.getValue("isActive") ? "active" : "suspended"}</div>
         </Badge>
       ),
@@ -95,8 +97,8 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
       accessorKey: "isConfirmed",
       header: "Invitation comfirmation",
       cell: ({ row }) => (
-        <Badge variant="secondary">
-          <div className="capitalize">{row.getValue("isConfirmed") ? "accent" : "pending"}</div>
+        <Badge variant="secondary" className={clsx(getColorStyleByIsConfirmed.get(row.getValue("isConfirmed")))}>
+          <div className="capitalize">{row.getValue("isConfirmed") ? "accepted" : "pending"}</div>
         </Badge>
       ),
       enableGlobalFilter: false
@@ -139,11 +141,11 @@ export const profileColumns = ({ profilePath = "orgadmins", hideRole = false, hi
 
   if (!hideRole) {
     baseColumns.push({
-      accessorKey: "role",
+      accessorKey: "roleName",
       header: "Role",
       cell: ({ row }) => (
         <Badge variant="secondary">
-          <div className="capitalize">{row.getValue("role")}</div>
+          <div className="capitalize">{row.getValue("roleName")}</div>
         </Badge>
       ),
       enableGlobalFilter: false

@@ -17,4 +17,5 @@ export interface OffsetPaginatedRequest {
   limit: number;
   filters?: any;
   sortings?: any;
+  searchKey?: string;
 }

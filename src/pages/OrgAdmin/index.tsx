@@ -2,28 +2,41 @@ import { UserRoundPen } from "lucide-react";
 import { useMemo } from "react";
 import ContentLayout from "@/layouts/ContentLayout";
 import DataTable from "@/components/DataTable";
-import { Profile, TableBaseType } from "@/types";
-import { useOrgAdmin } from "@/hooks/orgAdmins/useOrgAdmin";
+import { Profile, ProfilePaginationFilter, ProfilePaginationOrderByType, TableBaseType } from "@/types";
+import { useOrgAdmin } from "@/hooks/profiles/useOrgAdmin";
 import { profileColumns } from "../Profile/profileColumns";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
 
 const OrgAdminPage = () => {
   const { needViewOrganisationOfUser } = usePermissions();
-  const { sorting, setSorting, columnFilters, setColumnFilters, pagination, setPagination, globalFilter, setGlobalFilter, offset, filters, sortings } =
-    useTableFilters();
+  const {
+    searchKey,
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    pagination,
+    setPagination,
+    globalFilter,
+    setGlobalFilter,
+    offset,
+    filters,
+    sortings
+  } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
 
   const { orgAdminsResponse, isLoadingOrgAdmins } = useOrgAdmin({
     offset,
     limit: pagination.pageSize,
     filters,
-    sortings
+    sortings,
+    searchKey
   });
 
   const tableData: TableBaseType<Profile>[] = useMemo(() => {
     return Array.isArray(orgAdminsResponse?.data) ? orgAdminsResponse?.data : [];
   }, [orgAdminsResponse]);
-
+  console.log("tableData", tableData);
   return (
     <ContentLayout icon={UserRoundPen} title={"organisation admin list"}>
       <DataTable

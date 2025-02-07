@@ -3,7 +3,7 @@ import { useErrorNotification } from "../useErrorNotification";
 import { keepPreviousData } from "@tanstack/react-query";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { ProfilePaginatedRequest } from "@/types";
-import { orgAdmins } from "@/queries/orgAdmins";
+import { profiles } from "@/queries/profiles";
 
 export const useOrgAdmin = (profilePaginatedRequest: ProfilePaginatedRequest) => {
   console.log("profilePaginatedRequest", profilePaginatedRequest);
@@ -16,7 +16,7 @@ export const useOrgAdmin = (profilePaginatedRequest: ProfilePaginatedRequest) =>
     error: errorOrgAdmins,
     isError: isErrorOrgAdmins
   } = useQuery({
-    ...orgAdmins.list(profilePaginatedRequest),
+    ...profiles.orgAdminslist(profilePaginatedRequest),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,

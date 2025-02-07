@@ -22,9 +22,11 @@ export const ERROR_MESSAGES = {
   FAIL_TO_FETCH_PARENTS: "Fail to get parents",
   FAIL_TO_FETCH_PARENT: "Fail to get parent",
   FAIL_TO_SAVE_PARENT: "Fail to save parent",
+  FAIL_TO_FETCH_CHILDREN: "Fail to get children",
   FAIL_TO_FETCH_STUDENTS: "Fail to get students",
   FAIL_TO_FETCH_STUDENT: "Fail to get student",
   FAIL_TO_SAVE_STUDENT: "Fail to save student",
   FAIL_TO_FETCH_PROFILE: "Fail to get profile",
-  FAIL_TO_SAVE_PROFILE: "Fail to save profile"
+  FAIL_TO_SAVE_PROFILE: "Fail to save profile",
+  FAIL_TO_FETCH_CONTACTS: "Fail to get contacts"
 };
