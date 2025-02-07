@@ -22,7 +22,7 @@ jobs:
           content: |
             ${{ github.event.action == 'opened' && '🆕 New PR:' || '🔄 PR Updated:' }} ${{ github.event.pull_request.html_url }}
             **Title:** ${{ github.event.pull_request.title }}
-            **Author:** ${{ github.event.pull_request.user.login }}
+            <@&1315850473391001674>
 
       - name: Create PR merged notification
         if: github.event.pull_request.merged == true && github.event.pull_request.draft == false
@@ -35,4 +35,4 @@ jobs:
           content: |
             🎉 PR Merged: ${{ github.event.pull_request.html_url }}
             **Title:** ${{ github.event.pull_request.title }}
-            **Author:** ${{ github.event.pull_request.merged_by.login }}
+            <@&1315850473391001674>
