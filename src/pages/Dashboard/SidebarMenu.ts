@@ -89,7 +89,7 @@ const platformAdminMenu: SidebarMenu = {
         },
         {
           title: "contacts",
-          url: "/dashboard/users",
+          url: "/dashboard/contacts",
           icon: Contact
         }
       ]
@@ -160,7 +160,7 @@ const organisationAdminMenu: SidebarMenu = {
         },
         {
           title: "contacts",
-          url: "/dashboard/users",
+          url: "/dashboard/contacts",
           icon: Contact
         }
       ]
@@ -226,7 +226,7 @@ const organisationManagerMenu: SidebarMenu = {
         },
         {
           title: "contacts",
-          url: "/dashboard/users",
+          url: "/dashboard/contacts",
           icon: Contact
         }
       ]
@@ -279,7 +279,7 @@ const organisationTeacherMenu: SidebarMenu = {
         },
         {
           title: "contacts",
-          url: "/dashboard/users",
+          url: "/dashboard/contacts",
           icon: Contact
         }
       ]
@@ -316,7 +316,7 @@ const parentMenu: SidebarMenu = {
       subMenu: [
         {
           title: "contacts",
-          url: "/dashboard/users",
+          url: "/dashboard/contacts",
           icon: Contact
         }
       ]
@@ -353,7 +353,7 @@ const studentMenu: SidebarMenu = {
       subMenu: [
         {
           title: "contacts",
-          url: "/dashboard/users",
+          url: "/dashboard/contacts",
           icon: Contact
         }
       ]

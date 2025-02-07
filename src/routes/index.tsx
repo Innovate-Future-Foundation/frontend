@@ -13,9 +13,9 @@ import ProfileDetailPage from "@/pages/Profile/ProfileDetailPage";
 import OrgTeacherPage from "@/pages/OrgTeacher";
 import OrgAdminPage from "@/pages/OrgAdmin";
 import EventPage from "@/pages/Event";
-import UserPage from "@/pages/Contacts";
 import DefaultDashboardPage from "@/pages/DefaultDashboard";
 import OrgManagerPage from "@/pages/OrgManager";
+import ContactPage from "@/pages/Contacts";
 
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
@@ -46,17 +46,17 @@ const router: AppRoute[] = [
       {
         path: "events",
         element: <EventPage />,
-        handle: { breadcrumb: "events list" }
+        handle: { breadcrumb: "event list" }
       },
       {
         path: "tours",
         element: <TourPage />,
-        handle: { breadcrumb: "tours list" }
+        handle: { breadcrumb: "tour list" }
       },
       {
         path: "organisations",
         element: <OrganisationPage />,
-        handle: { breadcrumb: "organisations list" }
+        handle: { breadcrumb: "organisation list" }
       },
       {
         path: "organisations/:id",
@@ -65,17 +65,12 @@ const router: AppRoute[] = [
             <OrganisationDetailPage />
           </ProtectedRoute>
         ),
-        handle: { breadcrumb: "organisation profile & members" }
+        handle: { breadcrumb: "organisation profile & member" }
       },
       {
-        path: "users",
-        element: <UserPage />,
-        handle: { breadcrumb: "users list" }
-      },
-      {
-        path: "users/:id",
-        element: <ProfileDetailPage role="user" />,
-        handle: { breadcrumb: "user profile" }
+        path: "contacts",
+        element: <ContactPage />,
+        handle: { breadcrumb: "contact list" }
       },
       {
         path: "orgadmins",
@@ -84,7 +79,7 @@ const router: AppRoute[] = [
             <OrgAdminPage />
           </ProtectedRoute>
         ),
-        handle: { breadcrumb: "organisation admins list" }
+        handle: { breadcrumb: "organisation admin list" }
       },
       {
         path: "orgadmins/:id",
@@ -98,7 +93,7 @@ const router: AppRoute[] = [
             <OrgManagerPage />
           </ProtectedRoute>
         ),
-        handle: { breadcrumb: "organisation managers list" }
+        handle: { breadcrumb: "organisation manager list" }
       },
       {
         path: "orgmanagers/:id",
@@ -108,7 +103,7 @@ const router: AppRoute[] = [
       {
         path: "orgteachers",
         element: <OrgTeacherPage />,
-        handle: { breadcrumb: "organisation teachers list" }
+        handle: { breadcrumb: "organisation teacher list" }
       },
       {
         path: "orgteachers/:id",
@@ -118,7 +113,7 @@ const router: AppRoute[] = [
       {
         path: "parents",
         element: <ParentPage />,
-        handle: { breadcrumb: "parents list" }
+        handle: { breadcrumb: "parent list" }
       },
       {
         path: "parents/:id",
@@ -128,7 +123,7 @@ const router: AppRoute[] = [
       {
         path: "students",
         element: <StudentPage />,
-        handle: { breadcrumb: "students list" }
+        handle: { breadcrumb: "student list" }
       },
       {
         path: "students/:id",
