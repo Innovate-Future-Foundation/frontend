@@ -26,9 +26,9 @@ appRequest.interceptors.response.use(
     } else if (error.code === "ECONNABORTED") {
       errorMsg = ERROR_MESSAGES.TIME_OUT;
     }
-    // Handle HTTP errors with response orgStatusCode
+    // Handle HTTP errors with response status
     if (error.response) {
-      const statusCode = error.response.orgStatusCode;
+      const statusCode = error.response.status;
 
       switch (statusCode) {
         case 401:
