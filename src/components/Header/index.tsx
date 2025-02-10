@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 // import { COGNITO_LOGIN_URL } from "@/constants/apiConfig";
 import SignInAvatar from "./SignInAvatar";
-import { ModeToggle } from "../ui/mode-toggle";
 
 const Header = () => {
   return (
@@ -19,7 +18,6 @@ const Header = () => {
           <p>Sign in</p>
         </a> */}
         <div className="flex justify-items-center gap-4">
-          <ModeToggle />
           <SignInAvatar name={"John Doe"} email={"johndoe@example.com"} avatarLink={"https://github.com/davidmiller.png"} />
         </div>
       </nav>
