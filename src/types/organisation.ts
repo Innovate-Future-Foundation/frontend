@@ -1,14 +1,14 @@
 import { OffsetPaginatedRequest } from "./apiReqResponse";
 
 export interface Organisation {
-  orgId?: string;
+  id?: string;
   orgName?: string;
   logoUrl?: string | null;
   websiteUrl?: string | null;
   address?: Address | null;
   email?: string | null;
-  subscription?: SubscriptionStatus | null;
-  status?: OrganisationStatus;
+  subscriptionCode?: SubscriptionCode | null;
+  orgStatusCode?: OrgStatusCode;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -19,24 +19,15 @@ export interface Address {
   postcode: string;
   country: string;
 }
-
-export enum SubscriptionStatus {
-  Premium = 0,
-  Free = 1,
-  Basic = 2
-}
-export enum OrganisationStatus {
-  Pending = 0,
-  Active = 1,
-  Suspended = 2
-}
+export type OrgStatusCode = "UndefinedOrgStatus" | "Pending" | "Active" | "Suspended";
+export type SubscriptionCode = "UndefinedSubscription" | "Premium" | "Free" | "Basic";
 export interface OrganisationPaginatedRequest extends OffsetPaginatedRequest {
   filters?: OrganisationPaginationFilter;
   sortings?: OrganisationPaginationOrderBy[];
 }
 export interface OrganisationPaginationFilter {
-  status?: OrganisationStatus;
-  subscription?: SubscriptionStatus;
+  orgStatusCode?: OrgStatusCode;
+  subscriptionCode?: SubscriptionCode;
 }
 
 export type OrganisationPaginationOrderByType = "orgName" | "createdAt" | "updatedAt";

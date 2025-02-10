@@ -8,7 +8,7 @@ const getOrganisationById = (id: string) => appRequest.get(`${API_ENDPOINTS.API_
 
 const getOrganisations = (queryData: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.ORGANISATION}?${queryData}`);
 
-const removeOrganisation = (id: string) => appRequest.put(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.ORGANISATION}/${id}`, { status: "suspended" });
+const removeOrganisation = (id: string) => appRequest.put(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.ORGANISATION}/${id}`, { orgStatusCode: "suspended" });
 
 const updateOrganisation = (id: string, bodyData: Organisation) => appRequest.put(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.ORGANISATION}/${id}`, bodyData);
 

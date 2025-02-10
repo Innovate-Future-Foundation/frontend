@@ -14,10 +14,10 @@ export const organisations = createQueryKeys("organisations", {
     }
   }),
 
-  detail: (orgId: string) => ({
-    queryKey: [orgId],
+  detail: (id: string) => ({
+    queryKey: [id],
     queryFn: async () => {
-      const response = await organisationApis.getOrganisationById(orgId);
+      const response = await organisationApis.getOrganisationById(id);
       return response.data as ApiResponse<Organisation>;
     }
   })

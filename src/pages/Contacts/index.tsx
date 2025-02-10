@@ -6,7 +6,7 @@ import { Profile, ProfilePaginationFilter, ProfilePaginationOrderByType, TableBa
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { useContact } from "@/hooks/contacts/useContact";
 import { contactsColumns } from "./contactsColumns";
-import { mapTypeToId } from "@/constants/mapper";
+import { mapStringToType } from "@/constants/mapper";
 
 const ContactPage = () => {
   const {
@@ -22,7 +22,7 @@ const ContactPage = () => {
     offset,
     filters,
     sortings
-  } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>({ filterMapper: mapTypeToId });
+  } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>({ filterMapper: mapStringToType });
 
   const { contactsResponse, isLoadingContacts } = useContact({
     offset,

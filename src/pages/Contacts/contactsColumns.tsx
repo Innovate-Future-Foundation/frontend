@@ -69,7 +69,7 @@ export const contactsColumns: ColumnDef<Profile>[] = [
   },
   {
     accessorKey: "isActive",
-    header: "Status",
+    header: "orgStatusCode",
     cell: "",
     enableGlobalFilter: false,
     enableColumnFilter: false
@@ -82,7 +82,7 @@ export const contactsColumns: ColumnDef<Profile>[] = [
     enableColumnFilter: false
   },
   {
-    accessorKey: "roleName",
+    accessorKey: "roleCode",
     header: "Role",
     cell: ({ row }) => (
       <div className={clsx(`flex gap-2 items-center m-3 ${!row.getValue("isActive") ? "text-primary-foreground60" : "text-primary-foreground30"}`)}>
@@ -90,11 +90,11 @@ export const contactsColumns: ColumnDef<Profile>[] = [
         <Badge
           variant={"secondary"}
           className={clsx(
-            `${!row.getValue("isActive") ? "bg-muted text-primary-foreground60" : getColorStyleByRole[String(row.getValue("roleName")).toLowerCase() as RoleType]} flex items-center py-0 px-2 rounded-full`
+            `${!row.getValue("isActive") ? "bg-muted text-primary-foreground60" : getColorStyleByRole[row.getValue("roleCode") as RoleType]} flex items-center py-0 px-2 rounded-full`
           )}
         >
           <Dot className="-m-1 -mx-1 -ml-3" />
-          <div className="lowercase truncate max-w-40">{row.getValue("roleName")}</div>
+          <div className="lowercase truncate max-w-40">{row.getValue("roleCode")}</div>
         </Badge>
       </div>
     ),

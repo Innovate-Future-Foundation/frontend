@@ -5,8 +5,8 @@ import { Building2 } from "lucide-react";
 import { useOrganisation } from "@/hooks/organisations/useOrganisation";
 import { useMemo } from "react";
 import { Organisation, OrganisationPaginationFilter, OrganisationPaginationOrderByType, TableBaseType } from "@/types";
-import { mapStringToEnum } from "@/constants/mapper";
 import { useTableFilters } from "@/hooks/useTableFilters";
+import { mapStringToType } from "@/constants/mapper";
 
 const OrganisationPage = () => {
   const {
@@ -22,7 +22,7 @@ const OrganisationPage = () => {
     offset,
     filters,
     sortings
-  } = useTableFilters<OrganisationPaginationFilter, OrganisationPaginationOrderByType>({ filterMapper: mapStringToEnum });
+  } = useTableFilters<OrganisationPaginationFilter, OrganisationPaginationOrderByType>({ filterMapper: mapStringToType });
 
   const { organisationsResponse, isLoadingOrganisations } = useOrganisation({
     offset,

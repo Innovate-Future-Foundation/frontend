@@ -7,7 +7,7 @@ import { Form } from "@/components/ui/form";
 import Avatar from "@/components/Avatar";
 import FormWrapper from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
-import { Organisation, OrganisationStatus, SubscriptionStatus } from "@/types";
+import { Organisation, SubscriptionCode } from "@/types";
 import { abbreviateName } from "@/utils/formatters";
 import { useUpdateOrganisation } from "@/hooks/organisations/useUpdateOrganisation";
 import { useState } from "react";
@@ -145,13 +145,13 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
 
   const handleCompanyInfoSubmit = (data: z.infer<typeof companyInfoFormSchema>) => {
     setHandleFormName("company");
-    mutation.mutate({ id: orgProfileDetail.orgId!, bodyData: { ...data } });
+    mutation.mutate({ id: orgProfileDetail.id!, bodyData: { ...data } });
   };
 
   const handleAddressInfoSubmit = (data: z.infer<typeof addressInfoFormSchema>) => {
     setHandleFormName("address");
     mutation.mutate({
-      id: orgProfileDetail.orgId!,
+      id: orgProfileDetail.id!,
       bodyData: {
         address: {
           street: data.street ?? "",
@@ -181,15 +181,15 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
             <p className="text-xs">{companyInfoForm.watch("websiteUrl")}</p>
             <div className="flex gap-2 mt-2">
               <Badge variant="secondary" className="text-muted-foreground bg-muted px-1">
-                <div className="capitalize mr-1">{SubscriptionStatus[orgProfileDetail.subscription as SubscriptionStatus]}</div>
+                <div className="capitalize mr-1">{orgProfileDetail.subscriptionCode}</div>
                 <Avatar
-                  avatarLink={getImageBySubscription[SubscriptionStatus[orgProfileDetail.subscription as SubscriptionStatus].toLowerCase()]}
-                  avatarPlaceholder={abbreviateName(SubscriptionStatus[orgProfileDetail.subscription as SubscriptionStatus])}
+                  avatarLink={getImageBySubscription[orgProfileDetail.subscriptionCode as SubscriptionCode]}
+                  avatarPlaceholder={abbreviateName(orgProfileDetail.subscriptionCode ?? "")}
                   size={4}
                 />
               </Badge>
               <Badge variant={"secondary"} className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green">
-                {OrganisationStatus[orgProfileDetail.status as OrganisationStatus]}
+                {orgProfileDetail.orgStatusCode}
               </Badge>
               <Badge variant={"outline"} className="lowercase p-0 px-2 rounded-full font-medium text-xs">
                 {orgProfileDetail.orgName}

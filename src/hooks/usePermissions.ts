@@ -4,9 +4,9 @@ export function usePermissions() {
   const { role } = useAuth();
 
   const permissions = {
-    canEditOrganisationProfile: ["platform admin", "organisation admin"].includes(role),
-    canViewManagerScrollList: ["platform admin", "organisation admin"].includes(role),
-    needViewOrganisationOfUser: ["platform admin"].includes(role)
+    canEditOrganisationProfile: ["PlatformAdmin", "OrgAdmin"].includes(role),
+    canViewManagerScrollList: ["PlatformAdmin", "OrgAdmin"].includes(role),
+    needViewOrganisationOfUser: ["PlatformAdmin"].includes(role)
   };
 
   return permissions;

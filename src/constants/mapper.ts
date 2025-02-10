@@ -1,36 +1,38 @@
-import { OrganisationStatus, RoleType, SubscriptionStatus } from "@/types";
-import { CONTACT_ACCESS, ROLE_IDS } from "./appConfig";
+import { OrgStatusCode, RoleType, SubscriptionCode } from "@/types";
+import { CONTACT_ACCESS } from "./appConfig";
 
 export const getFiltersItems: Record<string, string[] | Record<RoleType, string[]>> = {
-  status: ["pending", "active", "suspended"],
-  subscription: ["premium", "free", "basic"],
-  isActive: ["active", "suspended"],
-  isConfirmed: ["accepted", "pending"],
-  roleName: {
-    "platform admin": CONTACT_ACCESS["platform admin"],
-    "organisation admin": CONTACT_ACCESS["organisation admin"],
-    "organisation manager": CONTACT_ACCESS["organisation manager"],
-    "organisation teacher": CONTACT_ACCESS["organisation teacher"],
-    parent: CONTACT_ACCESS["parent"],
-    student: CONTACT_ACCESS["student"]
+  orgStatusCode: ["Pending", "Active", "Suspended"],
+  subscriptionCode: ["Premium", "Free", "Basic"],
+  isActive: ["Active", "Suspended"],
+  isConfirmed: ["Accepted", "Pending"],
+  roleCode: {
+    PlatformAdmin: CONTACT_ACCESS["PlatformAdmin"],
+    OrgAdmin: CONTACT_ACCESS["OrgAdmin"],
+    OrgManager: CONTACT_ACCESS["OrgManager"],
+    OrgTeacher: CONTACT_ACCESS["OrgTeacher"],
+    Parent: CONTACT_ACCESS["Parent"],
+    Student: CONTACT_ACCESS["Student"],
+    UndefinedRole: CONTACT_ACCESS["UndefinedRole"]
   }
 };
 
 export const getfilterTitle: Record<string, string> = {
-  isActive: "status",
-  isConfirmed: "invitation confirmation",
-  status: "status",
-  subscription: "subscription",
-  roleName: "role"
+  isActive: "Account Status",
+  isConfirmed: "Invitation Status",
+  orgStatusCode: "Status",
+  subscriptionCode: "Subscription",
+  roleCode: "Role"
 };
 
 export const getColorStyleByRole: Record<RoleType, string> = {
-  "platform admin": "",
-  "organisation admin": "text-secondary-foreground bg-secondary",
-  "organisation manager": "text-secondary-foregroundRed bg-secondary-red",
-  "organisation teacher": "text-secondary-foregroundYellow bg-secondary-yellow",
-  parent: "text-secondary-foregroundPurple bg-secondary-purple",
-  student: "text-secondary-foregroundGreen bg-secondary-green"
+  PlatformAdmin: "",
+  OrgAdmin: "text-secondary-foreground bg-secondary",
+  OrgManager: "text-secondary-foregroundRed bg-secondary-red",
+  OrgTeacher: "text-secondary-foregroundYellow bg-secondary-yellow",
+  Parent: "text-secondary-foregroundPurple bg-secondary-purple",
+  Student: "text-secondary-foregroundGreen bg-secondary-green",
+  UndefinedRole: ""
 };
 
 export const getColorStyleByIsActive = new Map<boolean, string>([
@@ -43,38 +45,35 @@ export const getColorStyleByIsConfirmed = new Map<boolean, string>([
   [false, "text-secondary-foregroundYellow bg-secondary-yellow border-secondary-yellowLight"]
 ]);
 
-export const getImageBySubscription: Record<string, string> = {
-  premium: "/assets/images/goldMedal.png",
-  basic: "/assets/images/silverMedal.png",
-  free: "/assets/images/copperMedal.png"
+export const getImageBySubscription: Record<SubscriptionCode, string> = {
+  Premium: "/assets/images/goldMedal.png",
+  Basic: "/assets/images/silverMedal.png",
+  Free: "/assets/images/copperMedal.png",
+  UndefinedSubscription: ""
 };
-export const getColorStyleByStatus: Record<string, string> = {
-  pending: "text-secondary-foregroundYellow bg-secondary-yellow border-secondary-yellowLight",
-  active: "text-secondary-foregroundGreen bg-secondary-green border-secondary-greenLight",
-  suspended: "text-primary-foreground60 bg-muted"
-};
-
-export const mapStringToEnum = (id: string, value: string): [string, OrganisationStatus | SubscriptionStatus | undefined] => {
-  if (id === "status") {
-    return [id, OrganisationStatus[(value.charAt(0).toUpperCase() + value.slice(1)) as keyof typeof OrganisationStatus]];
-  } else if (id === "subscription") {
-    return [id, SubscriptionStatus[(value.charAt(0).toUpperCase() + value.slice(1)) as keyof typeof SubscriptionStatus]];
-  }
-  return [id, undefined];
+export const getColorStyleByStatus: Record<OrgStatusCode, string> = {
+  Pending: "text-secondary-foregroundYellow bg-secondary-yellow border-secondary-yellowLight",
+  Active: "text-secondary-foregroundGreen bg-secondary-green border-secondary-greenLight",
+  Suspended: "text-primary-foreground60 bg-muted",
+  UndefinedOrgStatus: ""
 };
 
 export const mapStringToBoolean = (id: string, value: string): [string, boolean | undefined] => {
   if (id === "isActive") {
-    return [id, value === "active"];
+    return [id, value === "Active"];
   } else if (id === "isConfirmed") {
-    return [id, value === "accepted"];
+    return [id, value === "Accepted"];
   }
   return [id, undefined];
 };
 
-export const mapTypeToId = (id: string, value: string): [string, string | undefined] => {
-  if (id === "roleName") {
-    return ["roleIds", ROLE_IDS[value as RoleType]];
+export const mapStringToType = (id: string, value: string): [string, OrgStatusCode | SubscriptionCode | RoleType | undefined] => {
+  if (id === "roleCode") {
+    return ["roleCodes", value as RoleType];
+  } else if (id === "orgStatusCode") {
+    return [id, value as OrgStatusCode];
+  } else if (id === "subscriptionCode") {
+    return [id, value as SubscriptionCode];
   }
-  return ["roleIds", undefined];
+  return ["roleCodes", undefined];
 };

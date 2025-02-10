@@ -10,7 +10,7 @@ import { BeatLoader } from "react-spinners";
 
 const ProfileDetailPage: React.FC<{ role: RoleType }> = ({ role }) => {
   const { id } = useParams();
-  console.log("ProfileId", id);
+  console.log("Id", id);
   const { profileDetailResponse, isLoadingProfileDetail } = useProfileDetail(id ?? "");
   console.log("ProfileDetail", profileDetailResponse);
 
