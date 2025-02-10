@@ -17,7 +17,7 @@ interface GenerateColumnsOptions {
   hideOrganisation?: boolean;
 }
 
-export const profileColumns = ({ profilePath = "users", hideRole = false, hideOrganisation = false }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
+export const profileColumns = ({ profilePath = "contacts", hideRole = false, hideOrganisation = false }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
   const baseColumns: ColumnDef<Profile>[] = [
     {
       id: "select",
@@ -95,7 +95,7 @@ export const profileColumns = ({ profilePath = "users", hideRole = false, hideOr
     },
     {
       accessorKey: "isConfirmed",
-      header: "Invitation comfirmation",
+      header: "Invitation",
       cell: ({ row }) => (
         <Badge variant="secondary" className={clsx(getColorStyleByIsConfirmed.get(row.getValue("isConfirmed")))}>
           <div className="capitalize">{row.getValue("isConfirmed") ? "accepted" : "pending"}</div>
@@ -141,11 +141,11 @@ export const profileColumns = ({ profilePath = "users", hideRole = false, hideOr
 
   if (!hideRole) {
     baseColumns.push({
-      accessorKey: "roleName",
+      accessorKey: "RoleCode",
       header: "Role",
       cell: ({ row }) => (
         <Badge variant="secondary">
-          <div className="capitalize">{row.getValue("roleName")}</div>
+          <div className="capitalize">{row.getValue("RoleCode")}</div>
         </Badge>
       ),
       enableGlobalFilter: false
@@ -168,12 +168,12 @@ export const profileColumns = ({ profilePath = "users", hideRole = false, hideOr
       const detail = row.original;
 
       const handleOperateDetail = ({ detail, isEdit = false }: { detail: Profile; isEdit?: boolean }) => {
-        const path = isEdit ? `${profilePath}/${detail.profileId}/edit` : `${profilePath}/${detail.profileId}`;
+        const path = isEdit ? `${profilePath}/${detail.id}/edit` : `${profilePath}/${detail.id}`;
         window.location.href = path;
       };
 
       const handleDelete = (detail: Profile) => {
-        console.log("ID about to delete: ", detail.profileId);
+        console.log("ID about to delete: ", detail.id);
       };
 
       const menuItems = [

@@ -6,10 +6,10 @@ import { convertToQueryParams } from "@/utils/formatters";
 export const profiles = createQueryKeys("profiles", {
   all: null,
 
-  detail: (profileId: string) => ({
-    queryKey: [profileId],
+  detail: (id: string) => ({
+    queryKey: [id],
     queryFn: async () => {
-      const response = await profileApis.getProfileByIdWithDetail(profileId);
+      const response = await profileApis.getProfileByIdWithDetail(id);
       return response.data as ApiResponse<Profile>;
     }
   }),
@@ -42,11 +42,11 @@ export const profiles = createQueryKeys("profiles", {
     }
   }),
   childrenlist: (params: ProfilePaginatedRequest, parents: Profile[]) => ({
-    queryKey: ["children", parents.map(p => p.profileId).join(",")],
+    queryKey: ["children", parents.map(p => p.id).join(",")],
     queryFn: async () => {
       const results = await Promise.all(
-        parents.map(async parent => {
-          const response = await profileApis.getStudentsByParentId(convertToQueryParams(params), parent.profileId ?? "");
+        parents.map(async Parent => {
+          const response = await profileApis.getStudentsByParentId(convertToQueryParams(params), Parent.id ?? "");
           return Array.isArray((response.data as ApiResponse<Profile>).data) ? (response.data as ApiResponse<Profile>).data : [];
         })
       );

@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, CircleOff, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
-import { Organisation, OrganisationStatus, SubscriptionStatus } from "@/types";
+import { Organisation, OrgStatusCode, SubscriptionCode } from "@/types";
 import Dropdown from "@/components/Dropdown";
 import Avatar from "@/components/Avatar";
 import { getColorStyleByStatus, getImageBySubscription } from "@/constants/mapper";
@@ -63,27 +63,43 @@ export const orgColumns: ColumnDef<Organisation>[] = [
     enableColumnFilter: false
   },
   {
-    accessorKey: "subscription",
+    accessorKey: "subscriptionCode",
     header: "Subscription",
     cell: ({ row }) => (
-      <Badge variant="secondary" className="text-muted-foreground bg-muted px-1">
-        <div className="capitalize mr-1">{SubscriptionStatus[row.getValue("subscription") as SubscriptionStatus]}</div>
-        <Avatar
-          avatarLink={getImageBySubscription[SubscriptionStatus[row.getValue("subscription") as SubscriptionStatus].toLowerCase()]}
-          avatarPlaceholder={abbreviateName(SubscriptionStatus[row.getValue("subscription") as SubscriptionStatus])}
-          size={4}
-        />
-      </Badge>
+      <>
+        {row.getValue("subscriptionCode") === "UndefinedSubscription" ? (
+          <div className="capitalize mx-2 text-primary-foreground60">
+            <CircleOff size={14} />
+          </div>
+        ) : (
+          <Badge variant="secondary" className="text-muted-foreground bg-muted px-1">
+            <div className="capitalize mr-1">{row.getValue("subscriptionCode") as SubscriptionCode}</div>
+            <Avatar
+              avatarLink={getImageBySubscription[row.getValue("subscriptionCode") as SubscriptionCode]}
+              avatarPlaceholder={abbreviateName(row.getValue("subscriptionCode"))}
+              size={4}
+            />
+          </Badge>
+        )}
+      </>
     ),
     enableGlobalFilter: false
   },
   {
-    accessorKey: "status",
+    accessorKey: "orgStatusCode",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant="outline" className={clsx(getColorStyleByStatus[OrganisationStatus[row.getValue("status") as OrganisationStatus].toLowerCase()])}>
-        <div className="capitalize">{OrganisationStatus[row.getValue("status") as OrganisationStatus]}</div>
-      </Badge>
+      <>
+        {row.getValue("orgStatusCode") === "UndefinedOrgStatus" ? (
+          <div className="capitalize mx-2 text-primary-foreground60">
+            <CircleOff size={14} />
+          </div>
+        ) : (
+          <Badge variant="outline" className={clsx(getColorStyleByStatus[row.getValue("orgStatusCode") as OrgStatusCode])}>
+            <div className="capitalize">{row.getValue("orgStatusCode")}</div>
+          </Badge>
+        )}
+      </>
     ),
     enableGlobalFilter: false
   },
@@ -130,12 +146,12 @@ export const orgColumns: ColumnDef<Organisation>[] = [
       const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: Organisation; isEdit?: boolean }) => {
         console.log("organisationDetail: ", organisationDetail);
         console.log("isEdit", isEdit);
-        const path = isEdit ? `organisations/${organisationDetail.orgId}/edit` : `organisations/${organisationDetail.orgId}`;
+        const path = isEdit ? `organisations/${organisationDetail.id}/edit` : `organisations/${organisationDetail.id}`;
         window.location.href = path;
       };
 
       const handleDelete = (organisation: Organisation) => {
-        console.log("orgId about to delete: ", organisation.orgId);
+        console.log("id about to delete: ", organisation.id);
       };
 
       const menuItems = [

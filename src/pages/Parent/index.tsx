@@ -33,7 +33,7 @@ const ParentPage = () => {
   });
 
   return (
-    <ContentLayout icon={UserRoundPen} title={"parent list"}>
+    <ContentLayout icon={UserRoundPen} title={"Parent list"}>
       <DataTable
         totalItems={totalItems}
         limit={pagination.pageSize}

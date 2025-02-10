@@ -364,22 +364,22 @@ const studentMenu: SidebarMenu = {
 export const filterMenuByRole = (role: RoleType, organisationId?: string): SidebarMenu => {
   let baseMenu;
   switch (role) {
-    case "platform admin":
+    case "PlatformAdmin":
       baseMenu = platformAdminMenu;
       break;
-    case "organisation admin":
+    case "OrgAdmin":
       baseMenu = organisationAdminMenu;
       break;
-    case "organisation manager":
+    case "OrgManager":
       baseMenu = organisationManagerMenu;
       break;
-    case "organisation teacher":
+    case "OrgTeacher":
       baseMenu = organisationTeacherMenu;
       break;
-    case "parent":
+    case "Parent":
       baseMenu = parentMenu;
       break;
-    case "student":
+    case "Student":
       baseMenu = studentMenu;
       break;
     default:

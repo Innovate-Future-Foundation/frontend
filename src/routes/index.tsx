@@ -61,7 +61,7 @@ const router: AppRoute[] = [
       {
         path: "organisations/:id",
         element: (
-          <ProtectedRoute allowedRoles={["platform admin", "organisation admin", "organisation manager", "organisation teacher", "parent", "student"]}>
+          <ProtectedRoute allowedRoles={["PlatformAdmin", "OrgAdmin", "OrgManager", "OrgTeacher", "Parent", "Student"]}>
             <OrganisationDetailPage />
           </ProtectedRoute>
         ),
@@ -75,60 +75,60 @@ const router: AppRoute[] = [
       {
         path: "orgadmins",
         element: (
-          <ProtectedRoute allowedRoles={["platform admin", "organisation admin"]}>
+          <ProtectedRoute allowedRoles={["PlatformAdmin", "OrgAdmin"]}>
             <OrgAdminPage />
           </ProtectedRoute>
         ),
-        handle: { breadcrumb: "organisation admin list" }
+        handle: { breadcrumb: "OrgAdmin list" }
       },
       {
         path: "orgadmins/:id",
-        element: <ProfileDetailPage role="organisation admin" />,
-        handle: { breadcrumb: "organisation admin profile" }
+        element: <ProfileDetailPage role="OrgAdmin" />,
+        handle: { breadcrumb: "OrgAdmin profile" }
       },
       {
         path: "orgmanagers",
         element: (
-          <ProtectedRoute allowedRoles={["platform admin", "organisation admin", "organisation manager"]}>
+          <ProtectedRoute allowedRoles={["PlatformAdmin", "OrgAdmin", "OrgManager"]}>
             <OrgManagerPage />
           </ProtectedRoute>
         ),
-        handle: { breadcrumb: "organisation manager list" }
+        handle: { breadcrumb: "OrgManager list" }
       },
       {
         path: "orgmanagers/:id",
-        element: <ProfileDetailPage role="organisation manager" />,
-        handle: { breadcrumb: "organisation manager profile" }
+        element: <ProfileDetailPage role="OrgManager" />,
+        handle: { breadcrumb: "OrgManager profile" }
       },
       {
         path: "orgteachers",
         element: <OrgTeacherPage />,
-        handle: { breadcrumb: "organisation teacher list" }
+        handle: { breadcrumb: "OrgTeacher list" }
       },
       {
         path: "orgteachers/:id",
-        element: <ProfileDetailPage role="organisation teacher" />,
-        handle: { breadcrumb: "organisation teacher profile" }
+        element: <ProfileDetailPage role="OrgTeacher" />,
+        handle: { breadcrumb: "OrgTeacher profile" }
       },
       {
         path: "parents",
         element: <ParentPage />,
-        handle: { breadcrumb: "parent list" }
+        handle: { breadcrumb: "Parent list" }
       },
       {
         path: "parents/:id",
-        element: <ProfileDetailPage role="parent" />,
-        handle: { breadcrumb: "parent profile" }
+        element: <ProfileDetailPage role="Parent" />,
+        handle: { breadcrumb: "Parent profile" }
       },
       {
         path: "students",
         element: <StudentPage />,
-        handle: { breadcrumb: "student list" }
+        handle: { breadcrumb: "Student list" }
       },
       {
         path: "students/:id",
-        element: <ProfileDetailPage role="student" />,
-        handle: { breadcrumb: "student profile" }
+        element: <ProfileDetailPage role="Student" />,
+        handle: { breadcrumb: "Student profile" }
       }
     ]
   }

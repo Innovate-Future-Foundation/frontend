@@ -3,7 +3,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useErrorNotification } from "../useErrorNotification";
 import { profiles } from "@/queries/profiles";
 
-export const useProfileDetail = (profileId: string) => {
+export const useProfileDetail = (id: string) => {
   const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_PROFILE;
 
   const {
@@ -12,13 +12,13 @@ export const useProfileDetail = (profileId: string) => {
     error: errorProfileDetail,
     isError: isErrorProfileDetail
   } = useQuery({
-    ...profiles.detail(profileId),
+    ...profiles.detail(id),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,
     retry: 3,
     refetchOnWindowFocus: false,
-    enabled: !!profileId
+    enabled: !!id
   });
 
   useErrorNotification(isErrorProfileDetail, errorTitle, errorProfileDetail);

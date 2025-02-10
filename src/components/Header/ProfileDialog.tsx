@@ -12,8 +12,8 @@ import { abbreviateName } from "@/utils/formatters";
 import { Form } from "../ui/form";
 
 const userProfileData = {
-  profileId: "123e4567-e89b-12d3-a456-426614174000",
-  orgId: "654e7890-f12c-34a5-b678-921345678901",
+  id: "123e4567-e89b-12d3-a456-426614174000",
+  orgid: "654e7890-f12c-34a5-b678-921345678901",
   roleId: "987e6543-f21c-45d6-c789-234567890123",
   invitedBy: "321e7654-f45d-67a8-e987-345678901234",
   supervisedBy: "111e2222-c33d-44b5-d678-123456789012",

@@ -38,7 +38,7 @@ const StudentPage = () => {
   }, [studentsResponse]);
 
   return (
-    <ContentLayout icon={UserRoundPen} title={"student list"}>
+    <ContentLayout icon={UserRoundPen} title={"Student list"}>
       <DataTable
         totalItems={studentsResponse?.meta?.totalItems}
         limit={pagination.pageSize}
