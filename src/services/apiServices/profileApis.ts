@@ -36,8 +36,8 @@ const getParents = (queryData: URLSearchParams, orgId?: string) => getUsersByRol
 /**
  * Students
  */
-const getStudentsByParentId = (queryData: URLSearchParams, supervisor: string) =>
-  appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}&includeDetails=true&filters.supervisor=${supervisor}`);
+const getStudentsByParentIds = (queryData: URLSearchParams, supervisors: string) =>
+  appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}?${queryData}&includeDetails=true&filters.supervisors=${supervisors}`);
 
 const getStudents = (queryData: URLSearchParams, orgId?: string) => getUsersByRole("Student", queryData, orgId);
 
@@ -81,6 +81,6 @@ export const profileApis = {
   getOrgTeachers,
   getParents,
   getStudents,
-  getStudentsByParentId,
+  getStudentsByParentIds,
   getContacts
 };

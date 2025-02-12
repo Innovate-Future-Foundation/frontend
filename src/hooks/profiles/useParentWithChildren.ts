@@ -39,18 +39,24 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
     isLoading: isLoadingChildren,
     isError: isErrorChildren
   } = useQuery({
-    ...profiles.childrenlist(profilePaginatedRequest, parentsData),
+    ...profiles.childrenlist((profilePaginatedRequest = { ...profilePaginatedRequest, limit: 100, offset: 0 }), parentsData),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,
     retry: 3,
     refetchOnWindowFocus: false,
-    enabled: !!parentsData.length
+    enabled: !isLoadingParents && parentsData.length > 0
   });
 
-  parentsData.forEach((p, index) => {
-    p.children = (childrenResponse ? (childrenResponse[index] ?? []) : []) as TableBaseType<Profile>[];
+  const childrenData: TableBaseType<Profile>[] = useMemo(() => {
+    return Array.isArray(childrenResponse?.data) ? childrenResponse?.data : [];
+  }, [childrenResponse]);
+
+  parentsData.forEach(p => {
+    p.children = childrenData ? (childrenData.filter(child => child.supervisorProfile?.id === p.id) ?? []) : [];
   });
+
+  console.log("parentsData", parentsData);
 
   useErrorNotification(isErrorChildren, errorTitleChildren, errorChildren);
 
