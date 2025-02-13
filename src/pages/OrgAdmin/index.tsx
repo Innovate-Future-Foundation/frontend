@@ -38,7 +38,7 @@ const OrgAdminPage = () => {
   }, [orgAdminsResponse]);
   console.log("tableData", tableData);
   return (
-    <ContentLayout icon={UserRoundPen} title={"OrgAdmin list"}>
+    <ContentLayout icon={UserRoundPen} title={"Admin list"}>
       <DataTable
         totalItems={orgAdminsResponse?.meta?.totalItems}
         limit={pagination.pageSize}

@@ -38,7 +38,7 @@ const OrgTeacherPage = () => {
   }, [orgTeachersResponse]);
 
   return (
-    <ContentLayout icon={UserRoundPen} title={"OrgTeacher list"}>
+    <ContentLayout icon={UserRoundPen} title={"Teacher list"}>
       <DataTable
         totalItems={orgTeachersResponse?.meta?.totalItems}
         limit={pagination.pageSize}

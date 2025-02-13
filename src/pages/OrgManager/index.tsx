@@ -38,7 +38,7 @@ const OrgManagerPage = () => {
   }, [orgManagersResponse]);
 
   return (
-    <ContentLayout icon={UserRoundPen} title={"OrgManager list"}>
+    <ContentLayout icon={UserRoundPen} title={"Manager list"}>
       <DataTable
         totalItems={orgManagersResponse?.meta?.totalItems}
         limit={pagination.pageSize}
