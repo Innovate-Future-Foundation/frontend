@@ -36,9 +36,15 @@ const OrgAdminPage = () => {
   const tableData: TableBaseType<Profile>[] = useMemo(() => {
     return Array.isArray(orgAdminsResponse?.data) ? orgAdminsResponse?.data : [];
   }, [orgAdminsResponse]);
-  console.log("tableData", tableData);
+
+  const handleSubmit = async () => {
+    await new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
   return (
-    <ContentLayout icon={UserRoundPen} title={"Admin list"}>
+    <ContentLayout icon={UserRoundPen} title={"Admin list"} onInviteClick={handleSubmit} inviteLabel={"invite admin"} roleInvited={"OrgAdmin"}>
       <DataTable
         totalItems={orgAdminsResponse?.meta?.totalItems}
         limit={pagination.pageSize}

@@ -37,8 +37,14 @@ const StudentPage = () => {
     return Array.isArray(studentsResponse?.data) ? studentsResponse?.data : [];
   }, [studentsResponse]);
 
+  const handleSubmit = async () => {
+    await new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
   return (
-    <ContentLayout icon={UserRoundPen} title={"Student list"}>
+    <ContentLayout icon={UserRoundPen} title={"Student list"} onInviteClick={handleSubmit} inviteLabel={"invite student"} roleInvited={"Student"}>
       <DataTable
         totalItems={studentsResponse?.meta?.totalItems}
         limit={pagination.pageSize}

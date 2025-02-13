@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { RoleType } from "@/types";
+import { mapRoleTypeToString } from "@/constants/mapper";
 
 export interface FormInputs {
   name: string;
@@ -89,7 +90,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
     async data => {
       setIsLoading(true);
       setIsAlertDialogOpen(false);
-      if (roleInvited !== "student" || !isParentEmailShowToggle) {
+      if (roleInvited !== "Student" || !isParentEmailShowToggle) {
         delete data.parentEmail;
       }
       try {
@@ -129,7 +130,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
       <DialogContent className="max-w-[425px] sm:min-w-[450px]">
         <DialogHeader>
           <DialogTitle>
-            Invite {isVowel(roleInvited) ? "an" : "a"} {roleInvited}
+            Invite {isVowel(mapRoleTypeToString[roleInvited]) ? "an" : "a"} {mapRoleTypeToString[roleInvited]}
           </DialogTitle>
           <DialogDescription>Send an invite link to a team member. The role can be changed later.</DialogDescription>
         </DialogHeader>
@@ -144,7 +145,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
               label="Email"
               placeholder="example: johndoe@example.com"
             />
-            {roleInvited === "student" && (
+            {roleInvited === "Student" && (
               <>
                 <div className="flex items-center space-x-2">
                   <Switch disabled={isLoading} id="parentEmailSwitch" checked={isParentEmailShowToggle} onCheckedChange={onCheckedChangeHandler} />

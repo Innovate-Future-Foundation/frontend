@@ -37,8 +37,14 @@ const OrgManagerPage = () => {
     return Array.isArray(orgManagersResponse?.data) ? orgManagersResponse?.data : [];
   }, [orgManagersResponse]);
 
+  const handleSubmit = async () => {
+    await new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
   return (
-    <ContentLayout icon={UserRoundPen} title={"Manager list"}>
+    <ContentLayout icon={UserRoundPen} title={"Manager list"} onInviteClick={handleSubmit} inviteLabel={"invite manager"} roleInvited={"OrgManager"}>
       <DataTable
         totalItems={orgManagersResponse?.meta?.totalItems}
         limit={pagination.pageSize}

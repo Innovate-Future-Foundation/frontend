@@ -79,12 +79,12 @@ const router: AppRoute[] = [
             <OrgAdminPage />
           </ProtectedRoute>
         ),
-        handle: { breadcrumb: "OrgAdmin list" }
+        handle: { breadcrumb: "Organisation Admin list" }
       },
       {
         path: "orgadmins/:id",
         element: <ProfileDetailPage role="OrgAdmin" />,
-        handle: { breadcrumb: "OrgAdmin profile" }
+        handle: { breadcrumb: "Organisation Admin profile" }
       },
       {
         path: "orgmanagers",
@@ -93,22 +93,22 @@ const router: AppRoute[] = [
             <OrgManagerPage />
           </ProtectedRoute>
         ),
-        handle: { breadcrumb: "OrgManager list" }
+        handle: { breadcrumb: "Organisation Manager list" }
       },
       {
         path: "orgmanagers/:id",
         element: <ProfileDetailPage role="OrgManager" />,
-        handle: { breadcrumb: "OrgManager profile" }
+        handle: { breadcrumb: "Organisation Manager profile" }
       },
       {
         path: "orgteachers",
         element: <OrgTeacherPage />,
-        handle: { breadcrumb: "OrgTeacher list" }
+        handle: { breadcrumb: "Organisation Teacher list" }
       },
       {
         path: "orgteachers/:id",
         element: <ProfileDetailPage role="OrgTeacher" />,
-        handle: { breadcrumb: "OrgTeacher profile" }
+        handle: { breadcrumb: "Organisation Teacher profile" }
       },
       {
         path: "parents",

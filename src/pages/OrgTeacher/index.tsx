@@ -37,8 +37,14 @@ const OrgTeacherPage = () => {
     return Array.isArray(orgTeachersResponse?.data) ? orgTeachersResponse?.data : [];
   }, [orgTeachersResponse]);
 
+  const handleSubmit = async () => {
+    await new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
   return (
-    <ContentLayout icon={UserRoundPen} title={"Teacher list"}>
+    <ContentLayout icon={UserRoundPen} title={"Teacher list"} onInviteClick={handleSubmit} inviteLabel={"invite teacher"} roleInvited={"OrgTeacher"}>
       <DataTable
         totalItems={orgTeachersResponse?.meta?.totalItems}
         limit={pagination.pageSize}
