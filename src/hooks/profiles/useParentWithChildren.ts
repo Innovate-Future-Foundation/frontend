@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useErrorNotification } from "../useErrorNotification";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { Profile, ProfilePaginatedRequest, TableBaseType } from "@/types";
@@ -40,12 +40,11 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
     isError: isErrorChildren
   } = useQuery({
     ...profiles.childrenlist((profilePaginatedRequest = { ...profilePaginatedRequest, limit: 100, offset: 0 }), parentsData),
-    placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,
     retry: 3,
     refetchOnWindowFocus: false,
-    enabled: !isLoadingParents && parentsData.length > 0
+    enabled: !isLoadingParents && !!parentsResponse
   });
 
   const childrenData: TableBaseType<Profile>[] = useMemo(() => {
