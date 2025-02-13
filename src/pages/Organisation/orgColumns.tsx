@@ -11,6 +11,7 @@ import Dropdown from "@/components/Dropdown";
 import Avatar from "@/components/Avatar";
 import { getColorStyleByStatus, getImageBySubscription } from "@/constants/mapper";
 import clsx from "clsx";
+import { Tooltip } from "@/components/Tooltip";
 
 export const orgColumns: ColumnDef<Organisation>[] = [
   {
@@ -59,7 +60,12 @@ export const orgColumns: ColumnDef<Organisation>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => <div className="lowercase truncate max-w-40">{row.getValue("email")}</div>,
+    cell: ({ row }) => (
+      <Tooltip className="lowercase" content={row.getValue("email")}>
+        <div className="lowercase truncate max-w-40 cursor-default">{row.getValue("email")}</div>
+      </Tooltip>
+    ),
+
     enableColumnFilter: false
   },
   {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BeatLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import {
   ColumnDef,
   SortingState,
@@ -69,7 +69,6 @@ const DataTable = <T extends object>({
   const [rowSelection, setRowSelection] = React.useState({});
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
   const { role } = useAuth();
-
   const table = useReactTable<TableBaseType<T>>({
     data,
     columns,
@@ -187,8 +186,8 @@ const DataTable = <T extends object>({
         </div>
       </div>
       {isLoading ? (
-        <div className="flex items-center justify-center">
-          <BeatLoader className="text-primary" />
+        <div className="flex min-h-[50vh] items-center justify-center">
+          <ClipLoader color="grey" />
         </div>
       ) : (
         <>
@@ -277,18 +276,18 @@ const DataTable = <T extends object>({
               </div>
             </div>
           )}
+          <Pagenation
+            currentPage={table.getState().pagination.pageIndex + 1}
+            totalItems={totalItems}
+            itemsPerPage={limit}
+            setPageIndex={table.setPageIndex}
+            handlePrev={table.previousPage}
+            getCanPreviousPage={table.getCanPreviousPage}
+            handleNext={table.nextPage}
+            getCanNextPage={table.getCanNextPage}
+          />
         </>
       )}
-      <Pagenation
-        currentPage={table.getState().pagination.pageIndex + 1}
-        totalItems={totalItems}
-        itemsPerPage={limit}
-        setPageIndex={table.setPageIndex}
-        handlePrev={table.previousPage}
-        getCanPreviousPage={table.getCanPreviousPage}
-        handleNext={table.nextPage}
-        getCanNextPage={table.getCanNextPage}
-      />
     </div>
   );
 };

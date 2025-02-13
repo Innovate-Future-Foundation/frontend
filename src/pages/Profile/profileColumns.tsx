@@ -10,6 +10,7 @@ import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Profile, ProfilePathType } from "@/types";
 import clsx from "clsx";
 import { getColorStyleByIsActive, getColorStyleByIsConfirmed } from "@/constants/mapper";
+import { Tooltip } from "@/components/Tooltip";
 
 interface GenerateColumnsOptions {
   profilePath?: ProfilePathType;
@@ -80,7 +81,11 @@ export const profileColumns = ({ profilePath = "contacts", hideRole = false, hid
     {
       accessorKey: "email",
       header: "Email",
-      cell: ({ row }) => <div className="lowercase truncate max-w-40">{row.getValue("email")}</div>,
+      cell: ({ row }) => (
+        <Tooltip className="lowercase" content={row.getValue("email")}>
+          <div className="lowercase truncate max-w-40 cursor-default">{row.getValue("email")}</div>
+        </Tooltip>
+      ),
       enableColumnFilter: false
     },
     {
