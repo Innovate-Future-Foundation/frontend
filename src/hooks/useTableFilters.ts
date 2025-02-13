@@ -15,25 +15,19 @@ export const useTableFilters = <T extends Record<string, any>, U extends string>
   });
   const [globalFilter, setGlobalFilter] = useState("");
 
-  // Calculate offset for pagination
   const offset = useMemo(() => pagination.pageIndex * pagination.pageSize, [pagination]);
 
-  // Convert filters to API format
   const filters: Partial<T> = useMemo(() => {
-    console.log("columnFilters", columnFilters);
     const result = Object.fromEntries(columnFilters.map(({ id, value }) => filterMapper(id, value as string))) as Partial<T>;
-    console.log("result", result);
     return result;
   }, [columnFilters, filterMapper]);
 
-  // Convert global filters to API format
   const searchKey = useMemo(() => {
     if (globalFilter) {
       return globalFilter;
     }
   }, [globalFilter]);
 
-  // Convert sorting to API format
   const sortings = useMemo(
     () =>
       sorting.map(({ id, desc }) => ({

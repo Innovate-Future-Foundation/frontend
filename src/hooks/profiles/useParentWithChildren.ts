@@ -39,12 +39,12 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
     isLoading: isLoadingChildren,
     isError: isErrorChildren
   } = useQuery({
-    ...profiles.childrenlist((profilePaginatedRequest = { ...profilePaginatedRequest, limit: 100, offset: 0 }), parentsData),
+    ...profiles.childrenlist(parentsData),
     staleTime: 60000,
     gcTime: 300000,
     retry: 3,
     refetchOnWindowFocus: false,
-    enabled: !isLoadingParents && !!parentsResponse
+    enabled: !!parentsResponse
   });
 
   const childrenData: TableBaseType<Profile>[] = useMemo(() => {

@@ -41,11 +41,11 @@ export const profiles = createQueryKeys("profiles", {
       return response.data as ApiResponse<Profile>;
     }
   }),
-  childrenlist: (params: ProfilePaginatedRequest, parents: Profile[]) => ({
+  childrenlist: (parents: Profile[]) => ({
     queryKey: ["children", parents.map(p => p.id).join(",")],
     queryFn: async () => {
       const supervioserIds = parents.map(e => e.id).join(",");
-      const response = await profileApis.getStudentsByParentIds(convertToQueryParams(params), supervioserIds ?? "");
+      const response = await profileApis.getStudentsByParentIds(supervioserIds ?? "");
 
       return response.data as ApiResponse<Profile>;
     }
