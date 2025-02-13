@@ -41,16 +41,13 @@ export const profiles = createQueryKeys("profiles", {
       return response.data as ApiResponse<Profile>;
     }
   }),
-  childrenlist: (params: ProfilePaginatedRequest, parents: Profile[]) => ({
-    queryKey: ["children", parents.map(p => p.id).join(",")],
+  childrenlist: (parents: Profile[]) => ({
+    queryKey: [parents.map(p => p.id).join(",")],
     queryFn: async () => {
-      const results = await Promise.all(
-        parents.map(async Parent => {
-          const response = await profileApis.getStudentsByParentId(convertToQueryParams(params), Parent.id ?? "");
-          return Array.isArray((response.data as ApiResponse<Profile>).data) ? (response.data as ApiResponse<Profile>).data : [];
-        })
-      );
-      return results;
+      const supervioserIds = parents.map(e => e.id).join(",");
+      const response = await profileApis.getStudentsByParentIds(supervioserIds ?? "");
+
+      return response.data as ApiResponse<Profile>;
     }
   }),
   studentslist: (params: ProfilePaginatedRequest, organisationId: string) => ({

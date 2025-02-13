@@ -129,14 +129,6 @@ const DataTable = <T extends object>({
     };
   }, [debounceSearchChange]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center">
-        <BeatLoader className="text-primary" />
-      </div>
-    );
-  }
-
   return (
     <div className="w-full">
       <div className="flex items-center justify-between py-4">
@@ -194,92 +186,98 @@ const DataTable = <T extends object>({
           </span>
         </div>
       </div>
-      {/* Table */}
-      {locationListType === "table" && (
-        <div className="rounded-t-md overflow-hidden">
-          <Table>
-            <TableHeader className="bg-accent">
-              {table.getHeaderGroups().map(headerGroup => (
-                <TableRow key={headerGroup.id} className="border-none ">
-                  {headerGroup.headers.map(header => {
-                    return (
-                      <TableHead className="text-primary-foreground50 text-sm " key={header.id}>
-                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map(row => (
-                  <React.Fragment key={row.id}>
-                    <TableRow data-state={row.getIsSelected() && "selected"}>
-                      {row.getVisibleCells().map(cell => (
-                        <TableCell className="h-18 font-medium" key={cell.id}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </TableCell>
-                      ))}
+      {isLoading ? (
+        <div className="flex items-center justify-center">
+          <BeatLoader className="text-primary" />
+        </div>
+      ) : (
+        <>
+          {locationListType === "table" && (
+            <div className="rounded-t-md overflow-hidden">
+              <Table>
+                <TableHeader className="bg-accent">
+                  {table.getHeaderGroups().map(headerGroup => (
+                    <TableRow key={headerGroup.id} className="border-none ">
+                      {headerGroup.headers.map(header => {
+                        return (
+                          <TableHead className="text-primary-foreground50 text-sm " key={header.id}>
+                            {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                          </TableHead>
+                        );
+                      })}
                     </TableRow>
-                    {row.getIsExpanded() &&
-                      row.subRows.length > 0 &&
-                      row.subRows.map(subRow => (
-                        <TableRow
-                          key={subRow.id}
-                          data-state={subRow.getIsSelected() && "selected"}
-                          className="bg-accent border-none text-primary-foreground60 hover:bg-secondary-green hover:text-secondary-foregroundGreen data-[state=selected]:text-secondary-foregroundGreen data-[state=selected]:bg-secondary-green"
-                        >
-                          {subRow.getVisibleCells().map(cell => (
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map(row => (
+                      <React.Fragment key={row.id}>
+                        <TableRow data-state={row.getIsSelected() && "selected"}>
+                          {row.getVisibleCells().map(cell => (
                             <TableCell className="h-18 font-medium" key={cell.id}>
                               {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </TableCell>
                           ))}
                         </TableRow>
-                      ))}
-                  </React.Fragment>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="py-4 text-center text-primary-foreground50">
-                    <div className=" w-full mb-2 flex items-center justify-center">
-                      <CircleOff className="inline-block" />
-                    </div>
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <div className="flex-1 text-sm text-primary-foreground50">
-              {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+                        {row.getIsExpanded() &&
+                          row.subRows.length > 0 &&
+                          row.subRows.map(subRow => (
+                            <TableRow
+                              key={subRow.id}
+                              data-state={subRow.getIsSelected() && "selected"}
+                              className="bg-accent border-none text-primary-foreground60 hover:bg-secondary-green hover:text-secondary-foregroundGreen data-[state=selected]:text-secondary-foregroundGreen data-[state=selected]:bg-secondary-green"
+                            >
+                              {subRow.getVisibleCells().map(cell => (
+                                <TableCell className="h-18 font-medium" key={cell.id}>
+                                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          ))}
+                      </React.Fragment>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={columns.length} className="py-4 text-center text-primary-foreground50">
+                        <div className=" w-full mb-2 flex items-center justify-center">
+                          <CircleOff className="inline-block" />
+                        </div>
+                        No results.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+              <div className="flex items-center justify-end space-x-2 py-4">
+                <div className="flex-1 text-sm text-primary-foreground50">
+                  {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-      {/* cards */}
-      {locationListType === "cards" && (
-        <div className="rounded-md mb-4">
-          <div className="grid lg:grid-cols-4 gap-2 md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
-                <Card
-                  key={row.id}
-                  className={
-                    "w-full border-none rounded-md overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent"
-                  }
-                >
-                  {row.getVisibleCells().map(cell => {
-                    return <div key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>;
-                  })}
-                </Card>
-              ))
-            ) : (
-              <div className="h-24 text-center">No results.</div>
-            )}
-          </div>
-        </div>
+          )}
+          {locationListType === "cards" && (
+            <div className="rounded-md mb-4">
+              <div className="grid lg:grid-cols-4 gap-2 md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map(row => (
+                    <Card
+                      key={row.id}
+                      className={
+                        "w-full border-none rounded-md overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent"
+                      }
+                    >
+                      {row.getVisibleCells().map(cell => {
+                        return <div key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</div>;
+                      })}
+                    </Card>
+                  ))
+                ) : (
+                  <div className="h-24 text-center">No results.</div>
+                )}
+              </div>
+            </div>
+          )}
+        </>
       )}
       <Pagenation
         currentPage={table.getState().pagination.pageIndex + 1}
