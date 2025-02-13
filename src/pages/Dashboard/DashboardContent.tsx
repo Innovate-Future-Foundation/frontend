@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import Sidebar from "./Sidebar";
 import Breadcrumb from "@/components/Breadcurmb";
 import { filterMenuByRole } from "./SidebarMenu";
 import { useAuth } from "@/hooks/useAuth";
+import Sidebar from "./Sidebar";
 
 const DashboardContent = () => {
   const { role, organisationId } = useAuth();

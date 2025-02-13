@@ -77,3 +77,13 @@ export const mapStringToType = (id: string, value: string): [string, OrgStatusCo
   }
   return ["roleCodes", undefined];
 };
+
+export const mapRoleTypeToString: Record<RoleType, string> = {
+  PlatformAdmin: "Platform Admin",
+  OrgAdmin: "Admin",
+  OrgManager: "Manager",
+  OrgTeacher: "Teacher",
+  Parent: "Parent",
+  Student: "Student",
+  UndefinedRole: ""
+};

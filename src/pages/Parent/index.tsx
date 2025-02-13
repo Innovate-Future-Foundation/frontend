@@ -31,11 +31,15 @@ const ParentPage = () => {
     sortings,
     searchKey
   });
-  console.log("searchKey", searchKey);
-  console.log("isLoadingParents", isLoadingParents);
-  console.log("isLoadingChildren", isLoadingChildren);
+
+  const handleSubmit = async () => {
+    await new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
   return (
-    <ContentLayout icon={UserRoundPen} title={"Parent list"}>
+    <ContentLayout icon={UserRoundPen} title={"Parent list"} onInviteClick={handleSubmit} inviteLabel={"invite parent"} roleInvited={"Parent"}>
       <DataTable
         totalItems={totalItems}
         limit={pagination.pageSize}
