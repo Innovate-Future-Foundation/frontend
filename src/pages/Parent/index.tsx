@@ -31,7 +31,9 @@ const ParentPage = () => {
     sortings,
     searchKey
   });
-
+  console.log("searchKey", searchKey);
+  console.log("isLoadingParents", isLoadingParents);
+  console.log("isLoadingChildren", isLoadingChildren);
   return (
     <ContentLayout icon={UserRoundPen} title={"Parent list"}>
       <DataTable

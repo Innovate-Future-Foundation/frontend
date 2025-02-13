@@ -42,7 +42,7 @@ export const profiles = createQueryKeys("profiles", {
     }
   }),
   childrenlist: (parents: Profile[]) => ({
-    queryKey: ["children", parents.map(p => p.id).join(",")],
+    queryKey: [parents.map(p => p.id).join(",")],
     queryFn: async () => {
       const supervioserIds = parents.map(e => e.id).join(",");
       const response = await profileApis.getStudentsByParentIds(supervioserIds ?? "");

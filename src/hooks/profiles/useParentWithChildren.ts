@@ -44,7 +44,7 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
     gcTime: 300000,
     retry: 3,
     refetchOnWindowFocus: false,
-    enabled: !!parentsResponse
+    enabled: !!parentsResponse && parentsData.length > 0
   });
 
   const childrenData: TableBaseType<Profile>[] = useMemo(() => {
@@ -54,8 +54,6 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
   parentsData.forEach(p => {
     p.children = childrenData ? (childrenData.filter(child => child.supervisorProfile?.id === p.id) ?? []) : [];
   });
-
-  console.log("parentsData", parentsData);
 
   useErrorNotification(isErrorChildren, errorTitleChildren, errorChildren);
 
