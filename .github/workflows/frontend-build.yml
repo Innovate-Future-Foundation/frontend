@@ -39,9 +39,9 @@ jobs:
         uses: ./common-action/setup-frontend-aws
         with:
           node_version: ${{ env.node_version }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          role_arn: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
-          api_url: ${{ secrets.DEV_API_URL }}
+          aws_region: "ap-southeast-2"
+          role_arn: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-if-Frontend"
+          api_url: "https://dev.innovatefuture.foundation"
 
       - name: Install Dependencies
         run: npm ci
