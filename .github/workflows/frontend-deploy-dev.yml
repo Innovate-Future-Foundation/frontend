@@ -19,11 +19,9 @@ jobs:
       name: development
     env:
       AWS_REGION: ap-southeast-2
-      AWS_DEV_ACCOUNT: ${{ secrets.AWS_DEV_ACCOUNT }}
       DEV_FRONTEND_BUCKET: "dev-foundation-innovatefuture-dev-frontend-static"
       DEV_CLOUDFRONT_ID: "E1ZS25NCQ6M256"
       DEV_WEBSITE_URL: "https://dev.innovatefuture.foundation"
-      DEV_API_URL: "https://dev.innovatefuture.foundation"
       node_version: "22.1.0"
     
     runs-on: ubuntu-latest
@@ -33,19 +31,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Checkout Common Action
-        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          repository: Innovate-Future-Foundation/common-action
-          path: common-action
+          node-version: ${{ env.node_version }}
+          cache: 'npm'
 
-      - name: Setup Frontend Environment
-        uses: ./common-action/setup-frontend-aws
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          node_version: ${{ env.node_version }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          role_arn: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
-          api_url: ${{ secrets.DEV_API_URL }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-if-Frontend"
 
       - name: Download Production Assets
         uses: actions/download-artifact@v4
@@ -55,14 +51,14 @@ jobs:
 
       - name: Deploy to Dev S3
         run: |
-          aws s3 sync dist/ s3://${{ secrets.DEV_FRONTEND_BUCKET }} \
+          aws s3 sync dist/ s3://${{ env.DEV_FRONTEND_BUCKET }} \
           --delete \
           --cache-control "max-age=31536000,public"
 
       - name: Invalidate CloudFront
         run: |
           aws cloudfront create-invalidation \
-          --distribution-id ${{ secrets.DEV_CLOUDFRONT_ID }} \
+          --distribution-id ${{ env.DEV_CLOUDFRONT_ID }} \
           --paths "/*"
 
       - name: Verify Deployment
@@ -70,7 +66,7 @@ jobs:
           echo "Verifying deployment..."
           retries=3
           while [ $retries -gt 0 ]; do
-            response_code=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.DEV_WEBSITE_URL }})
+            response_code=$(curl -s -o /dev/null -w "%{http_code}" ${{ env.DEV_WEBSITE_URL }})
             if [[ $response_code =~ ^2 ]]; then
               echo "✅ Deployment verified!"
               exit 0
@@ -92,5 +88,5 @@ jobs:
             **Environment:** Development
             **Build:** ${{ github.run_number }}
             **Status:** ${{ job.status }}
-            **Website:** ${{ secrets.DEV_WEBSITE_URL }}
+            **Website:** ${{ env.DEV_WEBSITE_URL }}
             ${{ job.status != 'success' && '<@&1315850473391001674>' || '' }} 
