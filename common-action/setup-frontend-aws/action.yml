@@ -1,0 +1,42 @@
+name: Setup Frontend AWS
+description: "This action sets up Frontend deployment with AWS"
+
+inputs:
+  node_version:
+    description: "Node.js Version"
+    required: true
+  aws_region:
+    description: "AWS Region"
+    required: true
+  role_arn:
+    description: "AWS Role to assume"
+    required: true
+  env_file:
+    description: "Environment file path"
+    default: ".env"
+  api_url:
+    description: "API URL for the environment"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node_version }}
+        cache: 'npm'
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ inputs.aws_region }}
+        role-to-assume: ${{ inputs.role_arn }}
+
+    - name: Prepare Environment
+      shell: bash
+      run: |
+        echo "Node version: $(node --version)"
+        echo "NPM version: $(npm --version)"
+        cp .env.example ${{ inputs.env_file }}
+        sed -i "s|VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=.*|VITE_REACT_APP_INNOVATE_FUTURE_API_BASE_URL=${{ inputs.api_url }}|g" ${{ inputs.env_file }} 

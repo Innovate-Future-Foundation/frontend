@@ -1,0 +1,155 @@
+name: Frontend PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [ develop ]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "package*.json"
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  NODE_VERSION: "22.1.0"
+  PREVIEW_BUCKET_PREFIX: "pr-preview-"
+
+jobs:
+  preview:
+    if: github.event.action != 'closed'
+    environment:
+      name: development
+      url: ${{ steps.create_preview.outputs.preview_url }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout Common Action
+        uses: actions/checkout@v4
+        with:
+          repository: Innovate-Future-Foundation/common-action
+          path: common-action
+
+      - name: Setup Frontend Environment
+        uses: ./common-action/setup-frontend-aws
+        with:
+          node_version: ${{ env.NODE_VERSION }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          role_arn: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+          api_url: ${{ secrets.DEV_API_URL }}
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Create Preview Environment
+        id: create_preview
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PR_NUMBER}"
+          
+          # 创建 S3 桶
+          aws s3api create-bucket \
+            --bucket ${BUCKET_NAME} \
+            --region ${{ secrets.AWS_REGION }} \
+            --create-bucket-configuration LocationConstraint=${{ secrets.AWS_REGION }}
+          
+          # 配置桶策略
+          aws s3api put-bucket-policy \
+            --bucket ${BUCKET_NAME} \
+            --policy '{
+              "Version": "2012-10-17",
+              "Statement": [{
+                "Sid": "PublicReadGetObject",
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::'"${BUCKET_NAME}"'/*"
+              }]
+            }'
+          
+          # 启用静态网站托管
+          aws s3 website s3://${BUCKET_NAME} \
+            --index-document index.html \
+            --error-document index.html
+
+          # 部署构建文件
+          aws s3 sync dist/ s3://${BUCKET_NAME} \
+            --delete \
+            --cache-control "max-age=3600,public"
+          
+          # 设置预览 URL
+          PREVIEW_URL="http://${BUCKET_NAME}.s3-website.${{ secrets.AWS_REGION }}.amazonaws.com"
+          echo "preview_url=${PREVIEW_URL}" >> $GITHUB_OUTPUT
+
+      - name: Comment PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const previewUrl = '${{ steps.create_preview.outputs.preview_url }}';
+            const message = `
+            ## 🚀 Preview Environment Deployed!
+            
+            You can preview this PR at: [Preview Link](${previewUrl})
+            
+            > Note: This is a temporary environment and will be automatically deleted when the PR is merged or closed.
+            `;
+            
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: message
+            });
+
+      - name: Notify Discord
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+          thread-id: "1330422313769893938"
+          username: "Frontend Preview Bot"
+          content: |
+            🔍 PR Preview Environment Created
+            **PR:** #${{ github.event.pull_request.number }}
+            **Title:** ${{ github.event.pull_request.title }}
+            **Preview URL:** ${{ steps.create_preview.outputs.preview_url }}
+            **Author:** ${{ github.event.pull_request.user.login }}
+
+  cleanup:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+
+      - name: Cleanup Preview Environment
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PR_NUMBER}"
+          
+          # 清空并删除 S3 桶
+          aws s3 rm s3://${BUCKET_NAME} --recursive
+          aws s3api delete-bucket --bucket ${BUCKET_NAME}
+
+      - name: Notify Discord
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+          thread-id: "1330422313769893938"
+          username: "Frontend Preview Bot"
+          content: |
+            🧹 PR Preview Environment Cleaned Up
+            **PR:** #${{ github.event.pull_request.number }}
+            **Title:** ${{ github.event.pull_request.title }} 
