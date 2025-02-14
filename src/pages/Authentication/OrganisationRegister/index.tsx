@@ -2,10 +2,15 @@ import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterForm from "./RegisterForm";
 
-const OrganisationRegisterPage: FC = () => {
+interface OrganisationRegisterPageProps {
+  onBackToLogin: () => void;
+}
+
+const OrganisationRegisterPage: FC<OrganisationRegisterPageProps> = ({ onBackToLogin }) => {
   const navigate = useNavigate();
 
   const handleBackToLogin = () => {
+    onBackToLogin();
     navigate("/auth");
   };
 
