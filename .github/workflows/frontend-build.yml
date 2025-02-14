@@ -35,10 +35,11 @@ jobs:
         with:
           repository: Innovate-Future-Foundation/common-action
           path: common-action
+          ref: main
           
       - id: setup_frontend
         name: Setup Frontend Environment
-        uses: ./common-action/setup-frontend-aws
+        uses: ./common-action/actions/setup-frontend-aws
         with:
           node_version: ${{ env.node_version }}
           aws_region: "ap-southeast-2"
