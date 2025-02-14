@@ -25,16 +25,19 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Repository
+      - id: checkout_repository
+        name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Checkout Common Action
+      - id: checkout_common_action
+        name: Checkout Common Action
         uses: actions/checkout@v4
         with:
           repository: Innovate-Future-Foundation/common-action
           path: common-action
-
-      - name: Setup Frontend Environment
+          
+      - id: setup_frontend
+        name: Setup Frontend Environment
         uses: ./common-action/setup-frontend-aws
         with:
           node_version: ${{ env.node_version }}
