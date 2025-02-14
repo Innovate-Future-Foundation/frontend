@@ -71,7 +71,29 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
-			}
+			},
+			animation: {
+				'scale-up': 'scaleUp 0.5s ease-out forwards',
+				'check': 'check 0.5s ease-out forwards 0.3s',
+				'float-1': 'float 3s ease-in-out infinite',
+				'float-2': 'float 3s ease-in-out infinite 0.5s',
+				'float-3': 'float 3s ease-in-out infinite 1s',
+				'float-4': 'float 3s ease-in-out infinite 1.5s',
+			},
+			keyframes: {
+				scaleUp: {
+					'0%': { transform: 'scale(0)', opacity: 0 },
+					'100%': { transform: 'scale(1)', opacity: 1 },
+				},
+				check: {
+					'0%': { strokeDasharray: '0,100' },
+					'100%': { strokeDasharray: '100,100' },
+				},
+				float: {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' },
+				},
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
