@@ -81,7 +81,7 @@ const steps = [
   }
 ];
 
-// 临时模拟函数
+// temporary mock function
 const createOrganisation = async (data: any) => {
   console.log("Creating organisation:", data);
   return { id: "123" };
@@ -149,7 +149,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ onBackToLogin }) => {
             status: "pending"
           });
           await sendVerificationEmail(data.email);
-          setIsSuccess(true); // 直接设置成功状态
+          setIsSuccess(true); // set success status directly
           localStorage.removeItem(draftKey);
         } catch (error) {
           console.error(error);
@@ -202,16 +202,16 @@ const RegisterForm: FC<RegisterFormProps> = ({ onBackToLogin }) => {
       if (step === 6) {
         setIsLoading(true);
 
-        // 模拟 API 调用延迟
+        // mock api call delay
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         console.log("Form submitted:", data);
 
-        // 直接设置步骤为 7
+        // set step to 7
         setStep(7);
         setCountdown(60);
       } else if (step === 7) {
-        // 验证码验证逻辑
+        // verification code validation logic
         if (data.verificationCode === "123456") {
           localStorage.removeItem(draftKey);
           setIsSuccess(true);
