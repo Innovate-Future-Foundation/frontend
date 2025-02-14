@@ -21,7 +21,7 @@ const loginFormSchema = z.object({
 // inferring the type from the schema
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
-// 添加 Props 接口
+// add props interface
 interface LoginFormProps {
   onRegisterClick: () => void;
 }
