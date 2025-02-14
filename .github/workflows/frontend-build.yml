@@ -41,10 +41,6 @@ jobs:
         run: |
           echo "Listing common-action directory:"
           ls -la common-action/
-          echo "\nListing common-action/actions directory (if exists):"
-          ls -la common-action/actions/ || echo "actions directory not found"
-          echo "\nListing common-action/setup-frontend-aws directory (if exists):"
-          ls -la common-action/setup-frontend-aws/ || echo "setup-frontend-aws directory not found"
           
       - id: setup_frontend
         name: Setup Frontend Environment
