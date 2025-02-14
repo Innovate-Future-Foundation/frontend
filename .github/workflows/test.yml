@@ -3,8 +3,7 @@ name: Test Workflow
 on:
   workflow_dispatch:  # 允许手动触发
   push:              # 推送时自动触发
-    branches:
-      - 'feature/**' # 只在 feature 分支上触发
+    branches: [ 'feature/**' ] # 只在 feature 分支上触发
 
 jobs:
   test-job:

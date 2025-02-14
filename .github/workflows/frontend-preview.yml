@@ -9,6 +9,9 @@ on:
       - "src/**"
       - "public/**"
       - "package*.json"
+  push:              # 推送时自动触发
+    branches:
+      - 'feature/**' # 只在 feature 分支上触发
 
 permissions:
   id-token: write
