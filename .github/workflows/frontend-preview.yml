@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened, closed]
-    branches: [ develop ]
+    branches: [ dev ]
     paths:
       - "src/**"
       - "public/**"
