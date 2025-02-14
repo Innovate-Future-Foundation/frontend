@@ -1,6 +1,7 @@
 name: Frontend CI - Build & Test
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [ develop ]
     paths:
@@ -18,6 +19,8 @@ jobs:
     environment:
       name: development
     env:
+      AWS_REGION: ap-southeast-2
+      AWS_DEV_ACCOUNT: ${{ secrets.AWS_DEV_ACCOUNT }}
       node_version: "22.1.0"
       
     runs-on: ubuntu-latest

@@ -17,6 +17,12 @@ jobs:
     environment:
       name: development
     env:
+      AWS_REGION: ap-southeast-2
+      AWS_DEV_ACCOUNT: ${{ secrets.AWS_DEV_ACCOUNT }}
+      DEV_FRONTEND_BUCKET: "dev-foundation-innovatefuture-dev-frontend-static"
+      DEV_CLOUDFRONT_ID: "E1ZS25NCQ6M256"
+      DEV_WEBSITE_URL: "https://dev.innovatefuture.foundation"
+      DEV_API_URL: "https://dev.innovatefuture.foundation"
       node_version: "22.1.0"
     
     runs-on: ubuntu-latest

@@ -1,6 +1,7 @@
 name: Frontend PR Preview
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: [ develop ]
@@ -17,6 +18,9 @@ permissions:
 env:
   NODE_VERSION: "22.1.0"
   PREVIEW_BUCKET_PREFIX: "pr-preview-"
+  AWS_REGION: ap-southeast-2
+  AWS_DEV_ACCOUNT: ${{ secrets.AWS_DEV_ACCOUNT }}
+  DEV_API_URL: "https://dev.innovatefuture.foundation"
 
 jobs:
   preview:
