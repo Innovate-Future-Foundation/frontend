@@ -9,6 +9,9 @@ on:
       - "src/**"
       - "public/**"
       - "package*.json"
+  push:              
+    branches:
+      - 'feature/**' 
 
 permissions:
   id-token: write
