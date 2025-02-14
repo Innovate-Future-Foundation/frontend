@@ -1,12 +1,14 @@
+import { OffsetPaginatedRequest } from "./apiReqResponse";
+
 export interface Organisation {
-  orgId?: string;
-  orgName: string;
-  logoUrl: string | null;
-  websiteUrl: string | null;
-  address: Address | null;
-  email: string | null;
-  subscription: string | null;
-  status: OrganisationStatus;
+  id?: string;
+  orgName?: string;
+  logoUrl?: string | null;
+  websiteUrl?: string | null;
+  address?: Address | null;
+  email?: string | null;
+  subscriptionCode?: SubscriptionCode | null;
+  orgStatusCode?: OrgStatusCode;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -17,4 +19,20 @@ export interface Address {
   postcode: string;
   country: string;
 }
-export type OrganisationStatus = "pending" | "verified" | "suspended" | "deactivated";
+export type OrgStatusCode = "UndefinedOrgStatus" | "Pending" | "Active" | "Suspended";
+export type SubscriptionCode = "UndefinedSubscription" | "Premium" | "Free" | "Basic";
+export interface OrganisationPaginatedRequest extends OffsetPaginatedRequest {
+  filters?: OrganisationPaginationFilter;
+  sortings?: OrganisationPaginationOrderBy[];
+}
+export interface OrganisationPaginationFilter {
+  orgStatusCode?: OrgStatusCode;
+  subscriptionCode?: SubscriptionCode;
+}
+
+export type OrganisationPaginationOrderByType = "orgName" | "createdAt" | "updatedAt";
+
+export interface OrganisationPaginationOrderBy {
+  orderBy: OrganisationPaginationOrderByType;
+  isAscending: boolean;
+}

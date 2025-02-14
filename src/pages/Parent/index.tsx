@@ -1,17 +1,62 @@
-import { Backpack } from "lucide-react";
-import ProfilePage from "../Profile";
+import { UserRoundPen } from "lucide-react";
+import ContentLayout from "@/layouts/ContentLayout";
+import DataTable from "@/components/DataTable";
+import { ProfilePaginationFilter, ProfilePaginationOrderByType } from "@/types";
 import { profileColumns } from "../Profile/profileColumns";
+import { usePermissions } from "@/hooks/usePermissions";
+import { useTableFilters } from "@/hooks/useTableFilters";
+import { useParentWithChildren } from "@/hooks/profiles/useParentWithChildren";
 
 const ParentPage = () => {
+  const { needViewOrganisationOfUser } = usePermissions();
+  const {
+    searchKey,
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    pagination,
+    setPagination,
+    globalFilter,
+    setGlobalFilter,
+    offset,
+    filters,
+    sortings
+  } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
+
+  const { totalItems, parentsData, isLoadingParents, isLoadingChildren } = useParentWithChildren({
+    offset,
+    limit: pagination.pageSize,
+    filters,
+    sortings,
+    searchKey
+  });
+
+  const handleSubmit = async () => {
+    await new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
   return (
-    <ProfilePage
-      icon={Backpack}
-      title="Parent List"
-      inviteLabel="Invite Parent"
-      columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: true, includeChildren: true })}
-      searchPlaceholder="Search by name, email, or organization"
-      onInviteClick={() => console.log("Invite Parent clicked")}
-    />
+    <ContentLayout icon={UserRoundPen} title={"Parent list"} onInviteClick={handleSubmit} inviteLabel={"invite parent"} roleInvited={"Parent"}>
+      <DataTable
+        totalItems={totalItems}
+        limit={pagination.pageSize}
+        columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        data={parentsData}
+        isLoading={isLoadingParents || isLoadingChildren}
+        searchPlaceholder="search by name, email or phone"
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+        sorting={sorting}
+        setSorting={setSorting}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
+    </ContentLayout>
   );
 };
 

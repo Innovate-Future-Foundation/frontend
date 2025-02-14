@@ -1,271 +1,60 @@
-import { Building2 } from "lucide-react";
-
 import DataTable from "@/components/DataTable";
-import { TitleWithIcon } from "@/components/TitleWithIcon";
 import { orgColumns } from "./orgColumns";
-import { Organisation } from "@/types";
-
-const data: Organisation[] = [
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    orgName: "Acme Corporation",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.acmecorp.com",
-    address: null,
-    email: "info@acmecorp.com",
-    subscription: "Premium",
-    status: "pending",
-    createdAt: "2023-12-10T12:34:56Z",
-    updatedAt: "2023-12-06T22:20:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae8",
-    orgName: "Globex Corporation",
-    logoUrl: null,
-    websiteUrl: "https://www.globex.com",
-    address: null,
-    email: "contact@globex.com",
-    subscription: "Basic",
-    status: "deactivated",
-    createdAt: "2023-12-09T15:00:00Z",
-    updatedAt: "2023-12-06T22:21:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
-    orgName: "Initech",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.initech.com",
-    address: null,
-    email: "support@initech.com",
-    subscription: "Free",
-    status: "suspended",
-    createdAt: "2023-12-08T10:15:30Z",
-    updatedAt: "2023-12-06T22:22:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
-    orgName: "Initech",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.initech.com",
-    address: null,
-    email: "support@initech.com",
-    subscription: "Free",
-    status: "suspended",
-    createdAt: "2023-12-08T10:15:30Z",
-    updatedAt: "2023-12-06T22:22:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
-    orgName: "Hooli",
-    logoUrl: null,
-    websiteUrl: "https://www.hooli.com",
-    address: null,
-    email: "contact@hooli.com",
-    subscription: "Basic",
-    status: "pending",
-    createdAt: "2023-12-06T22:30:00Z",
-    updatedAt: "2023-12-06T22:24:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
-    orgName: "Umbrella Corporation",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.umbrella.com",
-    address: null,
-    email: "info@umbrella.com",
-    subscription: "Premium",
-    status: "verified",
-    createdAt: "2023-12-07T08:45:00Z",
-    updatedAt: "2023-12-06T22:23:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
-    orgName: "Hooli",
-    logoUrl: null,
-    websiteUrl: "https://www.hooli.com",
-    address: null,
-    email: "contact@hooli.com",
-    subscription: "Basic",
-    status: "pending",
-    createdAt: "2023-12-06T22:30:00Z",
-    updatedAt: "2023-12-06T22:24:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    orgName: "Acme Corporation",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.acmecorp.com",
-    address: null,
-    email: "info@acmecorp.com",
-    subscription: "Premium",
-    status: "pending",
-    createdAt: "2023-12-10T12:34:56Z",
-    updatedAt: "2023-12-06T22:20:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
-    orgName: "Initech",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.initech.com",
-    address: null,
-    email: "support@initech.com",
-    subscription: "Free",
-    status: "suspended",
-    createdAt: "2023-12-08T10:15:30Z",
-    updatedAt: "2023-12-06T22:22:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
-    orgName: "Hooli",
-    logoUrl: null,
-    websiteUrl: "https://www.hooli.com",
-    address: null,
-    email: "contact@hooli.com",
-    subscription: "Basic",
-    status: "pending",
-    createdAt: "2023-12-06T22:30:00Z",
-    updatedAt: "2023-12-06T22:24:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
-    orgName: "Umbrella Corporation",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.umbrella.com",
-    address: null,
-    email: "info@umbrella.com",
-    subscription: "Premium",
-    status: "verified",
-    createdAt: "2023-12-07T08:45:00Z",
-    updatedAt: "2023-12-06T22:23:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
-    orgName: "Hooli",
-    logoUrl: null,
-    websiteUrl: "https://www.hooli.com",
-    address: null,
-    email: "contact@hooli.com",
-    subscription: "Basic",
-    status: "pending",
-    createdAt: "2023-12-06T22:30:00Z",
-    updatedAt: "2023-12-06T22:24:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae8",
-    orgName: "Globex Corporation",
-    logoUrl: null,
-    websiteUrl: "https://www.globex.com",
-    address: null,
-    email: "contact@globex.com",
-    subscription: "Basic",
-    status: "deactivated",
-    createdAt: "2023-12-09T15:00:00Z",
-    updatedAt: "2023-12-06T22:21:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae9",
-    orgName: "Initech",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.initech.com",
-    address: null,
-    email: "support@initech.com",
-    subscription: "Free",
-    status: "suspended",
-    createdAt: "2023-12-08T10:15:30Z",
-    updatedAt: "2023-12-06T22:22:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
-    orgName: "Hooli",
-    logoUrl: null,
-    websiteUrl: "https://www.hooli.com",
-    address: null,
-    email: "contact@hooli.com",
-    subscription: "Basic",
-    status: "pending",
-    createdAt: "2023-12-06T22:30:00Z",
-    updatedAt: "2023-12-06T22:24:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    orgName: "Acme Corporation",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.acmecorp.com",
-    address: null,
-    email: "info@acmecorp.com",
-    subscription: "Premium",
-    status: "pending",
-    createdAt: "2023-12-10T12:34:56Z",
-    updatedAt: "2023-12-06T22:20:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
-    orgName: "Umbrella Corporation",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.umbrella.com",
-    address: null,
-    email: "info@umbrella.com",
-    subscription: "Premium",
-    status: "verified",
-    createdAt: "2023-12-07T08:45:00Z",
-    updatedAt: "2023-12-06T22:23:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    orgName: "Acme Corporation",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.acmecorp.com",
-    address: null,
-    email: "info@acmecorp.com",
-    subscription: "Premium",
-    status: "pending",
-    createdAt: "2023-12-10T12:34:56Z",
-    updatedAt: "2023-12-06T22:20:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90ae8",
-    orgName: "Globex Corporation",
-    logoUrl: null,
-    websiteUrl: "https://www.globex.com",
-    address: null,
-    email: "contact@globex.com",
-    subscription: "Basic",
-    status: "deactivated",
-    createdAt: "2023-12-09T15:00:00Z",
-    updatedAt: "2023-12-06T22:21:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aea",
-    orgName: "Umbrella Corporation",
-    logoUrl: "https://github.com/shadcn.png",
-    websiteUrl: "https://www.umbrella.com",
-    address: null,
-    email: "info@umbrella.com",
-    subscription: "Premium",
-    status: "verified",
-    createdAt: "2023-12-07T08:45:00Z",
-    updatedAt: "2023-12-06T22:23:00Z"
-  },
-  {
-    orgId: "7c9e6679-7425-40de-944b-e07fc1f90aeb",
-    orgName: "Hooli",
-    logoUrl: null,
-    websiteUrl: "https://www.hooli.com",
-    address: null,
-    email: "contact@hooli.com",
-    subscription: "Basic",
-    status: "pending",
-    createdAt: "2023-12-06T22:30:00Z",
-    updatedAt: "2023-12-06T22:24:00Z"
-  }
-];
+import ContentLayout from "@/layouts/ContentLayout";
+import { Building2 } from "lucide-react";
+import { useOrganisation } from "@/hooks/organisations/useOrganisation";
+import { useMemo } from "react";
+import { Organisation, OrganisationPaginationFilter, OrganisationPaginationOrderByType, TableBaseType } from "@/types";
+import { useTableFilters } from "@/hooks/useTableFilters";
+import { mapStringToType } from "@/constants/mapper";
 
 const OrganisationPage = () => {
+  const {
+    searchKey,
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    pagination,
+    setPagination,
+    globalFilter,
+    setGlobalFilter,
+    offset,
+    filters,
+    sortings
+  } = useTableFilters<OrganisationPaginationFilter, OrganisationPaginationOrderByType>({ filterMapper: mapStringToType });
+
+  const { organisationsResponse, isLoadingOrganisations } = useOrganisation({
+    offset,
+    limit: pagination.pageSize,
+    filters,
+    sortings,
+    searchKey
+  });
+
+  const tableData: TableBaseType<Organisation>[] = useMemo(() => {
+    return Array.isArray(organisationsResponse?.data) ? organisationsResponse?.data : [];
+  }, [organisationsResponse]);
+
   return (
-    <div className="w-full flex flex-col justify-center">
-      <TitleWithIcon icon={Building2} title={"orgainsation list"} />
-      <DataTable columns={orgColumns} data={data} searchPlaceholder="search by name and email" />
-    </div>
+    <ContentLayout icon={Building2} title={"organisation list"}>
+      <DataTable
+        totalItems={organisationsResponse?.meta?.totalItems}
+        limit={pagination.pageSize}
+        columns={orgColumns}
+        data={tableData}
+        isLoading={isLoadingOrganisations}
+        searchPlaceholder="search by name and email"
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+        sorting={sorting}
+        setSorting={setSorting}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
+    </ContentLayout>
   );
 };
 

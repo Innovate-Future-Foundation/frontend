@@ -1,5 +1,5 @@
 import { useState } from "react";
-import LoginForm from "./loginform";
+import LoginForm from "./LoginForm";
 import OrganisationRegisterPage from "./OrganisationRegister";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -13,7 +13,7 @@ const AuthenticationPage = () => {
         initial={{ x: "-100%" }}
         animate={{ x: isRegistering ? "190%" : 0 }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.1] }}
-        className="hidden lg:flex fixed w-[35%] h-full flex-col bg-[#046FFB] p-12 pt-16 text-white z-10"
+        className="hidden lg:flex fixed w-[35%] h-full flex-col bg-primary p-12 pt-16 text-white z-10"
       >
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }} className="mb-24">
           <h1 className="text-2xl font-bold">Company Name</h1>

@@ -60,13 +60,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
           </div>
         </div>
 
-        <Button type="submit" className="w-full bg-[#046FFB] hover:bg-blue-700">
+        <Button type="submit" className="w-full">
           LOGIN
         </Button>
-
         <div className="text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <button type="button" onClick={onRegisterClick} className="text-blue-600 hover:text-blue-700">
+          <button type="button" onClick={onRegisterClick} className="text-secondary-foreground hover:text-secondary-foreground/80">
             Register
           </button>
         </div>

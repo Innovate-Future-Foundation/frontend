@@ -1,13 +1,17 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, CircleOff, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
-import AppDropdown from "@/components/Dropdown";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
-import { Organisation } from "@/types";
+import { Organisation, OrgStatusCode, SubscriptionCode } from "@/types";
+import Dropdown from "@/components/Dropdown";
+import Avatar from "@/components/Avatar";
+import { getColorStyleByStatus, getImageBySubscription } from "@/constants/mapper";
+import clsx from "clsx";
+import { Tooltip } from "@/components/Tooltip";
 
 export const orgColumns: ColumnDef<Organisation>[] = [
   {
@@ -56,22 +60,52 @@ export const orgColumns: ColumnDef<Organisation>[] = [
   {
     accessorKey: "email",
     header: "Email",
-    cell: ({ row }) => <div className="lowercase truncate max-w-40">{row.getValue("email")}</div>,
+    cell: ({ row }) => (
+      <Tooltip className="lowercase" content={row.getValue("email")}>
+        <div className="lowercase truncate max-w-40 cursor-default">{row.getValue("email")}</div>
+      </Tooltip>
+    ),
+
     enableColumnFilter: false
   },
   {
-    accessorKey: "subscription",
+    accessorKey: "subscriptionCode",
     header: "Subscription",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("subscription")}</div>,
+    cell: ({ row }) => (
+      <>
+        {row.getValue("subscriptionCode") === "UndefinedSubscription" ? (
+          <div className="capitalize mx-2 text-primary-foreground60">
+            <CircleOff size={14} />
+          </div>
+        ) : (
+          <Badge variant="secondary" className="text-muted-foreground bg-muted px-1">
+            <div className="capitalize mr-1">{row.getValue("subscriptionCode") as SubscriptionCode}</div>
+            <Avatar
+              avatarLink={getImageBySubscription[row.getValue("subscriptionCode") as SubscriptionCode]}
+              avatarPlaceholder={abbreviateName(row.getValue("subscriptionCode"))}
+              size={4}
+            />
+          </Badge>
+        )}
+      </>
+    ),
     enableGlobalFilter: false
   },
   {
-    accessorKey: "status",
+    accessorKey: "orgStatusCode",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant="secondary">
-        <div className="capitalize">{row.getValue("status")}</div>
-      </Badge>
+      <>
+        {row.getValue("orgStatusCode") === "UndefinedOrgStatus" ? (
+          <div className="capitalize mx-2 text-primary-foreground60">
+            <CircleOff size={14} />
+          </div>
+        ) : (
+          <Badge variant="outline" className={clsx(getColorStyleByStatus[row.getValue("orgStatusCode") as OrgStatusCode])}>
+            <div className="capitalize">{row.getValue("orgStatusCode")}</div>
+          </Badge>
+        )}
+      </>
     ),
     enableGlobalFilter: false
   },
@@ -118,12 +152,12 @@ export const orgColumns: ColumnDef<Organisation>[] = [
       const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: Organisation; isEdit?: boolean }) => {
         console.log("organisationDetail: ", organisationDetail);
         console.log("isEdit", isEdit);
-        const path = isEdit ? `organisations/${organisationDetail.orgId}/edit` : `organisations/${organisationDetail.orgId}`;
+        const path = isEdit ? `organisations/${organisationDetail.id}/edit` : `organisations/${organisationDetail.id}`;
         window.location.href = path;
       };
 
       const handleDelete = (organisation: Organisation) => {
-        console.log("orgId about to delete: ", organisation.orgId);
+        console.log("id about to delete: ", organisation.id);
       };
 
       const menuItems = [
@@ -143,12 +177,12 @@ export const orgColumns: ColumnDef<Organisation>[] = [
       ];
 
       return (
-        <AppDropdown<Organisation> item={organisationDetail} menuItems={menuItems}>
+        <Dropdown<Organisation> item={organisationDetail} menuItems={menuItems}>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
             <MoreHorizontal />
           </Button>
-        </AppDropdown>
+        </Dropdown>
       );
     },
     enableColumnFilter: false,

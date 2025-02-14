@@ -10,8 +10,6 @@ const DashboardPage = () => {
   const code = arr.length === 2 ? arr[1] : "";
 
   //todo: hardcode
-  const roleName = "platform admin";
-
   useEffect(() => {
     if (code) {
       const getToken = async () => {
@@ -32,14 +30,9 @@ const DashboardPage = () => {
     }
   }, [code]);
 
-  //todo: indicator
-  if (!roleName) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <MainLayout>
-      <DashboardContent name={roleName} codeName={"1"} />
+      <DashboardContent />
     </MainLayout>
   );
 };
