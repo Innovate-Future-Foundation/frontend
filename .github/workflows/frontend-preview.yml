@@ -9,9 +9,6 @@ on:
       - "src/**"
       - "public/**"
       - "package*.json"
-  push:              # 推送时自动触发
-    branches:
-      - 'feature/**' # 只在 feature 分支上触发
 
 permissions:
   id-token: write
@@ -22,8 +19,6 @@ env:
   NODE_VERSION: "22.1.0"
   PREVIEW_BUCKET_PREFIX: "pr-preview-"
   AWS_REGION: ap-southeast-2
-  AWS_DEV_ACCOUNT: ${{ secrets.AWS_DEV_ACCOUNT }}
-  DEV_API_URL: "https://dev.innovatefuture.foundation"
 
 jobs:
   preview:
@@ -37,19 +32,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Checkout Common Action
-        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          repository: Innovate-Future-Foundation/common-action
-          path: common-action
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-      - name: Setup Frontend Environment
-        uses: ./common-action/setup-frontend-aws
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          node_version: ${{ env.NODE_VERSION }}
-          aws_region: "ap-southeast-2"
-          role_arn: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-if-Frontend"
-          api_url: "https://dev.innovatefuture.foundation"
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-if-Frontend"
 
       - name: Install Dependencies
         run: npm ci
@@ -66,8 +59,8 @@ jobs:
           # 创建 S3 桶
           aws s3api create-bucket \
             --bucket ${BUCKET_NAME} \
-            --region ap-southeast-2 \
-            --create-bucket-configuration LocationConstraint=ap-southeast-2
+            --region ${{ env.AWS_REGION }} \
+            --create-bucket-configuration LocationConstraint=${{ env.AWS_REGION }}
           
           # 配置桶策略
           aws s3api put-bucket-policy \
@@ -94,7 +87,7 @@ jobs:
             --cache-control "max-age=3600,public"
           
           # 设置预览 URL
-          PREVIEW_URL="http://${BUCKET_NAME}.s3-website.ap-southeast-2.amazonaws.com"
+          PREVIEW_URL="http://${BUCKET_NAME}.s3-website.${{ env.AWS_REGION }}.amazonaws.com"
           echo "preview_url=${PREVIEW_URL}" >> $GITHUB_OUTPUT
 
       - name: Comment PR
@@ -138,8 +131,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-if-Frontend"
 
       - name: Cleanup Preview Environment
         run: |
