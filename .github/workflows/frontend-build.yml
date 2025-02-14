@@ -19,37 +19,19 @@ jobs:
     environment:
       name: development
     env:
-      AWS_DEV_ACCOUNT: ${{ secrets.AWS_DEV_ACCOUNT }}
       node_version: "22.1.0"
       
     runs-on: ubuntu-latest
     
     steps:
-      - id: checkout_repository
-        name: Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - id: checkout_common_action
-        name: Checkout Common Action
-        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          repository: Innovate-Future-Foundation/common-action
-          path: common-action
-          ref: main
-          
-      - name: Debug Common Action
-        run: |
-          echo "Listing common-action directory:"
-          ls -la common-action/
-          
-      - id: setup_frontend
-        name: Setup Frontend Environment
-        uses: ./common-action/setup-frontend-aws
-        with:
-          node_version: ${{ env.node_version }}
-          aws_region: "ap-southeast-2"
-          role_arn: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-if-Frontend"
-          api_url: "https://dev.innovatefuture.foundation"
+          node-version: ${{ env.node_version }}
+          cache: 'npm'
 
       - name: Install Dependencies
         run: npm ci
