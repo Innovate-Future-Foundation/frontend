@@ -40,6 +40,10 @@ const router: AppRoute[] = [
       {
         path: "organisation-register",
         element: <OrganisationRegisterPage />
+      },
+      {
+        path: "forgot-password",
+        element: <AuthenticationPage />
       }
     ]
   },

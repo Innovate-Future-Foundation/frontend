@@ -24,9 +24,10 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 // add props interface
 interface LoginFormProps {
   onRegisterClick: () => void;
+  onForgotPasswordClick: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onForgotPasswordClick }) => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     mode: "onBlur",
@@ -54,9 +55,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
           <FormFieldItem type="password" fieldControl={form.control} name="password" label="Password" placeholder="Enter your password" />
 
           <div className="text-right">
-            <a href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">
+            <button type="button" onClick={onForgotPasswordClick} className="text-sm text-blue-600 hover:text-blue-700">
               Forgot Password?
-            </a>
+            </button>
           </div>
         </div>
 
