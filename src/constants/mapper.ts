@@ -6,6 +6,7 @@ export const getFiltersItems: Record<string, string[] | Record<RoleType, string[
   subscriptionCode: ["Premium", "Free", "Basic"],
   isActive: ["Active", "Suspended"],
   isConfirmed: ["Accepted", "Pending"],
+  statusCode: ["Draft", "Published", "Active", "Updated", "Completed", "Canceled"],
   roleCode: {
     PlatformAdmin: CONTACT_ACCESS["PlatformAdmin"],
     OrgAdmin: CONTACT_ACCESS["OrgAdmin"],
@@ -22,7 +23,8 @@ export const getfilterTitle: Record<string, string> = {
   isConfirmed: "Invitation Status",
   orgStatusCode: "Status",
   subscriptionCode: "Subscription",
-  roleCode: "Role"
+  roleCode: "Role",
+  statusCode: "Status"
 };
 
 export const getColorStyleByRole: Record<RoleType, string> = {
