@@ -1,17 +1,67 @@
-import { Backpack } from "lucide-react";
-import ProfilePage from "../Profile";
+import { UserRoundPen } from "lucide-react";
+import { useMemo } from "react";
+import ContentLayout from "@/layouts/ContentLayout";
+import DataTable from "@/components/DataTable";
+import { Profile, ProfilePaginationFilter, ProfilePaginationOrderByType, TableBaseType } from "@/types";
 import { profileColumns } from "../Profile/profileColumns";
+import { useStudent } from "@/hooks/profiles/useStudent";
+import { usePermissions } from "@/hooks/usePermissions";
+import { useTableFilters } from "@/hooks/useTableFilters";
 
 const StudentPage = () => {
+  const { needViewOrganisationOfUser } = usePermissions();
+  const {
+    searchKey,
+    sorting,
+    setSorting,
+    columnFilters,
+    setColumnFilters,
+    pagination,
+    setPagination,
+    globalFilter,
+    setGlobalFilter,
+    offset,
+    filters,
+    sortings
+  } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
+
+  const { studentsResponse, isLoadingStudents } = useStudent({
+    offset,
+    limit: pagination.pageSize,
+    filters,
+    sortings,
+    searchKey
+  });
+
+  const tableData: TableBaseType<Profile>[] = useMemo(() => {
+    return Array.isArray(studentsResponse?.data) ? studentsResponse?.data : [];
+  }, [studentsResponse]);
+
+  const handleSubmit = async () => {
+    await new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+  };
+
   return (
-    <ProfilePage
-      icon={Backpack}
-      title="Student List"
-      inviteLabel="Invite Student"
-      columns={profileColumns({ profilePath: "students", hideRole: true, hideOrganisation: true })}
-      searchPlaceholder="Search by name, email, or organization"
-      onInviteClick={() => console.log("Invite Student clicked")}
-    />
+    <ContentLayout icon={UserRoundPen} title={"Student list"} onInviteClick={handleSubmit} inviteLabel={"invite student"} roleInvited={"Student"}>
+      <DataTable
+        totalItems={studentsResponse?.meta?.totalItems}
+        limit={pagination.pageSize}
+        columns={profileColumns({ profilePath: "students", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        data={tableData}
+        isLoading={isLoadingStudents}
+        searchPlaceholder="search by name, email or phone"
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+        sorting={sorting}
+        setSorting={setSorting}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
+    </ContentLayout>
   );
 };
 

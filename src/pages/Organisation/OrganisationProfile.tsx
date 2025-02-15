@@ -7,28 +7,15 @@ import { Form } from "@/components/ui/form";
 import Avatar from "@/components/Avatar";
 import FormWrapper from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
-
-const orgProfileDetail = {
-  orgName: "JR Academy",
-  email: "admin@jracademy.com.au",
-  logoUrl: "https://github.com/shadcn.png",
-  websiteUrl: "https://jiangren.com.au/",
-
-  address: {
-    street: "123 Main Street",
-    suburb: "Sydney",
-    state: "NSW",
-    postcode: "2000",
-    country: "Australia"
-  },
-
-  subscription: "free",
-  status: "pending"
-};
+import { Organisation, SubscriptionCode } from "@/types";
+import { abbreviateName } from "@/utils/formatters";
+import { useUpdateOrganisation } from "@/hooks/organisations/useUpdateOrganisation";
+import { useState } from "react";
+import { getImageBySubscription } from "@/constants/mapper";
 
 const companyInfoFormSchema = z.object({
   logoUrl: z.string().optional(),
-  name: z
+  orgName: z
     .string()
     .min(2, {
       message: "Company name must be at least 2 characters."
@@ -92,15 +79,21 @@ const addressInfoFormSchema = z.object({
     .optional()
 });
 
-const OrganisationProfile = () => {
+interface OrganisationProfileProps {
+  disabled?: boolean;
+  orgProfileDetail: Organisation;
+}
+type FormName = "company" | "address" | null;
+const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = false, orgProfileDetail }) => {
+  const [handleFormName, setHandleFormName] = useState<FormName>(null);
   const companyInfoForm = useForm<z.infer<typeof companyInfoFormSchema>>({
     resolver: zodResolver(companyInfoFormSchema),
     mode: "onChange",
     defaultValues: {
-      logoUrl: orgProfileDetail.logoUrl,
-      name: orgProfileDetail.orgName,
-      email: orgProfileDetail.email,
-      websiteUrl: orgProfileDetail.websiteUrl
+      logoUrl: orgProfileDetail.logoUrl ?? "",
+      orgName: orgProfileDetail.orgName ?? "",
+      email: orgProfileDetail.email ?? "",
+      websiteUrl: orgProfileDetail.websiteUrl ?? ""
     }
   });
 
@@ -108,74 +101,139 @@ const OrganisationProfile = () => {
     resolver: zodResolver(addressInfoFormSchema),
     mode: "onChange",
     defaultValues: {
-      street: orgProfileDetail.address?.street,
-      suburb: orgProfileDetail.address?.suburb,
-      state: orgProfileDetail.address?.state,
-      postcode: orgProfileDetail.address?.postcode,
-      country: orgProfileDetail.address?.country
+      street: orgProfileDetail.address?.street ?? "",
+      suburb: orgProfileDetail.address?.suburb ?? "",
+      state: orgProfileDetail.address?.state ?? "",
+      postcode: orgProfileDetail.address?.postcode ?? "",
+      country: orgProfileDetail.address?.country ?? ""
     }
   });
 
   const avatarAlt = "@InnovateFoundation";
 
+  const handleSuccess = () => {
+    if (companyInfoForm.formState.isDirty) {
+      companyInfoForm.reset(companyInfoForm.getValues());
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+    if (addressInfoForm.formState.isDirty) {
+      addressInfoForm.reset(addressInfoForm.getValues());
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+  };
+
+  const handleError = () => {
+    if (companyInfoForm.formState.isDirty) {
+      companyInfoForm.reset();
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+    if (addressInfoForm.formState.isDirty) {
+      addressInfoForm.reset();
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+  };
+
+  const mutation = useUpdateOrganisation({ handleSuccess, handleError });
+
   const handleCompanyInfoSubmit = (data: z.infer<typeof companyInfoFormSchema>) => {
-    console.log("Company Info Submitted: ", data);
-    // TODO: Perform actions such as sending the data to the server
+    setHandleFormName("company");
+    mutation.mutate({ id: orgProfileDetail.id!, bodyData: { ...data } });
   };
 
   const handleAddressInfoSubmit = (data: z.infer<typeof addressInfoFormSchema>) => {
-    console.log("Address Info Submitted: ", data);
-    // TODO: Perform actions such as sending the data to the server
+    setHandleFormName("address");
+    mutation.mutate({
+      id: orgProfileDetail.id!,
+      bodyData: {
+        address: {
+          street: data.street ?? "",
+          suburb: data.suburb ?? "",
+          state: data.state ?? "",
+          postcode: data.postcode ?? "",
+          country: data.country ?? ""
+        }
+      }
+    });
   };
 
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className="h-40 bg-accent relative">
-        <div className="absolute top-10 left-8 flex gap-3 items-end">
+      <div className="h-32 bg-accent mt-4 rounded-md flex items-center pl-4">
+        <div className="top-10 left-8 flex gap-3 items-end">
           <Avatar
             avatarLink={companyInfoForm.watch("logoUrl")!}
             size={24}
             avatarAlt={avatarAlt}
-            avatarPlaceholder={companyInfoForm.watch("name")}
+            avatarPlaceholder={abbreviateName(companyInfoForm.watch("orgName"))}
             outline={true}
+            clickable={true}
           />
           <div className="flex flex-col">
-            <p className="text-lg leading-none font-bold">{companyInfoForm.watch("name")}</p>
+            <p className="text-lg leading-none font-bold capitalize">{companyInfoForm.watch("orgName")}</p>
             <p className="text-xs">{companyInfoForm.watch("websiteUrl")}</p>
             <div className="flex gap-2 mt-2">
-              <Badge variant={"secondary"} className="p-0 px-2 rounded-full font-light text-xs text-red-400 bg-red-100">
-                {orgProfileDetail.status}
+              <Badge variant="secondary" className="text-muted-foreground bg-muted px-1">
+                <div className="capitalize mr-1">{orgProfileDetail.subscriptionCode}</div>
+                <Avatar
+                  avatarLink={getImageBySubscription[orgProfileDetail.subscriptionCode as SubscriptionCode]}
+                  avatarPlaceholder={abbreviateName(orgProfileDetail.subscriptionCode ?? "")}
+                  size={4}
+                />
               </Badge>
-              <Badge variant={"outline"} className="p-0 px-2 rounded-full font-light text-xs text-red-400  border-red-200">
-                {orgProfileDetail.subscription}
+              <Badge variant={"secondary"} className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green">
+                {orgProfileDetail.orgStatusCode}
+              </Badge>
+              <Badge variant={"outline"} className="lowercase p-0 px-2 rounded-full font-medium text-xs">
+                {orgProfileDetail.orgName}
               </Badge>
             </div>
           </div>
         </div>
       </div>
       <div className="h-4"></div>
-      <div className="flex flex-col gap-4">
-        <FormWrapper formTitle={"Company Information"} onSave={companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <FormWrapper
+          disabled={!companyInfoForm.formState.isDirty}
+          isPending={handleFormName === "company" && mutation.isPending}
+          isSuccess={handleFormName === "company" && !companyInfoForm.formState.isDirty && mutation.isSuccess}
+          isError={handleFormName === "company" && !companyInfoForm.formState.isDirty && mutation.isError}
+          formTitle={"Company Information"}
+          onSave={disabled ? undefined : companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}
+        >
           <Form {...companyInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={companyInfoForm.control} name="name" label="Name" placeholder="Company Name" />
-              <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" />
+              <FormFieldItem fieldControl={companyInfoForm.control} name="orgName" label="Company Name" placeholder="Company Name" disabled={disabled} />
+              <FormFieldItem fieldControl={companyInfoForm.control} name="email" label="Email" placeholder="Email" disabled={disabled} />
             </div>
-            <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" />
+            <FormFieldItem fieldControl={companyInfoForm.control} name="websiteUrl" label="Website Url" placeholder="Website Url" disabled={disabled} />
           </Form>
         </FormWrapper>
-
-        <FormWrapper formTitle={"Address"} onSave={addressInfoForm.handleSubmit(handleAddressInfoSubmit)}>
+        <FormWrapper
+          disabled={!addressInfoForm.formState.isDirty}
+          isPending={handleFormName === "address" && mutation.isPending}
+          isSuccess={handleFormName === "address" && !addressInfoForm.formState.isDirty && mutation.isSuccess}
+          isError={handleFormName === "address" && !addressInfoForm.formState.isDirty && mutation.isError}
+          formTitle={"Address"}
+          onSave={disabled ? undefined : addressInfoForm.handleSubmit(handleAddressInfoSubmit)}
+        >
           <Form {...addressInfoForm}>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="state" label="State" placeholder="New South Wales" />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="country" label="Country" placeholder="AU" disabled={disabled} />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="state" label="State" placeholder="New South Wales" disabled={disabled} />
             </div>
             <div className="flex gap-4 w-full">
-              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" disabled={disabled} />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" disabled={disabled} />
             </div>
-            <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" />
+            <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" disabled={disabled} />
           </Form>
         </FormWrapper>
       </div>

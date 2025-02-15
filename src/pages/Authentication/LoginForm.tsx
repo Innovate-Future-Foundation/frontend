@@ -21,7 +21,12 @@ const loginFormSchema = z.object({
 // inferring the type from the schema
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
-const LoginForm = () => {
+// add props interface
+interface LoginFormProps {
+  onRegisterClick: () => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick }) => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     mode: "onBlur",
@@ -37,7 +42,7 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] w-full space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] w-full space-y-6 motion-preset-fade motion-duration-2000 motion-delay-500">
         <div className="space-y-4">
           <h1 className="text-4xl font-semibold text-center">Login Now</h1>
           <p className="text-sm text-muted-foreground text-center">Please enter the details below to continue.</p>
@@ -55,15 +60,14 @@ const LoginForm = () => {
           </div>
         </div>
 
-        <Button type="submit" className="w-full bg-[#046FFB] hover:bg-blue-700">
+        <Button type="submit" className="w-full">
           LOGIN
         </Button>
-
         <div className="text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <a href="/register" className="text-blue-600 hover:text-blue-700">
+          <button type="button" onClick={onRegisterClick} className="text-secondary-foreground hover:text-secondary-foreground/80">
             Register
-          </a>
+          </button>
         </div>
       </form>
     </Form>

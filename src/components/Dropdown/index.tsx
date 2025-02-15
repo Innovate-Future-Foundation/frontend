@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import clsx from "clsx";
 
 interface DropdownMenuItemType<T> {
   label: string;
@@ -20,7 +21,7 @@ const Dropdown = <T,>({ item, menuItems, children }: TableActionsDropdownProps<T
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {menuItems.map((menuItem, index) => (
-          <DropdownMenuItem key={index} onClick={() => menuItem.onClick(item)} className={menuItem.className}>
+          <DropdownMenuItem key={index} onClick={() => menuItem.onClick(item)} className={clsx(`text-sm text-primary-foreground30 ${menuItem.className}`)}>
             {menuItem.label}
           </DropdownMenuItem>
         ))}
