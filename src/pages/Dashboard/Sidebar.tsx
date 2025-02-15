@@ -83,12 +83,12 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
       )}
       <SidebarContent>
         {sidebarItemGroups.map((sidebarItemGroup, index) => (
-          <SidebarGroup key={`${sidebarItemGroup.sidebarLabel}${index}`}>
+          <SidebarGroup className="p-0" key={`${sidebarItemGroup.sidebarLabel}${index}`}>
             {sidebarItemGroup.sidebarLabel && (
-              <SidebarGroupLabel className="text-primary-foreground60 dark:text-foreground font-medium">{sidebarItemGroup.sidebarLabel}</SidebarGroupLabel>
+              <SidebarGroupLabel className="text-primary-foreground60 font-medium">{sidebarItemGroup.sidebarLabel}</SidebarGroupLabel>
             )}
             <SidebarGroupContent>
-              <SidebarMenu className="dark:text-foreground text-primary-foreground30">
+              <SidebarMenu className="text-primary-foreground30 ">
                 {sidebarItemGroup.items.map((item, index) =>
                   item.children ? (
                     <Collapsible
