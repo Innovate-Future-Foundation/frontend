@@ -21,8 +21,8 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			colors: {
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
+				background: 'hsl(var(--background)/ <alpha-value>)',
+				foreground: 'hsl(var(--foreground)/ <alpha-value>)',
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
@@ -32,47 +32,47 @@ export default {
 					foreground: 'hsl(var(--popover-foreground))'
 				},
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					light: 'hsl(var(--primary-light))',
-					dark: 'hsl(var(--primary-dark))',
-					foreground: 'hsl(var(--primary-foreground))',
-					foreground80: 'hsl(var(--primary-foreground-80))',
-					foreground60: 'hsl(var(--primary-foreground-60))',
-					foreground50: 'hsl(var(--primary-foreground-50))',
-					foreground30: 'hsl(var(--primary-foreground-30))'
+					DEFAULT: 'hsl(var(--primary)/ <alpha-value>)',
+					light: 'hsl(var(--primary-light)/ <alpha-value>)',
+					dark: 'hsl(var(--primary-dark)/ <alpha-value>)',
+					foreground: 'hsl(var(--primary-foreground)/ <alpha-value>)',
+					foreground80: 'hsl(var(--primary-foreground-80)/ <alpha-value>)',
+					foreground60: 'hsl(var(--primary-foreground-60)/ <alpha-value>)',
+					foreground50: 'hsl(var(--primary-foreground-50)/ <alpha-value>)',
+					foreground30: 'hsl(var(--primary-foreground-30)/ <alpha-value>)'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					light: 'hsl(var(--secondary-light))',
-					foreground: 'hsl(var(--secondary-foreground))',
-					purple: 'hsl(var(--secondary-purple))',
-					purpleLight: 'hsl(var(--secondary-purple-light))',
-					foregroundPurple: 'hsl(var(--secondary-foreground-purple))',
-					green: 'hsl(var(--secondary-green))',
-					greenLight: 'hsl(var(--secondary-green-light))',
-					foregroundGreen: 'hsl(var(--secondary-foreground-green))',
-					red: 'hsl(var(--secondary-red))',
-					redLight: 'hsl(var(--secondary-red-light))',
-					foregroundRed: 'hsl(var(--secondary-foreground-red))',
-					yellow: 'hsl(var(--secondary-yellow))',
-					yellowLight: 'hsl(var(--secondary-yellow-light))',
-					foregroundYellow: 'hsl(var(--secondary-foreground-yellow))',
+					DEFAULT: 'hsl(var(--secondary)/ <alpha-value>)',
+					light: 'hsl(var(--secondary-light)/ <alpha-value>)',
+					foreground: 'hsl(var(--secondary-foreground)/ <alpha-value>)',
+					purple: 'hsl(var(--secondary-purple)/ <alpha-value>)',
+					purpleLight: 'hsl(var(--secondary-purple-light)/ <alpha-value>)',
+					foregroundPurple: 'hsl(var(--secondary-foreground-purple)/ <alpha-value>)',
+					green: 'hsl(var(--secondary-green)/ <alpha-value>)',
+					greenLight: 'hsl(var(--secondary-green-light)/ <alpha-value>)',
+					foregroundGreen: 'hsl(var(--secondary-foreground-green)/ <alpha-value>)',
+					red: 'hsl(var(--secondary-red)/ <alpha-value>)',
+					redLight: 'hsl(var(--secondary-red-light)/ <alpha-value>)',
+					foregroundRed: 'hsl(var(--secondary-foreground-red)/ <alpha-value>)',
+					yellow: 'hsl(var(--secondary-yellow)/ <alpha-value>)',
+					yellowLight: 'hsl(var(--secondary-yellow-light)/ <alpha-value>)',
+					foregroundYellow: 'hsl(var(--secondary-foreground-yellow)/ <alpha-value>)',
 				},
 				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
+					DEFAULT: 'hsl(var(--muted)/ <alpha-value>)',
+					foreground: 'hsl(var(--muted-foreground)/ <alpha-value>)'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					DEFAULT: 'hsl(var(--accent)/ <alpha-value>)',
+					foreground: 'hsl(var(--accent-foreground)/ <alpha-value>)'
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
+					DEFAULT: 'hsl(var(--destructive)/ <alpha-value>)',
+					foreground: 'hsl(var(--destructive-foreground)/ <alpha-value>)'
 				},
-				border: 'hsl(var(--border))',
-				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',
+				border: 'hsl(var(--border)/ <alpha-value>)',
+				input: 'hsl(var(--input)/ <alpha-value>)',
+				ring: 'hsl(var(--ring)/ <alpha-value>)',
 				chart: {
 					'1': 'hsl(var(--chart-1))',
 					'2': 'hsl(var(--chart-2))',

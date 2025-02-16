@@ -1,4 +1,4 @@
-import { TicketsPlane, Building2, Users, Map, BookUser, Gauge, CalendarCheck2, LayoutGrid, Contact } from "lucide-react";
+import { Building2, Users, Map, BookUser, CalendarCheck2, LayoutGrid, Contact } from "lucide-react";
 import { RoleType } from "@/types";
 import { SidebarItem } from "./Sidebar";
 
@@ -103,17 +103,13 @@ const organisationAdminMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      sidebarLabel: "MAIN MENU",
       subMenu: [
         {
           title: "dashboard",
           url: "/dashboard",
           icon: LayoutGrid
-        }
-      ]
-    },
-    {
-      sidebarLabel: "TOURS",
-      subMenu: [
+        },
         {
           title: "tours",
           url: "/dashboard/tours",
@@ -174,17 +170,13 @@ const organisationManagerMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      sidebarLabel: "MAIN MENU",
       subMenu: [
         {
           title: "dashboard",
           url: "/dashboard",
           icon: LayoutGrid
-        }
-      ]
-    },
-    {
-      sidebarLabel: "TOURS",
-      subMenu: [
+        },
         {
           title: "tours",
           url: "/dashboard/tours",
@@ -239,19 +231,15 @@ const organisationTeacherMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      sidebarLabel: "MAIN MENU",
       subMenu: [
         {
           title: "dashboard",
           url: "/dashboard",
           icon: LayoutGrid
-        }
-      ]
-    },
-    {
-      sidebarLabel: "TOURS",
-      subMenu: [
+        },
         {
-          title: "my tours",
+          title: "tours",
           url: "/dashboard/tours",
           icon: Map
         }
@@ -293,21 +281,17 @@ const parentMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      sidebarLabel: "MAIN MENU",
       subMenu: [
         {
           title: "dashboard",
           url: "/dashboard",
-          icon: Gauge
-        }
-      ]
-    },
-    {
-      sidebarLabel: "TOURS",
-      subMenu: [
+          icon: LayoutGrid
+        },
         {
-          title: "my tours",
+          title: "tours",
           url: "/dashboard/tours",
-          icon: TicketsPlane
+          icon: Map
         }
       ]
     },
@@ -330,21 +314,17 @@ const studentMenu: SidebarMenu = {
   },
   sidebarMenuGroups: [
     {
+      sidebarLabel: "MAIN MENU",
       subMenu: [
         {
           title: "dashboard",
           url: "/dashboard",
-          icon: Gauge
-        }
-      ]
-    },
-    {
-      sidebarLabel: "TOURS",
-      subMenu: [
+          icon: LayoutGrid
+        },
         {
-          title: "my tours",
+          title: "tours",
           url: "/dashboard/tours",
-          icon: TicketsPlane
+          icon: Map
         }
       ]
     },

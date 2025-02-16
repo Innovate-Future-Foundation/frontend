@@ -18,6 +18,35 @@ export const formatDateToDDMMYYYY = (isoDate: string): string => {
   return `${year}-${month}-${day}`;
 };
 
+export const formatDateToMMDDYY = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  const day = String(date.getDate()).padStart(2, "0"); // Ensure two-digit day
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Ensure two-digit month
+  const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+  return `${month}/${day}/${year}`;
+};
+
+export const formatTimeAgo = (timestamp: string | number | Date): string => {
+  const updatedAt = new Date(timestamp).getTime();
+  const now = Date.now();
+  const diffInSeconds = Math.floor((now - updatedAt) / 1000);
+
+  const secondsInMinute = 60;
+  const secondsInHour = 60 * secondsInMinute;
+  const secondsInDay = 24 * secondsInHour;
+  const secondsInYear = 365 * secondsInDay;
+
+  if (diffInSeconds < secondsInHour) {
+    return `${Math.floor(diffInSeconds / secondsInMinute)} minutes`;
+  } else if (diffInSeconds < secondsInDay) {
+    return `${Math.floor(diffInSeconds / secondsInHour)} hours`;
+  } else if (diffInSeconds < secondsInYear) {
+    return `${Math.floor(diffInSeconds / secondsInDay)} days`;
+  } else {
+    return `${Math.floor(diffInSeconds / secondsInYear)} years`;
+  }
+};
+
 export const convertToQueryParams = (obj: object): URLSearchParams => {
   const params = new URLSearchParams();
 

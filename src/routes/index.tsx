@@ -17,6 +17,7 @@ import DefaultDashboardPage from "@/pages/DefaultDashboard";
 import OrgManagerPage from "@/pages/OrgManager";
 import ContactPage from "@/pages/Contacts";
 import OrganisationRegisterPage from "@/pages/Authentication/OrganisationRegister";
+import TourBuilderPage from "@/pages/TourBuilder";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 export type AppRoute = RouteObject & {
@@ -138,6 +139,15 @@ const router: AppRoute[] = [
         path: "students/:id",
         element: <ProfileDetailPage role="Student" />,
         handle: { breadcrumb: "Student profile" }
+      }
+    ]
+  },
+  {
+    path: "/tourBuilder",
+    children: [
+      {
+        index: true,
+        element: <TourBuilderPage />
       }
     ]
   }
