@@ -53,7 +53,7 @@ const TourBuilderPage = () => {
         </Card>
       </div>
       <div className="flex gap-4 ">
-        <Card className="relative border-none w-64 p-1 text-md text-foreground/80 font-medium h-fit">
+        <Card className="relative flex flex-col gap-1 cursor-pointer border-none w-64 p-1 text-md text-foreground/80 font-medium h-fit">
           <div className="absolute right-4 bg-primary-light top-4 w-[2px] justify-center items-center flex flex-col gap-8">
             {navMenu?.length > 0 &&
               Array.from({ length: navMenu.length }, (_, index) => index).map(index => (
