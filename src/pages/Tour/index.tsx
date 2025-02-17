@@ -5,7 +5,6 @@ import { ProfilePaginationFilter, ProfilePaginationOrderByType, Tour, TableBaseT
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { mapStringToType } from "@/constants/mapper";
 import { toursColumns } from "./toursColumns";
-import { useNavigate } from "react-router-dom";
 
 const tableData: TableBaseType<Tour>[] = [
   {
@@ -395,7 +394,6 @@ const tableData: TableBaseType<Tour>[] = [
 ];
 
 const TourPage = () => {
-  const navigate = useNavigate();
   const {
     // searchKey,
     sorting,
@@ -424,8 +422,9 @@ const TourPage = () => {
   // }, [contactsResponse]);
 
   const handleCreateTour = () => {
-    navigate("/tourBuilder");
+    window.location.href = "/tours/ou762iu3gjhgjasgfcyas71/build";
   };
+
   return (
     <ContentLayout icon={Map} title={"tour list"} onButtonClick={handleCreateTour} buttonLabel={"Create Tour"}>
       <DataTable

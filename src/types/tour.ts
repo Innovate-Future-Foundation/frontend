@@ -1,3 +1,4 @@
+import { DateRange } from "react-day-picker";
 import { OffsetPaginatedRequest } from "./apiReqResponse";
 import { ProfileInfo } from "./profile";
 
@@ -11,6 +12,7 @@ export interface Tour {
   text?: string | null;
   coverImgUrl?: string | null;
   statusCode?: TourStatusCode;
+  dateRange?: DateRange;
   startDate?: string;
   endDate?: string;
   days?: Day[] | null;

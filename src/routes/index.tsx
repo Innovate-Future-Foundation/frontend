@@ -20,6 +20,11 @@ import TourBuilderPage from "@/pages/TourBuilder";
 import ForgotPasswordForm from "@/pages/Authentication/ForgotPasswordForm";
 import LoginForm from "@/pages/Authentication/LoginForm";
 import RegisterForm from "@/pages/Authentication/RegisterForm";
+import TourDetailPage from "@/pages/Tour/TourDetailPage";
+import ContactLeader from "@/pages/TourBuilder/ContactLeader";
+import Schedule from "@/pages/TourBuilder/Schedule";
+import StudentsEnrollment from "@/pages/TourBuilder/StudentsEnrollment";
+import TourDetails from "@/pages/TourBuilder/TourDetails";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 export type AppRoute = RouteObject & {
@@ -154,11 +159,37 @@ const router: AppRoute[] = [
     ]
   },
   {
-    path: "/tourBuilder",
+    path: "tours",
     children: [
       {
-        index: true,
-        element: <TourBuilderPage />
+        path: ":id/build",
+        element: <TourBuilderPage />,
+        children: [
+          {
+            index: true,
+            element: <TourDetails />
+          },
+          {
+            path: "summary",
+            element: <TourDetails />
+          },
+          {
+            path: "leader",
+            element: <ContactLeader />
+          },
+          {
+            path: "schedule",
+            element: <Schedule />
+          },
+          {
+            path: "studentsEnrollment",
+            element: <StudentsEnrollment />
+          }
+        ]
+      },
+      {
+        path: ":id",
+        element: <TourDetailPage />
       }
     ]
   }
