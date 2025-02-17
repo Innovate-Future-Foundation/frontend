@@ -7,23 +7,12 @@ import { AnimatePresence, motion } from "framer-motion";
 const AuthenticationPage = () => {
   const [currentView, setCurrentView] = useState<"login" | "register" | "forgot-password">("login");
 
-  const getBlueBackgroundPosition = () => {
-    switch (currentView) {
-      case "register":
-        return "190%";
-      case "forgot-password":
-        return "190%";
-      default:
-        return "0";
-    }
-  };
-
   return (
     <div className="flex min-h-screen relative overflow-hidden">
       <motion.div
         key="blue-section"
         initial={{ x: "-100%" }}
-        animate={{ x: getBlueBackgroundPosition() }}
+        animate={{ x: currentView === "register" ? "190%" : "0" }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.1] }}
         className="hidden lg:flex fixed w-[35%] h-full flex-col bg-primary p-12 pt-16 text-white z-10"
       >
@@ -107,8 +96,9 @@ const AuthenticationPage = () => {
                 key="login"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0, x: 200 }}
-                className="h-full flex items-center justify-center lg:ml-[35%] px-6"
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="h-full flex items-start pt-[25vh] justify-center lg:ml-[35%] px-6"
               >
                 <div className="w-full max-w-[460px]">
                   <LoginForm onRegisterClick={() => setCurrentView("register")} onForgotPasswordClick={() => setCurrentView("forgot-password")} />
@@ -135,8 +125,9 @@ const AuthenticationPage = () => {
                 key="forgot-password"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0, x: -200 }}
-                className="h-full flex items-center justify-center lg:mr-[35%] px-6"
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="h-full flex items-start pt-[25vh] justify-center lg:ml-[35%] px-6"
               >
                 <div className="w-full max-w-[460px]">
                   <ForgotPasswordForm onBackToLogin={() => setCurrentView("login")} />
