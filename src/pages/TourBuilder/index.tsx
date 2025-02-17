@@ -37,14 +37,14 @@ const TourBuilderPage = () => {
   console.log("id", id);
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [isDirty, setIsDirty] = useState<boolean[]>([true, false, false, false]);
+  const [isDirty, setIsDirty] = useState(() => new Array(navMenu?.length || 0).fill(false));
 
   const handleBack = () => {
     navigate("/dashboard/tours");
   };
   return (
-    <div className="bg-muted h-screen p-6 flex flex-col gap-4">
-      <div className="flex items-center relative justify-center">
+    <div className="bg-muted h-screen p-6 flex flex-col gap-4 overflow-y-hidden">
+      <div className="flex h-12 items-center relative justify-center">
         <Card className="absolute left-0 z-10 w-12 h-12 border-none flex items-center justify-center">
           <StepBack className="text-muted-foreground/80" size={20} onClick={handleBack} />
         </Card>
@@ -52,15 +52,16 @@ const TourBuilderPage = () => {
           <ProgresBar />
         </Card>
       </div>
-      <div className="flex gap-4">
-        <Card className="relative flex flex-col gap-1 border-none w-64 p-1 text-md text-foreground/80 font-medium">
+      <div className="flex gap-4 ">
+        <Card className="relative border-none w-64 p-1 text-md text-foreground/80 font-medium h-fit">
           <div className="absolute right-4 bg-primary-light top-4 w-[2px] justify-center items-center flex flex-col gap-8">
-            {Array.from({ length: navMenu.length }, (_, index) => index).map(index => (
-              <div
-                key={index}
-                className={`w-2 h-2 rounded-full ${currentStep === index ? "bg-primary-foreground30" : isDirty[index] ? "bg-primary" : "bg-muted"}`}
-              ></div>
-            ))}
+            {navMenu?.length > 0 &&
+              Array.from({ length: navMenu.length }, (_, index) => index).map(index => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full ${currentStep === index ? "bg-primary-foreground30" : isDirty[index] ? "bg-primary" : "bg-muted"}`}
+                ></div>
+              ))}
           </div>
           {navMenu.map((menuItem, index) => (
             <div
@@ -81,10 +82,10 @@ const TourBuilderPage = () => {
             </div>
           ))}
         </Card>
-        <Card className="flex-1 border-none min-w-[600px]">
+        <Card className="flex-1 border-none min-w-[600px] h-[calc(100vh-7rem)]">
           <Outlet />
         </Card>
-        <Card className="ml-8 w-[400px] border-none"></Card>
+        <Card className="ml-8 w-[400px] border-none h-[calc(100vh-7rem)]"></Card>
       </div>
     </div>
   );

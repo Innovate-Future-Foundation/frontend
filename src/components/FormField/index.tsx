@@ -45,7 +45,10 @@ export const FormFieldItem = <T extends FieldValues>({
                 <FormControl>
                   <Button
                     variant={"outline"}
-                    className={cn("hover:bg-background w-full h-10 shadow-none pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                    className={cn(
+                      "hover:bg-transparent w-full h-10 shadow-none pl-3 text-left font-normal bg-transparent",
+                      !field.value && "text-muted-foreground"
+                    )}
                   >
                     {formatDateToMMDDYY(field.value.from)} - {formatDateToMMDDYY(field.value.to)}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />

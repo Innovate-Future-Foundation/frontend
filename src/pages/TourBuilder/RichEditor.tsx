@@ -61,8 +61,8 @@ const RichEditor = () => {
 
   return (
     <div className="relative control-group rounded-md">
-      <div className="absolute h-10 z-10 rounded-t-md top-[1px] left-[1px] right-[1px]">
-        <div className="absolute h-[36px] bg-background z-10 rounded-t-md w-full "></div>
+      <div className="absolute h-10 z-10 rounded-t-sm top-[1px] left-[1px] right-[1px]">
+        <div className="absolute h-[36px] bg-card z-10 rounded-t-sm w-full "></div>
       </div>
       <div className="absolute w-full button-group flex gap-4 p-2 border-b z-20">
         <button
@@ -133,9 +133,9 @@ const RichEditor = () => {
           <AlignRight size={20} />
         </button>
       </div>
-      <div className="absolute h-16 z-20 bottom-[1px] left-[1px] rounded-b-md right-[1px]">
-        <div className="absolute bottom-[16px] w-full rounded-b-md h-[40px] bg-gradient-to-t from-background to-transparent z-20"></div>
-        <div className="absolute bottom-0 h-[16px] bg-background z-20 rounded-b-md w-full"></div>
+      <div className="absolute h-16 z-20 bottom-[1px] left-[1px] rounded-b-sm right-[1px]">
+        <div className="absolute bottom-[16px] w-full h-[40px] bg-gradient-to-t from-card to-transparent z-20"></div>
+        <div className="absolute bottom-0 h-[16px] bg-card z-20 rounded-b-sm w-full"></div>
       </div>
       <EditorContent editor={editor} />
     </div>
