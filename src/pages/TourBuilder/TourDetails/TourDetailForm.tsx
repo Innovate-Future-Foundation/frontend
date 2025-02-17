@@ -9,7 +9,7 @@ import ImageUploader from "../ImgUploader";
 import { DateRange, SelectRangeEventHandler } from "react-day-picker";
 import { useState } from "react";
 import { useCurrentEditor } from "@tiptap/react";
-import RichEditor from "./RichEditor";
+import RichEditor from "../RichEditor";
 
 const tourInfoFormSchema = z.object({
   coverImgUrl: z
