@@ -75,7 +75,7 @@ jobs:
           while [ $retries -gt 0 ]; do
             response_code=$(curl -s -o /dev/null -w "%{http_code}" ${{ env.DEV_WEBSITE_URL }})
             if [[ $response_code =~ ^2 ]]; then
-              echo "✅ Deployment verified!"
+              echo "✅ Deployment verified!!"
               exit 0
             fi
             retries=$((retries-1))
