@@ -1,5 +1,5 @@
-import { TBoard, TCard, TColumn } from "./two-columns/shared/data";
-import { Board } from "./two-columns/shared/board";
+import { TBoard, TCard, TColumn } from "./TwoColumns/shared/data";
+import { Board } from "./TwoColumns/shared/board";
 // import { Tour } from "@/types";
 // import TourDetailForm from "./TourDetailForm";
 // const tourDetail: Tour = {
@@ -72,8 +72,8 @@ function getInitialData(): TBoard {
   })();
 
   const columns: TColumn[] = [
-    { id: "column:a", title: "Column A", cards: getCards({ amount: 30 }) },
-    { id: "column:b", title: "Column B", cards: getCards({ amount: 5 }) }
+    { id: "column:a", title: "Column A", type: "destination", cards: getCards({ amount: 30 }) },
+    { id: "column:b", title: "Column B", type: "source", cards: getCards({ amount: 5 }) }
   ];
 
   return {

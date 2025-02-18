@@ -1,5 +1,3 @@
-"use client";
-
 import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 import { reorderWithEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/util/reorder-with-edge";
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
@@ -7,13 +5,13 @@ import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/ad
 import { reorder } from "@atlaskit/pragmatic-drag-and-drop/reorder";
 import { useEffect, useRef, useState } from "react";
 import invariant from "tiny-invariant";
-import { CardList } from "./column";
-import { isCardData, isCardDropTargetData, isColumnData, isDraggingACard, isDraggingAColumn, TBoard, TColumn } from "./data";
+import { isCardData, isCardDropTargetData, isColumnData, isDraggingACard, isDraggingAColumn, TBoard, TCard, TColumn } from "./data";
 import { bindAll } from "bind-event-listener";
 import { blockBoardPanningAttr } from "./data-attributes";
 import { CleanupFn } from "@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types";
 import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 import { Card } from "@/components/ui/card";
+import { CardList } from "./card";
 
 export function Board({ initial }: { initial: TBoard }) {
   const [data, setData] = useState(initial);
@@ -49,17 +47,49 @@ export function Board({ initial }: { initial: TBoard }) {
           if (isCardDropTargetData(dropTargetData)) {
             const destinationColumnIndex = data.columns.findIndex(column => column.id === dropTargetData.columnId);
             const destination = data.columns[destinationColumnIndex];
+
+            if (!destination) {
+              return;
+            }
+
+            // Prevent reordering within the source column
+            if (home.type === "source" && destination.type === "source") {
+              return; // Stop any movement within the source column
+            }
+
+            // Copy from source column to destination column
+            if (home.type === "source" && destination.type === "destination") {
+              const indexOfTarget = destination.cards.findIndex(card => card.id === dropTargetData.card.id);
+
+              const closestEdge = extractClosestEdge(dropTargetData);
+              const finalIndex = closestEdge === "bottom" ? indexOfTarget + 1 : indexOfTarget;
+
+              const newCard: TCard = {
+                id: `card:${Date.now()}`, // Unique ID for copied card
+                description: dragging.card.description
+              };
+
+              const destinationCards = Array.from(destination.cards);
+              destinationCards.splice(finalIndex, 0, newCard); // Insert at exact position
+
+              const columns = [...data.columns];
+              columns[destinationColumnIndex] = { ...destination, cards: destinationCards };
+
+              setData({ ...data, columns });
+              return;
+            }
+
+            // Prevent dragging from destination back to source
+            if (home.type === "destination" && destination.type === "source") {
+              return;
+            }
+
             // reordering in home column
-            if (home === destination) {
+            if (home.type === "destination" && destination.type === "destination") {
               const cardFinishIndex = home.cards.findIndex(card => card.id === dropTargetData.card.id);
 
               // could not find cards needed
-              if (cardIndexInHome === -1 || cardFinishIndex === -1) {
-                return;
-              }
-
-              // no change needed
-              if (cardIndexInHome === cardFinishIndex) {
+              if (cardIndexInHome === -1 || cardFinishIndex === -1 || cardIndexInHome === cardFinishIndex) {
                 return;
               }
 
@@ -77,7 +107,7 @@ export function Board({ initial }: { initial: TBoard }) {
                 ...home,
                 cards: reordered
               };
-              const columns = Array.from(data.columns);
+              const columns = [...data.columns];
               columns[homeColumnIndex] = updated;
               setData({ ...data, columns });
               return;
@@ -272,37 +302,23 @@ export function Board({ initial }: { initial: TBoard }) {
   }, []);
 
   return (
-    // <div className={`flex h-full flex-col bg-red-700`}>
-    //   <div
-    //     className={`flex h-full flex-row gap-3 overflow-x-auto p-3 [scrollbar-color:theme(colors.sky.600)_theme(colors.sky.800)] [scrollbar-width:thin]`}
-    //     ref={scrollableRef}
-    //   >
-    //     {/* {data.columns.map(column => (
-    //       <Column key={column.id} column={column} />
-    //     ))} */}
-    //     <div
-    //       className="flex flex-col overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin] w-full"
-    //       ref={scrollableRef}
-    //     >
-    //       <CardList column={data.columns[0]} />
-    //     </div>
-    //     {/* <Column key={data.columns[0].id} column={data.columns[0]} /> */}
-    //   </div>
-    // </div>
     <>
       <TourBuilderLayout title={"Schedule"} subTitle={"Please add days and activities to the tour."}>
         <div
           className="flex flex-col overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin] w-full"
           ref={scrollableRef}
         >
+          {/* destination card list */}
           <CardList column={data.columns[0]} />
         </div>
       </TourBuilderLayout>
+
       <Card className="ml-8 w-[400px] border-none h-[calc(100vh-7rem)]">
         <div
           className="flex flex-col overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin] w-full"
           ref={scrollableRef}
         >
+          {/* source card list */}
           <CardList column={data.columns[1]} />
         </div>
       </Card>

@@ -6,8 +6,11 @@ export type TCard = {
 export type TColumn = {
   id: string;
   title: string;
+  type: TColumnType;
   cards: TCard[];
 };
+
+export type TColumnType = "source" | "destination";
 
 export type TBoard = {
   columns: TColumn[];
