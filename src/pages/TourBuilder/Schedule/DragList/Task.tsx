@@ -1,4 +1,4 @@
-import { GripVertical } from "lucide-react";
+import { GripVertical, Trash2 } from "lucide-react";
 import { draggable, dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview";
@@ -119,13 +119,18 @@ export function Task({ task }: { task: TTask }) {
           // Adding data-attribute as a way to query for this for our post drop flash
           data-task-id={task.id}
           ref={ref}
-          className={`flex text-sm bg-white flex-row items-center border border-solid rounded p-2 pl-0 hover:bg-slate-100 hover:cursor-grab ${stateStyles[state.type] ?? ""}`}
+          className={`flex text-lg font-semibold bg-transparent flex-row items-center w-full pl-0 hover:cursor-grab ${stateStyles[state.type] ?? ""}`}
         >
-          <div className="w-6 flex justify-center">
-            <GripVertical size={10} />
+          <div className="w-8 flex justify-center text-primary-foreground60">
+            <GripVertical size={20} />
           </div>
-          <span className="truncate flex-grow flex-shrink">{task.content}</span>
-          <Status status={task.status} />
+          <div className="border border-solid rounded-md w-full flex px-2 py-4 items-center hover:bg-secondary">
+            <span className="truncate flex-grow flex-shrink">{task.content}</span>
+            <Status status={task.status} />
+          </div>
+          <div className="w-8 flex justify-center text-primary-foreground60">
+            <Trash2 size={16} />
+          </div>
         </div>
         {state.type === "is-dragging-over" && state.closestEdge ? <DropIndicator edge={state.closestEdge} gap={"8px"} /> : null}
       </div>

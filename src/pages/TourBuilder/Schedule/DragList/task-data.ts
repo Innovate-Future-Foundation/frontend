@@ -14,7 +14,7 @@ export function isTaskData(data: Record<string | symbol, unknown>): data is TTas
 }
 
 const tasks: TTask[] = [
-  { id: "task-0", content: "Organize a team-building event", status: "todo" },
+  { id: "task-0", content: "Day01: Organize a team-building event", status: "todo" },
   { id: "task-1", content: "Create and maintain office inventory", status: "in-progress" },
   { id: "task-2", content: "Update company website content", status: "done" },
   { id: "task-3", content: "Plan and execute marketing campaigns", status: "todo" },

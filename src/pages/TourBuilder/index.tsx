@@ -82,10 +82,7 @@ const TourBuilderPage = () => {
             </div>
           ))}
         </Card>
-        <Card className="flex-1 border-none min-w-[600px] h-[calc(100vh-7rem)]">
-          <Outlet />
-        </Card>
-        <Card className="ml-8 w-[400px] border-none h-[calc(100vh-7rem)]"></Card>
+        <Outlet />
       </div>
     </div>
   );

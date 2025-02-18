@@ -58,7 +58,9 @@ const tourDetail: Tour = {
 const TourDetails = () => {
   return (
     <TourBuilderLayout title={"Tour Details"} subTitle={"Please fill the details about the tour."}>
-      <TourDetailForm tourDetail={tourDetail} />
+      <div className="px-6">
+        <TourDetailForm tourDetail={tourDetail} />
+      </div>
     </TourBuilderLayout>
   );
 };

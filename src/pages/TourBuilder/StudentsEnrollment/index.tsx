@@ -58,7 +58,7 @@ import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 const StudentsEnrollment = () => {
   return (
     <TourBuilderLayout title={"Students Enrollment"} subTitle={"Please enroll students to the tour."}>
-      {/* <TourDetailForm tourDetail={tourDetail} /> */}
+      <div className="px-6">{/* <TourDetailForm tourDetail={tourDetail} /> */}</div>
     </TourBuilderLayout>
   );
 };

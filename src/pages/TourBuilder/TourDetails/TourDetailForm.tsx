@@ -95,7 +95,7 @@ const TourDetailForm: React.FC<TourDetailFormProps> = ({ tourDetail }) => {
 
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className="py-4">
+      <div className="pb-4">
         <ImageUploader />
       </div>
       <div className="h-4"></div>

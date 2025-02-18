@@ -1,6 +1,6 @@
-import TourBuilderLayout from "@/layouts/TourBuilderLayout";
+import { TBoard, TCard, TColumn } from "./two-columns/shared/data";
+import { Board } from "./two-columns/shared/board";
 // import { Tour } from "@/types";
-import { DragList } from "./DragList";
 // import TourDetailForm from "./TourDetailForm";
 // const tourDetail: Tour = {
 //   id: "a3e4b1d6-9c4a-4b73-982b-0fce77e88ac1",
@@ -55,12 +55,34 @@ import { DragList } from "./DragList";
 //   ]
 // };
 
+function getInitialData(): TBoard {
+  // Doing this so we get consistent ids on server and client
+  const getCards = (() => {
+    let count: number = 0;
+
+    return function getCards({ amount }: { amount: number }): TCard[] {
+      return Array.from({ length: amount }, (): TCard => {
+        const id = count++;
+        return {
+          id: `card:${id}`,
+          description: `Card ${id}`
+        };
+      });
+    };
+  })();
+
+  const columns: TColumn[] = [
+    { id: "column:a", title: "Column A", cards: getCards({ amount: 30 }) },
+    { id: "column:b", title: "Column B", cards: getCards({ amount: 5 }) }
+  ];
+
+  return {
+    columns
+  };
+}
+
 const Schedule = () => {
-  return (
-    <TourBuilderLayout title={"Schedule"} subTitle={"Please add days and activities to the tour."}>
-      <DragList />
-    </TourBuilderLayout>
-  );
+  return <Board initial={getInitialData()} />;
 };
 
 export default Schedule;
