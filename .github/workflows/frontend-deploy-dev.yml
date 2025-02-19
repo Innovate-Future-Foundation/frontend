@@ -42,13 +42,17 @@ jobs:
           echo "Repository: ${{ github.repository }}"
           echo "Ref: ${{ github.ref }}"
           echo "Actor: ${{ github.actor }}"
-          echo "Role ARN: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+          echo "Event Name: ${{ github.event_name }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "OIDC Provider: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:oidc-provider/token.actions.githubusercontent.com"
+          echo "Role ARN: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-inff-${{ github.event.repository.name }}"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-inff-${{ github.event.repository.name }}"
           aws-region: ${{ env.AWS_REGION }}
+          audience: "sts.amazonaws.com"
 
       - name: Download Production Assets
         uses: actions/download-artifact@v4
