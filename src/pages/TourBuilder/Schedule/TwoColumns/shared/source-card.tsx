@@ -11,7 +11,7 @@ import { getCardData, getCardDropTargetData, isCardData, isDraggingACard, TCard,
 import { isShallowEqual } from "./is-shallow-equal";
 import { GripVertical, Trash2 } from "lucide-react";
 
-type TCardState =
+type TSourceCardState =
   | {
       type: "idle";
     }
@@ -32,14 +32,14 @@ type TCardState =
       dragging: DOMRect;
     };
 
-const idle: TCardState = { type: "idle" };
+const idle: TSourceCardState = { type: "idle" };
 
-const innerStyles: { [Key in TCardState["type"]]?: string } = {
+const innerStyles: { [Key in TSourceCardState["type"]]?: string } = {
   idle: "hover:outline outline-2 outline-neutral-50 cursor-grab",
   "is-dragging": "opacity-40"
 };
 
-const outerStyles: { [Key in TCardState["type"]]?: string } = {
+const outerStyles: { [Key in TSourceCardState["type"]]?: string } = {
   // We no longer render the draggable item after we have left it
   // as it's space will be taken up by a shadow on adjacent items.
   // Using `display:none` rather than returning `null` so we can always
@@ -48,25 +48,25 @@ const outerStyles: { [Key in TCardState["type"]]?: string } = {
   "is-dragging-and-left-self": "hidden"
 };
 
-export function CardShadow({ dragging }: { dragging: DOMRect }) {
+export function SourceCardShadow({ dragging }: { dragging: DOMRect }) {
   return <div className="flex-shrink-0 rounded bg-transparent" style={{ height: dragging.height }} />;
 }
 
-export function CardDisplay({
+export function SourceCardDisplay({
   card,
   state,
   outerRef,
   innerRef
 }: {
   card: TCard;
-  state: TCardState;
+  state: TSourceCardState;
   outerRef?: React.MutableRefObject<HTMLDivElement | null>;
   innerRef?: MutableRefObject<HTMLDivElement | null>;
 }) {
   return (
     <div ref={outerRef} className={`flex flex-col gap-2 px-3 py-1 w-full ${outerStyles[state.type]}`}>
       {/* Put a shadow before the item if closer to the top edge */}
-      {state.type === "is-over" && state.closestEdge === "top" ? <CardShadow dragging={state.dragging} /> : null}
+      {state.type === "is-over" && state.closestEdge === "top" ? <></> : null}
       <div className="flex items-center">
         <div
           className={`flex text-lg font-semibold bg-transparent flex-row items-center flex-1 cursor-grab ${innerStyles[state.type]}`}
@@ -97,15 +97,15 @@ export function CardDisplay({
         </div>
       </div>
       {/* Put a shadow after the item if closer to the bottom edge */}
-      {state.type === "is-over" && state.closestEdge === "bottom" ? <CardShadow dragging={state.dragging} /> : null}
+      {state.type === "is-over" && state.closestEdge === "bottom" ? <SourceCardShadow dragging={state.dragging} /> : null}
     </div>
   );
 }
 
-export function Card({ card, columnId }: { card: TCard; columnId: string }) {
+export function SourceCard({ card, columnId }: { card: TCard; columnId: string }) {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
-  const [state, setState] = useState<TCardState>(idle);
+  const [state, setState] = useState<TSourceCardState>(idle);
 
   useEffect(() => {
     const outer = outerRef.current;
@@ -173,7 +173,7 @@ export function Card({ card, columnId }: { card: TCard; columnId: string }) {
             return;
           }
           // optimization - Don't update react state if we don't need to.
-          const proposed: TCardState = { type: "is-over", dragging: source.data.rect, closestEdge };
+          const proposed: TSourceCardState = { type: "is-over", dragging: source.data.rect, closestEdge };
           setState(current => {
             if (isShallowEqual(proposed, current)) {
               return current;
@@ -199,12 +199,12 @@ export function Card({ card, columnId }: { card: TCard; columnId: string }) {
   }, [card, columnId]);
   return (
     <>
-      <CardDisplay outerRef={outerRef} innerRef={innerRef} state={state} card={card} />
-      {state.type === "preview" ? createPortal(<CardDisplay state={state} card={card} />, state.container) : null}
+      <SourceCardDisplay outerRef={outerRef} innerRef={innerRef} state={state} card={card} />
+      {state.type === "preview" ? createPortal(<SourceCardDisplay state={state} card={card} />, state.container) : null}
     </>
   );
 }
 
-export const CardList = memo(function CardList({ column }: { column: TColumn }) {
-  return column.cards.map(card => <Card key={card.id} card={card} columnId={column.id} />);
+export const SourceCardList = memo(function SourceCardList({ column }: { column: TColumn }) {
+  return column.cards.map(card => <SourceCard key={card.id} card={card} columnId={column.id} />);
 });

@@ -11,7 +11,8 @@ import { blockBoardPanningAttr } from "./data-attributes";
 import { CleanupFn } from "@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types";
 import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 import { Card } from "@/components/ui/card";
-import { CardList } from "./card";
+import { DestinationCardList } from "./destination-card";
+import { SourceCardList } from "./source-card";
 
 export function Board({ initial }: { initial: TBoard }) {
   const [data, setData] = useState(initial);
@@ -309,7 +310,7 @@ export function Board({ initial }: { initial: TBoard }) {
           ref={scrollableRef}
         >
           {/* destination card list */}
-          <CardList column={data.columns[0]} />
+          <DestinationCardList column={data.columns[0]} />
         </div>
       </TourBuilderLayout>
 
@@ -319,7 +320,7 @@ export function Board({ initial }: { initial: TBoard }) {
           ref={scrollableRef}
         >
           {/* source card list */}
-          <CardList column={data.columns[1]} />
+          <SourceCardList column={data.columns[1]} />
         </div>
       </Card>
     </>
