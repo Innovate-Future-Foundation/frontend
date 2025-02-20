@@ -5,18 +5,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: [ dev ]
-    paths:
-      - "src/**"
-      - "public/**"
-      - "package*.json"
   push:              
     branches:
       - '**'        # 匹配所有分支
       - '!dev'      # 排除 dev 分支
-    paths:
-      - "src/**"
-      - "public/**"
-      - "package*.json"
 
 permissions:
   id-token: write
