@@ -14,6 +14,8 @@ import { Card } from "@/components/ui/card";
 import { DestinationCardList } from "./destination-card";
 import { SourceCardList } from "./source-card";
 import { Tour } from "@/types";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export function Board({ initial }: { initial: TBoard }) {
   const [data, setData] = useState(initial);
@@ -307,15 +309,38 @@ export function Board({ initial }: { initial: TBoard }) {
     };
   }, []);
 
+  const handleAddOne = () => {
+    const newCard: Tour = {
+      id: `card:${Date.now()}`,
+      title: "No title"
+    };
+
+    // Find the destination column (assuming it's the first column)
+    const destinationColumnIndex = 0; // Change this if the index is dynamic
+    const destinationColumn = data.columns[destinationColumnIndex];
+
+    // Add the new card to the cards array of the destination column
+    const updatedCards = [...destinationColumn.cards, newCard];
+
+    // Update the columns state
+    const updatedColumns = data.columns.map((column, index) => (index === destinationColumnIndex ? { ...column, cards: updatedCards } : column));
+
+    // Update the board state
+    setData({ ...data, columns: updatedColumns });
+  };
+
   return (
     <>
       <TourBuilderLayout title={"Schedule"} subTitle={"Please add days and activities to the tour."}>
         <div
-          className="flex flex-col overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin] w-full"
+          className="flex flex-col gap-4 overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin] w-full"
           ref={scrollableRef}
         >
           {/* destination card list */}
           <DestinationCardList column={data.columns[0]} />
+          <Button className="mx-8 py-8 flex justify-start text-base font-semibold" variant={"secondary"} onClick={handleAddOne}>
+            <Plus strokeWidth={3} /> Add one more day
+          </Button>
         </div>
       </TourBuilderLayout>
 

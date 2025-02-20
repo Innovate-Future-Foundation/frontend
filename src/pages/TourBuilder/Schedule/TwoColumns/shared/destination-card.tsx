@@ -73,7 +73,7 @@ export function DestinationCardDisplay({
     setIsExpand(!isExpand);
   };
   return (
-    <div ref={outerRef} className={`flex flex-col gap-2 py-1  ${outerStyles[state.type]}`}>
+    <div ref={outerRef} className={`flex flex-col ${outerStyles[state.type]}`}>
       {/* Put a shadow before the item if closer to the top edge */}
       {state.type === "is-over" && state.closestEdge === "top" ? <DestinationCardShadow dragging={state.dragging} /> : null}
       <div className={clsx(`flex items-center text-lg font-semibold ${innerStyles[state.type]}`)}>
@@ -84,18 +84,21 @@ export function DestinationCardDisplay({
           <GripVertical size={20} />
         </div>
         <div
+          onClick={hanldeExpand}
           className={clsx(
             `flex flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 cursor-pointer bg-card ${isExpand && "rounded-b-none"}`
           )}
         >
           <div className="flex flex-col gap-1">
             <span className="truncate flex-grow flex-shrink">{card.title}</span>
-            <span className="text-sm font-normal text-primary-foreground30">
-              {formatDateToMMDDYY(card.startDate ?? "")} - {formatDateToMMDDYY(card.endDate ?? "")}
-            </span>
+            {card.startDate && card.endDate && (
+              <span className="text-sm font-normal text-primary-foreground30">
+                {formatDateToMMDDYY(card.startDate ?? "")} - {formatDateToMMDDYY(card.endDate ?? "")}
+              </span>
+            )}
           </div>
           <div className="flex justify-center items-center gap-4">
-            <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.orgName ?? ""} />
+            {card.coverImgUrl && <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.orgName ?? ""} />}
             <div className="flex justify-center text-primary-foreground60 hover:text-primary-foreground30">
               <ChevronDown onClick={hanldeExpand} />
             </div>
