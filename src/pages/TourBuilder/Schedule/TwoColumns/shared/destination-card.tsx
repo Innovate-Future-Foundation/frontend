@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { Tour } from "@/types";
 import { formatDateToMMDDYY } from "@/utils/formatters";
 import TourDetailForm from "@/pages/TourBuilder/TourDetails/TourDetailForm";
+import Avatar from "@/components/Avatar";
 
 type TDestinationCardState =
   | {
@@ -84,7 +85,7 @@ export function DestinationCardDisplay({
         </div>
         <div
           className={clsx(
-            `flex flex-1 justify-between items-center border rounded-md border-solid px-2 py-4 cursor-pointer bg-card ${isExpand && "rounded-b-none"}`
+            `flex flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 cursor-pointer bg-card ${isExpand && "rounded-b-none"}`
           )}
         >
           <div className="flex flex-col gap-1">
@@ -93,8 +94,11 @@ export function DestinationCardDisplay({
               {formatDateToMMDDYY(card.startDate ?? "")} - {formatDateToMMDDYY(card.endDate ?? "")}
             </span>
           </div>
-          <div className="flex justify-center text-primary-foreground60 hover:text-primary-foreground30">
-            <ChevronDown onClick={hanldeExpand} />
+          <div className="flex justify-center items-center gap-4">
+            <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.orgName ?? ""} />
+            <div className="flex justify-center text-primary-foreground60 hover:text-primary-foreground30">
+              <ChevronDown onClick={hanldeExpand} />
+            </div>
           </div>
         </div>
         <div className="w-8 flex items-center justify-center text-primary-foreground60  hover:text-destructive cursor-pointer">

@@ -50,7 +50,7 @@ export const FormFieldItem = <T extends FieldValues>({
                       !field.value && "text-muted-foreground"
                     )}
                   >
-                    {formatDateToMMDDYY(field.value.from)} - {formatDateToMMDDYY(field.value.to)}
+                    {formatDateToMMDDYY(field.value?.from ?? "")} - {formatDateToMMDDYY(field.value?.to ?? "")}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                   </Button>
                 </FormControl>

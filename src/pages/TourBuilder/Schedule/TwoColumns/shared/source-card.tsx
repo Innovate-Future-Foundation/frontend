@@ -7,9 +7,13 @@ import invariant from "tiny-invariant";
 
 import { type Edge, attachClosestEdge, extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
-import { getCardData, getCardDropTargetData, isCardData, isDraggingACard, TCard, TColumn } from "./data";
+import { getCardData, getCardDropTargetData, isCardData, isDraggingACard, TColumn } from "./data";
 import { isShallowEqual } from "./is-shallow-equal";
-import { GripVertical, Trash2 } from "lucide-react";
+import { GripVertical } from "lucide-react";
+import clsx from "clsx";
+import { Tour } from "@/types";
+import { formatDateToMMDDYY } from "@/utils/formatters";
+import Avatar from "@/components/Avatar";
 
 type TSourceCardState =
   | {
@@ -35,7 +39,7 @@ type TSourceCardState =
 const idle: TSourceCardState = { type: "idle" };
 
 const innerStyles: { [Key in TSourceCardState["type"]]?: string } = {
-  idle: "hover:outline outline-2 outline-neutral-50 cursor-grab",
+  idle: "cursor-grab",
   "is-dragging": "opacity-40"
 };
 
@@ -49,7 +53,7 @@ const outerStyles: { [Key in TSourceCardState["type"]]?: string } = {
 };
 
 export function SourceCardShadow({ dragging }: { dragging: DOMRect }) {
-  return <div className="flex-shrink-0 rounded bg-transparent" style={{ height: dragging.height }} />;
+  return <div className="flex-shrink-0 rounded bg-card" style={{ height: dragging.height }} />;
 }
 
 export function SourceCardDisplay({
@@ -58,51 +62,48 @@ export function SourceCardDisplay({
   outerRef,
   innerRef
 }: {
-  card: TCard;
+  card: Tour;
   state: TSourceCardState;
   outerRef?: React.MutableRefObject<HTMLDivElement | null>;
   innerRef?: MutableRefObject<HTMLDivElement | null>;
 }) {
   return (
-    <div ref={outerRef} className={`flex flex-col gap-2 px-3 py-1 w-full ${outerStyles[state.type]}`}>
+    <div ref={outerRef} className={`flex flex-col gap-2 py-1  ${outerStyles[state.type]}`}>
       {/* Put a shadow before the item if closer to the top edge */}
-      {state.type === "is-over" && state.closestEdge === "top" ? <></> : null}
-      <div className="flex items-center">
-        <div
-          className={`flex text-lg font-semibold bg-transparent flex-row items-center flex-1 cursor-grab ${innerStyles[state.type]}`}
-          ref={innerRef}
-          style={
-            state.type === "preview"
-              ? {
-                  width: state.dragging.width,
-                  height: state.dragging.height
-                  // transform: !isSafari() ? "rotate(4deg)" : undefined
-                }
-              : undefined
-          }
-        >
-          <div
-            className="w-8 flex justify-center text-primary-foreground60 "
-            // ref={innerRef} // Only the grip is draggable
-          >
-            <GripVertical size={20} />
-          </div>
-
-          <div className="border border-solid bg-card rounded-md flex-1 px-2 py-4 items-center">
-            <span className="truncate flex-grow flex-shrink">{card.description}</span>
-          </div>
+      {state.type === "is-over" && state.closestEdge === "top" ? <SourceCardShadow dragging={state.dragging} /> : null}
+      <div
+        ref={innerRef}
+        className={clsx(`flex items-center text-lg font-semibold ${innerStyles[state.type]}`)}
+        style={
+          state.type === "preview"
+            ? {
+                width: state.dragging.width,
+                height: state.dragging.height
+              }
+            : undefined
+        }
+      >
+        <div className="w-8 flex items-center justify-center text-primary-foreground60 cursor-grab">
+          <GripVertical size={20} />
         </div>
-        <div className="w-8 flex justify-center text-primary-foreground60">
-          <Trash2 size={16} />
+        <div className={clsx(`flex flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 bg-card`)}>
+          <div className="flex flex-col gap-1">
+            <span className="truncate flex-grow flex-shrink">{card.title}</span>
+            <span className="text-sm font-normal text-primary-foreground30">
+              {formatDateToMMDDYY(card.startDate ?? "")} - {formatDateToMMDDYY(card.endDate ?? "")}
+            </span>
+          </div>
+          <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.orgName ?? ""} />
         </div>
       </div>
+
       {/* Put a shadow after the item if closer to the bottom edge */}
       {state.type === "is-over" && state.closestEdge === "bottom" ? <SourceCardShadow dragging={state.dragging} /> : null}
     </div>
   );
 }
 
-export function SourceCard({ card, columnId }: { card: TCard; columnId: string }) {
+export function SourceCard({ card, columnId }: { card: Tour; columnId: string }) {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TSourceCardState>(idle);

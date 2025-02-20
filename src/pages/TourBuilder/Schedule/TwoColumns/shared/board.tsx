@@ -5,7 +5,7 @@ import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/ad
 import { reorder } from "@atlaskit/pragmatic-drag-and-drop/reorder";
 import { useEffect, useRef, useState } from "react";
 import invariant from "tiny-invariant";
-import { isCardData, isCardDropTargetData, isColumnData, isDraggingACard, isDraggingAColumn, TBoard, TCard, TColumn } from "./data";
+import { isCardData, isCardDropTargetData, isColumnData, isDraggingACard, isDraggingAColumn, TBoard, TColumn } from "./data";
 import { bindAll } from "bind-event-listener";
 import { blockBoardPanningAttr } from "./data-attributes";
 import { CleanupFn } from "@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types";
@@ -13,6 +13,7 @@ import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 import { Card } from "@/components/ui/card";
 import { DestinationCardList } from "./destination-card";
 import { SourceCardList } from "./source-card";
+import { Tour } from "@/types";
 
 export function Board({ initial }: { initial: TBoard }) {
   const [data, setData] = useState(initial);
@@ -65,9 +66,13 @@ export function Board({ initial }: { initial: TBoard }) {
               const closestEdge = extractClosestEdge(dropTargetData);
               const finalIndex = closestEdge === "bottom" ? indexOfTarget + 1 : indexOfTarget;
 
-              const newCard: TCard = {
-                id: `card:${Date.now()}`, // Unique ID for copied card
-                description: dragging.card.description
+              const newCard: Tour = {
+                id: `card:${Date.now()}`,
+                title: dragging.card.title,
+                orgName: dragging.card.orgName,
+                coverImgUrl: dragging.card.coverImgUrl,
+                startDate: dragging.card.startDate,
+                endDate: dragging.card.endDate
               };
 
               const destinationCards = Array.from(destination.cards);
