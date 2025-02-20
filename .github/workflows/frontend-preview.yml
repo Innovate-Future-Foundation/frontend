@@ -151,12 +151,20 @@ jobs:
 
       - name: Cleanup Preview Environment
         run: |
-          # Process branch name
+          echo "Starting cleanup process..."
+          echo "Event type: ${{ github.event_name }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "PR action: ${{ github.event.action }}"
+            echo "PR merged: ${{ github.event.pull_request.merged }}"
+            echo "Source branch: ${{ github.event.pull_request.head.ref }}"
             BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
           else
+            echo "Push event - branch: ${{ github.ref_name }}"
+            echo "Branch deleted: ${{ github.event.deleted }}"
             BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
           fi
+          
+          echo "Processed branch name: ${BRANCH_NAME}"
           BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
           PREVIEW_ID="branch${BRANCH_NAME}"
           
@@ -166,17 +174,28 @@ jobs:
           BUCKET_NAME=$(echo "$BUCKET_NAME" | sed 's/^-//;s/-$//')
           BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
           
-          # Empty and delete the bucket
-          echo "Cleaning up bucket: ${BUCKET_NAME}"
+          echo "Target bucket for cleanup: ${BUCKET_NAME}"
           
-          # Remove bucket policy first
-          aws s3api delete-bucket-policy --bucket ${BUCKET_NAME} || true
-          
-          # Remove bucket contents
-          aws s3 rm s3://${BUCKET_NAME} --recursive
-          
-          # Delete the bucket
-          aws s3api delete-bucket --bucket ${BUCKET_NAME}
+          # Check if bucket exists before cleanup
+          if aws s3api head-bucket --bucket ${BUCKET_NAME} 2>/dev/null; then
+            echo "Bucket exists, proceeding with cleanup..."
+            
+            # Remove bucket policy first
+            echo "Removing bucket policy..."
+            aws s3api delete-bucket-policy --bucket ${BUCKET_NAME} || true
+            
+            # Remove bucket contents
+            echo "Removing bucket contents..."
+            aws s3 rm s3://${BUCKET_NAME} --recursive
+            
+            # Delete the bucket
+            echo "Deleting bucket..."
+            aws s3api delete-bucket --bucket ${BUCKET_NAME}
+            
+            echo "Cleanup completed successfully"
+          else
+            echo "Bucket ${BUCKET_NAME} does not exist, no cleanup needed"
+          fi
 
       - name: Notify Discord
         uses: tsickert/discord-webhook@v6.0.0
