@@ -57,24 +57,36 @@ jobs:
       - name: Create Preview Environment
         id: create_preview
         run: |
+          # Generate preview environment identifier
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             PR_NUMBER="${{ github.event.pull_request.number }}"
-            PREVIEW_ID="pr-${PR_NUMBER}"
+            PREVIEW_ID="pr${PR_NUMBER}"
           else
-            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
-            PREVIEW_ID="branch-${BRANCH_NAME}"
+            # Process branch name, keep only alphanumeric and hyphens
+            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
+            # Remove leading and trailing hyphens
+            BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
+            PREVIEW_ID="branch${BRANCH_NAME}"
           fi
           
+          # Generate bucket name: ensure it starts with letter/number and contains only lowercase letters, numbers, and hyphens
           BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
+          # Remove invalid characters
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]//g')
+          # Remove leading and trailing hyphens
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | sed 's/^-//;s/-$//')
+          # Limit length to 63 characters
           BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
           
           echo "Creating preview environment with bucket: ${BUCKET_NAME}"
           
+          # Create S3 bucket
           aws s3api create-bucket \
             --bucket ${BUCKET_NAME} \
             --region ${{ env.AWS_REGION }} \
             --create-bucket-configuration LocationConstraint=${{ env.AWS_REGION }}
           
+          # Configure bucket policy
           aws s3api put-bucket-policy \
             --bucket ${BUCKET_NAME} \
             --policy '{
@@ -88,14 +100,17 @@ jobs:
               }]
             }'
           
+          # Configure static website hosting
           aws s3 website s3://${BUCKET_NAME} \
             --index-document index.html \
             --error-document index.html
 
+          # Upload build files
           aws s3 sync dist/ s3://${BUCKET_NAME} \
             --delete \
             --cache-control "max-age=3600,public"
           
+          # Set preview URL
           PREVIEW_URL="http://${BUCKET_NAME}.s3-website.${{ env.AWS_REGION }}.amazonaws.com"
           echo "preview_url=${PREVIEW_URL}" >> $GITHUB_OUTPUT
           echo "bucket_name=${BUCKET_NAME}" >> $GITHUB_OUTPUT
@@ -149,18 +164,24 @@ jobs:
 
       - name: Cleanup Preview Environment
         run: |
+          # Generate preview environment identifier
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             PR_NUMBER="${{ github.event.pull_request.number }}"
-            PREVIEW_ID="pr-${PR_NUMBER}"
+            PREVIEW_ID="pr${PR_NUMBER}"
           else
-            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
-            PREVIEW_ID="branch-${BRANCH_NAME}"
+            # Process branch name
+            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
+            BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
+            PREVIEW_ID="branch${BRANCH_NAME}"
           fi
           
+          # Generate bucket name
           BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]//g')
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | sed 's/^-//;s/-$//')
           BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
           
-          # 清空并删除 S3 桶
+          # Empty and delete the bucket
           aws s3 rm s3://${BUCKET_NAME} --recursive
           aws s3api delete-bucket --bucket ${BUCKET_NAME}
 
