@@ -5,10 +5,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: [ dev ]
-  push:              
-    branches:
-      - '**'        # 匹配所有分支
-      - '!dev'      # 排除 dev 分支
 
 permissions:
   id-token: write
@@ -54,17 +50,11 @@ jobs:
       - name: Create Preview Environment
         id: create_preview
         run: |
-          # Generate preview environment identifier
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-            PREVIEW_ID="pr${PR_NUMBER}"
-          else
-            # Process branch name, keep only alphanumeric and hyphens
-            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
-            # Remove leading and trailing hyphens
-            BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
-            PREVIEW_ID="branch${BRANCH_NAME}"
-          fi
+          # Get PR branch name
+          BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
+          # Remove leading and trailing hyphens
+          BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
+          PREVIEW_ID="branch${BRANCH_NAME}"
           
           # Generate bucket name: ensure it starts with letter/number and contains only lowercase letters, numbers, and hyphens
           BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
@@ -135,10 +125,7 @@ jobs:
             **Author:** ${{ github.actor }}
 
   cleanup:
-    if: |
-      github.event.action == 'closed' || 
-      github.event.pull_request.merged == true ||
-      (github.event_name == 'push' && github.event.deleted)
+    if: github.event.action == 'closed' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment:
       name: Development
@@ -153,16 +140,17 @@ jobs:
 
       - name: Cleanup Preview Environment
         run: |
-          # Generate preview environment identifier
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-            PREVIEW_ID="pr${PR_NUMBER}"
-          else
-            # Process branch name
-            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
-            BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
-            PREVIEW_ID="branch${BRANCH_NAME}"
-          fi
+          echo "Starting cleanup process..."
+          echo "Event type: ${{ github.event_name }}"
+          echo "PR action: ${{ github.event.action }}"
+          echo "PR merged: ${{ github.event.pull_request.merged }}"
+          echo "Source branch: ${{ github.event.pull_request.head.ref }}"
+          
+          # Get PR branch name
+          BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
+          echo "Processed branch name: ${BRANCH_NAME}"
+          BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
+          PREVIEW_ID="branch${BRANCH_NAME}"
           
           # Generate bucket name
           BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
@@ -170,17 +158,28 @@ jobs:
           BUCKET_NAME=$(echo "$BUCKET_NAME" | sed 's/^-//;s/-$//')
           BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
           
-          # Empty and delete the bucket
-          echo "Cleaning up bucket: ${BUCKET_NAME}"
+          echo "Target bucket for cleanup: ${BUCKET_NAME}"
           
-          # Remove bucket policy first
-          aws s3api delete-bucket-policy --bucket ${BUCKET_NAME} || true
-          
-          # Remove bucket contents
-          aws s3 rm s3://${BUCKET_NAME} --recursive
-          
-          # Delete the bucket
-          aws s3api delete-bucket --bucket ${BUCKET_NAME}
+          # Check if bucket exists before cleanup
+          if aws s3api head-bucket --bucket ${BUCKET_NAME} 2>/dev/null; then
+            echo "Bucket exists, proceeding with cleanup..."
+            
+            # Remove bucket policy first
+            echo "Removing bucket policy..."
+            aws s3api delete-bucket-policy --bucket ${BUCKET_NAME} || true
+            
+            # Remove bucket contents
+            echo "Removing bucket contents..."
+            aws s3 rm s3://${BUCKET_NAME} --recursive
+            
+            # Delete the bucket
+            echo "Deleting bucket..."
+            aws s3api delete-bucket --bucket ${BUCKET_NAME}
+            
+            echo "Cleanup completed successfully"
+          else
+            echo "Bucket ${BUCKET_NAME} does not exist, no cleanup needed"
+          fi
 
       - name: Notify Discord
         uses: tsickert/discord-webhook@v6.0.0
