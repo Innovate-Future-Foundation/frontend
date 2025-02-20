@@ -8,6 +8,12 @@ on:
       - "src/**"
       - "public/**"
       - "package*.json"
+  push:
+    branches: [ dev ]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "package*.json"
 
 permissions:
   id-token: write
