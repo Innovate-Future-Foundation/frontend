@@ -80,11 +80,14 @@ jobs:
           
           echo "Creating preview environment with bucket: ${BUCKET_NAME}"
           
-          # Create S3 bucket
-          aws s3api create-bucket \
-            --bucket ${BUCKET_NAME} \
-            --region ${{ env.AWS_REGION }} \
-            --create-bucket-configuration LocationConstraint=${{ env.AWS_REGION }}
+          # Check if bucket exists
+          if ! aws s3api head-bucket --bucket ${BUCKET_NAME} 2>/dev/null; then
+            # Create S3 bucket if it doesn't exist
+            aws s3api create-bucket \
+              --bucket ${BUCKET_NAME} \
+              --region ${{ env.AWS_REGION }} \
+              --create-bucket-configuration LocationConstraint=${{ env.AWS_REGION }}
+          fi
           
           # Disable block public access for the preview bucket
           aws s3api put-public-access-block \
