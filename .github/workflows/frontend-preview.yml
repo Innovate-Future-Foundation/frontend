@@ -5,13 +5,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: [ dev ]
-    paths:
-      - "src/**"
-      - "public/**"
-      - "package*.json"
   push:              
     branches:
-      - 'feature/**' 
+      - '**'        # 匹配所有分支
+      - '!dev'      # 排除 dev 分支
 
 permissions:
   id-token: write
@@ -25,7 +22,7 @@ env:
 
 jobs:
   preview:
-    if: github.event.action != 'closed'
+    if: github.event.action != 'closed' && !github.event.pull_request.merged
     environment:
       name: Development
       url: ${{ steps.create_preview.outputs.preview_url }}
@@ -138,7 +135,10 @@ jobs:
             **Author:** ${{ github.actor }}
 
   cleanup:
-    if: github.event.action == 'closed'
+    if: |
+      github.event.action == 'closed' || 
+      github.event.pull_request.merged == true ||
+      (github.event_name == 'push' && github.event.deleted)
     runs-on: ubuntu-latest
     
     steps:
