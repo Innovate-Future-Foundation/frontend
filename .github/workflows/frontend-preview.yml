@@ -128,14 +128,11 @@ jobs:
             **Preview URL:** ${{ steps.create_preview.outputs.preview_url }}
             **Author:** ${{ github.actor }}
 
-    cleanup:
-        if: github.event.action == 'closed' || github.event.pull_request.merged == true
-        runs-on: ubuntu-latest
-        environment:
-          name: Development
-        runs-on: ubuntu-latest
-        environment:
-          name: Development
+  cleanup:
+    if: github.event.action == 'closed' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
     
     steps:
       - name: Configure AWS Credentials
