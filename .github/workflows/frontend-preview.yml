@@ -27,7 +27,7 @@ jobs:
   preview:
     if: github.event.action != 'closed'
     environment:
-      name: development
+      name: Development
       url: ${{ steps.create_preview.outputs.preview_url }}
     runs-on: ubuntu-latest
     

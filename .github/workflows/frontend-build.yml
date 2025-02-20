@@ -17,7 +17,7 @@ permissions:
 jobs:
   build-and-test:
     environment:
-      name: development
+      name: Development
     env:
       node_version: "22.1.0"
       
