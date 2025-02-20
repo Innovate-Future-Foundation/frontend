@@ -1,13 +1,10 @@
-export type TCard = {
-  id: string;
-  description: string;
-};
+import { Tour } from "@/types";
 
 export type TColumn = {
   id: string;
   title: string;
   type: TColumnType;
-  cards: TCard[];
+  cards: Tour[];
 };
 
 export type TColumnType = "source" | "destination";
@@ -19,7 +16,7 @@ export type TBoard = {
 const cardKey = Symbol("card");
 export type TCardData = {
   [cardKey]: true;
-  card: TCard;
+  card: Tour;
   columnId: string;
   rect: DOMRect;
 };
@@ -44,7 +41,7 @@ export function isDraggingACard({ source }: { source: { data: Record<string | sy
 const cardDropTargetKey = Symbol("card-drop-target");
 export type TCardDropTargetData = {
   [cardDropTargetKey]: true;
-  card: TCard;
+  card: Tour;
   columnId: string;
 };
 
