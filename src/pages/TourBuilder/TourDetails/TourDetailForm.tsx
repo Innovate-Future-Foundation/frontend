@@ -120,7 +120,6 @@ const TourDetailForm: React.FC<TourDetailFormProps> = ({ tourDetail }) => {
           <div className="">
             <RichEditor />
           </div>
-          <div className="flex gap-4 w-full"></div>
         </Form>
       </div>
     </div>

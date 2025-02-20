@@ -90,7 +90,13 @@ export const FormFieldItem = <T extends FieldValues>({
               </div>
             </FormControl>
           )}
-          {fieldState?.error ? <FormMessage /> : <div className="h-4"></div>}
+          {fieldState?.error ? (
+            <div className="h-4">
+              <FormMessage />
+            </div>
+          ) : (
+            <div className="h-4"></div>
+          )}
         </FormItem>
       )}
     />

@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { CalendarCheck2, ContactRound, ListCollapse, StepBack, UserPlus } from "lucide-react";
-import { ProgresBar } from "./ProgresBar";
+import { ProgresBar } from "./ProgressBar";
 import { useState } from "react";
 import clsx from "clsx";
 import { Outlet, useNavigate, useParams } from "react-router-dom";

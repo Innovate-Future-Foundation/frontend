@@ -57,7 +57,7 @@ const tourDetail: Tour = {
 const ContactLeader = () => {
   return (
     <TourBuilderLayout title={"Contact Leader"} subTitle={"Please pick a teacher as the leader of the tour."}>
-      <div className="px-6">
+      <div className="p-6 pt-0">
         <ContactLeaderForm tourDetail={tourDetail} />
       </div>
     </TourBuilderLayout>
