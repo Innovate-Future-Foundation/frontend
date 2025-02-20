@@ -1,4 +1,4 @@
-import { TBoard, TColumn } from "./TwoColumns/shared/data";
+import { TBoard, TColumn } from "./shared/data";
 import { Tour } from "@/types";
 import { Outlet } from "react-router-dom";
 // import { Tour } from "@/types";

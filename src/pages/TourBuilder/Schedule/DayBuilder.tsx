@@ -1,5 +1,5 @@
 import { getInitialData } from ".";
-import { Board } from "./TwoColumns/shared/board";
+import { Board } from "./shared/Board";
 
 const DayBuilder = () => {
   return <Board initial={getInitialData()} />;
