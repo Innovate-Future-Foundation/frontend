@@ -140,6 +140,8 @@ jobs:
       github.event.pull_request.merged == true ||
       (github.event_name == 'push' && github.event.deleted)
     runs-on: ubuntu-latest
+    environment:
+      name: Development
     
     steps:
       - name: Configure AWS Credentials
