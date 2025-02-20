@@ -39,7 +39,7 @@ type TDestinationCardState =
 const idle: TDestinationCardState = { type: "idle" };
 
 const innerStyles: { [Key in TDestinationCardState["type"]]?: string } = {
-  idle: "hover:outline outline-2 outline-neutral-50 cursor-grab",
+  idle: "cursor-grab",
   "is-dragging": "opacity-40"
 };
 
@@ -53,7 +53,7 @@ const outerStyles: { [Key in TDestinationCardState["type"]]?: string } = {
 };
 
 export function DestinationCardShadow({ dragging }: { dragging: DOMRect }) {
-  return <div className="flex-shrink-0 rounded bg-transparent" style={{ height: dragging.height }} />;
+  return <div className="flex-shrink-0 rounded bg-card" style={{ height: dragging.height }} />;
 }
 
 export function DestinationCardDisplay({
@@ -77,14 +77,14 @@ export function DestinationCardDisplay({
       {state.type === "is-over" && state.closestEdge === "top" ? <DestinationCardShadow dragging={state.dragging} /> : null}
       <div className={clsx(`flex items-center text-lg font-semibold ${innerStyles[state.type]}`)}>
         <div
-          className="w-8 flex items-center justify-center text-primary-foreground60 cursor-grab "
+          className="w-8 flex items-center justify-center text-primary-foreground60 cursor-grab"
           ref={innerRef} // Only the grip is draggable
         >
           <GripVertical size={20} />
         </div>
         <div
           className={clsx(
-            `flex flex-1 justify-between items-center border rounded-md border-solid px-2 py-4 cursor-pointer bg-transparent ${isExpand && "border-b-transparent rounded-b-none"}`
+            `flex flex-1 justify-between items-center border rounded-md border-solid px-2 py-4 cursor-pointer bg-card ${isExpand && "rounded-b-none"}`
           )}
         >
           <div className="flex flex-col gap-1">
@@ -102,7 +102,7 @@ export function DestinationCardDisplay({
         </div>
       </div>
       {isExpand && (
-        <div className="p-2 -mt-2 border border-t-0 rounded-md rounded-t-none mx-8">
+        <div className="p-3 -mt-3 border border-t-0 rounded-md rounded-t-none mx-8 bg-card">
           <TourDetailForm tourDetail={card} />
         </div>
       )}
