@@ -1,0 +1,103 @@
+name: Frontend CD - Dev Deployment
+
+on:
+  workflow_run:
+    workflows: ["Frontend CI - Build & Test"]
+    types:
+      - completed
+    branches: [ dev ]
+  workflow_dispatch:
+    
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-to-dev:
+    environment:
+      name: Development
+    env:
+      AWS_REGION: ap-southeast-2
+      DEV_FRONTEND_BUCKET: "dev-foundation-innovatefuture-dev-frontend-static"
+      DEV_CLOUDFRONT_ID: "E1ZS25NCQ6M256"
+      DEV_WEBSITE_URL: "https://dev.innovatefuture.foundation"
+      node_version: "22.1.0"
+    
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.node_version }}
+          cache: 'npm'
+
+      - name: Debug Info
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Event Name: ${{ github.event_name }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "OIDC Provider: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:oidc-provider/token.actions.githubusercontent.com"
+          echo "Role ARN: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+          aws-region: ${{ env.AWS_REGION }}
+          audience: "sts.amazonaws.com"
+
+      - name: Download Production Assets
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist-${{ github.run_number }}
+          path: dist
+
+      - name: Deploy to Dev S3
+        run: |
+          aws s3 sync dist/ s3://${{ env.DEV_FRONTEND_BUCKET }} \
+          --delete \
+          --cache-control "max-age=31536000,public"
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ env.DEV_CLOUDFRONT_ID }} \
+          --paths "/*"
+
+      - name: Verify Deployment
+        run: |
+          echo "Verifying deployment..."
+          retries=3
+          while [ $retries -gt 0 ]; do
+            response_code=$(curl -s -o /dev/null -w "%{http_code}" ${{ env.DEV_WEBSITE_URL }})
+            if [[ $response_code =~ ^2 ]]; then
+              echo "✅ Deployment verified!!"
+              exit 0
+            fi
+            retries=$((retries-1))
+            [ $retries -gt 0 ] && sleep 10
+          done
+          exit 1
+
+      - name: Notify Discord
+        if: always()
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+          thread-id: "1330422313769893938"
+          username: "Frontend Deploy Bot"
+          content: |
+            ${{ job.status == 'success' && '✅ Frontend Dev Deployment Successful!' || '❌ Frontend Dev Deployment Failed!' }}
+            **Environment:** Development
+            **Build:** ${{ github.run_number }}
+            **Status:** ${{ job.status }}
+            **Website:** ${{ env.DEV_WEBSITE_URL }}
+            ${{ job.status != 'success' && '<@&1315850473391001674>' || '' }} 
