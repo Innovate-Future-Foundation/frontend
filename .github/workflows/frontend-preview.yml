@@ -54,12 +54,8 @@ jobs:
       - name: Create Preview Environment
         id: create_preview
         run: |
-          # Process branch name, keep only alphanumeric and hyphens
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
-          else
-            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
-          fi
+          # Get PR branch name
+          BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
           # Remove leading and trailing hyphens
           BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
           PREVIEW_ID="branch${BRANCH_NAME}"
@@ -133,10 +129,7 @@ jobs:
             **Author:** ${{ github.actor }}
 
   cleanup:
-    if: |
-      github.event.action == 'closed' || 
-      github.event.pull_request.merged == true ||
-      (github.event_name == 'push' && github.event.deleted)
+    if: github.event.action == 'closed' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment:
       name: Development
@@ -153,17 +146,12 @@ jobs:
         run: |
           echo "Starting cleanup process..."
           echo "Event type: ${{ github.event_name }}"
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "PR action: ${{ github.event.action }}"
-            echo "PR merged: ${{ github.event.pull_request.merged }}"
-            echo "Source branch: ${{ github.event.pull_request.head.ref }}"
-            BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
-          else
-            echo "Push event - branch: ${{ github.ref_name }}"
-            echo "Branch deleted: ${{ github.event.deleted }}"
-            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
-          fi
+          echo "PR action: ${{ github.event.action }}"
+          echo "PR merged: ${{ github.event.pull_request.merged }}"
+          echo "Source branch: ${{ github.event.pull_request.head.ref }}"
           
+          # Get PR branch name
+          BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
           echo "Processed branch name: ${BRANCH_NAME}"
           BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
           PREVIEW_ID="branch${BRANCH_NAME}"
