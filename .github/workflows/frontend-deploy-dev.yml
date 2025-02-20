@@ -46,6 +46,13 @@ jobs:
           echo "Workflow: ${{ github.workflow }}"
           echo "OIDC Provider: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:oidc-provider/token.actions.githubusercontent.com"
           echo "Role ARN: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+          echo "Workflow Run ID: ${{ github.event.workflow_run.id }}"
+          echo "Workflow Run Number: ${{ github.event.workflow_run.run_number }}"
+          echo "Workflow Run Conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Workflow Run Head Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Workflow Run Head SHA: ${{ github.event.workflow_run.head_sha }}"
+          echo "Workflow Run Event: ${{ github.event.workflow_run.event }}"
+          echo "Workflow Run Status: ${{ github.event.workflow_run.status }}"
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -54,11 +61,20 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           audience: "sts.amazonaws.com"
 
+      - name: Debug Deployment Info
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Workflow run number: ${{ github.event.workflow_run.run_number }}"
+          echo "Workflow run id: ${{ github.event.workflow_run.id }}"
+          echo "Workflow name: ${{ github.event.workflow_run.name }}"
+          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
+
       - name: Download Production Assets
         uses: actions/download-artifact@v4
         with:
           name: frontend-dist-${{ github.event.workflow_run.run_number }}
           path: dist
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Deploy to Dev S3
         run: |
