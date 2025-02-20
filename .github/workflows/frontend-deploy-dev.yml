@@ -75,6 +75,7 @@ jobs:
           name: frontend-dist-${{ github.event.workflow_run.run_number }}
           path: dist
           run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to Dev S3
         run: |
