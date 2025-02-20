@@ -129,15 +129,15 @@ jobs:
         with:
           script: |
             const previewUrl = '${{ steps.create_preview.outputs.preview_url }}';
-            const message = `
-            ## 🚀 Preview Environment Deployed!
+            const message = [
+              '## 🚀 Preview Environment Deployed!',
+              '',
+              `You can preview this PR at: [Preview Link](${previewUrl})`,
+              '',
+              '> Note: This is a temporary environment and will be automatically deleted when the PR is merged or closed.'
+            ].join('\n');
             
-            You can preview this PR at: [Preview Link](${previewUrl})
-            
-            > Note: This is a temporary environment and will be automatically deleted when the PR is merged or closed.
-            `;
-            
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
