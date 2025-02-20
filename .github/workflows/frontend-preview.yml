@@ -57,16 +57,24 @@ jobs:
       - name: Create Preview Environment
         id: create_preview
         run: |
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PR_NUMBER}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            PREVIEW_ID="pr-${PR_NUMBER}"
+          else
+            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+            PREVIEW_ID="branch-${BRANCH_NAME}"
+          fi
           
-          # 创建 S3 桶
+          BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
+          
+          echo "Creating preview environment with bucket: ${BUCKET_NAME}"
+          
           aws s3api create-bucket \
             --bucket ${BUCKET_NAME} \
             --region ${{ env.AWS_REGION }} \
             --create-bucket-configuration LocationConstraint=${{ env.AWS_REGION }}
           
-          # 配置桶策略
           aws s3api put-bucket-policy \
             --bucket ${BUCKET_NAME} \
             --policy '{
@@ -80,21 +88,20 @@ jobs:
               }]
             }'
           
-          # 启用静态网站托管
           aws s3 website s3://${BUCKET_NAME} \
             --index-document index.html \
             --error-document index.html
 
-          # 部署构建文件
           aws s3 sync dist/ s3://${BUCKET_NAME} \
             --delete \
             --cache-control "max-age=3600,public"
           
-          # 设置预览 URL
           PREVIEW_URL="http://${BUCKET_NAME}.s3-website.${{ env.AWS_REGION }}.amazonaws.com"
           echo "preview_url=${PREVIEW_URL}" >> $GITHUB_OUTPUT
+          echo "bucket_name=${BUCKET_NAME}" >> $GITHUB_OUTPUT
 
       - name: Comment PR
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
@@ -121,11 +128,12 @@ jobs:
           thread-id: "1330422313769893938"
           username: "Frontend Preview Bot"
           content: |
-            🔍 PR Preview Environment Created
-            **PR:** #${{ github.event.pull_request.number }}
-            **Title:** ${{ github.event.pull_request.title }}
+            🔍 Preview Environment Created
+            **Event:** ${{ github.event_name }}
+            ${{ github.event_name == 'pull_request' && format('**PR:** #{0}', github.event.pull_request.number) || format('**Branch:** {0}', github.ref_name) }}
+            ${{ github.event_name == 'pull_request' && format('**Title:** {0}', github.event.pull_request.title) || '' }}
             **Preview URL:** ${{ steps.create_preview.outputs.preview_url }}
-            **Author:** ${{ github.event.pull_request.user.login }}
+            **Author:** ${{ github.actor }}
 
   cleanup:
     if: github.event.action == 'closed'
@@ -141,8 +149,16 @@ jobs:
 
       - name: Cleanup Preview Environment
         run: |
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PR_NUMBER}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            PREVIEW_ID="pr-${PR_NUMBER}"
+          else
+            BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+            PREVIEW_ID="branch-${BRANCH_NAME}"
+          fi
+          
+          BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
           
           # 清空并删除 S3 桶
           aws s3 rm s3://${BUCKET_NAME} --recursive
@@ -155,6 +171,7 @@ jobs:
           thread-id: "1330422313769893938"
           username: "Frontend Preview Bot"
           content: |
-            🧹 PR Preview Environment Cleaned Up
-            **PR:** #${{ github.event.pull_request.number }}
-            **Title:** ${{ github.event.pull_request.title }} 
+            🧹 Preview Environment Cleaned Up
+            **Event:** ${{ github.event_name }}
+            ${{ github.event_name == 'pull_request' && format('**PR:** #{0}', github.event.pull_request.number) || format('**Branch:** {0}', github.ref_name) }}
+            ${{ github.event_name == 'pull_request' && format('**Title:** {0}', github.event.pull_request.title) || '' }} 
