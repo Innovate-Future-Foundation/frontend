@@ -57,7 +57,7 @@ jobs:
       - name: Download Production Assets
         uses: actions/download-artifact@v4
         with:
-          name: frontend-dist-${{ github.run_number }}
+          name: frontend-dist-${{ github.event.workflow_run.run_number }}
           path: dist
 
       - name: Deploy to Dev S3
