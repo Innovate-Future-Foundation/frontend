@@ -54,17 +54,15 @@ jobs:
       - name: Create Preview Environment
         id: create_preview
         run: |
-          # Generate preview environment identifier
+          # Process branch name, keep only alphanumeric and hyphens
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-            PREVIEW_ID="pr${PR_NUMBER}"
+            BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
           else
-            # Process branch name, keep only alphanumeric and hyphens
             BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
-            # Remove leading and trailing hyphens
-            BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
-            PREVIEW_ID="branch${BRANCH_NAME}"
           fi
+          # Remove leading and trailing hyphens
+          BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
+          PREVIEW_ID="branch${BRANCH_NAME}"
           
           # Generate bucket name: ensure it starts with letter/number and contains only lowercase letters, numbers, and hyphens
           BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
@@ -153,16 +151,14 @@ jobs:
 
       - name: Cleanup Preview Environment
         run: |
-          # Generate preview environment identifier
+          # Process branch name
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-            PREVIEW_ID="pr${PR_NUMBER}"
+            BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
           else
-            # Process branch name
             BRANCH_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
-            BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
-            PREVIEW_ID="branch${BRANCH_NAME}"
           fi
+          BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
+          PREVIEW_ID="branch${BRANCH_NAME}"
           
           # Generate bucket name
           BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
