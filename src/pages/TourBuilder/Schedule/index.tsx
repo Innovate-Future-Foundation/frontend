@@ -1,6 +1,6 @@
 import { TBoard, TColumn } from "./TwoColumns/shared/data";
-import { Board } from "./TwoColumns/shared/board";
 import { Tour } from "@/types";
+import { Outlet } from "react-router-dom";
 // import { Tour } from "@/types";
 // import TourDetailForm from "./TourDetailForm";
 const destinationTours: Tour[] = [
@@ -205,7 +205,7 @@ const sourceTours: Tour[] = [
   }
 ];
 
-function getInitialData(): TBoard {
+export function getInitialData(): TBoard {
   // Doing this so we get consistent ids on server and client
   // const getCards = (() => {
   //   let count: number = 0;
@@ -232,7 +232,7 @@ function getInitialData(): TBoard {
 }
 
 const Schedule = () => {
-  return <Board initial={getInitialData()} />;
+  return <Outlet />;
 };
 
 export default Schedule;

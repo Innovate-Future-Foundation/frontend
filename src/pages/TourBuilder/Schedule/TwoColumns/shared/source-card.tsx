@@ -68,7 +68,7 @@ export function SourceCardDisplay({
   innerRef?: MutableRefObject<HTMLDivElement | null>;
 }) {
   return (
-    <div ref={outerRef} className={`flex flex-col gap-2 py-1  ${outerStyles[state.type]}`}>
+    <div ref={outerRef} className={`flex flex-col pt-4 pr-4  ${outerStyles[state.type]}`}>
       {/* Put a shadow before the item if closer to the top edge */}
       {state.type === "is-over" && state.closestEdge === "top" ? <SourceCardShadow dragging={state.dragging} /> : null}
       <div

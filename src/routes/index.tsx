@@ -20,11 +20,13 @@ import TourBuilderPage from "@/pages/TourBuilder";
 import ForgotPasswordForm from "@/pages/Authentication/ForgotPasswordForm";
 import LoginForm from "@/pages/Authentication/LoginForm";
 import RegisterForm from "@/pages/Authentication/RegisterForm";
-import TourDetailPage from "@/pages/Tour/TourDetailPage";
 import ContactLeader from "@/pages/TourBuilder/ContactLeader";
 import Schedule from "@/pages/TourBuilder/Schedule";
 import StudentsEnrollment from "@/pages/TourBuilder/StudentsEnrollment";
 import TourDetails from "@/pages/TourBuilder/TourDetails";
+import DayBuilder from "@/pages/TourBuilder/Schedule/DayBuilder";
+import ActivityBuilder from "@/pages/TourBuilder/Schedule/ActivityBuilder";
+import TourDetailPage from "@/pages/Tour/TourDetailPage";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 export type AppRoute = RouteObject & {
@@ -179,7 +181,21 @@ const router: AppRoute[] = [
           },
           {
             path: "schedule",
-            element: <Schedule />
+            element: <Schedule />,
+            children: [
+              {
+                index: true,
+                element: <DayBuilder />
+              },
+              {
+                path: "days",
+                element: <DayBuilder />
+              },
+              {
+                path: "activities",
+                element: <ActivityBuilder />
+              }
+            ]
           },
           {
             path: "studentsEnrollment",

@@ -333,7 +333,7 @@ export function Board({ initial }: { initial: TBoard }) {
     <>
       <TourBuilderLayout title={"Schedule"} subTitle={"Please add days and activities to the tour."}>
         <div
-          className="flex flex-col gap-4 overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin] w-full"
+          className="flex flex-col gap-4 mb-4 overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin] w-full"
           ref={scrollableRef}
         >
           {/* destination card list */}

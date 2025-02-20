@@ -9,12 +9,14 @@ import { type Edge, attachClosestEdge, extractClosestEdge } from "@atlaskit/prag
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { getCardData, getCardDropTargetData, isCardData, isDraggingACard, TColumn } from "./data";
 import { isShallowEqual } from "./is-shallow-equal";
-import { ChevronDown, GripVertical, Trash2 } from "lucide-react";
+import { ChevronDown, GripVertical, Plus, Trash2 } from "lucide-react";
 import clsx from "clsx";
 import { Tour } from "@/types";
 import { formatDateToMMDDYY } from "@/utils/formatters";
 import TourDetailForm from "@/pages/TourBuilder/TourDetails/TourDetailForm";
 import Avatar from "@/components/Avatar";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 type TDestinationCardState =
   | {
@@ -68,9 +70,16 @@ export function DestinationCardDisplay({
   outerRef?: React.MutableRefObject<HTMLDivElement | null>;
   innerRef?: MutableRefObject<HTMLDivElement | null>;
 }) {
+  const navigate = useNavigate();
   const [isExpand, setIsExpand] = useState(false);
   const hanldeExpand = () => {
     setIsExpand(!isExpand);
+  };
+  const handleDelete = (card: Tour) => {
+    console.log("deleting:", card);
+  };
+  const handleViewActivities = () => {
+    navigate("/tours/ou762iu3gjhgjasgfcyas71/build/schedule/activities");
   };
   return (
     <div ref={outerRef} className={`flex flex-col ${outerStyles[state.type]}`}>
@@ -104,13 +113,19 @@ export function DestinationCardDisplay({
             </div>
           </div>
         </div>
-        <div className="w-8 flex items-center justify-center text-primary-foreground60  hover:text-destructive cursor-pointer">
+        <div
+          className="w-8 flex items-center justify-center text-primary-foreground60  hover:text-destructive cursor-pointer"
+          onClick={() => handleDelete(card)}
+        >
           <Trash2 size={16} />
         </div>
       </div>
       {isExpand && (
-        <div className="p-3 -mt-3 border border-t-0 rounded-md rounded-t-none mx-8 bg-card">
+        <div className="p-3 -mt-3 border border-t-0 rounded-md rounded-t-none mx-8 bg-card ">
           <TourDetailForm tourDetail={card} />
+          <Button className="py-8 flex justify-start text-base font-semibold w-full" variant={"secondary"} onClick={handleViewActivities}>
+            <Plus strokeWidth={3} /> Add / View activities
+          </Button>
         </div>
       )}
       {/* Put a shadow after the item if closer to the bottom edge */}
