@@ -86,6 +86,11 @@ jobs:
             --region ${{ env.AWS_REGION }} \
             --create-bucket-configuration LocationConstraint=${{ env.AWS_REGION }}
           
+          # Disable block public access for the preview bucket
+          aws s3api put-public-access-block \
+            --bucket ${BUCKET_NAME} \
+            --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+          
           # Configure bucket policy
           aws s3api put-bucket-policy \
             --bucket ${BUCKET_NAME} \
@@ -182,7 +187,15 @@ jobs:
           BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
           
           # Empty and delete the bucket
+          echo "Cleaning up bucket: ${BUCKET_NAME}"
+          
+          # Remove bucket policy first
+          aws s3api delete-bucket-policy --bucket ${BUCKET_NAME} || true
+          
+          # Remove bucket contents
           aws s3 rm s3://${BUCKET_NAME} --recursive
+          
+          # Delete the bucket
           aws s3api delete-bucket --bucket ${BUCKET_NAME}
 
       - name: Notify Discord
