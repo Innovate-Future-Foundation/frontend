@@ -19,8 +19,38 @@ const tourDetail: Tour = {
   },
   title: "Science & Tech Tour",
   comment: "An exciting tour exploring STEM fields",
-  startTime: "2024-06-25T14:30:00Z",
-  endTime: "2024-06-27T18:00:00Z",
+  startTime: "2025-03-25T14:30:00Z",
+  endTime: "2025-03-27T18:00:00Z",
+  text: `
+    <h2>
+      Hi there,
+    </h2>
+    <p>
+      this is a basic <em>basic</em> example of <strong>Tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
+    </p>
+    <ul>
+      <li>
+        That’s a bullet list with one …
+      </li>
+      <li>
+        … or two list items.
+      </li>
+    </ul>
+    <p>
+      Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
+    </p>
+<pre><code class="language-css">body {
+  display: none;
+}</code></pre>
+    <p>
+      I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
+    </p>
+    <blockquote>
+      Wow, that’s amazing. Good work, boy! 👏
+      <br />
+      — Mom
+    </blockquote>
+  `,
   statusCode: "Active",
   coverImgUrl:
     "https://images.unsplash.com/photo-1528072164453-f4e8ef0d475a?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -86,7 +116,8 @@ const tourInfoFormSchema = z.object({
   dateRange: z.object({
     from: z.date(),
     to: z.date()
-  })
+  }),
+  text: z.string().optional()
 });
 
 const TourDetails = () => {
@@ -101,7 +132,8 @@ const TourDetails = () => {
       dateRange: {
         from: tourDetail?.startTime ? new Date(tourDetail.startTime) : new Date(),
         to: tourDetail?.endTime ? new Date(tourDetail.endTime) : new Date()
-      }
+      },
+      text: tourDetail?.text ?? ""
     }
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -138,7 +170,7 @@ const TourDetails = () => {
     console.log("Form Data for API:", formData);
     // mutation.mutate({ id: tourDetail.id!, bodyData: { ...data } });
 
-    setCurrentStep(Math.max(0, currentStep - 1));
+    setCurrentStep(Math.min(currentStep + 1, 3));
   });
 
   return (

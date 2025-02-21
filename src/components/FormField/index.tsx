@@ -9,14 +9,14 @@ import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { cn } from "@/lib/utils";
 import { formatDateToMMDDYY } from "@/utils/formatters";
-import { DateRange, SelectRangeEventHandler } from "react-day-picker";
+import { DateRange } from "react-day-picker";
 
 interface FormFieldItemProps<T extends FieldValues> extends ComponentProps<typeof Input> {
   fieldControl: Control<T>;
   name: FieldPath<T>;
   label: string;
   isDatePicker?: boolean;
-  handleSelect?: SelectRangeEventHandler;
+  handleSelect?: (range: DateRange | undefined) => void;
   selected?: DateRange;
 }
 
@@ -56,15 +56,7 @@ export const FormFieldItem = <T extends FieldValues>({
                 </FormControl>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="range"
-                  max={30}
-                  min={1}
-                  selected={selected ?? field.value}
-                  onSelect={handleSelect}
-                  disabled={{ before: new Date() }}
-                  initialFocus
-                />
+                <Calendar mode="range" selected={selected ?? field.value} onSelect={handleSelect} disabled={{ before: new Date() }} initialFocus />
               </PopoverContent>
             </Popover>
           ) : (

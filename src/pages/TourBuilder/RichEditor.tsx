@@ -24,10 +24,16 @@ import {
   Strikethrough,
   AlignLeft,
   AlignCenter,
-  AlignRight
+  AlignRight,
+  Type
 } from "lucide-react";
+import { FieldValues, UseFormSetValue } from "react-hook-form";
 
-const RichEditor = () => {
+interface RichEditorProps {
+  editorContent?: string;
+  setEditorContent: UseFormSetValue<FieldValues>;
+}
+const RichEditor: React.FC<RichEditorProps> = ({ editorContent, setEditorContent }) => {
   const editor = useEditor({
     extensions: [
       Document,
@@ -47,12 +53,16 @@ const RichEditor = () => {
         types: ["heading", "paragraph"]
       })
     ],
-    content: `
-        <h1>This is a 1st level heading</h1>
-        <h2>This is a 2nd level heading</h2>
-        <h3>This is a 3rd level heading</h3>
-        <h4>This 4th level heading will be converted to a paragraph, because levels are configured to be only 1, 2 or 3.</h4>
-      `
+    editorProps: {
+      attributes: {
+        class:
+          "prose max-w-none [&_h1]:text-xl [&_h1]:font-bold [&_h1]:text-foreground/80 [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-foreground/80 [&_h3]:text-medium [&_h3]:font-bold [&_h3]:text-foreground/80 [&_ol]:list-decimal [&_ol]:ml-5 [&_ul]:list-disc [&_ul]:ml-5"
+      }
+    },
+    content: editorContent,
+    onUpdate({ editor }) {
+      setEditorContent("text", editor.getHTML());
+    }
   }) as Editor;
 
   if (!editor) {
@@ -70,28 +80,34 @@ const RichEditor = () => {
           disabled={!editor.can().chain().focus().toggleBold().run()}
           className={clsx(`${editor.isActive("bold") ? "is-active text-secondary-foreground" : ""} hover:text-secondary-foreground `)}
         >
-          <BoldIcon size={20} />
+          <BoldIcon size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!editor.can().chain().focus().toggleItalic().run()}
           className={clsx(`${editor.isActive("italic") ? "is-active text-secondary-foreground" : ""} hover:text-secondary-foreground `)}
         >
-          <ItalicIcon size={20} />
+          <ItalicIcon size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editor.can().chain().focus().toggleStrike().run()}
           className={clsx(`${editor.isActive("strike") ? "is-active text-secondary-foreground" : ""} hover:text-secondary-foreground `)}
         >
-          <Strikethrough size={20} />
+          <Strikethrough size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           disabled={!editor.can().chain().focus().toggleUnderline().run()}
           className={clsx(`${editor.isActive("underline") ? "is-active text-secondary-foreground" : ""} hover:text-secondary-foreground `)}
         >
-          <UnderlineIcon size={20} />
+          <UnderlineIcon size={18} />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setParagraph().run()}
+          className={clsx(`${editor.isActive("paragraph") ? "is-active text-secondary-foreground" : ""} hover:text-secondary-foreground `)}
+        >
+          <Type size={18} />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
@@ -133,11 +149,7 @@ const RichEditor = () => {
           <AlignRight size={20} />
         </button>
       </div>
-      <div className="absolute h-16 z-20 bottom-[1px] left-[1px] rounded-b-sm right-[1px]">
-        <div className="absolute bottom-[16px] w-full h-[40px] bg-gradient-to-t from-card to-transparent z-20"></div>
-        <div className="absolute bottom-0 h-[16px] bg-card z-20 rounded-b-sm w-full"></div>
-      </div>
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} className="cursor-text" />
     </div>
   );
 };

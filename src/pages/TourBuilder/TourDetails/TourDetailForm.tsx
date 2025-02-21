@@ -2,7 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { FormFieldItem } from "@/components/FormField";
 import ImageUploader from "../ImgUploader";
-import { DateRange, SelectRangeEventHandler } from "react-day-picker";
+import { DateRange } from "react-day-picker";
 import { useState } from "react";
 import RichEditor from "../RichEditor";
 
@@ -16,7 +16,7 @@ const TourDetailForm: React.FC<TourDetailFormProps> = ({ form, initialImageUrl, 
   const { control, setValue, watch } = form;
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(watch("dateRange"));
 
-  const handleSelect: SelectRangeEventHandler = range => {
+  const handleSelect = (range?: DateRange) => {
     setSelectedDateRange(range);
     setValue("dateRange", range);
   };
@@ -32,7 +32,7 @@ const TourDetailForm: React.FC<TourDetailFormProps> = ({ form, initialImageUrl, 
 
         <FormFieldItem fieldControl={control} name="dateRange" label="Duration" isDatePicker selected={selectedDateRange} handleSelect={handleSelect} />
 
-        <RichEditor />
+        <RichEditor setEditorContent={form.setValue} editorContent={watch("text")} />
       </div>
     </Form>
   );
