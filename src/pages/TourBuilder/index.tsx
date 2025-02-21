@@ -37,7 +37,7 @@ const TourBuilderPage = () => {
   console.log("id", id);
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [isDirty, setIsDirty] = useState(() => new Array(navMenu?.length || 0).fill(false));
+  const [isDirty, setIsDirty] = useState([true, ...Array(navMenu?.length - 1 || 0).fill(false)]);
 
   const handleBack = () => {
     navigate("/dashboard/tours");
@@ -45,8 +45,8 @@ const TourBuilderPage = () => {
   return (
     <div className="bg-muted h-screen p-6 flex flex-col gap-4 overflow-y-hidden">
       <div className="flex h-12 items-center relative justify-center">
-        <Card className="absolute left-0 z-10 w-12 h-12 border-none flex items-center justify-center">
-          <StepBack className="text-muted-foreground/80" size={20} onClick={handleBack} />
+        <Card className="absolute left-0 z-10 w-12 h-12 border-none flex items-center justify-center cursor-pointer">
+          <StepBack className="text-muted-foreground/80 hover:text-secondary-foreground" size={20} onClick={handleBack} />
         </Card>
         <Card className="w-96 h-12 border-none flex items-center p-2 px-4">
           <ProgresBar />
