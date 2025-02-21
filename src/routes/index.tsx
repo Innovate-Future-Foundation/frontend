@@ -164,7 +164,7 @@ const router: AppRoute[] = [
     path: "tours",
     children: [
       {
-        path: ":id/build",
+        path: ":id",
         element: <TourBuilderPage />,
         children: [
           {

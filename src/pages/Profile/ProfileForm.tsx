@@ -72,7 +72,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userProfileDetail }) => {
 
   const handleProfileInfoSubmit = (data: z.infer<typeof profileInfoFormSchema>) => {
     console.log("User Info Submitted: ", data);
-    // TODO: Perform actions such as sending the data to the server
     mutation.mutate({ id: userProfileDetail.id!, bodyData: { ...data } });
   };
 

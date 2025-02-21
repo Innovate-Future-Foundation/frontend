@@ -4,6 +4,7 @@ import { ProgresBar } from "./ProgressBar";
 import { useState } from "react";
 import clsx from "clsx";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useTourBuilder } from "@/hooks/useTourBuilder";
 
 const navMenu = [
   {
@@ -36,7 +37,7 @@ const TourBuilderPage = () => {
   const { id } = useParams();
   console.log("id", id);
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  const { currentStep, setCurrentStep } = useTourBuilder();
   const [isDirty, setIsDirty] = useState([true, ...Array(navMenu?.length - 1 || 0).fill(false)]);
 
   const handleBack = () => {
@@ -75,10 +76,12 @@ const TourBuilderPage = () => {
                 });
                 navigate(menuItem.path);
               }}
-              className={clsx(`flex gap-2 items-center hover:bg-primary/10 p-2 rounded-lg z-10 ${currentStep === index && "bg-primary/10"}`)}
+              className={clsx(
+                `flex gap-2 items-center hover:bg-primary/10 p-2 rounded-lg z-10 ${currentStep === index && "bg-primary/10"} ${!isDirty[index] && "text-primary-foreground60"}`
+              )}
             >
               <menuItem.icon size={18} />
-              {menuItem.label}
+              <p>{menuItem.label}</p>
             </div>
           ))}
         </Card>

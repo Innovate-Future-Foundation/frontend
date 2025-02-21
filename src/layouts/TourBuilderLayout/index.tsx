@@ -8,9 +8,12 @@ export interface TourBuilderLayout {
   children?: ReactNode;
   title: string;
   subTitle: string;
+  handleBack?: () => void;
+  handleNext?: () => void;
+  handleComplete?: () => void;
 }
 
-const TourBuilderLayout: FC<TourBuilderLayout> = ({ children, title, subTitle }) => {
+const TourBuilderLayout: FC<TourBuilderLayout> = ({ children, title, subTitle, handleBack, handleNext, handleComplete }) => {
   return (
     <Card className="flex-1 border-none min-w-[600px] max-w-[800px] h-[calc(100vh-7rem)]">
       <p className="font-bold text-2xl text-foreground/80 mb-1 pt-6 px-6">{title}</p>
@@ -19,18 +22,30 @@ const TourBuilderLayout: FC<TourBuilderLayout> = ({ children, title, subTitle })
       <div className="h-[calc(100vh-18rem)] overflow-y-scroll">{children}</div>
 
       <Separator />
-      <div className="h-20 w-full flex justify-between items-center px-10">
-        <Button variant={"secondary"} className="px-12">
-          <div className="flex gap-2 items-center text-lg">
-            <ChevronLeft /> Back
-          </div>
-        </Button>
-        <Button variant={"default"} className="px-12 text-lg">
-          <div className="flex gap-2 items-center text-lg">
-            Next
-            <ChevronRight />
-          </div>
-        </Button>
+      <div className="h-20 w-full px-10 relative">
+        {handleBack && (
+          <Button variant={"secondary"} className="absolute top-6 px-12 left-10" onClick={handleBack}>
+            <div className="flex gap-2 items-center text-lg">
+              <ChevronLeft /> Back
+            </div>
+          </Button>
+        )}
+        {handleNext && (
+          <Button variant={"default"} className="absolute top-6 px-12 right-10" onClick={handleNext}>
+            <div className="flex gap-2 items-center text-lg">
+              Next
+              <ChevronRight />
+            </div>
+          </Button>
+        )}
+        {handleComplete && (
+          <Button variant={"default"} className="absolute top-6 px-12 rigth-10" onClick={handleComplete}>
+            <div className="flex gap-2 items-center text-lg">
+              Submit
+              <ChevronRight />
+            </div>
+          </Button>
+        )}
       </div>
     </Card>
   );

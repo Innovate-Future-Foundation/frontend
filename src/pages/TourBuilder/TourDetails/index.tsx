@@ -1,7 +1,12 @@
 import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 import TourDetailForm from "./TourDetailForm";
 import { Tour } from "@/types";
-// import TourDetailForm from "./TourDetailForm";
+import { useState } from "react";
+import { useTourBuilder } from "@/hooks/useTourBuilder";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 const tourDetail: Tour = {
   id: "a3e4b1d6-9c4a-4b73-982b-0fce77e88ac1",
   orgName: "Future Innovators Academy",
@@ -14,12 +19,8 @@ const tourDetail: Tour = {
   },
   title: "Science & Tech Tour",
   comment: "An exciting tour exploring STEM fields",
-  startDate: "2024-06-25T14:30:00Z",
-  endDate: "2024-06-27T18:00:00Z",
-  dateRange: {
-    from: new Date("2025-02-25T14:30:00Z"),
-    to: new Date("2025-02-27T18:00:00Z")
-  },
+  startTime: "2024-06-25T14:30:00Z",
+  endTime: "2024-06-27T18:00:00Z",
   statusCode: "Active",
   coverImgUrl:
     "https://images.unsplash.com/photo-1528072164453-f4e8ef0d475a?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -55,11 +56,95 @@ const tourDetail: Tour = {
   ]
 };
 
+const tourInfoFormSchema = z.object({
+  coverImgUrl: z
+    .string()
+    .optional()
+    .refine(value => !value || /^https?:\/\/[^\s$.?#].[^\s]*$/i.test(value), {
+      message: "Cover image URL must be a valid URL (e.g., https://example.com)."
+    }),
+  title: z
+    .string()
+    .min(2, {
+      message: "Title must be at least 2 characters."
+    })
+    .max(255, {
+      message: "Title must not exceed 50 characters."
+    }),
+  summary: z
+    .string()
+    .optional()
+    .refine(val => (val ? val.length : 0 <= 255), {
+      message: "Summary can't be more than 255 characters"
+    }),
+  comment: z
+    .string()
+    .optional()
+    .refine(val => (val ? val.length : 0 <= 255), {
+      message: "Comment can't be more than 500 characters"
+    }),
+  dateRange: z.object({
+    from: z.date(),
+    to: z.date()
+  })
+});
+
 const TourDetails = () => {
+  const tourInfoForm = useForm<z.infer<typeof tourInfoFormSchema>>({
+    resolver: zodResolver(tourInfoFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      coverImgUrl: tourDetail?.coverImgUrl ?? "",
+      title: tourDetail?.title ?? "",
+      summary: tourDetail?.summary ?? "",
+      comment: tourDetail?.comment ?? "",
+      dateRange: {
+        from: tourDetail?.startTime ? new Date(tourDetail.startTime) : new Date(),
+        to: tourDetail?.endTime ? new Date(tourDetail.endTime) : new Date()
+      }
+    }
+  });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const { currentStep, setCurrentStep } = useTourBuilder();
+
+  // const handleSuccess = () => {
+  //   if (tourInfoForm.formState.isDirty) {
+  //     tourInfoForm.reset(tourInfoForm.getValues());
+  //   }
+  // };
+
+  // const handleError = () => {
+  //   if (tourInfoForm.formState.isDirty) {
+  //     tourInfoForm.reset();
+  //   }
+  // };
+
+  // const mutation = useUpdateTour({ handleSuccess, handleError });
+  const getImageFile = (imgFile?: File) => {
+    if (imgFile) setImageFile(imgFile);
+  };
+  const handleSubmit = tourInfoForm.handleSubmit(data => {
+    console.log("Submitted Data:", data);
+    console.log("Uploaded Image:", imageFile);
+
+    // Example: Prepare form data for API
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("summary", data.summary ?? "");
+    formData.append("comment", data.comment ?? "");
+    if (imageFile) formData.append("coverImage", imageFile);
+
+    // API call (Mock)
+    console.log("Form Data for API:", formData);
+    // mutation.mutate({ id: tourDetail.id!, bodyData: { ...data } });
+
+    setCurrentStep(Math.max(0, currentStep - 1));
+  });
+
   return (
-    <TourBuilderLayout title={"Tour Details"} subTitle={"Please fill the details about the tour."}>
+    <TourBuilderLayout title={"Tour Details"} subTitle={"Please fill the details about the tour."} handleNext={handleSubmit}>
       <div className="p-6 pt-0">
-        <TourDetailForm tourDetail={tourDetail} />
+        <TourDetailForm form={tourInfoForm} initialImageUrl={tourDetail.coverImgUrl ?? ""} getImageFile={getImageFile} />
       </div>
     </TourBuilderLayout>
   );

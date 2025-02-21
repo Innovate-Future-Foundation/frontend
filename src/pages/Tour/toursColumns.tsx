@@ -95,7 +95,7 @@ export const toursColumns: ColumnDef<Tour>[] = [
       <div className={clsx(`flex gap-2 items-center m-2 ml-3 text-primary-foreground30`)}>
         <CalendarDays size={14} />
         <div className="lowercase text-xs truncate max-w-100 flex items-center gap-2 ">
-          {formatDateToMMDDYY(row.getValue("startDate"))} - {formatDateToMMDDYY(row.original.endDate ?? "")}
+          {formatDateToMMDDYY(row.getValue("startDate"))} - {formatDateToMMDDYY(row.original.endTime ?? "")}
         </div>
       </div>
     ),
