@@ -1,7 +1,12 @@
 import TourBuilderLayout from "@/layouts/TourBuilderLayout";
-import { Tour } from "@/types";
+import { ProfileInfo, Tour } from "@/types";
 import ContactLeaderForm from "./ContactLeaderForm";
 import { useTourBuilderNavigation } from "@/hooks/useTourBuilderNavigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ContactCard from "./ContactCard";
+// import { useEffect, useMemo } from "react";
 
 const tourDetail: Tour = {
   id: "a3e4b1d6-9c4a-4b73-982b-0fce77e88ac1",
@@ -52,21 +57,60 @@ const tourDetail: Tour = {
   ]
 };
 
+const leaderData: ProfileInfo = {
+  id: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  roleCode: "OrgTeacher",
+  name: "Alice Johnson",
+  email: "alice.johnson@example.com",
+  phone: "123-456-7890",
+  avatarUrl: "https://github.com/shadcn.png",
+  isActive: true,
+  isConfirmed: true
+};
+
+const leaderEmailFormSchema = z.object({
+  email: z.string().min(1, "Email is required").email({
+    message: "Invalid email format."
+  })
+});
+
 const ContactLeader = () => {
+  const leaderEmailForm = useForm<z.infer<typeof leaderEmailFormSchema>>({
+    resolver: zodResolver(leaderEmailFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      email: tourDetail.leaderInfo?.email ?? ""
+    }
+  });
   const { handleGoToNextStep, handleGoToPrevStep } = useTourBuilderNavigation();
 
-  const handleSubmit = () => {
-    //todo: collect datas
+  const handleSubmit = leaderEmailForm.handleSubmit(data => {
+    console.log("Submitted Data:", data);
+    // mutation.mutate({ id: tourDetail.id!, bodyData: { ...data } });
+
+    // handle goto next nav item
     handleGoToNextStep();
-  };
+  });
 
   const handleBack = () => {
     handleGoToPrevStep();
   };
+
+  // const email = useMemo(()=>{
+  //   leaderEmailForm.watch("email");
+  // },[leaderEmailForm]);
+
+  // useEffect(() => {
+  //   if(!leaderEmailForm.getFieldState("email").isValidating){
+
+  //   }
+  // }, [email]);
+
   return (
     <TourBuilderLayout title={"Contact Leader"} subTitle={"Please pick a teacher as the leader of the tour."} handleBack={handleBack} handleNext={handleSubmit}>
       <div className="p-6 pt-0">
-        <ContactLeaderForm tourDetail={tourDetail} />
+        <ContactLeaderForm form={leaderEmailForm} />
+        <ContactCard profile={leaderData} />
       </div>
     </TourBuilderLayout>
   );
