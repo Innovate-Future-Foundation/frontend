@@ -39,9 +39,9 @@ const TourBuilderLayout: FC<TourBuilderLayout> = ({ children, title, subTitle, h
           </Button>
         )}
         {handleComplete && (
-          <Button variant={"default"} className="absolute top-6 px-12 rigth-10" onClick={handleComplete}>
+          <Button variant={"default"} className="absolute top-6 px-12 right-10" onClick={handleComplete}>
             <div className="flex gap-2 items-center text-lg">
-              Submit
+              Complete
               <ChevronRight />
             </div>
           </Button>

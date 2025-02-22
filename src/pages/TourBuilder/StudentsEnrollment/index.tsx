@@ -2,6 +2,8 @@ import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 import StudentErollmentForm from "./StudentErollmentForm";
 import { Tour } from "@/types";
 import { ScrollList } from "@/components/ScrollList";
+import { useTourBuilderNavigation } from "@/hooks/useTourBuilderNavigation";
+
 const tourDetail: Tour = {
   id: "a3e4b1d6-9c4a-4b73-982b-0fce77e88ac1",
   orgName: "Future Innovators Academy",
@@ -15,12 +17,8 @@ const tourDetail: Tour = {
   },
   title: "Science & Tech Tour",
   comment: "An exciting tour exploring STEM fields",
-  startDate: "2024-06-25T14:30:00Z",
-  endDate: "2024-06-27T18:00:00Z",
-  dateRange: {
-    from: new Date("2025-02-25T14:30:00Z"),
-    to: new Date("2025-02-27T18:00:00Z")
-  },
+  startTime: "2024-06-25T14:30:00Z",
+  endTime: "2024-06-27T18:00:00Z",
   statusCode: "Active",
   coverImgUrl:
     "https://images.unsplash.com/photo-1528072164453-f4e8ef0d475a?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -57,8 +55,18 @@ const tourDetail: Tour = {
 };
 
 const StudentsEnrollment = () => {
+  const { handleGoToPrevStep } = useTourBuilderNavigation();
+
+  const handleSubmit = () => {
+    //todo: collect datas
+    // handleGoToNextStep();
+  };
+
+  const handleBack = () => {
+    handleGoToPrevStep();
+  };
   return (
-    <TourBuilderLayout title={"Students Enrollment"} subTitle={"Please enroll students to the tour."}>
+    <TourBuilderLayout title={"Students Enrollment"} subTitle={"Please enroll students to the tour."} handleBack={handleBack} handleComplete={handleSubmit}>
       <div className="p-6 pt-0 flex flex-col gap-5">
         <StudentErollmentForm tourDetail={tourDetail} />
         <ScrollList title={"Enrolled Students"} />

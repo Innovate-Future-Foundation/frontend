@@ -16,10 +16,21 @@ import { SourceCardList } from "./SourceCard";
 import { Tour } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useTourBuilderNavigation } from "@/hooks/useTourBuilderNavigation";
 
 export function Board({ initial }: { initial: TBoard }) {
   const [data, setData] = useState(initial);
   const scrollableRef = useRef<HTMLDivElement | null>(null);
+  const { handleGoToNextStep, handleGoToPrevStep } = useTourBuilderNavigation();
+
+  const handleSubmit = () => {
+    //todo: collect datas
+    handleGoToNextStep();
+  };
+
+  const handleBack = () => {
+    handleGoToPrevStep();
+  };
 
   useEffect(() => {
     const element = scrollableRef.current;
@@ -73,8 +84,8 @@ export function Board({ initial }: { initial: TBoard }) {
                 title: dragging.card.title,
                 orgName: dragging.card.orgName,
                 coverImgUrl: dragging.card.coverImgUrl,
-                startDate: dragging.card.startDate,
-                endDate: dragging.card.endDate
+                startTime: dragging.card.startTime,
+                endTime: dragging.card.endTime
               };
 
               const destinationCards = Array.from(destination.cards);
@@ -331,7 +342,7 @@ export function Board({ initial }: { initial: TBoard }) {
 
   return (
     <>
-      <TourBuilderLayout title={"Schedule"} subTitle={"Please add days and activities to the tour."}>
+      <TourBuilderLayout title={"Schedule"} subTitle={"Please add days and activities to the tour."} handleBack={handleBack} handleNext={handleSubmit}>
         <div
           className="flex flex-col gap-4 mb-4 overflow-y-auto [overflow-anchor:none] [scrollbar-color:theme(colors.slate.600)_theme(colors.slate.700)] [scrollbar-width:thin] w-full"
           ref={scrollableRef}
