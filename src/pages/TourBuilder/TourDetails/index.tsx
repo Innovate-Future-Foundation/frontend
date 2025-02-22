@@ -2,10 +2,10 @@ import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 import TourDetailForm from "./TourDetailForm";
 import { Tour } from "@/types";
 import { useState } from "react";
-import { useTourBuilder } from "@/hooks/useTourBuilder";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTourBuilderNavigation } from "@/hooks/useTourBuilderNavigation";
 
 const tourDetail: Tour = {
   id: "a3e4b1d6-9c4a-4b73-982b-0fce77e88ac1",
@@ -137,16 +137,15 @@ const TourDetails = () => {
     }
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const { currentStep, setCurrentStep } = useTourBuilder();
-
+  const { handleGoToNextStep } = useTourBuilderNavigation();
   // const handleSuccess = () => {
-  //   if (tourInfoForm.formState.isDirty) {
+  //   if (tourInfoForm.formState.visitedFlags) {
   //     tourInfoForm.reset(tourInfoForm.getValues());
   //   }
   // };
 
   // const handleError = () => {
-  //   if (tourInfoForm.formState.isDirty) {
+  //   if (tourInfoForm.formState.visitedFlags) {
   //     tourInfoForm.reset();
   //   }
   // };
@@ -166,11 +165,11 @@ const TourDetails = () => {
     formData.append("comment", data.comment ?? "");
     if (imageFile) formData.append("coverImage", imageFile);
 
-    // API call (Mock)
     console.log("Form Data for API:", formData);
     // mutation.mutate({ id: tourDetail.id!, bodyData: { ...data } });
 
-    setCurrentStep(Math.min(currentStep + 1, 3));
+    // handle goto next nav item
+    handleGoToNextStep();
   });
 
   return (

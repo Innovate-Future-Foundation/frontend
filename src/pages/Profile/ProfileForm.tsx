@@ -57,13 +57,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userProfileDetail }) => {
   const avatarAlt = "@InnovateFoundation";
 
   const handleSuccess = () => {
-    if (profileInfoForm.formState.isDirty) {
+    if (profileInfoForm.formState.visitedFlags) {
       profileInfoForm.reset(profileInfoForm.getValues());
     }
   };
 
   const handleError = () => {
-    if (profileInfoForm.formState.isDirty) {
+    if (profileInfoForm.formState.visitedFlags) {
       profileInfoForm.reset();
     }
   };
@@ -106,10 +106,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userProfileDetail }) => {
       <div className="h-4"></div>
       <div className="flex flex-col gap-4">
         <FormWrapper
-          disabled={!profileInfoForm.formState.isDirty}
+          disabled={!profileInfoForm.formState.visitedFlags}
           isPending={mutation.isPending}
-          isSuccess={!profileInfoForm.formState.isDirty && mutation.isSuccess}
-          isError={!profileInfoForm.formState.isDirty && mutation.isError}
+          isSuccess={!profileInfoForm.formState.visitedFlags && mutation.isSuccess}
+          isError={!profileInfoForm.formState.visitedFlags && mutation.isError}
           formTitle={"Personal Information"}
           onSave={profileInfoForm.handleSubmit(handleProfileInfoSubmit)}
         >

@@ -17,6 +17,7 @@ const leaderData: ProfileInfo = {
   isActive: true,
   isConfirmed: true
 };
+
 const leaderEmailFormSchema = z.object({
   email: z.string().min(1, "Email is required").email({
     message: "Invalid email format."
@@ -26,6 +27,7 @@ const leaderEmailFormSchema = z.object({
 interface TourDetailFormProps {
   tourDetail: Tour;
 }
+
 const ContactLeaderForm: React.FC<TourDetailFormProps> = ({ tourDetail }) => {
   const leaderEmailForm = useForm<z.infer<typeof leaderEmailFormSchema>>({
     resolver: zodResolver(leaderEmailFormSchema),
@@ -36,13 +38,13 @@ const ContactLeaderForm: React.FC<TourDetailFormProps> = ({ tourDetail }) => {
   });
 
   // const handleSuccess = () => {
-  //   if (tourInfoForm.formState.isDirty) {
+  //   if (tourInfoForm.formState.visitedFlags) {
   //     tourInfoForm.reset(tourInfoForm.getValues());
   //   }
   // };
 
   // const handleError = () => {
-  //   if (tourInfoForm.formState.isDirty) {
+  //   if (tourInfoForm.formState.visitedFlags) {
   //     tourInfoForm.reset();
   //   }
   // };

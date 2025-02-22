@@ -24,13 +24,13 @@ const StudentErollmentForm: React.FC<TourDetailFormProps> = ({ tourDetail }) => 
   });
 
   // const handleSuccess = () => {
-  //   if (tourInfoForm.formState.isDirty) {
+  //   if (tourInfoForm.formState.visitedFlags) {
   //     tourInfoForm.reset(tourInfoForm.getValues());
   //   }
   // };
 
   // const handleError = () => {
-  //   if (tourInfoForm.formState.isDirty) {
+  //   if (tourInfoForm.formState.visitedFlags) {
   //     tourInfoForm.reset();
   //   }
   // };
