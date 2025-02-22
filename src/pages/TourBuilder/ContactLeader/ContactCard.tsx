@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { ProfileInfo } from "@/types";
 import { abbreviateName } from "@/utils/formatters";
 import clsx from "clsx";
-import { CheckCheck, Mail, Smartphone } from "lucide-react";
+import { CheckCheck, CircleX, Mail, Smartphone } from "lucide-react";
 import React from "react";
 
 interface ContactCard {
@@ -13,7 +13,8 @@ interface ContactCard {
 }
 const ContactCard: React.FC<ContactCard> = ({ profile }) => {
   return (
-    <Card className="overflow-hidden max-w-72 ">
+    <Card className="overflow-hidden max-w-72 relative">
+      <CircleX className="absolute right-2 top-2 text-primary-foreground50 hover:text-primary-foreground30 cursor-pointer" />
       <div className={clsx(`flex flex-col ${profile.isActive ? "bg-secondary text-primary-foreground30" : "bg-accent text-primary-foreground60"}`)}>
         <div className="flex items-center gap-2 p-3 pb-0 justify-between">
           <div className="flex items-center gap-2">
