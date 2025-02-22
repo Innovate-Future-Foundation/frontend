@@ -1,8 +1,11 @@
 import TourBuilderLayout from "@/layouts/TourBuilderLayout";
-import StudentErollmentForm from "./StudentErollmentForm";
 import { Tour } from "@/types";
 import { ScrollList } from "@/components/ScrollList";
 import { useTourBuilderNavigation } from "@/hooks/useTourBuilderNavigation";
+import AddEmailForm from "../AddEmailForm";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const tourDetail: Tour = {
   id: "a3e4b1d6-9c4a-4b73-982b-0fce77e88ac1",
@@ -54,13 +57,28 @@ const tourDetail: Tour = {
   ]
 };
 
+const addEmailFormSchema = z.object({
+  email: z.string().min(1, "Email is required").email({
+    message: "Invalid email format."
+  })
+});
+
 const StudentsEnrollment = () => {
+  const studentEmailForm = useForm<z.infer<typeof addEmailFormSchema>>({
+    resolver: zodResolver(addEmailFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      email: tourDetail.leaderInfo?.email ?? ""
+    }
+  });
   const { handleGoToPrevStep } = useTourBuilderNavigation();
 
-  const handleSubmit = () => {
-    //todo: collect datas
-    // handleGoToNextStep();
-  };
+  const handleSubmit = studentEmailForm.handleSubmit(data => {
+    console.log("Submitted Data:", data);
+    // mutation.mutate({ id: tourDetail.id!, bodyData: { ...data } });
+
+    // handle goto next nav item
+  });
 
   const handleBack = () => {
     handleGoToPrevStep();
@@ -68,7 +86,7 @@ const StudentsEnrollment = () => {
   return (
     <TourBuilderLayout title={"Students Enrollment"} subTitle={"Please enroll students to the tour."} handleBack={handleBack} handleComplete={handleSubmit}>
       <div className="p-6 pt-0 flex flex-col gap-5">
-        <StudentErollmentForm tourDetail={tourDetail} />
+        <AddEmailForm form={studentEmailForm} />
         <ScrollList title={"Enrolled Students"} />
       </div>
     </TourBuilderLayout>

@@ -1,11 +1,11 @@
 import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 import { ProfileInfo, Tour } from "@/types";
-import ContactLeaderForm from "./ContactLeaderForm";
 import { useTourBuilderNavigation } from "@/hooks/useTourBuilderNavigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ContactCard from "./ContactCard";
+import AddEmailForm from "../AddEmailForm";
 // import { useEffect, useMemo } from "react";
 
 const tourDetail: Tour = {
@@ -68,15 +68,15 @@ const leaderData: ProfileInfo = {
   isConfirmed: true
 };
 
-const leaderEmailFormSchema = z.object({
+const addEmailFormSchema = z.object({
   email: z.string().min(1, "Email is required").email({
     message: "Invalid email format."
   })
 });
 
 const ContactLeader = () => {
-  const leaderEmailForm = useForm<z.infer<typeof leaderEmailFormSchema>>({
-    resolver: zodResolver(leaderEmailFormSchema),
+  const leaderEmailForm = useForm<z.infer<typeof addEmailFormSchema>>({
+    resolver: zodResolver(addEmailFormSchema),
     mode: "onChange",
     defaultValues: {
       email: tourDetail.leaderInfo?.email ?? ""
@@ -109,7 +109,7 @@ const ContactLeader = () => {
   return (
     <TourBuilderLayout title={"Contact Leader"} subTitle={"Please pick a teacher as the leader of the tour."} handleBack={handleBack} handleNext={handleSubmit}>
       <div className="p-6 pt-0">
-        <ContactLeaderForm form={leaderEmailForm} />
+        <AddEmailForm form={leaderEmailForm} />
         <ContactCard profile={leaderData} />
       </div>
     </TourBuilderLayout>
