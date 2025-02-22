@@ -7,7 +7,6 @@ export interface TourForm {
   summary?: string | null;
   text?: string | null;
   coverImgUrl?: string | null;
-  coverImgFile?: File | null;
   location?: string | null;
   startTime?: string;
   endTime?: string;

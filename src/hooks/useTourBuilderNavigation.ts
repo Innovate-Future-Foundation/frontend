@@ -30,6 +30,10 @@ export const useTourBuilderNavigation = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const handleSetCurrentStep = (newStep: number) => {
     if (newStep >= 0 && newStep < navMenu.length) {
       setCurrentStep(newStep);
@@ -37,5 +41,15 @@ export const useTourBuilderNavigation = () => {
     }
   };
 
-  return { tourId, currentStep, visitedFlags, setTourId, handleSetCurrentStep, handleGoToNextStep, handleGoToPrevStep, handleBackTourList };
+  return {
+    tourId,
+    currentStep,
+    visitedFlags,
+    setTourId,
+    handleSetCurrentStep,
+    handleGoToNextStep,
+    handleGoToPrevStep,
+    handleBackTourList,
+    handleGoBack
+  };
 };

@@ -13,23 +13,57 @@ import TourBuilderLayout from "@/layouts/TourBuilderLayout";
 import { Card } from "@/components/ui/card";
 import { DestinationCardList } from "./DestinationCard";
 import { SourceCardList } from "./SourceCard";
-import { Tour } from "@/types";
+import { Activity, Day } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useTourBuilderNavigation } from "@/hooks/useTourBuilderNavigation";
+import { useTourBuilderStore } from "@/store";
 
-export function Board({ initial }: { initial: TBoard }) {
+interface BoardProps {
+  type: CardType;
+  initial: TBoard;
+  dayId?: string;
+}
+
+export type CardType = "day" | "activity";
+
+export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
+  console.log("type", type);
   const [data, setData] = useState(initial);
   const scrollableRef = useRef<HTMLDivElement | null>(null);
-  const { handleGoToNextStep, handleGoToPrevStep } = useTourBuilderNavigation();
-
-  const handleSubmit = () => {
-    //todo: collect datas
-    handleGoToNextStep();
-  };
+  const { handleGoToNextStep, handleGoToPrevStep, handleGoBack } = useTourBuilderNavigation();
+  const { setScheduleDays, scheduleDays } = useTourBuilderStore();
+  const handleSubmit =
+    type === "day"
+      ? () => {
+          // Save day state
+          const updatedScheduleDays = data.columns.find(column => column.type === "destination")?.cards;
+          setScheduleDays(updatedScheduleDays as Day[]);
+          //TODO: Call api
+          handleGoToNextStep();
+        }
+      : undefined;
 
   const handleBack = () => {
-    handleGoToPrevStep();
+    if (type === "activity") {
+      // Save activity state
+      const updatedScheduleActivities = data.columns.find(column => column.type === "destination")?.cards;
+      const updatedScheduleDays = scheduleDays?.map(day => {
+        if (day.id === dayId) {
+          const newDay = { ...day };
+          newDay.activities = updatedScheduleActivities;
+          return newDay;
+        } else {
+          return day;
+        }
+      });
+
+      setScheduleDays(updatedScheduleDays as Day[]);
+      //TODO: call api
+      handleGoBack();
+    } else {
+      handleGoToPrevStep();
+    }
   };
 
   useEffect(() => {
@@ -56,7 +90,7 @@ export function Board({ initial }: { initial: TBoard }) {
           if (!home) {
             return;
           }
-          const cardIndexInHome = home.cards.findIndex(card => card.id === dragging.card.id);
+          const cardIndexInHome = home.cards?.findIndex(card => card.id === dragging.card.id);
 
           // dropping on a card
           if (isCardDropTargetData(dropTargetData)) {
@@ -74,27 +108,40 @@ export function Board({ initial }: { initial: TBoard }) {
 
             // Copy from source column to destination column
             if (home.type === "source" && destination.type === "destination") {
-              const indexOfTarget = destination.cards.findIndex(card => card.id === dropTargetData.card.id);
+              const indexOfTarget = destination.cards?.findIndex(card => card.id === dropTargetData.card.id);
 
               const closestEdge = extractClosestEdge(dropTargetData);
-              const finalIndex = closestEdge === "bottom" ? indexOfTarget + 1 : indexOfTarget;
+              const finalIndex = closestEdge === "bottom" ? (indexOfTarget ?? 0 + 1) : indexOfTarget;
 
-              const newCard: Tour = {
-                id: `card:${Date.now()}`,
-                title: dragging.card.title,
-                orgName: dragging.card.orgName,
-                coverImgUrl: dragging.card.coverImgUrl,
-                startTime: dragging.card.startTime,
-                endTime: dragging.card.endTime
-              };
+              let newCard;
+              if (type === "day") {
+                newCard = {
+                  title: dragging.card.title,
+                  comment: dragging.card.comment,
+                  summary: dragging.card.summary,
+                  coverImgUrl: dragging.card.coverImgUrl,
+                  text: dragging.card.text
+                } as Day;
+              } else {
+                newCard = {
+                  title: dragging.card.title,
+                  comment: dragging.card.comment,
+                  summary: dragging.card.summary,
+                  coverImgUrl: dragging.card.coverImgUrl,
+                  text: dragging.card.text,
+                  startTime: dragging.card.startTime,
+                  endTime: dragging.card.endTime
+                } as Activity;
+              }
 
-              const destinationCards = Array.from(destination.cards);
-              destinationCards.splice(finalIndex, 0, newCard); // Insert at exact position
+              const destinationCards = Array.from(destination.cards ?? []);
+              destinationCards.splice(finalIndex ?? 0, 0, newCard); // Insert at exact position
 
               const columns = [...data.columns];
               columns[destinationColumnIndex] = { ...destination, cards: destinationCards };
 
               setData({ ...data, columns });
+
               return;
             }
 
@@ -105,7 +152,7 @@ export function Board({ initial }: { initial: TBoard }) {
 
             // reordering in home column
             if (home.type === "destination" && destination.type === "destination") {
-              const cardFinishIndex = home.cards.findIndex(card => card.id === dropTargetData.card.id);
+              const cardFinishIndex = home.cards?.findIndex(card => card.id === dropTargetData.card.id);
 
               // could not find cards needed
               if (cardIndexInHome === -1 || cardFinishIndex === -1 || cardIndexInHome === cardFinishIndex) {
@@ -116,9 +163,9 @@ export function Board({ initial }: { initial: TBoard }) {
 
               const reordered = reorderWithEdge({
                 axis: "vertical",
-                list: home.cards,
-                startIndex: cardIndexInHome,
-                indexOfTarget: cardFinishIndex,
+                list: home.cards ?? [],
+                startIndex: cardIndexInHome ?? 0,
+                indexOfTarget: cardFinishIndex ?? 0,
                 closestEdgeOfTarget: closestEdge
               });
 
@@ -139,18 +186,18 @@ export function Board({ initial }: { initial: TBoard }) {
               return;
             }
 
-            const indexOfTarget = destination.cards.findIndex(card => card.id === dropTargetData.card.id);
+            const indexOfTarget = destination.cards?.findIndex(card => card.id === dropTargetData.card.id);
 
             const closestEdge = extractClosestEdge(dropTargetData);
-            const finalIndex = closestEdge === "bottom" ? indexOfTarget + 1 : indexOfTarget;
+            const finalIndex = closestEdge === "bottom" ? (indexOfTarget ?? 0 + 1) : indexOfTarget;
 
             // remove card from home list
-            const homeCards = Array.from(home.cards);
-            homeCards.splice(cardIndexInHome, 1);
+            const homeCards = Array.from(home.cards ?? []);
+            // homeCards.splice(cardIndexInHome??0, 1);
 
             // insert into destination list
-            const destinationCards = Array.from(destination.cards);
-            destinationCards.splice(finalIndex, 0, dragging.card);
+            const destinationCards = Array.from(destination.cards ?? []);
+            destinationCards.splice(finalIndex ?? 0, 0, dragging.card);
 
             const columns = Array.from(data.columns);
             columns[homeColumnIndex] = {
@@ -180,9 +227,9 @@ export function Board({ initial }: { initial: TBoard }) {
 
               // move to last position
               const reordered = reorder({
-                list: home.cards,
-                startIndex: cardIndexInHome,
-                finishIndex: home.cards.length - 1
+                list: home.cards ?? [],
+                startIndex: cardIndexInHome ?? 0,
+                finishIndex: home.cards?.length ?? 0 - 1
               });
 
               const updated: TColumn = {
@@ -197,14 +244,14 @@ export function Board({ initial }: { initial: TBoard }) {
 
             console.log("moving card to another column");
 
-            // remove card from home list
+            // // remove card from home list
 
-            const homeCards = Array.from(home.cards);
-            homeCards.splice(cardIndexInHome, 1);
+            const homeCards = Array.from(home.cards ?? []);
+            homeCards.splice(cardIndexInHome ?? 0, 1);
 
             // insert into destination list
-            const destinationCards = Array.from(destination.cards);
-            destinationCards.splice(destination.cards.length, 0, dragging.card);
+            const destinationCards = Array.from(destination.cards ?? []);
+            destinationCards.splice(destination.cards?.length ?? 0, 0, dragging.card);
 
             const columns = Array.from(data.columns);
             columns[homeColumnIndex] = {
@@ -321,17 +368,23 @@ export function Board({ initial }: { initial: TBoard }) {
   }, []);
 
   const handleAddOne = () => {
-    const newCard: Tour = {
-      id: `card:${Date.now()}`,
-      title: "No title"
-    };
+    let newCard;
+    if (type === "day") {
+      newCard = {
+        title: "No title"
+      } as Day;
+    } else {
+      newCard = {
+        title: "No title"
+      } as Activity;
+    }
 
     // Find the destination column (assuming it's the first column)
     const destinationColumnIndex = 0; // Change this if the index is dynamic
     const destinationColumn = data.columns[destinationColumnIndex];
 
     // Add the new card to the cards array of the destination column
-    const updatedCards = [...destinationColumn.cards, newCard];
+    const updatedCards = [...(destinationColumn.cards ?? []), newCard];
 
     // Update the columns state
     const updatedColumns = data.columns.map((column, index) => (index === destinationColumnIndex ? { ...column, cards: updatedCards } : column));
@@ -348,7 +401,7 @@ export function Board({ initial }: { initial: TBoard }) {
           ref={scrollableRef}
         >
           {/* destination card list */}
-          <DestinationCardList column={data.columns[0]} />
+          <DestinationCardList column={data.columns[0]} type={type} />
           <Button className="mx-8 py-8 flex justify-start text-base font-semibold" variant={"secondary"} onClick={handleAddOne}>
             <Plus strokeWidth={3} /> Add one more day
           </Button>
@@ -366,4 +419,4 @@ export function Board({ initial }: { initial: TBoard }) {
       </Card>
     </>
   );
-}
+};

@@ -3,10 +3,10 @@ import { Plus } from "lucide-react";
 
 interface ImageUploaderProps {
   imageUrl?: string | null;
-  getImageFile: (imageFile?: File) => void;
+  getImageUrl: (imageUrl?: string) => void;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ imageUrl, getImageFile }) => {
+const ImageUploader: React.FC<ImageUploaderProps> = ({ imageUrl, getImageUrl }) => {
   const [preview, setPreview] = useState<string | null>(imageUrl ?? null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -29,7 +29,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ imageUrl, getImageFile })
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
-      getImageFile(file);
+      //todo: invoke img upload api
+      const url =
+        "https://plus.unsplash.com/premium_photo-1697730221799-f2aa87ab2c5d?q=80&w=2748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+      getImageUrl(url);
       return () => URL.revokeObjectURL(objectUrl);
     }
   };
@@ -40,14 +43,14 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ imageUrl, getImageFile })
         {preview ? (
           <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${preview})` }} />
         ) : (
-          <p className="text-center text-gray-500">No image selected</p>
+          <div className="absolute inset-0 bg-cover bg-center bg-secondary-light text-primary-foreground80 text-center pt-12">No image selected</div>
         )}
 
         <input type="file" accept="image/*" className="hidden" id="image-upload" onChange={handleUploadClick} />
 
         <label
           htmlFor="image-upload"
-          className="absolute z-10 bg-secondary bg-opacity-75 px-4 py-2 rounded-lg cursor-pointer flex items-center gap-2 shadow-md hover:bg-opacity-100 transition"
+          className="absolute z-10 bg-secondary bg-opacity-75 px-4 py-2 rounded-lg cursor-pointer flex items-center gap-2 shadow-md hover:bg-opacity-100 transition text-primary"
         >
           <Plus className="w-5 h-5" />
           Select Cover Image

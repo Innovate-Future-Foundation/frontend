@@ -8,23 +8,33 @@ import RichEditor from "../RichEditor";
 
 interface TourDetailFormProps {
   form: UseFormReturn<any>;
-  initialImageUrl?: string;
-  getImageFile: (file?: File) => void;
+  // initialImageUrl?: string;
+  // getImageUrl: (imgUrl?: string) => void;
 }
 
-const TourDetailForm: React.FC<TourDetailFormProps> = ({ form, initialImageUrl, getImageFile }) => {
-  const { control, setValue, watch } = form;
+const TourDetailForm: React.FC<TourDetailFormProps> = ({ form }) => {
+  const { control, setValue, watch, trigger } = form;
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(watch("dateRange"));
 
   const handleSelect = (range?: DateRange) => {
     setSelectedDateRange(range);
-    setValue("dateRange", range);
+    setValue("dateRange", range, { shouldDirty: true });
+    trigger("dateRange");
   };
 
+  const handleEditorChange = (content: string) => {
+    setValue("text", content, { shouldDirty: true });
+    trigger("text");
+  };
+
+  const hanleSetImgUrl = (imgUrl?: string) => {
+    setValue("coverImgUrl", imgUrl, { shouldDirty: true });
+    trigger("coverImgUrl");
+  };
   return (
     <Form {...form}>
       <div className="space-y-4">
-        <ImageUploader imageUrl={initialImageUrl} getImageFile={getImageFile} />
+        <ImageUploader imageUrl={watch("coverImgUrl")} getImageUrl={hanleSetImgUrl} />
 
         <FormFieldItem fieldControl={control} name="title" label="Title*" placeholder="Enter title" />
         <FormFieldItem fieldControl={control} name="summary" label="Summary" placeholder="Optional Summary" />
@@ -32,7 +42,7 @@ const TourDetailForm: React.FC<TourDetailFormProps> = ({ form, initialImageUrl, 
 
         <FormFieldItem fieldControl={control} name="dateRange" label="Duration" isDatePicker selected={selectedDateRange} handleSelect={handleSelect} />
 
-        <RichEditor setEditorContent={form.setValue} editorContent={watch("text")} />
+        <RichEditor setEditorContent={handleEditorChange} editorContent={watch("text")} />
       </div>
     </Form>
   );

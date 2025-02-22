@@ -11,7 +11,7 @@ import { getCardData, getCardDropTargetData, isCardData, isDraggingACard, TColum
 import { isShallowEqual } from "./is-shallow-equal";
 import { GripVertical } from "lucide-react";
 import clsx from "clsx";
-import { Tour } from "@/types";
+import { Activity, Day } from "@/types";
 import { formatDateToMMDDYY } from "@/utils/formatters";
 import Avatar from "@/components/Avatar";
 
@@ -62,7 +62,7 @@ export function SourceCardDisplay({
   outerRef,
   innerRef
 }: {
-  card: Tour;
+  card: Day | Activity;
   state: TSourceCardState;
   outerRef?: React.MutableRefObject<HTMLDivElement | null>;
   innerRef?: MutableRefObject<HTMLDivElement | null>;
@@ -89,11 +89,13 @@ export function SourceCardDisplay({
         <div className={clsx(`flex flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 bg-card`)}>
           <div className="flex flex-col gap-1">
             <span className="truncate flex-grow flex-shrink">{card.title}</span>
-            <span className="text-sm font-normal text-primary-foreground30">
-              {formatDateToMMDDYY(card.startDate ?? "")} - {formatDateToMMDDYY(card.endDate ?? "")}
-            </span>
+            {(card.startTime && card.endTime) ?? (
+              <span className="text-sm font-normal text-primary-foreground30">
+                {formatDateToMMDDYY(card.startTime ?? "")} - {formatDateToMMDDYY(card.endTime ?? "")}
+              </span>
+            )}
           </div>
-          <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.orgName ?? ""} />
+          <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.title ?? ""} />
         </div>
       </div>
 
@@ -103,7 +105,7 @@ export function SourceCardDisplay({
   );
 }
 
-export function SourceCard({ card, columnId }: { card: Tour; columnId: string }) {
+export function SourceCard({ card, columnId }: { card: Day | Activity; columnId: string }) {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TSourceCardState>(idle);
@@ -207,5 +209,5 @@ export function SourceCard({ card, columnId }: { card: Tour; columnId: string })
 }
 
 export const SourceCardList = memo(function SourceCardList({ column }: { column: TColumn }) {
-  return column.cards.map(card => <SourceCard key={card.id} card={card} columnId={column.id} />);
+  return column.cards?.map(card => <SourceCard key={card.id} card={card} columnId={column.id} />);
 });

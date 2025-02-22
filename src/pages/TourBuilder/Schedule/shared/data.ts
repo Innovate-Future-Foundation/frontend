@@ -1,10 +1,10 @@
-import { Tour } from "@/types";
+import { Activity, Day } from "@/types";
 
 export type TColumn = {
   id: string;
   title: string;
   type: TColumnType;
-  cards: Tour[];
+  cards: Day[] | Activity[] | null;
 };
 
 export type TColumnType = "source" | "destination";
@@ -16,7 +16,7 @@ export type TBoard = {
 const cardKey = Symbol("card");
 export type TCardData = {
   [cardKey]: true;
-  card: Tour;
+  card: Day | Activity;
   columnId: string;
   rect: DOMRect;
 };
@@ -41,7 +41,7 @@ export function isDraggingACard({ source }: { source: { data: Record<string | sy
 const cardDropTargetKey = Symbol("card-drop-target");
 export type TCardDropTargetData = {
   [cardDropTargetKey]: true;
-  card: Tour;
+  card: Day | Activity;
   columnId: string;
 };
 
