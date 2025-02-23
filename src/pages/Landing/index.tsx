@@ -252,7 +252,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="w-full min-h-screen bg-[#E6F0FF]">
-      <div className="w-full max-w-[1440px] min-h-screen mx-auto bg-white">
+      <div className="w-full max-w-[1440px] min-h-screen mx-auto bg-white pb-40">
         <header className="flex items-center justify-between h-20 px-[5.6%]">
           <div className="flex items-center">
             <img src="https://placehold.co/40x40/0066FF/FFFFFF/png?text=IF" alt="logo" className="w-10 h-10 rounded-full" />
@@ -532,6 +532,231 @@ const LandingPage: React.FC = () => {
                 </svg>
               </div>
             </button>
+          </div>
+        </div>
+
+        {/* Membership Section */}
+        <div className="px-[5.6%] py-32">
+          <h2 className="text-3xl font-bold text-center mb-16">Unlock Your Potential with IFA Membership</h2>
+
+          {/* Event Cards Grid */}
+          <div className="grid grid-cols-4 gap-6 mb-16">
+            {/* General AI Professional Development */}
+            <div className="flex flex-col h-full justify-between">
+              <div>
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
+                  <img src="/assets/images/1.jpg" alt="General AI Professional Development" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-lg font-semibold mb-3">General AI Professional Development</h3>
+              </div>
+              <button className="flex items-center gap-2 text-gray-600 hover:text-[#046FFB] transition-colors font-semibold group">
+                Read More
+                <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center group-hover:bg-[#046FFB]/10">
+                  <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
+                </div>
+              </button>
+            </div>
+
+            {/* Quantum Computing Seminar */}
+            <div className="flex flex-col h-full justify-between">
+              <div>
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
+                  <img src="/assets/images/2.jpg" alt="Quantum Computing Seminar" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-lg font-semibold mb-3">Quantum Computing Seminar</h3>
+              </div>
+              <button className="flex items-center gap-2 text-gray-600 hover:text-[#046FFB] transition-colors font-semibold group">
+                Read More
+                <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center group-hover:bg-[#046FFB]/10">
+                  <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
+                </div>
+              </button>
+            </div>
+
+            {/* AI in AWS */}
+            <div className="flex flex-col h-full justify-between">
+              <div>
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
+                  <img src="/assets/images/3.jpg" alt="AI in AWS" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-lg font-semibold mb-3">AI in AWS</h3>
+              </div>
+              <button className="flex items-center gap-2 text-gray-600 hover:text-[#046FFB] transition-colors font-semibold group">
+                Read More
+                <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center group-hover:bg-[#046FFB]/10">
+                  <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
+                </div>
+              </button>
+            </div>
+
+            {/* Past Events for Shanghai */}
+            <div className="flex flex-col h-full justify-between">
+              <div>
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
+                  <img src="/assets/images/4.jpg" alt="Past Events for Shanghai" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-lg font-semibold mb-3">Past Events for Shanghai</h3>
+              </div>
+              <button className="flex items-center gap-2 text-gray-600 hover:text-[#046FFB] transition-colors font-semibold group">
+                Read More
+                <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center group-hover:bg-[#046FFB]/10">
+                  <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-center items-center gap-6">
+            <button className="px-6 py-3 bg-[#046FFB] text-white font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+              Register Now
+              <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </button>
+            <button className="px-6 py-3 border border-[#1A1A1A] text-[#1A1A1A] font-bold rounded-full hover:bg-gray-50 transition-colors flex items-center gap-2">
+              See More Events
+              <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center">
+                <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2" />
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Membership Tiers */}
+        <div className="px-[5.6%] py-32">
+          <h2 className="text-3xl font-bold text-center mb-24">IFA Exclusive Events & Global Experiences</h2>
+
+          <div className="grid grid-cols-3 gap-8 mb-16">
+            {/* Basic Tier */}
+            <div className="relative bg-[#F8F9FB] rounded-2xl p-12 flex flex-col items-center">
+              <img src="/assets/icons/basic.svg" alt="Basic" className="w-16 h-16 mb-4" />
+              <h3 className="text-xl font-semibold mb-2 p-2">Basic</h3>
+              <p className="text-gray-600 text-center mb-12 text-sm">Some content is accessible</p>
+
+              {/* semi-circle */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-white rounded-t-full"></div>
+
+              {/* circle button */}
+              <div className="absolute bottom-[-24px] left-1/2 transform -translate-x-1/2 w-12 h-12 bg-[#F2F4F7] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#046FFB]/10 shadow-md">
+                <img src="/assets/icons/arrow.svg" alt="arrow" className="w-3 h-3" />
+              </div>
+            </div>
+
+            {/* Premium Tier */}
+            <div className="relative bg-[#F8F9FB] rounded-2xl p-12 flex flex-col items-center">
+              <img src="/assets/icons/premium.svg" alt="Premium" className="w-16 h-16 mb-4" />
+              <h3 className="text-xl font-semibold mb-2 p-2">Premium</h3>
+              <p className="text-gray-600 text-center mb-12 text-sm">Discounts on exclusive courses and study Tours</p>
+
+              {/* semi-circle */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-white rounded-t-full"></div>
+
+              {/* circle button */}
+              <div className="absolute bottom-[-24px] left-1/2 transform -translate-x-1/2 w-12 h-12 bg-[#F2F4F7] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#046FFB]/10 shadow-md">
+                <img src="/assets/icons/arrow.svg" alt="arrow" className="w-3 h-3" />
+              </div>
+            </div>
+
+            {/* VIP Tier */}
+            <div className="relative bg-[#F8F9FB] rounded-2xl p-12 flex flex-col items-center">
+              <img src="/assets/icons/vip.svg" alt="IFA VIP" className="w-16 h-16 mb-4" />
+              <h3 className="text-xl font-semibold mb-2 p-2">IFA VIP</h3>
+              <p className="text-gray-600 text-center mb-12 text-sm">Tutor 1V1 + AI interview guide</p>
+
+              {/* semi-circle */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-white rounded-t-full"></div>
+
+              {/* circle button */}
+              <div className="absolute bottom-[-24px] left-1/2 transform -translate-x-1/2 w-12 h-12 bg-[#F2F4F7] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#046FFB]/10 shadow-md">
+                <img src="/assets/icons/arrow.svg" alt="arrow" className="w-3 h-3" />
+              </div>
+            </div>
+          </div>
+
+          {/* Upgrade Button */}
+          <div className="flex justify-center mt-24 mb-24">
+            <button className="px-6 py-3 bg-[#046FFB] text-white font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+              Upgrade Now
+              <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Community Section */}
+        <div className="px-[5.6%]">
+          <div className="relative bg-[#F8F9FB] rounded-3xl overflow-hidden">
+            {/* image container */}
+            <div className="relative w-full h-[600px]">
+              <img src="/assets/images/test.jpg" alt="IFA Community" className="w-full h-full object-cover" />
+            </div>
+
+            {/* top right content */}
+            <div className="absolute top-12 right-12 max-w-[580px]">
+              <h2 className="text-4xl font-bold text-[#1A1A1A] mb-6">Join the IFA community and expand the possibilities</h2>
+              <p className="text-gray-600 text-lg mb-8">
+                Whether you are a future engineer, technology entrepreneur, or an explorer with a passion for innovation, IFA welcomes you to join us! Here, you
+                can meet like-minded partners, get mentors, master cutting-edge technology, and start a new journey of professional growth!
+              </p>
+              <button className="px-6 py-3 bg-[#046FFB] text-white font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+                Join the Community
+                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+
+            {/* bottom left tag list */}
+            <div className="absolute bottom-12 left-12 flex flex-col gap-4">
+              <div className="bg-white/20 backdrop-blur-[2px] px-6 py-3 rounded-full w-fit">
+                <span className="text-white font-medium">AI automatically pushes the latest events & information</span>
+              </div>
+              <div className="bg-white/20 backdrop-blur-[2px] px-6 py-3 rounded-full w-fit">
+                <span className="text-white font-medium">IFA Connect (Forums & Resources)</span>
+              </div>
+              <div className="bg-white/20 backdrop-blur-[2px] px-6 py-3 rounded-full w-fit">
+                <span className="text-white font-medium">Industry mentor guidance & student exchange group</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Support Section */}
+        <div className="px-[5.6%] mt-32 py-32">
+          <div className="bg-[#F8F9FB] rounded-3xl p-16 flex justify-between items-center">
+            {/* Left Content */}
+            <div className="max-w-[520px]">
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-6">Support IFA to help cultivate future scientific and technological talents</h2>
+              <div className="flex flex-col gap-2 text-gray-600">
+                <p>Every donation you make is a strength for the future!</p>
+                <p>Support us to benefit more students!</p>
+              </div>
+            </div>
+
+            {/* Right Content */}
+            <div className="max-w-[600px] pl-8">
+              <p className="text-gray-600 text-sm mb-8">
+                Your support will directly impact the growth of young scientific and technological talents around the world, helping them to access quality
+                educational resources, innovation opportunities and international perspectives. Let us work together to promote science and technology education
+                and ignite the innovation dreams of the next generation!
+              </p>
+              <button className="px-6 py-3 bg-[#046FFB] text-white text-sm font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+                Donate now to change the future
+                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
