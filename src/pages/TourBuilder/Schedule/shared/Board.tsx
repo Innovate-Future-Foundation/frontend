@@ -28,7 +28,6 @@ interface BoardProps {
 export type CardType = "day" | "activity";
 
 export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
-  console.log("type", type);
   const [data, setData] = useState(initial);
   const scrollableRef = useRef<HTMLDivElement | null>(null);
   const { handleGoToNextStep, handleGoToPrevStep, handleGoBack } = useTourBuilderNavigation();
@@ -116,6 +115,7 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
               let newCard;
               if (type === "day") {
                 newCard = {
+                  id: crypto.randomUUID(),
                   title: dragging.card.title,
                   comment: dragging.card.comment,
                   summary: dragging.card.summary,
@@ -124,6 +124,7 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
                 } as Day;
               } else {
                 newCard = {
+                  id: crypto.randomUUID(),
                   title: dragging.card.title,
                   comment: dragging.card.comment,
                   summary: dragging.card.summary,
@@ -371,10 +372,12 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
     let newCard;
     if (type === "day") {
       newCard = {
+        id: crypto.randomUUID(),
         title: "No title"
       } as Day;
     } else {
       newCard = {
+        id: crypto.randomUUID(),
         title: "No title"
       } as Activity;
     }
@@ -401,10 +404,16 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
           ref={scrollableRef}
         >
           {/* destination card list */}
-          <DestinationCardList column={data.columns[0]} type={type} />
-          <Button className="mx-8 py-8 flex justify-start text-base font-semibold" variant={"secondary"} onClick={handleAddOne}>
-            <Plus strokeWidth={3} /> Add one more day
-          </Button>
+          <DestinationCardList column={data.columns.find(c => c.type === "destination")!} type={type} />
+          {type === "day" ? (
+            <Button className="mx-8 py-8 flex justify-start text-base font-semibold" variant={"secondary"} onClick={handleAddOne}>
+              <Plus strokeWidth={3} /> Add one more day
+            </Button>
+          ) : (
+            <Button className="mx-8 py-8 flex justify-start text-base font-semibold" variant={"secondary"} onClick={handleAddOne}>
+              <Plus strokeWidth={3} /> Add one more activity
+            </Button>
+          )}
         </div>
       </TourBuilderLayout>
 
@@ -414,7 +423,7 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
           ref={scrollableRef}
         >
           {/* source card list */}
-          <SourceCardList column={data.columns[1]} />
+          <SourceCardList column={data.columns.find(c => c.type === "source")!} />
         </div>
       </Card>
     </>

@@ -12,7 +12,7 @@ import { isShallowEqual } from "./is-shallow-equal";
 import { GripVertical } from "lucide-react";
 import clsx from "clsx";
 import { Activity, Day } from "@/types";
-import { formatDateToMMDDYY } from "@/utils/formatters";
+import { formatTo24HourTime } from "@/utils/formatters";
 import Avatar from "@/components/Avatar";
 
 type TSourceCardState =
@@ -89,9 +89,9 @@ export function SourceCardDisplay({
         <div className={clsx(`flex flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 bg-card`)}>
           <div className="flex flex-col gap-1">
             <span className="truncate flex-grow flex-shrink">{card.title}</span>
-            {(card.startTime && card.endTime) ?? (
+            {card.startTime && card.endTime && (
               <span className="text-sm font-normal text-primary-foreground30">
-                {formatDateToMMDDYY(card.startTime ?? "")} - {formatDateToMMDDYY(card.endTime ?? "")}
+                {formatTo24HourTime(card.startTime ?? "")} - {formatTo24HourTime(card.endTime ?? "")}
               </span>
             )}
           </div>

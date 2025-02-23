@@ -8,15 +8,16 @@ import RichEditor from "../RichEditor";
 
 interface TourDetailFormProps {
   form: UseFormReturn<any>;
-  // initialImageUrl?: string;
-  // getImageUrl: (imgUrl?: string) => void;
+  dateTimeRange?: "date" | "time";
 }
 
-const TourDetailForm: React.FC<TourDetailFormProps> = ({ form }) => {
+const TourDetailForm: React.FC<TourDetailFormProps> = ({ form, dateTimeRange = undefined }) => {
   const { control, setValue, watch, trigger } = form;
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(watch("dateRange"));
 
-  const handleSelect = (range?: DateRange) => {
+  // const [selectedTimeRange, setSelectedTimeRange] = useState<Value | undefined>(watch("timeRange"));
+
+  const handleDateRangeSelect = (range?: DateRange) => {
     setSelectedDateRange(range);
     setValue("dateRange", range, { shouldDirty: true });
     trigger("dateRange");
@@ -31,17 +32,35 @@ const TourDetailForm: React.FC<TourDetailFormProps> = ({ form }) => {
     setValue("coverImgUrl", imgUrl, { shouldDirty: true });
     trigger("coverImgUrl");
   };
+
+  // const handleTimeOnchange = (value?: Value) => {
+  //   setSelectedTimeRange(value);
+  //   setValue("timeRange", value, { shouldDirty: true });
+  //   trigger("timeRange");
+  // };
   return (
     <Form {...form}>
       <div className="space-y-4">
         <ImageUploader imageUrl={watch("coverImgUrl")} getImageUrl={hanleSetImgUrl} />
-
         <FormFieldItem fieldControl={control} name="title" label="Title*" placeholder="Enter title" />
         <FormFieldItem fieldControl={control} name="summary" label="Summary" placeholder="Optional Summary" />
         <FormFieldItem fieldControl={control} name="comment" label="Comment" placeholder="Optional Comment" />
-
-        <FormFieldItem fieldControl={control} name="dateRange" label="Duration" isDatePicker selected={selectedDateRange} handleSelect={handleSelect} />
-
+        {dateTimeRange === "date" && (
+          <FormFieldItem
+            fieldControl={control}
+            name="dateRange"
+            label="Duration"
+            isDatePicker
+            selected={selectedDateRange}
+            handleSelect={handleDateRangeSelect}
+          />
+        )}
+        {dateTimeRange === "time" && (
+          // <div className="flex w-full ">
+          //   <TimeRangePicker onChange={handleTimeOnchange} value={selectedTimeRange} />
+          // </div>
+          <p>help</p>
+        )}
         <RichEditor setEditorContent={handleEditorChange} editorContent={watch("text")} />
       </div>
     </Form>

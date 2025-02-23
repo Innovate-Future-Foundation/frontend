@@ -20,10 +20,17 @@ export const formatDateToDDMMYYYY = (isoDate: string): string => {
 
 export const formatDateToMMDDYY = (isoDate: string): string => {
   const date = new Date(isoDate);
-  const day = String(date.getDate()).padStart(2, "0"); // Ensure two-digit day
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Ensure two-digit month
-  const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
   return `${month}/${day}/${year}`;
+};
+
+export const formatTo24HourTime = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
 };
 
 export const formatTimeAgo = (timestamp: string | number | Date): string => {

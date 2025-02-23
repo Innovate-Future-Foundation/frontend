@@ -192,7 +192,7 @@ const router: AppRoute[] = [
                 element: <DayBuilder />
               },
               {
-                path: "days:id",
+                path: "days/:id",
                 element: <ActivityBuilder />
               }
             ]

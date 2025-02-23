@@ -13,7 +13,14 @@ export interface TourBuilderLayout {
   handleComplete?: () => void;
 }
 
-const TourBuilderLayout: FC<TourBuilderLayout> = ({ children, title, subTitle, handleBack, handleNext, handleComplete }) => {
+const TourBuilderLayout: FC<TourBuilderLayout> = ({
+  children,
+  title,
+  subTitle,
+  handleBack = undefined,
+  handleNext = undefined,
+  handleComplete = undefined
+}) => {
   return (
     <Card className="flex-1 border-none min-w-[600px] max-w-[800px] h-[calc(100vh-7rem)]">
       <p className="font-bold text-2xl text-foreground/80 mb-1 pt-6 px-6">{title}</p>

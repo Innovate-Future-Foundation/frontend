@@ -37,6 +37,7 @@ export const tourInfoFormSchema = z.object({
     from: z.date(),
     to: z.date()
   }),
+  // timeRange: z.array(z.string().nullable(), z.string().nullable()),
   text: z.string().optional()
 });
 
@@ -86,7 +87,7 @@ const TourDetails = () => {
   return (
     <TourBuilderLayout title={"Tour Details"} subTitle={"Please fill the details about the tour."} handleNext={handleSubmit}>
       <div className="p-6 pt-0">
-        <TourDetailForm form={tourInfoForm} />
+        <TourDetailForm form={tourInfoForm} dateTimeRange={"date"} />
       </div>
     </TourBuilderLayout>
   );

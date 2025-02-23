@@ -9,10 +9,10 @@ import { type Edge, attachClosestEdge, extractClosestEdge } from "@atlaskit/prag
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 import { getCardData, getCardDropTargetData, isCardData, isDraggingACard, TColumn } from "./data";
 import { isShallowEqual } from "./is-shallow-equal";
-import { ChevronDown, GripVertical, Plus, Trash2 } from "lucide-react";
+import { ArrowRight, ChevronDown, GripVertical, Trash2 } from "lucide-react";
 import clsx from "clsx";
 import { Activity, Day } from "@/types";
-import { formatDateToMMDDYY } from "@/utils/formatters";
+import { formatTo24HourTime } from "@/utils/formatters";
 import TourDetailForm from "@/pages/TourBuilder/TourDetails/TourDetailForm";
 import Avatar from "@/components/Avatar";
 import { Button } from "@/components/ui/button";
@@ -66,12 +66,14 @@ export function DestinationCardShadow({ dragging }: { dragging: DOMRect }) {
 }
 
 export function DestinationCardDisplay({
+  order,
   card,
   state,
   outerRef,
   innerRef,
   type
 }: {
+  order: number;
   card: Day | Activity;
   state: TDestinationCardState;
   outerRef?: React.MutableRefObject<HTMLDivElement | null>;
@@ -88,7 +90,7 @@ export function DestinationCardDisplay({
     console.log("deleting:", card);
   };
   const handleViewActivities = () => {
-    navigate("/tours/ou762iu3gjhgjasgfcyas71/build/schedule/days/88789798678jhsgd65");
+    navigate("/tours/ou762iu3gjhgjasgfcyas71/schedule/days/a3e4b1d6-9c4a-4b73-982b-4fce77e88ac4");
   };
 
   const activityInfoForm = useForm<z.infer<typeof tourInfoFormSchema>>({
@@ -99,10 +101,7 @@ export function DestinationCardDisplay({
       title: card?.title ?? "",
       summary: card?.summary ?? "",
       comment: card?.comment ?? "",
-      dateRange: {
-        from: card?.startTime ? new Date(card.startTime) : new Date(),
-        to: card?.endTime ? new Date(card.endTime) : new Date()
-      },
+      timeRange: [card?.startTime ? card.startTime.substring(11, 16) : null, card?.endTime ? card.endTime.substring(11, 16) : null],
       text: card?.text ?? ""
     }
   });
@@ -115,10 +114,6 @@ export function DestinationCardDisplay({
       title: card?.title ?? "",
       summary: card?.summary ?? "",
       comment: card?.comment ?? "",
-      dateRange: {
-        from: card?.startTime ? new Date(card.startTime) : new Date(),
-        to: card?.endTime ? new Date(card.endTime) : new Date()
-      },
       text: card?.text ?? ""
     }
   });
@@ -145,15 +140,20 @@ export function DestinationCardDisplay({
           )}
         >
           <div className="flex flex-col gap-1">
-            <span className="truncate flex-grow flex-shrink">{card.title}</span>
+            <span className="truncate flex-grow flex-shrink">
+              {type === "day" && `Day ${order + 1}: `}
+              {card.title}
+            </span>
             {card.startTime && card.endTime && (
               <span className="text-sm font-normal text-primary-foreground30">
-                {formatDateToMMDDYY(card.startTime ?? "")} - {formatDateToMMDDYY(card.endTime ?? "")}
+                {formatTo24HourTime(card.startTime ?? "")} - {formatTo24HourTime(card.endTime ?? "")}
               </span>
             )}
           </div>
           <div className="flex justify-center items-center gap-4">
-            {card.coverImgUrl && <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.title ?? ""} />}
+            {card.coverImgUrl && !isExpand && (
+              <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.title ?? ""} />
+            )}
             <div className="flex justify-center text-primary-foreground60 hover:text-primary-foreground30">
               <ChevronDown onClick={hanldeExpand} />
             </div>
@@ -167,11 +167,14 @@ export function DestinationCardDisplay({
         </div>
       </div>
       {isExpand && (
-        <div className="p-3 -mt-3 border border-t-0 rounded-md rounded-t-none mx-8 bg-card gap-2">
-          <TourDetailForm form={type === "day" ? dayInfoForm : activityInfoForm} />
-          <Button className="py-8 flex justify-start text-base font-semibold w-full" variant={"secondary"} onClick={handleViewActivities}>
-            <Plus strokeWidth={3} /> Add / View activities
-          </Button>
+        <div className="flex flex-col gap-2 p-3 -mt-3 border border-t-0 rounded-md rounded-t-none mx-8 bg-card">
+          <TourDetailForm form={type === "day" ? dayInfoForm : activityInfoForm} dateTimeRange={type === "day" ? undefined : "time"} />
+          {type === "day" && (
+            <Button className="py-8 pl-2 flex items-center justify-start text-base font-semibold w-full" variant={"link"} onClick={handleViewActivities}>
+              Manage Activities
+              <ArrowRight strokeWidth={3} size={24} />
+            </Button>
+          )}
         </div>
       )}
       {/* Put a shadow after the item if closer to the bottom edge */}
@@ -180,7 +183,7 @@ export function DestinationCardDisplay({
   );
 }
 
-export function DestinationCard({ card, columnId, type }: { card: Day | Activity; columnId: string; type: CardType }) {
+export function DestinationCard({ order, card, columnId, type }: { order: number; card: Day | Activity; columnId: string; type: CardType }) {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TDestinationCardState>(idle);
@@ -277,8 +280,8 @@ export function DestinationCard({ card, columnId, type }: { card: Day | Activity
   }, [card, columnId]);
   return (
     <>
-      <DestinationCardDisplay outerRef={outerRef} innerRef={innerRef} state={state} card={card} type={type} />
-      {state.type === "preview" ? createPortal(<DestinationCardDisplay state={state} card={card} type={type} />, state.container) : null}
+      <DestinationCardDisplay order={order} outerRef={outerRef} innerRef={innerRef} state={state} card={card} type={type} />
+      {state.type === "preview" ? createPortal(<DestinationCardDisplay order={order} state={state} card={card} type={type} />, state.container) : null}
     </>
   );
 }
@@ -289,5 +292,5 @@ export const DestinationCardList = memo(function DestinationCardList({ column, t
     return null;
   }
 
-  return column.cards.map(card => <DestinationCard key={card.id} card={card} columnId={column.id} type={type} />);
+  return column.cards.map((card, index) => <DestinationCard order={index} key={card.id} card={card} columnId={column.id} type={type} />);
 });
