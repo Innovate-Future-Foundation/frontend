@@ -101,7 +101,7 @@ export function DestinationCardDisplay({
       title: card?.title ?? "",
       summary: card?.summary ?? "",
       comment: card?.comment ?? "",
-      timeRange: [card?.startTime ? card.startTime.substring(11, 16) : null, card?.endTime ? card.endTime.substring(11, 16) : null],
+      // timeRange: [card?.startTime ? card.startTime.substring(11, 16) : null, card?.endTime ? card.endTime.substring(11, 16) : null],
       text: card?.text ?? ""
     }
   });

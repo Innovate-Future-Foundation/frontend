@@ -238,6 +238,10 @@ const TourBuilderPage = () => {
     //todo:set enrolled students
   }, [id]);
 
+  const handleNavItemClick = (index: number) => {
+    handleSetCurrentStep(index);
+  };
+
   if (!tourDetails) {
     return <ClipLoader />;
   }
@@ -265,7 +269,7 @@ const TourBuilderPage = () => {
           {navMenu.map((menuItem, index) => (
             <div
               key={menuItem.label}
-              onClick={() => handleSetCurrentStep(index)}
+              onClick={() => handleNavItemClick(index)}
               className={clsx(
                 `flex gap-2 items-center hover:bg-primary/10 p-2 rounded-lg z-10 ${currentStep === index && "bg-primary/10"} ${!visitedFlags[index] && "text-primary-foreground60"}`
               )}

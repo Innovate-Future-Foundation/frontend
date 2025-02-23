@@ -55,7 +55,7 @@ const ActivityBuilder = () => {
     return <ClipLoader />;
   }
 
-  return <Board initial={getInitialActivitiesData()} type={"activity"} />;
+  return <Board initial={getInitialActivitiesData()} type={"activity"} dayId={id} />;
 };
 
 export default ActivityBuilder;
