@@ -22,9 +22,9 @@ const TourDetailForm: React.FC<TourDetailFormProps> = ({ form }) => {
     trigger("dateRange");
   };
 
-  const handleEditorChange = (content: string) => {
-    setValue("text", content, { shouldDirty: true });
-    trigger("text");
+  const handleEditorChange = (name: string, value: string) => {
+    setValue(name, value, { shouldDirty: true });
+    trigger(name);
   };
 
   const hanleSetImgUrl = (imgUrl?: string) => {

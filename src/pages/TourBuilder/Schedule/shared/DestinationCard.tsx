@@ -123,12 +123,6 @@ export function DestinationCardDisplay({
     }
   });
 
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const getImageUrl = (imgUrl?: string) => {
-    if (imgUrl) {
-      setImageUrl(imgUrl);
-    }
-  };
   //   useEffect(()=>{
   //     const newScheduleDays = { ...scheduleDays };
   // setScheduleDays(newScheduleDays);
@@ -174,7 +168,7 @@ export function DestinationCardDisplay({
       </div>
       {isExpand && (
         <div className="p-3 -mt-3 border border-t-0 rounded-md rounded-t-none mx-8 bg-card gap-2">
-          <TourDetailForm form={type === "day" ? dayInfoForm : activityInfoForm} getImageUrl={getImageUrl} initialImageUrl={imageUrl ?? ""} />
+          <TourDetailForm form={type === "day" ? dayInfoForm : activityInfoForm} />
           <Button className="py-8 flex justify-start text-base font-semibold w-full" variant={"secondary"} onClick={handleViewActivities}>
             <Plus strokeWidth={3} /> Add / View activities
           </Button>
