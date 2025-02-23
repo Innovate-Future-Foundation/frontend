@@ -148,4 +148,9 @@ html {
   html {
     font-size: 22px;
   }
+@font-face {
+  font-family: 'BigJohn';
+  src: url('/fonts/big-john-woff2-2.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

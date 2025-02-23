@@ -28,6 +28,7 @@ import DayBuilder from "@/pages/TourBuilder/Schedule/DayBuilder";
 import ActivityBuilder from "@/pages/TourBuilder/Schedule/ActivityBuilder";
 import TourDetailPage from "@/pages/Tour/TourDetailPage";
 import EmailVerification from "@/pages/Authentication/EmailVerification";
+import LandingPage from "@/pages/Landing";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 export type AppRoute = RouteObject & {
@@ -37,6 +38,10 @@ export type AppRoute = RouteObject & {
 };
 
 const router: AppRoute[] = [
+  {
+    path: "/landing",
+    element: <LandingPage />
+  },
   {
     path: "/",
     element: <HomePage />
