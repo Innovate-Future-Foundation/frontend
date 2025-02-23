@@ -83,12 +83,12 @@ export function SourceCardDisplay({
             : undefined
         }
       >
-        <div className="w-8 flex items-center justify-center text-primary-foreground60 cursor-grab">
+        <div className="w-8 flex h-20 items-center justify-center text-primary-foreground60 cursor-grab">
           <GripVertical size={20} />
         </div>
         <div className={clsx(`flex flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 bg-card`)}>
-          <div className="flex flex-col gap-1">
-            <span className="truncate flex-grow flex-shrink">{card.title}</span>
+          <div className="mr-6 flex flex-col gap-1 h-16 items-start justify-center">
+            <span className="truncate max-w-60">{card.title}</span>
             {card.startTime && card.endTime && (
               <span className="text-sm font-normal text-primary-foreground30">
                 {formatTo24HourTime(card.startTime ?? "")} - {formatTo24HourTime(card.endTime ?? "")}

@@ -104,10 +104,12 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
 
             // Copy from source column to destination column
             if (home.type === "source" && destination.type === "destination") {
-              const indexOfTarget = destination.cards?.findIndex(card => card.id === dropTargetData.card.id);
+              const indexOfTarget = destination.cards?.findIndex(card => card.id === dropTargetData.card.id) ?? 0;
 
+              console.log("indexOfTarget: ", indexOfTarget);
               const closestEdge = extractClosestEdge(dropTargetData);
-              const finalIndex = closestEdge === "bottom" ? (indexOfTarget ?? 0 + 1) : indexOfTarget;
+              const finalIndex = closestEdge === "bottom" ? indexOfTarget + 1 : indexOfTarget;
+              console.log("finalIndex", finalIndex);
 
               let newCard;
               if (type === "day") {
@@ -133,7 +135,7 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
               }
 
               const destinationCards = Array.from(destination.cards ?? []);
-              destinationCards.splice(finalIndex ?? 0, 0, newCard); // Insert at exact position
+              destinationCards.splice(finalIndex, 0, newCard); // Insert at exact position
 
               const columns = [...data.columns];
               columns[destinationColumnIndex] = { ...destination, cards: destinationCards };
@@ -150,7 +152,7 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
 
             // reordering in home column
             if (home.type === "destination" && destination.type === "destination") {
-              const cardFinishIndex = home.cards?.findIndex(card => card.id === dropTargetData.card.id);
+              const cardFinishIndex = home.cards?.findIndex(card => card.id === dropTargetData.card.id) ?? 0;
 
               // could not find cards needed
               if (cardIndexInHome === -1 || cardFinishIndex === -1 || cardIndexInHome === cardFinishIndex) {
@@ -163,7 +165,7 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
                 axis: "vertical",
                 list: home.cards ?? [],
                 startIndex: cardIndexInHome ?? 0,
-                indexOfTarget: cardFinishIndex ?? 0,
+                indexOfTarget: cardFinishIndex,
                 closestEdgeOfTarget: closestEdge
               });
 
@@ -176,93 +178,61 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
               setData({ ...data, columns });
               return;
             }
-
-            // moving card from one column to another
-
-            // unable to find destination
-            if (!destination) {
-              return;
-            }
-
-            const indexOfTarget = destination.cards?.findIndex(card => card.id === dropTargetData.card.id);
-
-            const closestEdge = extractClosestEdge(dropTargetData);
-            const finalIndex = closestEdge === "bottom" ? (indexOfTarget ?? 0 + 1) : indexOfTarget;
-
-            // remove card from home list
-            const homeCards = Array.from(home.cards ?? []);
-            // homeCards.splice(cardIndexInHome??0, 1);
-
-            // insert into destination list
-            const destinationCards = Array.from(destination.cards ?? []);
-            destinationCards.splice(finalIndex ?? 0, 0, dragging.card);
-
-            const columns = Array.from(data.columns);
-            columns[homeColumnIndex] = {
-              ...home,
-              cards: homeCards
-            };
-            columns[destinationColumnIndex] = {
-              ...destination,
-              cards: destinationCards
-            };
-            setData({ ...data, columns });
-            return;
           }
 
           // dropping onto a column, but not onto a card
-          if (isColumnData(dropTargetData)) {
-            const destinationColumnIndex = data.columns.findIndex(column => column.id === dropTargetData.column.id);
-            const destination = data.columns[destinationColumnIndex];
+          // if (isColumnData(dropTargetData)) {
+          //   const destinationColumnIndex = data.columns.findIndex(column => column.id === dropTargetData.column.id);
+          //   const destination = data.columns[destinationColumnIndex];
 
-            if (!destination) {
-              return;
-            }
+          //   if (!destination) {
+          //     return;
+          //   }
 
-            // dropping on home
-            if (home === destination) {
-              console.log("moving card to home column");
+          //   // dropping on home
+          //   if (home === destination) {
+          //     console.log("moving card to home column");
 
-              // move to last position
-              const reordered = reorder({
-                list: home.cards ?? [],
-                startIndex: cardIndexInHome ?? 0,
-                finishIndex: home.cards?.length ?? 0 - 1
-              });
+          //     // move to last position
+          //     const reordered = reorder({
+          //       list: home.cards ?? [],
+          //       startIndex: cardIndexInHome ?? 0,
+          //       finishIndex: home.cards?.length ?? 0 - 1
+          //     });
 
-              const updated: TColumn = {
-                ...home,
-                cards: reordered
-              };
-              const columns = Array.from(data.columns);
-              columns[homeColumnIndex] = updated;
-              setData({ ...data, columns });
-              return;
-            }
+          //     const updated: TColumn = {
+          //       ...home,
+          //       cards: reordered
+          //     };
+          //     const columns = Array.from(data.columns);
+          //     columns[homeColumnIndex] = updated;
+          //     setData({ ...data, columns });
+          //     return;
+          //   }
 
-            console.log("moving card to another column");
+          //   console.log("moving card to another column");
 
-            // // remove card from home list
+          //   // // remove card from home list
 
-            const homeCards = Array.from(home.cards ?? []);
-            homeCards.splice(cardIndexInHome ?? 0, 1);
+          //   const homeCards = Array.from(home.cards ?? []);
+          //   homeCards.splice(cardIndexInHome ?? 0, 1);
 
-            // insert into destination list
-            const destinationCards = Array.from(destination.cards ?? []);
-            destinationCards.splice(destination.cards?.length ?? 0, 0, dragging.card);
+          //   // insert into destination list
+          //   const destinationCards = Array.from(destination.cards ?? []);
+          //   destinationCards.splice(destination.cards?.length ?? 0, 0, dragging.card);
 
-            const columns = Array.from(data.columns);
-            columns[homeColumnIndex] = {
-              ...home,
-              cards: homeCards
-            };
-            columns[destinationColumnIndex] = {
-              ...destination,
-              cards: destinationCards
-            };
-            setData({ ...data, columns });
-            return;
-          }
+          //   const columns = Array.from(data.columns);
+          //   columns[homeColumnIndex] = {
+          //     ...home,
+          //     cards: homeCards
+          //   };
+          //   columns[destinationColumnIndex] = {
+          //     ...destination,
+          //     cards: destinationCards
+          //   };
+          //   setData({ ...data, columns });
+          //   return;
+          // }
         }
       }),
       monitorForElements({

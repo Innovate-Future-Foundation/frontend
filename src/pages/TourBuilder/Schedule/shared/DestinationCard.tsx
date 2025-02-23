@@ -128,7 +128,7 @@ export function DestinationCardDisplay({
       {state.type === "is-over" && state.closestEdge === "top" ? <DestinationCardShadow dragging={state.dragging} /> : null}
       <div className={clsx(`flex items-center text-lg font-semibold ${innerStyles[state.type]}`)}>
         <div
-          className="w-8 flex items-center justify-center text-primary-foreground60 cursor-grab"
+          className="w-8 h-20 flex items-center justify-center text-primary-foreground60 cursor-grab"
           ref={innerRef} // Only the grip is draggable
         >
           <GripVertical size={20} />
@@ -136,16 +136,16 @@ export function DestinationCardDisplay({
         <div
           onClick={hanldeExpand}
           className={clsx(
-            `flex flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 cursor-pointer bg-card ${isExpand && "rounded-b-none"}`
+            `flex gap-2 flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 cursor-pointer bg-card ${isExpand && "rounded-b-none"}`
           )}
         >
-          <div className="flex flex-col gap-1">
-            <span className="truncate flex-grow flex-shrink">
+          <div className="mr-6 flex flex-col gap-1 h-16 items-start justify-center">
+            <span className="truncate max-w-80">
               {type === "day" && `Day ${order + 1}: `}
               {card.title}
             </span>
             {card.startTime && card.endTime && (
-              <span className="text-sm font-normal text-primary-foreground30">
+              <span className="text-sm font-normal text-primary-foreground30 ">
                 {formatTo24HourTime(card.startTime ?? "")} - {formatTo24HourTime(card.endTime ?? "")}
               </span>
             )}
