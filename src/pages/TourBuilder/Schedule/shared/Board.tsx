@@ -47,12 +47,17 @@ export const Board: React.FC<BoardProps> = ({ initial, type, dayId }) => {
     if (type === "activity") {
       // Save activity state
       const updatedScheduleActivities = data.columns.find(column => column.type === "destination")?.cards;
-      const updatedScheduleDays = scheduleDays?.map(day => (day.id == dayId ? { ...day, activities: updatedScheduleActivities ?? [] } : day));
+      const updatedScheduleDays = scheduleDays?.map(day => (day.id === dayId ? { ...day, activities: updatedScheduleActivities ?? [] } : day));
       setScheduleDays(updatedScheduleDays as Day[]);
 
       //TODO: call api
       handleGoBack();
     } else {
+      // Save day state
+      const updatedScheduleDays = data.columns.find(column => column.type === "destination")?.cards;
+      console.log("updatedScheduleDays", updatedScheduleDays);
+      setScheduleDays(updatedScheduleDays as Day[]);
+      //TODO: Call api
       handleGoToPrevStep();
     }
   };
