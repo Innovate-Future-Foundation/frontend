@@ -18,7 +18,8 @@ export default {
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				IF32px: '1.6rem',
 			},
 			colors: {
 				background: 'hsl(var(--background)/ <alpha-value>)',
