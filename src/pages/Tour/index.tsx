@@ -5,7 +5,6 @@ import { ProfilePaginationFilter, ProfilePaginationOrderByType, Tour, TableBaseT
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { mapStringToType } from "@/constants/mapper";
 import { toursColumns } from "./toursColumns";
-import { useNavigate } from "react-router-dom";
 
 const tableData: TableBaseType<Tour>[] = [
   {
@@ -20,8 +19,8 @@ const tableData: TableBaseType<Tour>[] = [
     },
     title: "Science & Tech Tour",
     comment: "An exciting tour exploring STEM fields",
-    startDate: "2024-06-25T14:30:00Z",
-    endDate: "2024-06-30T18:00:00Z",
+    startTime: "2024-06-25T14:30:00Z",
+    endTime: "2024-06-30T18:00:00Z",
     statusCode: "Active",
     coverImgUrl:
       "https://images.unsplash.com/photo-1528072164453-f4e8ef0d475a?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -68,8 +67,8 @@ const tableData: TableBaseType<Tour>[] = [
     },
     title: "Science & Tech Tour",
     comment: "An exciting tour exploring STEM fields",
-    startDate: "2024-06-25T14:30:00Z",
-    endDate: "2024-06-30T18:00:00Z",
+    startTime: "2024-06-25T14:30:00Z",
+    endTime: "2024-06-30T18:00:00Z",
     statusCode: "Active",
     coverImgUrl:
       "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=3044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -116,8 +115,8 @@ const tableData: TableBaseType<Tour>[] = [
     },
     title: "Science & Tech Tour",
     comment: "An exciting tour exploring STEM fields",
-    startDate: "2024-06-25T14:30:00Z",
-    endDate: "2024-06-30T18:00:00Z",
+    startTime: "2024-06-25T14:30:00Z",
+    endTime: "2024-06-30T18:00:00Z",
     statusCode: "Active",
     coverImgUrl:
       "https://images.unsplash.com/photo-1595850344461-dcbec3a62f67?q=80&w=2439&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -164,8 +163,8 @@ const tableData: TableBaseType<Tour>[] = [
     },
     title: "Science & Tech Tour",
     comment: "An exciting tour exploring STEM fields",
-    startDate: "2024-06-25T14:30:00Z",
-    endDate: "2024-06-30T18:00:00Z",
+    startTime: "2024-06-25T14:30:00Z",
+    endTime: "2024-06-30T18:00:00Z",
     statusCode: "Active",
     coverImgUrl:
       "https://plus.unsplash.com/premium_photo-1661919210043-fd847a58522d?q=80&w=3020&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -212,8 +211,8 @@ const tableData: TableBaseType<Tour>[] = [
     },
     title: "Science & Tech Tour",
     comment: "An exciting tour exploring STEM fields",
-    startDate: "2024-06-25T14:30:00Z",
-    endDate: "2024-06-30T18:00:00Z",
+    startTime: "2024-06-25T14:30:00Z",
+    endTime: "2024-06-30T18:00:00Z",
     statusCode: "Active",
     coverImgUrl:
       "https://images.unsplash.com/photo-1509439581779-6298f75bf6e5?q=80&w=2762&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -260,8 +259,8 @@ const tableData: TableBaseType<Tour>[] = [
     },
     title: "Science & Tech Tour",
     comment: "An exciting tour exploring STEM fields",
-    startDate: "2024-06-25T14:30:00Z",
-    endDate: "2024-06-30T18:00:00Z",
+    startTime: "2024-06-25T14:30:00Z",
+    endTime: "2024-06-30T18:00:00Z",
     statusCode: "Active",
     coverImgUrl:
       "https://images.unsplash.com/photo-1545044846-351ba102b6d5?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -308,8 +307,8 @@ const tableData: TableBaseType<Tour>[] = [
     },
     title: "Science & Tech Tour",
     comment: "An exciting tour exploring STEM fields",
-    startDate: "2024-06-25T14:30:00Z",
-    endDate: "2024-06-30T18:00:00Z",
+    startTime: "2024-06-25T14:30:00Z",
+    endTime: "2024-06-30T18:00:00Z",
     statusCode: "Active",
     coverImgUrl:
       "https://plus.unsplash.com/premium_photo-1733317293766-5606f74b765b?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -356,8 +355,8 @@ const tableData: TableBaseType<Tour>[] = [
     },
     title: "Science & Tech Tour",
     comment: "An exciting tour exploring STEM fields",
-    startDate: "2024-06-25T14:30:00Z",
-    endDate: "2024-06-30T18:00:00Z",
+    startTime: "2024-06-25T14:30:00Z",
+    endTime: "2024-06-30T18:00:00Z",
     statusCode: "Active",
     coverImgUrl:
       "https://images.unsplash.com/photo-1514395462725-fb4566210144?q=80&w=2971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -395,7 +394,6 @@ const tableData: TableBaseType<Tour>[] = [
 ];
 
 const TourPage = () => {
-  const navigate = useNavigate();
   const {
     // searchKey,
     sorting,
@@ -424,8 +422,9 @@ const TourPage = () => {
   // }, [contactsResponse]);
 
   const handleCreateTour = () => {
-    navigate("/tourBuilder");
+    window.location.href = "/tours/ou762iu3gjhgjasgfcyas71";
   };
+
   return (
     <ContentLayout icon={Map} title={"tour list"} onButtonClick={handleCreateTour} buttonLabel={"Create Tour"}>
       <DataTable

@@ -1,8 +1,3 @@
-import { useState } from "react";
-import { Plus, Search } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ScrollItem from "./ScrollItem";
 
@@ -29,12 +24,12 @@ interface ScrollListProps {
 }
 
 export const ScrollList: React.FC<ScrollListProps> = ({ title }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
 
   // the search function
-  const filteredData = data.filter(
-    item => item.name.toLowerCase().includes(searchQuery.toLowerCase()) || item.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredData = data.filter(
+  //   item => item.name.toLowerCase().includes(searchQuery.toLowerCase()) || item.email.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
   return (
     <div className="rounded-lg border bg-background">
@@ -42,23 +37,23 @@ export const ScrollList: React.FC<ScrollListProps> = ({ title }) => {
         <h2 className="font-semibold capitalize text-lg text-primary-foreground30">{`${title} list`}</h2>
         <div className="flex items-center justify-end">
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">{filteredData.length > 1 ? `${filteredData.length} ${title}s` : `${filteredData.length} ${title}`}</span>
-            <div className="sm:flex gap-2">
-              <div className="relative w-64 mb-2 sm:mb-0">
+            <span className="text-sm text-gray-500">{data.length > 1 ? `${data.length} ${title}s` : `${data.length} ${title}`}</span>
+            {/* <div className="sm:flex gap-2"> */}
+            {/* <div className="relative w-64 mb-2 sm:mb-0">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
                 <Input placeholder="Search by name or email" className="pl-8" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
               </div>
               <Button className="active:scale-95 transition-transform duration-100 capitalize" onClick={() => console.log("Add member clicked")}>
                 <Plus className="h-4 w-4 mr-2" />
                 {`add ${title}`}
-              </Button>
-            </div>
+              </Button> */}
+            {/* </div> */}
           </div>
         </div>
       </div>
       <ScrollArea className="h-96 w-full rounded-md">
         <div className="divide-y">
-          {filteredData.map((item, index) => (
+          {data.map((item, index) => (
             <ScrollItem key={index} name={item.name} email={item.email} avatarLink={item.avatarLink} />
           ))}
         </div>

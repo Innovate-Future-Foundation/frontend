@@ -1,46 +1,36 @@
 import { OffsetPaginatedRequest } from "./apiReqResponse";
 import { ProfileInfo } from "./profile";
 
-export interface Tour {
-  id?: string;
-  orgName?: string;
-  leaderInfo?: ProfileInfo;
+export interface TourForm {
   title?: string;
   comment?: string | null;
   summary?: string | null;
   text?: string | null;
   coverImgUrl?: string | null;
+  location?: string | null;
+  startTime?: string;
+  endTime?: string;
+}
+export interface Tour extends TourForm {
+  id?: string;
+  orgName?: string;
+  leaderInfo?: ProfileInfo;
   statusCode?: TourStatusCode;
-  startDate?: string;
-  endDate?: string;
   days?: Day[] | null;
   studentTourEnrollments?: StudentTourEnrollment[] | null;
   createdAt?: string;
   updatedAt?: string;
 }
-export interface Day {
+export interface Day extends TourForm {
   id?: string;
-  title?: string;
-  comment?: string | null;
-  summary?: string | null;
-  text?: string | null;
-  coverImgUrl?: string | null;
   statusCode?: TourStatusCode;
   activities?: Activity[] | null;
   createdAt?: string;
   updatedAt?: string;
 }
-export interface Activity {
+export interface Activity extends TourForm {
   id?: string;
-  title?: string;
-  comment?: string | null;
-  summary?: string | null;
-  text?: string | null;
-  location?: string | null;
-  coverImgUrl?: string | null;
   statusCode?: TourStatusCode;
-  startTime?: string;
-  endTime?: string;
   teachersAssigned?: ProfileInfo[] | null;
   createdAt?: string;
   updatedAt?: string;

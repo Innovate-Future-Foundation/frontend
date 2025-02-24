@@ -90,8 +90,8 @@ export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, lab
                 value={inputValue}
                 className={`${fieldState?.error ? "border-destructive focus-visible:ring-destructive" : "focus-visible:ring-primary"}`}
               />
-              {isSuggestionOpen && (
-                <div className="absolute top-10 z-10 w-full bg-background border rounded shadow-lg max-h-48 overflow-y-auto">
+              {isSuggestionOpen && details.length > 0 && (
+                <div className="absolute top-11 z-10 w-full bg-background border rounded shadow-lg max-h-48 overflow-y-auto">
                   {details.map((parent, index) => (
                     <div key={index} className="p-1 pl-[11px] hover:bg-accent cursor-pointer" onClick={() => handleSelectSuggestion(field, parent.email)}>
                       <ParentsDetail
@@ -107,7 +107,13 @@ export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, lab
               )}
             </div>
           </FormControl>
-          {fieldState?.error ? <FormMessage /> : <div className="h-4"></div>}
+          {fieldState?.error ? (
+            <div className="h-4">
+              <FormMessage />
+            </div>
+          ) : (
+            <div className="h-4"></div>
+          )}
         </FormItem>
       )}
     />

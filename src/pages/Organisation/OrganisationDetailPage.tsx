@@ -1,6 +1,6 @@
 import { WalletCards } from "lucide-react";
 
-import OrganisationProfile from "./OrganisationProfile";
+import OrganisationDetailForm from "./OrganisationDetailForm";
 import ContentLayout from "@/layouts/ContentLayout";
 import { ScrollList } from "@/components/ScrollList";
 import { usePermissions } from "@/hooks/usePermissions";
@@ -11,7 +11,7 @@ import { useMemo } from "react";
 import { BeatLoader } from "react-spinners";
 
 const OrganisationDetailPage = () => {
-  const { canEditOrganisationProfile, canViewManagerScrollList } = usePermissions();
+  const { canEditOrganisationDetailForm, canViewManagerScrollList } = usePermissions();
   const { id } = useParams();
   console.log("organisationId", id);
   const { organisationDetailResponse, isLoadingOrganisationDetail } = useOrganisationDetail(id ?? "");
@@ -30,7 +30,7 @@ const OrganisationDetailPage = () => {
   }
   return (
     <ContentLayout icon={WalletCards} title={"organisation profile"}>
-      <OrganisationProfile orgProfileDetail={orgProfileDetail} disabled={!canEditOrganisationProfile} />
+      <OrganisationDetailForm orgProfileDetail={orgProfileDetail} disabled={!canEditOrganisationDetailForm} />
       {canViewManagerScrollList && (
         <>
           <div className="h-4"></div>
