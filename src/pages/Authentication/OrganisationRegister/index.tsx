@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "../RegisterForm";
 
 interface OrganisationRegisterPageProps {
   onBackToLogin?: () => void;

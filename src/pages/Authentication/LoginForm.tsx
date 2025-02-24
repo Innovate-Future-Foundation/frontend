@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 // setting up the validation schema
 const loginFormSchema = z.object({
@@ -21,13 +23,7 @@ const loginFormSchema = z.object({
 // inferring the type from the schema
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
-// add props interface
-interface LoginFormProps {
-  onRegisterClick: () => void;
-  onForgotPasswordClick: () => void;
-}
-
-const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onForgotPasswordClick }) => {
+const LoginForm: React.FC = () => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     mode: "onBlur",
@@ -42,36 +38,47 @@ const LoginForm: React.FC<LoginFormProps> = ({ onRegisterClick, onForgotPassword
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] w-full space-y-6 motion-preset-fade motion-duration-2000 motion-delay-500">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-semibold text-center">Login Now</h1>
-          <p className="text-sm text-muted-foreground text-center">Please enter the details below to continue.</p>
-        </div>
+    <motion.div
+      key="login"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="h-full flex items-start pt-[25vh] justify-center lg:ml-[35%] px-6"
+    >
+      <div className="w-full max-w-[460px]">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] w-full space-y-6 motion-preset-fade motion-duration-2000 motion-delay-500">
+            <div className="space-y-4">
+              <h1 className="text-4xl font-semibold text-center">Login Now</h1>
+              <p className="text-sm text-muted-foreground text-center">Please enter the details below to continue.</p>
+            </div>
 
-        <div className="space-y-4">
-          <FormFieldItem fieldControl={form.control} name="email" label="Email" placeholder="Enter your email" />
+            <div className="space-y-4">
+              <FormFieldItem fieldControl={form.control} name="email" label="Email" placeholder="Enter your email" />
 
-          <FormFieldItem type="password" fieldControl={form.control} name="password" label="Password" placeholder="Enter your password" />
+              <FormFieldItem type="password" fieldControl={form.control} name="password" label="Password" placeholder="Enter your password" />
 
-          <div className="text-right">
-            <button type="button" onClick={onForgotPasswordClick} className="text-sm text-blue-600 hover:text-blue-700">
-              Forgot Password?
-            </button>
-          </div>
-        </div>
+              <div className="text-right">
+                <Link className="text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgot-password"}>
+                  Forgot Password?
+                </Link>
+              </div>
+            </div>
 
-        <Button type="submit" className="w-full">
-          LOGIN
-        </Button>
-        <div className="text-center text-sm text-muted-foreground">
-          Don't have an account?{" "}
-          <button type="button" onClick={onRegisterClick} className="text-secondary-foreground hover:text-secondary-foreground/80">
-            Register
-          </button>
-        </div>
-      </form>
-    </Form>
+            <Button type="submit" className="w-full">
+              LOGIN
+            </Button>
+            <div className="text-center text-sm text-muted-foreground">
+              Don't have an account?{" "}
+              <Link className="text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/register"}>
+                Register
+              </Link>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </motion.div>
   );
 };
 

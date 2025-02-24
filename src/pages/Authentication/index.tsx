@@ -1,18 +1,17 @@
-import { useState } from "react";
-import LoginForm from "./LoginForm";
-import OrganisationRegisterPage from "./OrganisationRegister";
-import ForgotPasswordForm from "./ForgotPassword";
 import { AnimatePresence, motion } from "framer-motion";
+import { Outlet, useLocation } from "react-router-dom";
 
 const AuthenticationPage = () => {
-  const [currentView, setCurrentView] = useState<"login" | "register" | "forgot-password">("login");
+  const { pathname } = useLocation();
+  const param = pathname.split("/").at(-1);
+  console.log("location", location);
 
   return (
     <div className="flex min-h-screen relative overflow-hidden">
       <motion.div
         key="blue-section"
         initial={{ x: "-100%" }}
-        animate={{ x: currentView === "register" ? "190%" : "0" }}
+        animate={{ x: param === "register" ? "190%" : "0" }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.1] }}
         className="hidden lg:flex fixed w-[35%] h-full flex-col bg-primary p-12 pt-16 text-white z-10"
       >
@@ -91,49 +90,7 @@ const AuthenticationPage = () => {
       <div className="flex-1 relative">
         <div className="absolute inset-0">
           <AnimatePresence mode="wait">
-            {currentView === "login" && (
-              <motion.div
-                key="login"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="h-full flex items-start pt-[25vh] justify-center lg:ml-[35%] px-6"
-              >
-                <div className="w-full max-w-[460px]">
-                  <LoginForm onRegisterClick={() => setCurrentView("register")} onForgotPasswordClick={() => setCurrentView("forgot-password")} />
-                </div>
-              </motion.div>
-            )}
-
-            {currentView === "register" && (
-              <motion.div
-                key="register"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, x: -200 }}
-                className="h-full flex items-center pl-[20%] px-6"
-              >
-                <div className="w-full max-w-[460px]">
-                  <OrganisationRegisterPage onBackToLogin={() => setCurrentView("login")} />
-                </div>
-              </motion.div>
-            )}
-
-            {currentView === "forgot-password" && (
-              <motion.div
-                key="forgot-password"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="h-full flex items-start pt-[25vh] justify-center lg:ml-[35%] px-6"
-              >
-                <div className="w-full max-w-[460px]">
-                  <ForgotPasswordForm onBackToLogin={() => setCurrentView("login")} />
-                </div>
-              </motion.div>
-            )}
+            <Outlet />
           </AnimatePresence>
         </div>
       </div>
