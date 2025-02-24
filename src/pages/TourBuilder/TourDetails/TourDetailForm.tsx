@@ -55,12 +55,7 @@ const TourDetailForm: React.FC<TourDetailFormProps> = ({ form, dateTimeRange = u
             handleSelect={handleDateRangeSelect}
           />
         )}
-        {dateTimeRange === "time" && (
-          // <div className="flex w-full ">
-          //   <TimeRangePicker onChange={handleTimeOnchange} value={selectedTimeRange} />
-          // </div>
-          <p>help</p>
-        )}
+        {dateTimeRange === "time" && <p>TimePicker</p>}
         <RichEditor setEditorContent={handleEditorChange} editorContent={watch("text")} />
       </div>
     </Form>

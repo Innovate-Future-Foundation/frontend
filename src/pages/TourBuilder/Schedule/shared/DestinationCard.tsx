@@ -22,7 +22,6 @@ import { tourInfoFormSchema } from "../../TourDetails";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { useTourBuilderStore } from "@/store";
 
 type TDestinationCardState =
   | {
@@ -71,7 +70,9 @@ export function DestinationCardDisplay({
   state,
   outerRef,
   innerRef,
-  type
+  type,
+  isExpands,
+  setIsExpands
 }: {
   order: number;
   card: Day | Activity;
@@ -79,16 +80,15 @@ export function DestinationCardDisplay({
   outerRef?: React.MutableRefObject<HTMLDivElement | null>;
   innerRef?: MutableRefObject<HTMLDivElement | null>;
   type: CardType;
+  isExpands: boolean[];
+  setIsExpands: (isExpands: boolean[] | ((prev: boolean[]) => boolean[])) => void;
 }) {
   const navigate = useNavigate();
-  // const { setScheduleDays, scheduleDays } = useTourBuilderStore();
-  const [isExpand, setIsExpand] = useState(false);
-  const hanldeExpand = () => {
-    setIsExpand(!isExpand);
-  };
+
   const handleDelete = (card: Day | Activity) => {
     console.log("deleting:", card);
   };
+
   const handleViewActivities = () => {
     navigate("/tours/ou762iu3gjhgjasgfcyas71/schedule/days/a3e4b1d6-9c4a-4b73-982b-4fce77e88ac4");
   };
@@ -118,10 +118,43 @@ export function DestinationCardDisplay({
     }
   });
 
-  //   useEffect(()=>{
-  //     const newScheduleDays = { ...scheduleDays };
-  // setScheduleDays(newScheduleDays);
-  //   },[]);
+  const hanldeExpand = () => {
+    setIsExpands(prev => {
+      const newPrev = Array(prev.length).fill(false);
+      if (prev[order] === false) {
+        newPrev[order] = true;
+      }
+      return newPrev;
+    });
+  };
+
+  // const saveData = useCallback(() => {
+  //   const formData = type === "day" ? dayInfoForm.getValues() : activityInfoForm.getValues();
+
+  //   const newCard = {
+  //     ...card,
+  //     title: formData.title,
+  //     comment: formData.comment,
+  //     summary: formData.summary,
+  //     coverImgUrl: formData.coverImgUrl,
+  //     text: formData.text
+  //   };
+
+  //   setData((prev: TBoard) => {
+  //     const columns = prev.columns.map((column: TColumn) => {
+  //       if (column.type === "destination") {
+  //         return {
+  //           ...column,
+  //           cards: column.cards?.map((c: Day | Activity) => (c.id === card.id ? newCard : c))
+  //         };
+  //       }
+  //       return column;
+  //     });
+
+  //     return { ...prev, columns } as TBoard;
+  //   });
+  // }, [activityInfoForm, card, dayInfoForm, setData, type]);
+
   return (
     <div ref={outerRef} className={`flex flex-col ${outerStyles[state.type]}`}>
       {/* Put a shadow before the item if closer to the top edge */}
@@ -136,13 +169,13 @@ export function DestinationCardDisplay({
         <div
           onClick={hanldeExpand}
           className={clsx(
-            `flex gap-2 flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 cursor-pointer bg-card ${isExpand && "rounded-b-none"}`
+            `flex gap-2 flex-1 justify-between items-center border rounded-md border-solid px-4 py-2 cursor-pointer bg-card ${isExpands[order] && "rounded-b-none"}`
           )}
         >
           <div className="mr-6 flex flex-col gap-1 h-16 items-start justify-center">
             <span className="truncate max-w-80">
               {type === "day" && `Day ${order + 1}: `}
-              {card.title}
+              {type === "day" ? dayInfoForm.watch("title") : activityInfoForm.watch("title")}
             </span>
             {card.startTime && card.endTime && (
               <span className="text-sm font-normal text-primary-foreground30 ">
@@ -151,11 +184,32 @@ export function DestinationCardDisplay({
             )}
           </div>
           <div className="flex justify-center items-center gap-4">
-            {card.coverImgUrl && !isExpand && (
-              <Avatar className="rounded-sm" size={16} avatarLink={card.coverImgUrl ?? ""} avatarPlaceholder={card.title ?? ""} />
-            )}
+            {type === "day"
+              ? dayInfoForm.watch("coverImgUrl") &&
+                !isExpands[order] && (
+                  <Avatar
+                    className="rounded-sm"
+                    size={16}
+                    avatarLink={dayInfoForm.watch("coverImgUrl") ?? ""}
+                    avatarPlaceholder={dayInfoForm.watch("title") ?? ""}
+                  />
+                )
+              : dayInfoForm.watch("coverImgUrl") &&
+                !isExpands[order] && (
+                  <Avatar
+                    className="rounded-sm"
+                    size={16}
+                    avatarLink={dayInfoForm.watch("coverImgUrl") ?? ""}
+                    avatarPlaceholder={dayInfoForm.watch("title") ?? ""}
+                  />
+                )}
             <div className="flex justify-center text-primary-foreground60 hover:text-primary-foreground30">
-              <ChevronDown onClick={hanldeExpand} />
+              <ChevronDown
+                onClick={e => {
+                  e.stopPropagation();
+                  hanldeExpand();
+                }}
+              />
             </div>
           </div>
         </div>
@@ -166,7 +220,7 @@ export function DestinationCardDisplay({
           <Trash2 size={16} />
         </div>
       </div>
-      {isExpand && (
+      {isExpands[order] && (
         <div className="flex flex-col gap-2 p-3 -mt-3 border border-t-0 rounded-md rounded-t-none mx-8 bg-card">
           <TourDetailForm form={type === "day" ? dayInfoForm : activityInfoForm} dateTimeRange={type === "day" ? undefined : "time"} />
           {type === "day" && (
@@ -183,7 +237,21 @@ export function DestinationCardDisplay({
   );
 }
 
-export function DestinationCard({ order, card, columnId, type }: { order: number; card: Day | Activity; columnId: string; type: CardType }) {
+export function DestinationCard({
+  order,
+  card,
+  columnId,
+  type,
+  setIsExpands,
+  isExpands
+}: {
+  order: number;
+  card: Day | Activity;
+  columnId: string;
+  type: CardType;
+  setIsExpands: (isExpands: boolean[] | ((prev: boolean[]) => boolean[])) => void;
+  isExpands: boolean[];
+}) {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TDestinationCardState>(idle);
@@ -278,19 +346,39 @@ export function DestinationCard({ order, card, columnId, type }: { order: number
       })
     );
   }, [card, columnId]);
+
   return (
     <>
-      <DestinationCardDisplay order={order} outerRef={outerRef} innerRef={innerRef} state={state} card={card} type={type} />
-      {state.type === "preview" ? createPortal(<DestinationCardDisplay order={order} state={state} card={card} type={type} />, state.container) : null}
+      <DestinationCardDisplay
+        order={order}
+        outerRef={outerRef}
+        innerRef={innerRef}
+        state={state}
+        card={card}
+        type={type}
+        setIsExpands={setIsExpands}
+        isExpands={isExpands}
+      />
+      {state.type === "preview"
+        ? createPortal(
+            <DestinationCardDisplay order={order} state={state} card={card} type={type} setIsExpands={setIsExpands} isExpands={isExpands} />,
+            state.container
+          )
+        : null}
     </>
   );
 }
 
 export const DestinationCardList = memo(function DestinationCardList({ column, type }: { column: TColumn; type: CardType }) {
+  const length = column.cards?.length;
+  const [isExpands, setIsExpands] = useState<boolean[]>(Array(length).fill(false));
+
   if (!Array.isArray(column.cards)) {
     console.error("Expected column.cards to be an array, but got:", column.cards);
     return null;
   }
 
-  return column.cards.map((card, index) => <DestinationCard order={index} key={card.id} card={card} columnId={column.id} type={type} />);
+  return column.cards.map((card, index) => (
+    <DestinationCard order={index} key={card.id} card={card} columnId={column.id} type={type} setIsExpands={setIsExpands} isExpands={isExpands} />
+  ));
 });
