@@ -112,13 +112,13 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
   const avatarAlt = "@InnovateFoundation";
 
   const handleSuccess = () => {
-    if (companyInfoForm.formState.visitedFlags) {
+    if (companyInfoForm.formState.isDirty) {
       companyInfoForm.reset(companyInfoForm.getValues());
       setTimeout(() => {
         setHandleFormName(null);
       }, 3000);
     }
-    if (addressInfoForm.formState.visitedFlags) {
+    if (addressInfoForm.formState.isDirty) {
       addressInfoForm.reset(addressInfoForm.getValues());
       setTimeout(() => {
         setHandleFormName(null);
@@ -127,13 +127,13 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
   };
 
   const handleError = () => {
-    if (companyInfoForm.formState.visitedFlags) {
+    if (companyInfoForm.formState.isDirty) {
       companyInfoForm.reset();
       setTimeout(() => {
         setHandleFormName(null);
       }, 3000);
     }
-    if (addressInfoForm.formState.visitedFlags) {
+    if (addressInfoForm.formState.isDirty) {
       addressInfoForm.reset();
       setTimeout(() => {
         setHandleFormName(null);
@@ -201,10 +201,10 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
       <div className="h-4"></div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <FormWrapper
-          disabled={!companyInfoForm.formState.visitedFlags}
+          disabled={!companyInfoForm.formState.isDirty}
           isPending={handleFormName === "company" && mutation.isPending}
-          isSuccess={handleFormName === "company" && !companyInfoForm.formState.visitedFlags && mutation.isSuccess}
-          isError={handleFormName === "company" && !companyInfoForm.formState.visitedFlags && mutation.isError}
+          isSuccess={handleFormName === "company" && !companyInfoForm.formState.isDirty && mutation.isSuccess}
+          isError={handleFormName === "company" && !companyInfoForm.formState.isDirty && mutation.isError}
           formTitle={"Company Information"}
           onSave={disabled ? undefined : companyInfoForm.handleSubmit(handleCompanyInfoSubmit)}
         >
@@ -217,10 +217,10 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
           </Form>
         </FormWrapper>
         <FormWrapper
-          disabled={!addressInfoForm.formState.visitedFlags}
+          disabled={!addressInfoForm.formState.isDirty}
           isPending={handleFormName === "address" && mutation.isPending}
-          isSuccess={handleFormName === "address" && !addressInfoForm.formState.visitedFlags && mutation.isSuccess}
-          isError={handleFormName === "address" && !addressInfoForm.formState.visitedFlags && mutation.isError}
+          isSuccess={handleFormName === "address" && !addressInfoForm.formState.isDirty && mutation.isSuccess}
+          isError={handleFormName === "address" && !addressInfoForm.formState.isDirty && mutation.isError}
           formTitle={"Address"}
           onSave={disabled ? undefined : addressInfoForm.handleSubmit(handleAddressInfoSubmit)}
         >
