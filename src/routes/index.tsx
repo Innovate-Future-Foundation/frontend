@@ -16,8 +16,10 @@ import EventPage from "@/pages/Event";
 import DefaultDashboardPage from "@/pages/DefaultDashboard";
 import OrgManagerPage from "@/pages/OrgManager";
 import ContactPage from "@/pages/Contacts";
-import OrganisationRegisterPage from "@/pages/Authentication/OrganisationRegister";
 import TourBuilderPage from "@/pages/TourBuilder";
+import ForgotPasswordForm from "@/pages/Authentication/ForgotPasswordForm";
+import LoginForm from "@/pages/Authentication/LoginForm";
+import RegisterForm from "@/pages/Authentication/RegisterForm";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 export type AppRoute = RouteObject & {
@@ -33,18 +35,23 @@ const router: AppRoute[] = [
   },
   {
     path: "/auth",
+    element: <AuthenticationPage />,
     children: [
       {
         index: true,
-        element: <AuthenticationPage />
+        element: <LoginForm />
       },
       {
-        path: "organisation-register",
-        element: <OrganisationRegisterPage />
+        path: "login",
+        element: <LoginForm />
+      },
+      {
+        path: "register",
+        element: <RegisterForm />
       },
       {
         path: "forgot-password",
-        element: <AuthenticationPage />
+        element: <ForgotPasswordForm />
       }
     ]
   },
