@@ -44,7 +44,7 @@ const LoginForm: React.FC = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="h-full flex items-start pt-[25vh] justify-center lg:ml-[35%] px-6"
+      className="h-full flex items-start pt-[25vh] justify-center lg:ml-[calc(50vw-5rem-2rem)] px-6 "
     >
       <div className="w-full max-w-[460px]">
         <Form {...form}>

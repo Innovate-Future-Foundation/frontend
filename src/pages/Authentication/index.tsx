@@ -14,9 +14,18 @@ const AuthenticationPage = () => {
         animate={{ x: param === "register" ? "190%" : "0" }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.1] }}
         className="fixed hidden lg:flex rounded-IF32px w-[calc(50vw-5rem-2rem)] h-[calc(100vh-5rem)] flex-col text-white"
-        style={{ maskImage: `url('/assets/images/mask.png')`, maskRepeat: `no-repeat`, maskSize: `100% 100%` }}
+        style={{
+          maskImage: `url('/assets/images/mask.png')`,
+          maskRepeat: `no-repeat`,
+          maskSize: `100% 100%`,
+          maskPosition: "center",
+          WebkitMaskImage: `url('/assets/images/mask.png')`,
+          WebkitMaskRepeat: `no-repeat`,
+          WebkitMaskSize: `100% 100%`,
+          WebkitMaskPosition: "center"
+        }}
       >
-        <img src="/assets/images/sample.png" alt="sample" className="min-w-[500px]" />
+        <img src="/assets/images/ifa@3x.webp" alt="ifa@3x.webp" className="w-full h-full object-cover" />
         {/* <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }} className="mb-24">
           <h1 className="text-2xl font-bold">Company Name</h1>
         </motion.div> */}
