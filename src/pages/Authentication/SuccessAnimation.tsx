@@ -17,7 +17,7 @@ const SuccessAnimation: React.FC<SuccessAnimationProps> = ({ handleButtonClick }
   }, [countdown]);
 
   return (
-    <motion.div key="register" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: -200 }} className="h-full flex items-center w-full">
+    <motion.div key="signup" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, x: -200 }} className="h-full flex items-center w-full">
       <div className="w-full max-w-[460px]">
         <div className="min-h-[400px] flex flex-col items-center justify-center text-center space-y-8">
           {/* Green Check Animation */}

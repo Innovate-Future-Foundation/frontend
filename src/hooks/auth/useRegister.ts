@@ -19,7 +19,7 @@ export const useRegister = ({ handleSuccess, handleError }: useRegisterProps) =>
   useErrorNotification(isErrorRegister, errorTitle, errorRegister);
 
   return useMutation({
-    mutationFn: (orgWithAdminCredentialsData: RegisterOrgWithAdminCredentials) => authApis.registerOrgWithAdminReq(orgWithAdminCredentialsData),
+    mutationFn: (orgWithAdminCredentialsData: RegisterOrgWithAdminCredentials) => authApis.signupOrgWithAdminReq(orgWithAdminCredentialsData),
     onSuccess: () => {
       handleSuccess();
     },

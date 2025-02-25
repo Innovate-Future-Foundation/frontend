@@ -19,15 +19,15 @@ const AuthenticationPage = () => {
       <motion.div
         key="blue-section"
         initial={{ x: "-100%" }}
-        animate={{ x: currentPage === "register" ? "110%" : "0" }}
+        animate={{ x: currentPage === "signup" ? "110%" : "0" }}
         transition={{ duration: 0.6, ease: [0, 0.71, 0.2, 1.01] }}
         className="bg-gray-900 fixed hidden lg:flex rounded-IF32px w-[calc(50vw-5rem-2rem)] h-[calc(100vh-5rem)] min-h-[640px] flex-col justify-end"
         style={{
-          maskImage: `url(${currentPage === "register" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
+          maskImage: `url(${currentPage === "signup" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
           maskRepeat: `no-repeat`,
           maskSize: `100% 100%`,
           maskPosition: "center",
-          WebkitMaskImage: `url(${currentPage === "register" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
+          WebkitMaskImage: `url(${currentPage === "signup" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
           WebkitMaskRepeat: `no-repeat`,
           WebkitMaskSize: `100% 100%`,
           WebkitMaskPosition: "center"

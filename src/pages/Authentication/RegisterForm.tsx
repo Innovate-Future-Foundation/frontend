@@ -12,7 +12,7 @@ import SuccessAnimation from "./SuccessAnimation";
 import { useRegister } from "@/hooks/auth/useRegister";
 import { RegisterOrgWithAdminCredentials } from "@/types/auth";
 
-const registerFormSchema = z.object({
+const signupFormSchema = z.object({
   orgName: z.string().min(2, "Organisation name must be at least 2 characters"),
   orgEmail: z.string().email("Email should be an email").optional().or(z.literal("")),
   address: z.object({
@@ -87,8 +87,8 @@ const RegisterForm: FC = () => {
   const [direction, setDirection] = useState(0);
   const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof registerFormSchema>>({
-    resolver: zodResolver(registerFormSchema),
+  const form = useForm<z.infer<typeof signupFormSchema>>({
+    resolver: zodResolver(signupFormSchema),
     mode: "onChange",
     defaultValues: {
       orgName: "",
@@ -119,7 +119,7 @@ const RegisterForm: FC = () => {
 
   const mutation = useRegister({ handleSuccess, handleError });
 
-  const onSubmit = (data: z.infer<typeof registerFormSchema>) => {
+  const onSubmit = (data: z.infer<typeof signupFormSchema>) => {
     console.debug("data", data);
     mutation.mutate(data as RegisterOrgWithAdminCredentials);
   };

@@ -56,7 +56,7 @@ const LoginForm: React.FC = () => {
               <FormFieldItem type="password" fieldControl={form.control} name="password" label="Password" placeholder="Enter your password" />
 
               <div className="text-right">
-                <Link className="font-bold text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgot-password"}>
+                <Link className="font-bold text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgotpassword"}>
                   Forgot Password?
                 </Link>
               </div>
@@ -68,7 +68,7 @@ const LoginForm: React.FC = () => {
         </Form>
         <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
           <span> Don't have an account? </span>
-          <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/register"}>
+          <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/signup"}>
             Sign Up
           </Link>
         </div>

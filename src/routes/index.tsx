@@ -49,11 +49,11 @@ const router: AppRoute[] = [
         element: <LoginForm />
       },
       {
-        path: "register",
+        path: "signup",
         element: <RegisterForm />
       },
       {
-        path: "forgot-password",
+        path: "forgotpassword",
         element: <ForgotPasswordForm />
       }
     ]

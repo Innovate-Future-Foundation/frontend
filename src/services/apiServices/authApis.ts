@@ -7,7 +7,7 @@ const getTokenReq = (codeQueryParams: URLSearchParams) => appRequest.get(`${API_
 
 const inviteReq = (inviteData: Profile) => appRequest.post(`${API_ENDPOINTS.AUTH}${API_ENDPOINTS.INVITE}`, inviteData);
 
-const registerOrgWithAdminReq = (orgWithAdminCredentialsData: RegisterOrgWithAdminCredentials) =>
+const signupOrgWithAdminReq = (orgWithAdminCredentialsData: RegisterOrgWithAdminCredentials) =>
   appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.REGISTER}`, orgWithAdminCredentialsData);
 
 const loginReq = (loginCredentialData: LoginCredential) =>
@@ -18,7 +18,7 @@ const logoutReq = () => appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.
 export const authApis = {
   getTokenReq,
   inviteReq,
-  registerOrgWithAdminReq,
+  signupOrgWithAdminReq,
   loginReq,
   logoutReq
 };

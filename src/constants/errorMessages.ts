@@ -6,7 +6,7 @@ export const ERROR_MESSAGES = {
   CONFLICT: "Conflict occurred. Resource already exists.",
   UNKNOWN: "An unknown error occurred. Please try again later.",
   DUPLICATE_REQUEST: "Request has been submitted.",
-  FAIL_TO_REGISTER: "Fail to register.",
+  FAIL_TO_REGISTER: "Fail to sign up.",
   FAIL_TO_LOGIN: "Fail to login.",
   FAIL_TO_LOGOUT: "Fail to logout.",
   FAIL_TO_FETCH_ORGANISATIONS: "Fail to get organisations",
