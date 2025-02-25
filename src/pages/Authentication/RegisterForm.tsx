@@ -9,10 +9,12 @@ import { FormFieldItem } from "@/components/FormField";
 import { Form } from "@/components/ui/form";
 import { Link } from "react-router-dom";
 import SuccessAnimation from "./SuccessAnimation";
+import { useRegister } from "@/hooks/auth/useRegister";
+import { RegisterOrgWithAdminCredentials } from "@/types/auth";
 
 const registerFormSchema = z.object({
   orgName: z.string().min(2, "Organisation name must be at least 2 characters"),
-  email: z.string().email("Email should be an email").optional().or(z.literal("")),
+  orgEmail: z.string().email("Email should be an email").optional().or(z.literal("")),
   address: z.object({
     street: z
       .string()
@@ -45,13 +47,13 @@ const registerFormSchema = z.object({
       .optional()
       .or(z.literal(""))
   }),
-  password: z
-    .string()
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/, "Password must include uppercase, lowercase, number, and special character."),
   websiteUrl: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
   logoUrl: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
-  adminName: z.string().min(2, "Admin name must be at least 2 characters"),
-  adminEmail: z.string().email("Please enter a valid email address")
+  userName: z.string().min(2, "Admin name must be at least 2 characters"),
+  userEmail: z.string().email("Please enter a valid email address"),
+  password: z
+    .string()
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/, "Password must include uppercase, lowercase, number, and special character.")
 });
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
@@ -81,11 +83,10 @@ const steps = [
 ];
 
 const formFields: Record<number, string[]> = {
-  1: ["orgName", "email"],
+  1: ["orgName", "orgEmail"],
   2: ["address"],
   3: ["websiteUrl", "logoUrl"],
-  4: ["adminName", "adminEmail", "password"],
-  5: ["verificationCode"]
+  4: ["userName", "userEmail", "password"]
 };
 
 const RegisterForm: FC = () => {
@@ -97,9 +98,8 @@ const RegisterForm: FC = () => {
     resolver: zodResolver(registerFormSchema),
     mode: "onChange",
     defaultValues: {
-      password: "",
       orgName: "",
-      email: "",
+      orgEmail: "",
       address: {
         street: "",
         suburb: "",
@@ -109,32 +109,56 @@ const RegisterForm: FC = () => {
       },
       websiteUrl: "",
       logoUrl: "",
-      adminName: "",
-      adminEmail: ""
+      userName: "",
+      userEmail: "",
+      password: ""
     }
   });
+
+  const handleSuccess = () => {
+    if (form.formState.isDirty) {
+      form.reset(form.getValues());
+      localStorage.removeItem(draftKey);
+    }
+  };
+
+  const handleError = () => {
+    if (form.formState.isDirty) {
+      form.reset();
+    }
+  };
+
+  const mutation = useRegister({ handleSuccess, handleError });
+
+  const onSubmit = (data: z.infer<typeof registerFormSchema>) => {
+    // const orgWithAdminCredentialsData = {
+    //   orgName: data.orgName,
+    //   orgEmail: data.orgName,
+    //   address: {
+    //     street: data.address?.street,
+    //     suburb: data.address?.suburb,
+    //     state: data.address?.state,
+    //     postcode: data.address?.postcode,
+    //     country: data.address?.country
+    //   },
+    //   websiteUrl: data.websiteUrl,
+    //   logoUrl: data.logoUrl,
+    //   userName: data.userName,
+    //   userEmail: data.userEmail,
+    //   password: data.password
+    // };
+    mutation.mutate(data as RegisterOrgWithAdminCredentials);
+  };
 
   const handleStepClick = async (targetStep: number) => {
     if (targetStep === step) return;
 
     if (targetStep > step) {
       if (step === 5) {
-        const data = form.getValues();
-        const newOrg = {
-          org_name: data.orgName,
-          email: data.email,
-          website_url: data.websiteUrl,
-          logo_url: data.logoUrl,
-          address: data.address,
-          status: "pending"
-        };
-        console.log("newOrg:", newOrg);
-        //todo: call register org api
-        localStorage.removeItem(draftKey);
+        form.handleSubmit(onSubmit);
       } else {
-        // normal validation for other steps
+        // validation for other steps
         const currentFields = formFields[step];
-
         const isValid = await form.trigger(currentFields as any);
         if (!isValid) return;
       }
@@ -143,19 +167,6 @@ const RegisterForm: FC = () => {
     setDirection(targetStep > step ? 1 : -1);
     setStep(targetStep);
     saveDraft();
-  };
-
-  const onSubmit = async (data: RegisterFormValues) => {
-    console.log("data", data);
-    console.log("onSubmit called, current step:", step);
-    //   // validate different fields based on current step
-    const currentFields = formFields[step];
-    const isValid = await form.trigger(currentFields as any);
-    console.log("Current step validation result:", isValid);
-    if (!isValid) {
-      console.log("Validation errors:", form.formState.errors);
-      return;
-    }
   };
 
   const saveDraft = () => {
@@ -178,104 +189,81 @@ const RegisterForm: FC = () => {
   }, [draftKey, form]);
 
   return (
-    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
       <div className="w-full max-w-[460px]">
         <Form {...form}>
-          <form
-            onSubmit={async e => {
-              e.preventDefault();
-              const currentFields = {
-                1: ["orgName", "email"],
-                2: ["address"],
-                3: ["websiteUrl", "logoUrl"],
-                4: ["adminName", "adminEmail", "password"],
-                5: ["verificationCode"]
-              }[step];
-
-              const isValid = await form.trigger(currentFields as any);
-              if (!isValid) {
-                console.log("Form validation errors:", form.formState.errors);
-                return;
-              }
-
-              form.handleSubmit(onSubmit)(e);
-            }}
-            className="w-full max-w-[600px]"
-          >
-            <div className="space-y-10 px-4">
-              <div className="space-y-2">
-                <h1 className="text-4xl font-semibold text-left">{"Sign Up"}</h1>
-                <p className="text-sm text-muted-foreground text-left">{steps.find(s => s.step === step)?.title}</p>
-              </div>
-
-              <AnimatePresence initial={false} mode="wait" custom={direction}>
-                <motion.div
-                  key={step}
-                  custom={direction}
-                  initial={{ x: direction > 0 ? 200 : -200, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: direction < 0 ? 200 : -200, opacity: 0 }}
-                  transition={{ duration: 0.3, type: "tween" }}
-                  className="inset-0"
-                >
-                  {step === 1 && (
-                    <div className="space-y-6">
-                      <FormFieldItem fieldControl={form.control} name="orgName" label="Organisation Name" placeholder="Enter organisation name" />
-                      <FormFieldItem fieldControl={form.control} name="email" label="Business Email" type="email" placeholder="Enter business email" />
-                      <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
-                        Continue
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                  )}
-                  {step === 2 && (
-                    <div className="space-y-4">
-                      <FormFieldItem fieldControl={form.control} name="address.street" label="Street" placeholder="Enter street address" />
-                      <div className="grid grid-cols-2 gap-4">
-                        <FormFieldItem fieldControl={form.control} name="address.suburb" label="Suburb" placeholder="Enter suburb" />
-                        <FormFieldItem fieldControl={form.control} name="address.state" label="State" placeholder="Enter state" />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <FormFieldItem fieldControl={form.control} name="address.postcode" label="Postcode" placeholder="Enter postcode" />
-                        <FormFieldItem fieldControl={form.control} name="address.country" label="Country" placeholder="Enter country" />
-                      </div>
-                      <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
-                        Continue
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                  )}
-                  {step === 3 && (
-                    <div className="space-y-4">
-                      <FormFieldItem fieldControl={form.control} name="websiteUrl" label="Website URL" type="url" placeholder="Enter website URL" />
-                      <FormFieldItem fieldControl={form.control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" />
-                      <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
-                        Continue
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </div>
-                  )}
-                  {step === 4 && (
-                    <div className="space-y-4">
-                      <FormFieldItem fieldControl={form.control} name="adminName" label="Admin Name" placeholder="Enter admin name" />
-                      <FormFieldItem fieldControl={form.control} name="adminEmail" label="Admin Email" type="email" placeholder="Enter admin email" />
-                      <FormFieldItem fieldControl={form.control} name="password" label="Password" type="password" placeholder="Enter your password" />
-                      <Button type="button" onClick={() => handleStepClick(5)} className="w-full h-11">
-                        Send Verification Email
-                      </Button>
-                    </div>
-                  )}
-                  {step === 5 && <SuccessAnimation />}
-                  <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-                    <span>Already have an account?</span>
-                    <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth"}>
-                      Back to Login
-                    </Link>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+          <div className="space-y-10 px-4">
+            <div className="space-y-2">
+              <h1 className="text-4xl font-semibold text-left">{"Sign Up"}</h1>
+              <p className="text-sm text-muted-foreground text-left">{steps.find(s => s.step === step)?.title}</p>
             </div>
-          </form>
+            <AnimatePresence initial={false} mode="wait" custom={direction}>
+              <motion.div
+                key={step}
+                custom={direction}
+                initial={{ x: direction > 0 ? 200 : -200, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: direction < 0 ? 200 : -200, opacity: 0 }}
+                transition={{ duration: 0.3, type: "tween" }}
+                className="inset-0"
+              >
+                {step === 1 && (
+                  <div className="space-y-6">
+                    <FormFieldItem fieldControl={form.control} name="orgName" label="Organisation Name" placeholder="Enter organisation name" />
+                    <FormFieldItem fieldControl={form.control} name="orgEmail" label="Business Email" type="email" placeholder="Enter business email" />
+                    <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
+                      Continue
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+                {step === 2 && (
+                  <div className="space-y-4">
+                    <FormFieldItem fieldControl={form.control} name="address.street" label="Street" placeholder="Enter street address" />
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormFieldItem fieldControl={form.control} name="address.suburb" label="Suburb" placeholder="Enter suburb" />
+                      <FormFieldItem fieldControl={form.control} name="address.state" label="State" placeholder="Enter state" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormFieldItem fieldControl={form.control} name="address.postcode" label="Postcode" placeholder="Enter postcode" />
+                      <FormFieldItem fieldControl={form.control} name="address.country" label="Country" placeholder="Enter country" />
+                    </div>
+                    <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
+                      Continue
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+                {step === 3 && (
+                  <div className="space-y-4">
+                    <FormFieldItem fieldControl={form.control} name="websiteUrl" label="Website URL" type="url" placeholder="Enter website URL" />
+                    <FormFieldItem fieldControl={form.control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" />
+                    <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
+                      Continue
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+                {step === 4 && (
+                  <div className="space-y-4">
+                    <FormFieldItem fieldControl={form.control} name="userName" label="Admin Name" placeholder="Enter admin name" />
+                    <FormFieldItem fieldControl={form.control} name="userEmail" label="Admin Email" type="email" placeholder="Enter admin email" />
+                    <FormFieldItem fieldControl={form.control} name="password" label="Password" type="password" placeholder="Enter your password" />
+                    <Button type="button" onClick={() => handleStepClick(5)} className="w-full h-11">
+                      Send Verification Email
+                    </Button>
+                  </div>
+                )}
+                {step === 5 && <SuccessAnimation />}
+                <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+                  <span>Already have an account?</span>
+                  <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth"}>
+                    Back to Login
+                  </Link>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </Form>
       </div>
       {/* Progress Bar */}
