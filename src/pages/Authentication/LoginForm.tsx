@@ -5,6 +5,7 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 // setting up the validation schema
 const loginFormSchema = z.object({
@@ -25,17 +26,20 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 const LoginForm: React.FC = () => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: {
       email: "",
       password: ""
     }
   });
-
+  const { setFocus } = form;
   const onSubmit = (data: LoginFormValues) => {
     console.log(data);
   };
 
+  useEffect(() => {
+    setFocus("email");
+  }, [setFocus]);
   return (
     <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] lg:ml-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
       <div className="w-full max-w-[460px]">

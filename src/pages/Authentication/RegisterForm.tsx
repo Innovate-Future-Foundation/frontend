@@ -1,13 +1,13 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { FormFieldItem } from "@/components/FormField";
 import { Form } from "@/components/ui/form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SuccessAnimation from "./SuccessAnimation";
 import { useRegister } from "@/hooks/auth/useRegister";
 import { RegisterOrgWithAdminCredentials } from "@/types/auth";
@@ -85,6 +85,7 @@ const formFields: Record<number, string[]> = {
 const RegisterForm: FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [direction, setDirection] = useState(0);
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
@@ -106,38 +107,20 @@ const RegisterForm: FC = () => {
       password: ""
     }
   });
-
+  const { setFocus, reset, formState, getValues, getFieldState, trigger, handleSubmit, control } = form;
   const handleSuccess = () => {
-    if (form.formState.isDirty) {
-      form.reset(form.getValues());
+    if (formState.isDirty) {
+      setCurrentStep(5);
+      reset(getValues());
     }
   };
 
-  const handleError = () => {
-    if (form.formState.isDirty) {
-      form.reset();
-    }
-  };
+  const handleError = () => {};
 
   const mutation = useRegister({ handleSuccess, handleError });
 
   const onSubmit = (data: z.infer<typeof registerFormSchema>) => {
-    // const orgWithAdminCredentialsData = {
-    //   orgName: data.orgName,
-    //   orgEmail: data.orgName,
-    //   address: {
-    //     street: data.address?.street,
-    //     suburb: data.address?.suburb,
-    //     state: data.address?.state,
-    //     postcode: data.address?.postcode,
-    //     country: data.address?.country
-    //   },
-    //   websiteUrl: data.websiteUrl,
-    //   logoUrl: data.logoUrl,
-    //   userName: data.userName,
-    //   userEmail: data.userEmail,
-    //   password: data.password
-    // };
+    console.debug("data", data);
     mutation.mutate(data as RegisterOrgWithAdminCredentials);
   };
 
@@ -145,132 +128,160 @@ const RegisterForm: FC = () => {
     if (targetStep === currentStep) return;
 
     if (targetStep > currentStep) {
-      if (currentStep === 5) {
-        form.handleSubmit(onSubmit);
+      if (currentStep === 4) {
+        console.log("hello", currentStep);
+        handleSubmit(onSubmit)();
+        return;
       } else {
         // validation for other steps
         const currentFields = formFields[currentStep];
-        const isValid = await form.trigger(currentFields as any);
+        const isValid = await trigger(currentFields as any, { shouldFocus: true });
         if (!isValid) return;
+
+        if (targetStep - currentStep > 1) {
+          const sectionIsDirty = formFields[targetStep].some(field => getFieldState(field as keyof RegisterOrgWithAdminCredentials).isDirty === true);
+          if (sectionIsDirty === true) {
+            setDirection(1);
+            setCurrentStep(targetStep);
+            return;
+          } else {
+            return;
+          }
+        }
       }
     }
-
     setDirection(targetStep > currentStep ? 1 : -1);
     setCurrentStep(targetStep);
   };
 
-  return (
-    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
-      <div className="w-full max-w-[460px]">
-        <Form {...form}>
-          <div className="space-y-10 px-4">
-            <div className="space-y-2">
-              <h1 className="text-4xl font-semibold text-left">{"Sign Up"}</h1>
-              <p className="text-sm text-muted-foreground text-left">{steps.find(s => s.step === currentStep)?.title}</p>
-            </div>
-            <AnimatePresence initial={false} mode="wait" custom={direction}>
-              <motion.div
-                key={currentStep}
-                custom={direction}
-                initial={{ x: direction > 0 ? 200 : -200, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: direction < 0 ? 200 : -200, opacity: 0 }}
-                transition={{ duration: 0.3, type: "tween" }}
-                className="inset-0"
-              >
-                {currentStep === 1 && (
-                  <div className="space-y-6">
-                    <FormFieldItem fieldControl={form.control} name="orgName" label="Organisation Name" placeholder="Enter organisation name" />
-                    <FormFieldItem fieldControl={form.control} name="orgEmail" label="Business Email" type="email" placeholder="Enter business email" />
-                    <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
-                      Continue
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
-                {currentStep === 2 && (
-                  <div className="space-y-4">
-                    <FormFieldItem fieldControl={form.control} name="address.street" label="Street" placeholder="Enter street address" />
-                    <div className="grid grid-cols-2 gap-4">
-                      <FormFieldItem fieldControl={form.control} name="address.suburb" label="Suburb" placeholder="Enter suburb" />
-                      <FormFieldItem fieldControl={form.control} name="address.state" label="State" placeholder="Enter state" />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <FormFieldItem fieldControl={form.control} name="address.postcode" label="Postcode" placeholder="Enter postcode" />
-                      <FormFieldItem fieldControl={form.control} name="address.country" label="Country" placeholder="Enter country" />
-                    </div>
-                    <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
-                      Continue
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
-                {currentStep === 3 && (
-                  <div className="space-y-4">
-                    <FormFieldItem fieldControl={form.control} name="websiteUrl" label="Website URL" type="url" placeholder="Enter website URL" />
-                    <FormFieldItem fieldControl={form.control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" />
-                    <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
-                      Continue
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
-                {currentStep === 4 && (
-                  <div className="space-y-4">
-                    <FormFieldItem fieldControl={form.control} name="userName" label="Admin Name" placeholder="Enter admin name" />
-                    <FormFieldItem fieldControl={form.control} name="userEmail" label="Admin Email" type="email" placeholder="Enter admin email" />
-                    <FormFieldItem fieldControl={form.control} name="password" label="Password" type="password" placeholder="Enter your password" />
-                    <Button type="button" onClick={() => handleStepClick(5)} className="w-full h-11">
-                      Send Verification Email
-                    </Button>
-                  </div>
-                )}
-                {currentStep === 5 && <SuccessAnimation />}
-                <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-                  <span>Already have an account?</span>
-                  <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth"}>
-                    Back to Login
-                  </Link>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </Form>
-      </div>
-      {/* Progress Bar */}
-      <div className="w-full h-[5rem] absolute bottom-0 max-w-[460px] flex flex-col justify-end gap-4">
-        <div className="flex gap-1">
-          {steps.map(s => {
-            const isCompleted = currentStep > s.step;
-            const isCurrent = currentStep === s.step;
-            const isClickable = currentStep >= s.step - 1;
+  useEffect(() => {
+    setFocus("orgName");
+  }, [setFocus]);
 
-            return (
-              <div
-                key={s.step}
-                className={`relative flex-1 ${isClickable ? "cursor-pointer" : "cursor-not-allowed"}`}
-                onClick={() => (isClickable ? handleStepClick(s.step) : null)}
-              >
-                <div
-                  className={`
+  return (
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
+      {currentStep === 5 ? (
+        <div className="w-full max-w-[460px]">
+          <SuccessAnimation />
+          <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+            <Button type="button" onClick={() => navigate("/")}>
+              Back to Home
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="w-full max-w-[460px]">
+            <Form {...form}>
+              <div className="space-y-10 px-4">
+                <div className="space-y-2">
+                  <h1 className="text-4xl font-semibold text-left">{"Sign Up"}</h1>
+                  <p className="text-sm text-muted-foreground text-left">{steps.find(s => s.step === currentStep)?.title}</p>
+                </div>
+                <AnimatePresence initial={false} mode="wait" custom={direction}>
+                  <motion.div
+                    key={currentStep}
+                    custom={direction}
+                    initial={{ x: direction > 0 ? 200 : -200, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: direction < 0 ? 200 : -200, opacity: 0 }}
+                    transition={{ duration: 0.3, type: "tween" }}
+                    className="inset-0"
+                  >
+                    {currentStep === 1 && (
+                      <div className="space-y-6">
+                        <FormFieldItem fieldControl={control} name="orgName" label="Organisation Name" placeholder="Enter organisation name" />
+                        <FormFieldItem fieldControl={control} name="orgEmail" label="Business Email" type="email" placeholder="Enter business email" />
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
+                          Continue
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                    {currentStep === 2 && (
+                      <div className="space-y-4">
+                        <FormFieldItem fieldControl={control} name="address.street" label="Street" placeholder="Enter street address" />
+                        <div className="grid grid-cols-2 gap-4">
+                          <FormFieldItem fieldControl={control} name="address.suburb" label="Suburb" placeholder="Enter suburb" />
+                          <FormFieldItem fieldControl={control} name="address.state" label="State" placeholder="Enter state" />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <FormFieldItem fieldControl={control} name="address.postcode" label="Postcode" placeholder="Enter postcode" />
+                          <FormFieldItem fieldControl={control} name="address.country" label="Country" placeholder="Enter country" />
+                        </div>
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
+                          Continue
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                    {currentStep === 3 && (
+                      <div className="space-y-4">
+                        <FormFieldItem fieldControl={control} name="websiteUrl" label="Website URL" type="url" placeholder="Enter website URL" />
+                        <FormFieldItem fieldControl={control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" />
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
+                          Continue
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                    {currentStep === 4 && (
+                      <div className="space-y-4">
+                        <FormFieldItem fieldControl={control} name="userName" label="Admin Name" placeholder="Enter admin name" />
+                        <FormFieldItem fieldControl={control} name="userEmail" label="Admin Email" type="email" placeholder="Enter admin email" />
+                        <FormFieldItem fieldControl={control} name="password" label="Password" type="password" placeholder="Enter your password" />
+                        <Button
+                          type="button"
+                          onClick={() => handleStepClick(5)}
+                          disabled={mutation.isPending}
+                          className="w-full h-11 flex items-center justify-center"
+                        >
+                          {mutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Send Verification Email"}
+                        </Button>
+                      </div>
+                    )}
+                    <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+                      <span>Already have an account?</span>
+                      <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth"}>
+                        Back to Login
+                      </Link>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </Form>
+          </div>
+          {/* Progress Bar */}
+          <div className="w-full h-[5rem] absolute bottom-0 max-w-[460px] flex flex-col justify-end gap-4">
+            <div className="flex gap-1">
+              {steps.map(s => {
+                const isCompleted = currentStep > s.step;
+                const isCurrent = currentStep === s.step;
+
+                return (
+                  <div key={s.step} className={`relative flex-1 ${"cursor-pointer"}`} onClick={() => handleStepClick(s.step)}>
+                    <div
+                      className={`
                           h-2 rounded-full w-full bg-muted
                         `}
-                />
+                    />
 
-                {(isCompleted || isCurrent) && (
-                  <div
-                    className={`
+                    {(isCompleted || isCurrent) && (
+                      <div
+                        className={`
                             absolute top-0 left-0 h-2 rounded-full bg-primary
                             transition-all duration-500 ease-out
                             ${isCompleted ? "w-full" : isCurrent ? "w-1/2" : "w-0"}
                           `}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

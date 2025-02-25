@@ -5,6 +5,7 @@ import { FormFieldItem } from "@/components/FormField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email({
@@ -17,19 +18,21 @@ type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 const ForgotPasswordForm: React.FC = () => {
   const form = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: {
       email: ""
     }
   });
-
+  const { setFocus } = form;
   const onSubmit = async (data: ForgotPasswordValues) => {
     // TODO: to implement the reset password logic here
     console.log("Sending reset password email to:", data.email);
     // simulate the API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
   };
-
+  useEffect(() => {
+    setFocus("email");
+  }, [setFocus]);
   return (
     <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] lg:ml-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
       <div className="w-full max-w-[460px]">

@@ -45,10 +45,10 @@ const AuthenticationPage = () => {
           </div>
         </div>
         <img
-          src="/assets/images/ifa_auth@1x.webp"
-          srcSet="/assets/images/ifa_auth@2x.webp 2x"
+          src="/assets/images/ifa_auth_mask@1x.webp"
+          srcSet="/assets/images/ifa_auth_mask@2x.webp 2x"
           alt="ifa_auth.webp"
-          className="w-full h-full object-cover absolute z-0 gradient-mask-b-[transparent,rgba(0,0,0,1.0)_0px,rgba(0,0,0,0.5)_95%]"
+          className="w-full h-full object-cover absolute z-0"
         />
       </motion.div>
       <div className="flex-1 relative">
