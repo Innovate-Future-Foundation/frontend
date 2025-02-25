@@ -14,7 +14,7 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-        <RouterProvider router={router} />;
+        <RouterProvider router={router} />
         <Toaster />
       </ThemeProvider>
       <ReactQueryDevtools />

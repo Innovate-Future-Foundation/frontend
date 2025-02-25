@@ -49,10 +49,6 @@ const router: AppRoute[] = [
         element: <LoginForm />
       },
       {
-        path: "login",
-        element: <LoginForm />
-      },
-      {
         path: "register",
         element: <RegisterForm />
       },

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 // setting up the validation schema
@@ -38,20 +37,13 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <motion.div
-      key="login"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="h-full flex items-start pt-[25vh] justify-center lg:ml-[calc(50vw-5rem-2rem)] px-6 "
-    >
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] ml-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
       <div className="w-full max-w-[460px]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] w-full space-y-6 motion-preset-fade motion-duration-2000 motion-delay-500">
-            <div className="space-y-4">
-              <h1 className="text-4xl font-semibold text-center">Login Now</h1>
-              <p className="text-sm text-muted-foreground text-center">Please enter the details below to continue.</p>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] space-y-10 w-full motion-preset-fade motion-duration-2000 motion-delay-500">
+            <div className="space-y-2">
+              <h1 className="text-4xl font-semibold text-left">Sign In</h1>
+              <p className="text-sm text-muted-foreground text-left">Welcome to IFA!</p>
             </div>
 
             <div className="space-y-4">
@@ -60,25 +52,24 @@ const LoginForm: React.FC = () => {
               <FormFieldItem type="password" fieldControl={form.control} name="password" label="Password" placeholder="Enter your password" />
 
               <div className="text-right">
-                <Link className="text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgot-password"}>
+                <Link className="font-bold text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgot-password"}>
                   Forgot Password?
                 </Link>
               </div>
             </div>
-
-            <Button type="submit" className="w-full">
-              LOGIN
+            <Button type="submit" className="w-full" size={"xl"}>
+              Sign In
             </Button>
-            <div className="text-center text-sm text-muted-foreground">
-              Don't have an account?{" "}
-              <Link className="text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/register"}>
-                Register
-              </Link>
-            </div>
           </form>
         </Form>
+        <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+          <span> Don't have an account? </span>
+          <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/register"}>
+            Sign Up
+          </Link>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
