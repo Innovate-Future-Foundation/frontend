@@ -189,7 +189,7 @@ const RegisterForm: FC = () => {
   }, [draftKey, form]);
 
   return (
-    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
       <div className="w-full max-w-[460px]">
         <Form {...form}>
           <div className="space-y-10 px-4">
