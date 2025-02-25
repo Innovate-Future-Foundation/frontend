@@ -14,11 +14,11 @@ const AuthenticationPage = () => {
         transition={{ duration: 0.6, ease: [0, 0.71, 0.2, 1.01] }}
         className="fixed hidden lg:flex rounded-IF32px w-[calc(50vw-5rem-2rem)] h-[calc(100vh-5rem)] min-h-[640px] flex-col"
         style={{
-          maskImage: `url('/assets/images/mask.png')`,
+          maskImage: `url(${currentPage === "register" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
           maskRepeat: `no-repeat`,
           maskSize: `100% 100%`,
           maskPosition: "center",
-          WebkitMaskImage: `url('/assets/images/mask.png')`,
+          WebkitMaskImage: `url(${currentPage === "register" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
           WebkitMaskRepeat: `no-repeat`,
           WebkitMaskSize: `100% 100%`,
           WebkitMaskPosition: "center"
