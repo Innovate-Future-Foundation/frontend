@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -58,11 +58,6 @@ const registerFormSchema = z.object({
 
 type RegisterFormValues = z.infer<typeof registerFormSchema>;
 
-interface DraftData extends Partial<RegisterFormValues> {
-  lastStep: number;
-  updatedAt: string;
-}
-
 const steps = [
   {
     step: 1,
@@ -90,7 +85,7 @@ const formFields: Record<number, string[]> = {
 };
 
 const RegisterForm: FC = () => {
-  const [step, setStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(1);
   const [direction, setDirection] = useState(0);
   const [draftKey] = useState(`register_draft_${Date.now()}`);
 
@@ -151,42 +146,22 @@ const RegisterForm: FC = () => {
   };
 
   const handleStepClick = async (targetStep: number) => {
-    if (targetStep === step) return;
+    if (targetStep === currentStep) return;
 
-    if (targetStep > step) {
-      if (step === 5) {
+    if (targetStep > currentStep) {
+      if (currentStep === 5) {
         form.handleSubmit(onSubmit);
       } else {
         // validation for other steps
-        const currentFields = formFields[step];
+        const currentFields = formFields[currentStep];
         const isValid = await form.trigger(currentFields as any);
         if (!isValid) return;
       }
     }
 
-    setDirection(targetStep > step ? 1 : -1);
-    setStep(targetStep);
-    saveDraft();
+    setDirection(targetStep > currentStep ? 1 : -1);
+    setCurrentStep(targetStep);
   };
-
-  const saveDraft = () => {
-    const formData = form.getValues();
-    const draft: DraftData = {
-      ...formData,
-      lastStep: step,
-      updatedAt: new Date().toISOString()
-    };
-    localStorage.setItem(draftKey, JSON.stringify(draft));
-  };
-
-  useEffect(() => {
-    const savedDraft = localStorage.getItem(draftKey);
-    if (savedDraft) {
-      const draft = JSON.parse(savedDraft);
-      form.reset(draft);
-      setStep(draft.lastStep || 1);
-    }
-  }, [draftKey, form]);
 
   return (
     <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
@@ -195,11 +170,11 @@ const RegisterForm: FC = () => {
           <div className="space-y-10 px-4">
             <div className="space-y-2">
               <h1 className="text-4xl font-semibold text-left">{"Sign Up"}</h1>
-              <p className="text-sm text-muted-foreground text-left">{steps.find(s => s.step === step)?.title}</p>
+              <p className="text-sm text-muted-foreground text-left">{steps.find(s => s.step === currentStep)?.title}</p>
             </div>
             <AnimatePresence initial={false} mode="wait" custom={direction}>
               <motion.div
-                key={step}
+                key={currentStep}
                 custom={direction}
                 initial={{ x: direction > 0 ? 200 : -200, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -207,17 +182,17 @@ const RegisterForm: FC = () => {
                 transition={{ duration: 0.3, type: "tween" }}
                 className="inset-0"
               >
-                {step === 1 && (
+                {currentStep === 1 && (
                   <div className="space-y-6">
                     <FormFieldItem fieldControl={form.control} name="orgName" label="Organisation Name" placeholder="Enter organisation name" />
                     <FormFieldItem fieldControl={form.control} name="orgEmail" label="Business Email" type="email" placeholder="Enter business email" />
-                    <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
+                    <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
                       Continue
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </div>
                 )}
-                {step === 2 && (
+                {currentStep === 2 && (
                   <div className="space-y-4">
                     <FormFieldItem fieldControl={form.control} name="address.street" label="Street" placeholder="Enter street address" />
                     <div className="grid grid-cols-2 gap-4">
@@ -228,23 +203,23 @@ const RegisterForm: FC = () => {
                       <FormFieldItem fieldControl={form.control} name="address.postcode" label="Postcode" placeholder="Enter postcode" />
                       <FormFieldItem fieldControl={form.control} name="address.country" label="Country" placeholder="Enter country" />
                     </div>
-                    <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
+                    <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
                       Continue
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </div>
                 )}
-                {step === 3 && (
+                {currentStep === 3 && (
                   <div className="space-y-4">
                     <FormFieldItem fieldControl={form.control} name="websiteUrl" label="Website URL" type="url" placeholder="Enter website URL" />
                     <FormFieldItem fieldControl={form.control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" />
-                    <Button type="button" onClick={() => handleStepClick(step + 1)} className="w-full h-11 ">
+                    <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
                       Continue
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </div>
                 )}
-                {step === 4 && (
+                {currentStep === 4 && (
                   <div className="space-y-4">
                     <FormFieldItem fieldControl={form.control} name="userName" label="Admin Name" placeholder="Enter admin name" />
                     <FormFieldItem fieldControl={form.control} name="userEmail" label="Admin Email" type="email" placeholder="Enter admin email" />
@@ -254,7 +229,7 @@ const RegisterForm: FC = () => {
                     </Button>
                   </div>
                 )}
-                {step === 5 && <SuccessAnimation />}
+                {currentStep === 5 && <SuccessAnimation />}
                 <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                   <span>Already have an account?</span>
                   <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth"}>
@@ -270,9 +245,9 @@ const RegisterForm: FC = () => {
       <div className="w-full h-[5rem] absolute bottom-0 max-w-[460px] flex flex-col justify-end gap-4">
         <div className="flex gap-1">
           {steps.map(s => {
-            const isCompleted = step > s.step;
-            const isCurrent = step === s.step;
-            const isClickable = step >= s.step - 1;
+            const isCompleted = currentStep > s.step;
+            const isCurrent = currentStep === s.step;
+            const isClickable = currentStep >= s.step - 1;
 
             return (
               <div
