@@ -56,8 +56,6 @@ const registerFormSchema = z.object({
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/, "Password must include uppercase, lowercase, number, and special character.")
 });
 
-type RegisterFormValues = z.infer<typeof registerFormSchema>;
-
 const steps = [
   {
     step: 1,
@@ -87,9 +85,8 @@ const formFields: Record<number, string[]> = {
 const RegisterForm: FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [direction, setDirection] = useState(0);
-  const [draftKey] = useState(`register_draft_${Date.now()}`);
 
-  const form = useForm<RegisterFormValues>({
+  const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     mode: "onChange",
     defaultValues: {
@@ -113,7 +110,6 @@ const RegisterForm: FC = () => {
   const handleSuccess = () => {
     if (form.formState.isDirty) {
       form.reset(form.getValues());
-      localStorage.removeItem(draftKey);
     }
   };
 
