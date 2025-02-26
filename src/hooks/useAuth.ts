@@ -4,9 +4,9 @@ import { RoleType } from "@/types";
 interface AuthState {
   isAuthenticated: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
-  role?: RoleType;
+  role: RoleType | null;
   setRole: (role: RoleType) => void;
-  organisationId?: string;
+  organisationId: string | null;
   setOrganisationId: (organisationId: string) => void;
 }
 
@@ -15,18 +15,18 @@ export const useAuth = create<AuthState>(set => ({
   setIsAuthenticated: (isAuthenticated: boolean) => {
     set({ isAuthenticated });
   },
-  role: undefined,
+  role: null,
   setRole: (role: RoleType) => {
     set({ role });
   },
-  organisationId: undefined,
+  organisationId: null,
   setOrganisationId: (organisationId: string) => {
     set({ organisationId });
   },
   reset: () =>
     set({
-      role: undefined,
-      organisationId: undefined,
+      role: null,
+      organisationId: null,
       isAuthenticated: false
     })
 }));

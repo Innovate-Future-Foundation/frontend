@@ -13,7 +13,7 @@ const DashboardContent = () => {
   if (!role) {
     return <FadeLoader />;
   }
-  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role!, organisationId);
+  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role!, organisationId!);
 
   return (
     <SidebarProvider>

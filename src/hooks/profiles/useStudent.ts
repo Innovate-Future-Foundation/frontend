@@ -16,7 +16,7 @@ export const useStudent = (profilePaginatedRequest: ProfilePaginatedRequest) => 
     error: errorStudents,
     isError: isErrorStudents
   } = useQuery({
-    ...profiles.studentslist(profilePaginatedRequest, organisationId),
+    ...profiles.studentslist(profilePaginatedRequest, organisationId!),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,

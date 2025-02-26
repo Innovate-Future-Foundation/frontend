@@ -17,7 +17,7 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
     error: errorParents,
     isError: isErrorParents
   } = useQuery({
-    ...profiles.parentslist(profilePaginatedRequest, organisationId),
+    ...profiles.parentslist(profilePaginatedRequest, organisationId!),
     staleTime: 60000,
     gcTime: 300000,
     retry: 3,
