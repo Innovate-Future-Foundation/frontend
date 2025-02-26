@@ -155,8 +155,13 @@ const RegisterForm: FC = () => {
   };
 
   useEffect(() => {
-    setFocus("orgName");
-  }, [setFocus]);
+    if (currentStep === 1) {
+      setFocus("orgName");
+    }
+    if (currentStep === 2) {
+      setFocus("address.street");
+    }
+  }, [currentStep, setFocus]);
 
   return (
     <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
@@ -188,7 +193,7 @@ const RegisterForm: FC = () => {
                   >
                     {currentStep === 1 && (
                       <div className="space-y-6">
-                        <FormFieldItem fieldControl={control} name="orgName" label="Organisation Name" placeholder="Enter organisation name" />
+                        <FormFieldItem fieldControl={control} name="orgName" label="*Organisation Name" placeholder="Enter organisation name" />
                         <FormFieldItem fieldControl={control} name="orgEmail" label="Business Email" type="email" placeholder="Enter business email" />
                         <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
                           Continue
@@ -225,9 +230,9 @@ const RegisterForm: FC = () => {
                     )}
                     {currentStep === 4 && (
                       <div className="space-y-4">
-                        <FormFieldItem fieldControl={control} name="userName" label="Admin Name" placeholder="Enter admin name" />
-                        <FormFieldItem fieldControl={control} name="userEmail" label="Admin Email" type="email" placeholder="Enter admin email" />
-                        <FormFieldItem fieldControl={control} name="password" label="Password" type="password" placeholder="Enter your password" />
+                        <FormFieldItem fieldControl={control} name="userName" label="*Admin Name" placeholder="Enter admin name" />
+                        <FormFieldItem fieldControl={control} name="userEmail" label="*Admin Email" type="email" placeholder="Enter admin email" />
+                        <FormFieldItem fieldControl={control} name="password" label="*Password" type="password" placeholder="Enter your password" />
                         <Button
                           type="button"
                           onClick={() => handleStepClick(5)}

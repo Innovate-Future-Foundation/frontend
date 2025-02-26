@@ -3,12 +3,12 @@ import { Outlet } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Breadcrumb from "@/components/Breadcurmb";
 import { filterMenuByRole } from "./SidebarMenu";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store";
 import Sidebar from "./Sidebar";
 import { FadeLoader } from "react-spinners";
 
 const DashboardContent = () => {
-  const { role, organisationId } = useAuth();
+  const { role, organisationId } = useAuthStore();
 
   if (!role) {
     return <FadeLoader />;

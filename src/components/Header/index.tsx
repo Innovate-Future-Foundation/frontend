@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import SignInAvatar from "./SignInAvatar";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store";
 import { ProfileInfo } from "@/types";
 import { Button } from "../ui/button";
 
@@ -9,7 +9,7 @@ interface HeaderProps {
   profile: ProfileInfo;
 }
 const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 
   return (

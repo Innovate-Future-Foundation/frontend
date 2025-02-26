@@ -4,10 +4,10 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { ProfilePaginatedRequest } from "@/types";
 import { contacts } from "@/queries/contacts";
-import { useAuth } from "../useAuth";
+import { useAuthStore } from "@/store";
 
 export const useContact = (profilePaginatedRequest: ProfilePaginatedRequest) => {
-  const { organisationId, role } = useAuth();
+  const { organisationId, role } = useAuthStore();
   const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_CONTACTS;
 
   const {

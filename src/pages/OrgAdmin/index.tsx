@@ -7,8 +7,10 @@ import { useOrgAdmin } from "@/hooks/profiles/useOrgAdmin";
 import { profileColumns } from "../Profile/profileColumns";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
+import { useNavigate } from "react-router-dom";
 
 const OrgAdminPage = () => {
+  const navigate = useNavigate();
   const { needViewOrganisationOfUser } = usePermissions();
   const {
     searchKey,
@@ -48,7 +50,7 @@ const OrgAdminPage = () => {
       <DataTable
         totalItems={orgAdminsResponse?.meta?.totalItems}
         limit={pagination.pageSize}
-        columns={profileColumns({ profilePath: "orgadmins", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        columns={profileColumns({ profilePath: "orgadmins", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate })}
         data={tableData}
         isLoading={isLoadingOrgAdmins}
         searchPlaceholder="search by name, email or phone"

@@ -1,5 +1,5 @@
+import { useAuthStore } from "@/store";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
 // import { RoleType } from "@/types";
 
 interface ProtectedRouteProps {
@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) {
     console.log("isAuthenticated", isAuthenticated);

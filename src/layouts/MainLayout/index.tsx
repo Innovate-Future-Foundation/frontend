@@ -2,8 +2,8 @@ import { ReactNode, useEffect } from "react";
 
 import Header from "@/components/Header";
 import { useLocation } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
 import { MyInfo } from "@/types/auth";
+import { useAuthStore } from "@/store";
 
 const myProfile: MyInfo = {
   id: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -12,7 +12,7 @@ const myProfile: MyInfo = {
   defaultProfile: {
     id: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
     organisation: {
-      id: "0ba703ec-ea93-4c29-861b-f9e7f18313f9",
+      id: "0618d3b9-256c-4b12-8b2f-548fbea05208",
       orgName: "Acme Corporation",
       logoUrl: "https://github.com/shadcn.png",
       websiteUrl: "https://www.acmecorp.com",
@@ -48,7 +48,7 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { pathname } = useLocation();
   console.log("pathname", pathname);
-  const { setRole, setOrganisationId } = useAuth();
+  const { setRole, setOrganisationId } = useAuthStore();
 
   //todo: hardcode
   useEffect(() => {

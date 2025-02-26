@@ -7,8 +7,10 @@ import { profileColumns } from "../Profile/profileColumns";
 import { useStudent } from "@/hooks/profiles/useStudent";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
+import { useNavigate } from "react-router-dom";
 
 const StudentPage = () => {
+  const navigate = useNavigate();
   const { needViewOrganisationOfUser } = usePermissions();
   const {
     searchKey,
@@ -48,7 +50,7 @@ const StudentPage = () => {
       <DataTable
         totalItems={studentsResponse?.meta?.totalItems}
         limit={pagination.pageSize}
-        columns={profileColumns({ profilePath: "students", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        columns={profileColumns({ profilePath: "students", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate })}
         data={tableData}
         isLoading={isLoadingStudents}
         searchPlaceholder="search by name, email or phone"

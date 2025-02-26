@@ -5,8 +5,7 @@ import Avatar from "../Avatar";
 import HoverCard from "../HoverCard";
 import { Button } from "../ui/button";
 import { ProfileInfo } from "@/types";
-import { useAuth } from "@/hooks/useAuth";
-import { useTourBuilderStore } from "@/store";
+import { useAuthStore, useTourBuilderStore } from "@/store";
 import { useLogout } from "@/hooks/auth/useLogout";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
@@ -19,7 +18,7 @@ interface AvatarType {
 }
 
 const SignInAvatar: React.FC<AvatarType> = ({ name, email, avatarUrl, profile }) => {
-  const { resetAuthStore } = useAuth();
+  const { resetAuthStore } = useAuthStore();
   const { resetTourStore } = useTourBuilderStore();
   const navigate = useNavigate();
 

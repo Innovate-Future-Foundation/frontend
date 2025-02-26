@@ -11,7 +11,7 @@ interface AuthState {
   resetAuthStore: () => void;
 }
 
-export const useAuth = create<AuthState>(set => ({
+export const useAuthStore = create<AuthState>(set => ({
   isAuthenticated: false,
   setIsAuthenticated: (isAuthenticated: boolean) => {
     set({ isAuthenticated });

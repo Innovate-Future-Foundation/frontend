@@ -6,8 +6,10 @@ import { profileColumns } from "../Profile/profileColumns";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { useParentWithChildren } from "@/hooks/profiles/useParentWithChildren";
+import { useNavigate } from "react-router-dom";
 
 const ParentPage = () => {
+  const navigate = useNavigate();
   const { needViewOrganisationOfUser } = usePermissions();
   const {
     searchKey,
@@ -43,7 +45,7 @@ const ParentPage = () => {
       <DataTable
         totalItems={totalItems}
         limit={pagination.pageSize}
-        columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate })}
         data={parentsData}
         isLoading={isLoadingParents || isLoadingChildren}
         searchPlaceholder="search by name, email or phone"

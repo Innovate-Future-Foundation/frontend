@@ -11,14 +11,20 @@ import { Profile, ProfilePathType } from "@/types";
 import clsx from "clsx";
 import { getColorStyleByIsActive, getColorStyleByIsConfirmed } from "@/constants/mapper";
 import { Tooltip } from "@/components/Tooltip";
-
+import { NavigateFunction } from "react-router-dom";
 interface GenerateColumnsOptions {
   profilePath?: ProfilePathType;
   hideRole?: boolean;
   hideOrganisation?: boolean;
+  navigate?: NavigateFunction;
 }
 
-export const profileColumns = ({ profilePath = "contacts", hideRole = false, hideOrganisation = false }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
+export const profileColumns = ({
+  profilePath = "contacts",
+  hideRole = false,
+  hideOrganisation = false,
+  navigate
+}: GenerateColumnsOptions): ColumnDef<Profile>[] => {
   const baseColumns: ColumnDef<Profile>[] = [
     {
       id: "select",
@@ -173,8 +179,8 @@ export const profileColumns = ({ profilePath = "contacts", hideRole = false, hid
       const detail = row.original;
 
       const handleOperateDetail = ({ detail, isEdit = false }: { detail: Profile; isEdit?: boolean }) => {
-        const path = isEdit ? `${profilePath}/${detail.id}/edit` : `${profilePath}/${detail.id}`;
-        window.location.href = path;
+        const path = isEdit ? `${detail.id}/edit` : `${detail.id}`;
+        navigate?.(path);
       };
 
       const handleDelete = (detail: Profile) => {

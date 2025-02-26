@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useErrorNotification } from "../useErrorNotification";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { Profile, ProfilePaginatedRequest, TableBaseType } from "@/types";
-import { useAuth } from "../useAuth";
 import { useMemo } from "react";
 import { profiles } from "@/queries/profiles";
+import { useAuthStore } from "@/store";
 
 export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedRequest) => {
-  const { organisationId } = useAuth();
+  const { organisationId } = useAuthStore();
   const errorTitleChildren = ERROR_MESSAGES.FAIL_TO_FETCH_CHILDREN;
   const errorTitleParent = ERROR_MESSAGES.FAIL_TO_FETCH_PARENT;
 

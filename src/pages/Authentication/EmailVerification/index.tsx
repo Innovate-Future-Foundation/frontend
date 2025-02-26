@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { FadeLoader } from "react-spinners";
 import VerificationFail from "../VerificationFail";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store";
 
 const EmailVerification = () => {
   const url = window.location.href;
@@ -15,7 +15,7 @@ const EmailVerification = () => {
   const email = searchParams.get("email");
   const profileId = searchParams.get("pid");
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useAuth();
+  const { setIsAuthenticated } = useAuthStore();
 
   const handleSuccess = () => {
     // redirect to dashboard page

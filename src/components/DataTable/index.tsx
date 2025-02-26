@@ -27,7 +27,7 @@ import { Card } from "../ui/card";
 import { getFiltersItems, getfilterTitle } from "@/constants/mapper";
 import { useCallback, useEffect, useMemo } from "react";
 import { DEBOUNCE_TIME_MS } from "@/constants/appConfig";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store";
 
 interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
@@ -68,7 +68,7 @@ const DataTable = <T extends object>({
 }: DataTableProps<T>) => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
-  const { role } = useAuth();
+  const { role } = useAuthStore();
   const table = useReactTable<TableBaseType<T>>({
     data,
     columns,

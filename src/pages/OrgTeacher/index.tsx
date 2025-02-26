@@ -7,8 +7,10 @@ import { profileColumns } from "../Profile/profileColumns";
 import { useOrgTeacher } from "@/hooks/profiles/useOrgTeacher";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
+import { useNavigate } from "react-router-dom";
 
 const OrgTeacherPage = () => {
+  const navigate = useNavigate();
   const { needViewOrganisationOfUser } = usePermissions();
   const {
     searchKey,
@@ -48,7 +50,7 @@ const OrgTeacherPage = () => {
       <DataTable
         totalItems={orgTeachersResponse?.meta?.totalItems}
         limit={pagination.pageSize}
-        columns={profileColumns({ profilePath: "orgteachers", hideRole: true, hideOrganisation: !needViewOrganisationOfUser })}
+        columns={profileColumns({ profilePath: "orgteachers", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate })}
         data={tableData}
         isLoading={isLoadingOrgTeachers}
         searchPlaceholder="search by name, email or phone"
