@@ -20,7 +20,9 @@ const EmailVerification = () => {
   const handleSuccess = () => {
     // redirect to dashboard page
     setIsAuthenticated(true);
-    navigate("/dashboard");
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 5000);
   };
 
   const { error, isError, isPending, isSuccess, mutate } = useEmailVerification({ handleSuccess });
