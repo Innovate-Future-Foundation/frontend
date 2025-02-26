@@ -4,13 +4,16 @@ import { RoleType } from "@/types";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles: RoleType[];
+  allowedRoles?: RoleType[];
 }
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { role } = useAuth();
 
-  if (!allowedRoles.includes(role)) {
+  if (!role) {
+    return <Navigate to="/" replace />;
+  }
+  if (!allowedRoles?.includes(role)) {
     return <Navigate to="/dashboard" replace />;
   }
 

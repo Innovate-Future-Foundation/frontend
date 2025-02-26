@@ -8,9 +8,9 @@ import { ArrowRight, Loader2 } from "lucide-react";
 import { FormFieldItem } from "@/components/FormField";
 import { Form } from "@/components/ui/form";
 import { Link, useNavigate } from "react-router-dom";
-import SuccessAnimation from "./SuccessAnimation";
 import { useRegister } from "@/hooks/auth/useRegister";
 import { RegisterOrgWithAdminCredentials } from "@/types/auth";
+import SendEmailSuccess from "./SendEmailSuccess";
 
 const signupFormSchema = z.object({
   orgName: z.string().min(2, "Organisation name must be at least 2 characters"),
@@ -120,7 +120,7 @@ const RegisterForm: FC = () => {
   const mutation = useRegister({ handleSuccess, handleError });
 
   const onSubmit = (data: z.infer<typeof signupFormSchema>) => {
-    console.debug("data", data);
+    console.log("data", data);
     mutation.mutate(data as RegisterOrgWithAdminCredentials);
   };
 
@@ -129,11 +129,9 @@ const RegisterForm: FC = () => {
 
     if (targetStep > currentStep) {
       if (currentStep === 4) {
-        console.log("hello", currentStep);
         handleSubmit(onSubmit)();
         return;
       } else {
-        // validation for other steps
         const currentFields = formFields[currentStep];
         const isValid = await trigger(currentFields as any, { shouldFocus: true });
         if (!isValid) return;
@@ -154,20 +152,23 @@ const RegisterForm: FC = () => {
     setCurrentStep(targetStep);
   };
 
+  const handleResendVerificationEmail = () => {
+    console.log("handleResendVerificationEmail...");
+    //todo: call ResendVerificationEmail api
+  };
+
   useEffect(() => {
     setFocus("orgName");
   }, [setFocus]);
 
   return (
     <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
-      {currentStep === 5 ? (
-        <div className="w-full max-w-[460px]">
-          <SuccessAnimation />
-          <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-            <Button type="button" onClick={() => navigate("/")}>
-              Back to Home
-            </Button>
-          </div>
+      {mutation.isSuccess ? (
+        <div className="w-full max-w-[460px] flex flex-col items-center justify-center ">
+          <SendEmailSuccess handleButtonClick={handleResendVerificationEmail} />
+          <Button type="button" onClick={() => navigate("/")} className="w-full" size={"xl"}>
+            Back to Home
+          </Button>
         </div>
       ) : (
         <>

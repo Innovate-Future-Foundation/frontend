@@ -4,14 +4,16 @@ import ProfileDialog from "@/components/Header/ProfileDialog";
 import Avatar from "../Avatar";
 import HoverCard from "../HoverCard";
 import { Button } from "../ui/button";
+import { ProfileInfo } from "@/types";
 
 type avatarType = {
   name: string;
   email: string;
-  avatarLink: string;
+  avatarUrl: string;
+  profile: ProfileInfo;
 };
 
-const SignInAvatar: React.FC<avatarType> = ({ name, email, avatarLink }) => (
+const SignInAvatar: React.FC<avatarType> = ({ name, email, avatarUrl, profile }) => (
   <div className="flex gap-2 items-center">
     <div className="flex flex-col items-end gap-[2px]">
       <p className="text-secondary font-bold text-sm leading-3 truncate max-w-20">{name}</p>
@@ -21,7 +23,7 @@ const SignInAvatar: React.FC<avatarType> = ({ name, email, avatarLink }) => (
       className="w-auto flex flex-col gap-2 p-2"
       content={
         <>
-          <ProfileDialog>
+          <ProfileDialog profile={profile}>
             <Button variant="ghost">
               <User />
               <span>My Profile</span>
@@ -35,7 +37,7 @@ const SignInAvatar: React.FC<avatarType> = ({ name, email, avatarLink }) => (
       }
     >
       <button className="flex items-center gap-2">
-        <Avatar avatarLink={avatarLink} avatarAlt={"InnovateFuture"} size={8} avatarPlaceholder={abbreviateName(name)} />
+        <Avatar avatarLink={avatarUrl} avatarAlt={"InnovateFuture"} size={8} avatarPlaceholder={abbreviateName(name)} />
         <ChevronDown size={16} className="text-secondary" />
       </button>
     </HoverCard>

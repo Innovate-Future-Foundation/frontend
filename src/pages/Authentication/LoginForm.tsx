@@ -41,7 +41,7 @@ const LoginForm: React.FC = () => {
     setFocus("email");
   }, [setFocus]);
   return (
-    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] lg:ml-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] lg:ml-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
       <div className="w-full max-w-[460px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] space-y-10 w-full">
