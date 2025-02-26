@@ -27,6 +27,7 @@ import TourDetails from "@/pages/TourBuilder/TourDetails";
 import DayBuilder from "@/pages/TourBuilder/Schedule/DayBuilder";
 import ActivityBuilder from "@/pages/TourBuilder/Schedule/ActivityBuilder";
 import TourDetailPage from "@/pages/Tour/TourDetailPage";
+import EmailVerification from "@/pages/Authentication/EmailVerification";
 // import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
 
 export type AppRoute = RouteObject & {
@@ -41,7 +42,7 @@ const router: AppRoute[] = [
     element: <HomePage />
   },
   {
-    path: "/auth",
+    path: "auth",
     element: <AuthenticationPage />,
     children: [
       {
@@ -49,18 +50,26 @@ const router: AppRoute[] = [
         element: <LoginForm />
       },
       {
-        path: "register",
+        path: "signup",
         element: <RegisterForm />
       },
       {
-        path: "forgot-password",
+        path: "forgotpassword",
         element: <ForgotPasswordForm />
       }
     ]
   },
   {
+    path: "auth/signup/email-verification",
+    element: <EmailVerification />
+  },
+  {
     path: "dashboard",
-    element: <DashboardPage />,
+    element: (
+      <ProtectedRoute>
+        <DashboardPage />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -78,17 +87,17 @@ const router: AppRoute[] = [
         handle: { breadcrumb: "tour list" }
       },
       {
+        path: "tours:id",
+        element: <TourDetailPage />
+      },
+      {
         path: "organisations",
         element: <OrganisationPage />,
         handle: { breadcrumb: "organisation list" }
       },
       {
         path: "organisations/:id",
-        element: (
-          <ProtectedRoute allowedRoles={["PlatformAdmin", "OrgAdmin", "OrgManager", "OrgTeacher", "Parent", "Student"]}>
-            <OrganisationDetailPage />
-          </ProtectedRoute>
-        ),
+        element: <OrganisationDetailPage />,
         handle: { breadcrumb: "organisation profile & member" }
       },
       {
@@ -98,11 +107,7 @@ const router: AppRoute[] = [
       },
       {
         path: "orgadmins",
-        element: (
-          <ProtectedRoute allowedRoles={["PlatformAdmin", "OrgAdmin"]}>
-            <OrgAdminPage />
-          </ProtectedRoute>
-        ),
+        element: <OrgAdminPage />,
         handle: { breadcrumb: "Organisation Admin list" }
       },
       {
@@ -112,11 +117,7 @@ const router: AppRoute[] = [
       },
       {
         path: "orgmanagers",
-        element: (
-          <ProtectedRoute allowedRoles={["PlatformAdmin", "OrgAdmin", "OrgManager"]}>
-            <OrgManagerPage />
-          </ProtectedRoute>
-        ),
+        element: <OrgManagerPage />,
         handle: { breadcrumb: "Organisation Manager list" }
       },
       {
@@ -198,10 +199,6 @@ const router: AppRoute[] = [
             element: <StudentsEnrollment />
           }
         ]
-      },
-      {
-        path: ":id",
-        element: <TourDetailPage />
       }
     ]
   }

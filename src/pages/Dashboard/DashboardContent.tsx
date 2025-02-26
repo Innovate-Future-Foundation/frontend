@@ -5,12 +5,15 @@ import Breadcrumb from "@/components/Breadcurmb";
 import { filterMenuByRole } from "./SidebarMenu";
 import { useAuth } from "@/hooks/useAuth";
 import Sidebar from "./Sidebar";
+import { FadeLoader } from "react-spinners";
 
 const DashboardContent = () => {
   const { role, organisationId } = useAuth();
-  console.log("role", role);
 
-  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role, organisationId);
+  if (!role) {
+    return <FadeLoader />;
+  }
+  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role!, organisationId!);
 
   return (
     <SidebarProvider>

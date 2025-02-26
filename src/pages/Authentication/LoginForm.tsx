@@ -5,6 +5,7 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 // setting up the validation schema
 const loginFormSchema = z.object({
@@ -25,19 +26,22 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 const LoginForm: React.FC = () => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: {
       email: "",
       password: ""
     }
   });
-
+  const { setFocus } = form;
   const onSubmit = (data: LoginFormValues) => {
     console.log(data);
   };
 
+  useEffect(() => {
+    setFocus("email");
+  }, [setFocus]);
   return (
-    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[20vh] lg:ml-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] lg:ml-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
       <div className="w-full max-w-[460px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] space-y-10 w-full">
@@ -52,7 +56,7 @@ const LoginForm: React.FC = () => {
               <FormFieldItem type="password" fieldControl={form.control} name="password" label="Password" placeholder="Enter your password" />
 
               <div className="text-right">
-                <Link className="font-bold text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgot-password"}>
+                <Link className="font-bold text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgotpassword"}>
                   Forgot Password?
                 </Link>
               </div>
@@ -64,7 +68,7 @@ const LoginForm: React.FC = () => {
         </Form>
         <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
           <span> Don't have an account? </span>
-          <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/register"}>
+          <Link className="font-bold text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/signup"}>
             Sign Up
           </Link>
         </div>

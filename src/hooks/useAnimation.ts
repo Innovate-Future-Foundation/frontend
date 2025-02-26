@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { Target } from "framer-motion";
 
 export const animationConfig: Record<string, { initial: Target; animate: Target; exit?: Target; transition: object }> = {
-  register: {
+  signup: {
     initial: { y: 200, opacity: 0 },
     animate: { opacity: 1, y: 0 },
     // exit: { opacity: 0 },

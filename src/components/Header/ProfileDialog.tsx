@@ -10,24 +10,10 @@ import Avatar from "@/components/Avatar";
 import { FormFieldItem } from "@/components/FormField";
 import { abbreviateName } from "@/utils/formatters";
 import { Form } from "../ui/form";
-
-const userProfileData = {
-  id: "123e4567-e89b-12d3-a456-426614174000",
-  orgid: "654e7890-f12c-34a5-b678-921345678901",
-  roleId: "987e6543-f21c-45d6-c789-234567890123",
-  invitedBy: "321e7654-f45d-67a8-e987-345678901234",
-  supervisedBy: "111e2222-c33d-44b5-d678-123456789012",
-  name: "John Doe",
-  email: "johndoe@example.com",
-  phone: "+61 450123456",
-  avatarLink: "https://github.com/davidmiller.png",
-  isActive: true,
-  createdAt: "2023-12-01T12:34:56Z",
-  updatedAt: "2023-12-10T15:20:30Z"
-};
+import { ProfileInfo } from "@/types";
 
 const userProfileInfoFormSchema = z.object({
-  avatarLink: z.string().optional(),
+  avatarUrl: z.string().optional(),
   name: z
     .string()
     .min(2, {
@@ -49,15 +35,15 @@ const userProfileInfoFormSchema = z.object({
 
 const avatarAlt = "@InnovateFoundation";
 
-const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
+const ProfileDialog: React.FC<{ children: ReactNode; profile: ProfileInfo }> = ({ children, profile }) => {
   const userProfileInfoForm = useForm<z.infer<typeof userProfileInfoFormSchema>>({
     resolver: zodResolver(userProfileInfoFormSchema),
     mode: "onChange",
     defaultValues: {
-      avatarLink: userProfileData.avatarLink,
-      name: userProfileData.name,
-      email: userProfileData.email,
-      phone: userProfileData.phone
+      avatarUrl: profile.avatarUrl ?? "",
+      name: profile.name ?? "",
+      email: profile.email ?? "",
+      phone: profile.phone ?? ""
     }
   });
 
@@ -73,7 +59,7 @@ const ProfileDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
         <div className="h-14 bg-accent">
           <Avatar
             className="absolute top-6 left-8"
-            avatarLink={userProfileInfoForm.watch("avatarLink") ?? ""}
+            avatarLink={userProfileInfoForm.watch("avatarUrl") ?? ""}
             avatarAlt={avatarAlt}
             avatarPlaceholder={abbreviateName(userProfileInfoForm.watch("name"))}
             size={14}

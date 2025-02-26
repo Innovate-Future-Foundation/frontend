@@ -19,15 +19,15 @@ const AuthenticationPage = () => {
       <motion.div
         key="blue-section"
         initial={{ x: "-100%" }}
-        animate={{ x: currentPage === "register" ? "110%" : "0" }}
+        animate={{ x: currentPage === "signup" ? "110%" : "0" }}
         transition={{ duration: 0.6, ease: [0, 0.71, 0.2, 1.01] }}
         className="bg-gray-900 fixed hidden lg:flex rounded-IF32px w-[calc(50vw-5rem-2rem)] h-[calc(100vh-5rem)] min-h-[640px] flex-col justify-end"
         style={{
-          maskImage: `url(${currentPage === "register" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
+          maskImage: `url(${currentPage === "signup" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
           maskRepeat: `no-repeat`,
           maskSize: `100% 100%`,
           maskPosition: "center",
-          WebkitMaskImage: `url(${currentPage === "register" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
+          WebkitMaskImage: `url(${currentPage === "signup" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
           WebkitMaskRepeat: `no-repeat`,
           WebkitMaskSize: `100% 100%`,
           WebkitMaskPosition: "center"
@@ -45,10 +45,10 @@ const AuthenticationPage = () => {
           </div>
         </div>
         <img
-          src="/assets/images/ifa_auth@1x.webp"
-          srcSet="/assets/images/ifa_auth@2x.webp 2x"
+          src="/assets/images/ifa_auth_mask@1x.webp"
+          srcSet="/assets/images/ifa_auth_mask@2x.webp 2x"
           alt="ifa_auth.webp"
-          className="w-full h-full object-cover absolute z-0 gradient-mask-b-[transparent,rgba(0,0,0,1.0)_0px,rgba(0,0,0,0.5)_95%]"
+          className="w-full h-full object-cover absolute z-0"
         />
       </motion.div>
       <div className="flex-1 relative">

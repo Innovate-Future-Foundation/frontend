@@ -16,7 +16,7 @@ export const useContact = (profilePaginatedRequest: ProfilePaginatedRequest) => 
     error: errorContacts,
     isError: isErrorContacts
   } = useQuery({
-    ...contacts.list(profilePaginatedRequest, organisationId, role),
+    ...contacts.list(profilePaginatedRequest, organisationId!, role!),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,

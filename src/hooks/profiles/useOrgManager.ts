@@ -16,7 +16,7 @@ export const useOrgManager = (profilePaginatedRequest: ProfilePaginatedRequest) 
     error: errorOrgManagers,
     isError: isErrorOrgManagers
   } = useQuery({
-    ...profiles.orgManagerslist(profilePaginatedRequest, organisationId),
+    ...profiles.orgManagerslist(profilePaginatedRequest, organisationId!),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,

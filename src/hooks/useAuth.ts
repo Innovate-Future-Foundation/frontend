@@ -2,21 +2,31 @@ import { create } from "zustand";
 import { RoleType } from "@/types";
 
 interface AuthState {
-  role: RoleType;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
+  role: RoleType | null;
   setRole: (role: RoleType) => void;
-  organisationId: string;
+  organisationId: string | null;
   setOrganisationId: (organisationId: string) => void;
 }
 
 export const useAuth = create<AuthState>(set => ({
-  role: "PlatformAdmin", //todo: hard code, will refactor later
+  isAuthenticated: false,
+  setIsAuthenticated: (isAuthenticated: boolean) => {
+    set({ isAuthenticated });
+  },
+  role: null,
   setRole: (role: RoleType) => {
-    console.log("Setting role to:", role);
     set({ role });
   },
-  organisationId: "", //todo: PlatformAdmin has no organisationId
+  organisationId: null,
   setOrganisationId: (organisationId: string) => {
-    console.log("Setting organisationId to:", organisationId);
     set({ organisationId });
-  }
+  },
+  reset: () =>
+    set({
+      role: null,
+      organisationId: null,
+      isAuthenticated: false
+    })
 }));

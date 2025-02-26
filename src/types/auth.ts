@@ -1,4 +1,5 @@
 import { Address } from "./organisation";
+import { Profile } from "./profile";
 
 export interface RegisterOrgWithAdminCredentials {
   orgName: string;
@@ -12,7 +13,20 @@ export interface RegisterOrgWithAdminCredentials {
   password: string;
 }
 
+export interface EmailVerificationCredential {
+  email: string;
+  token: string;
+  profileId: string;
+}
+
 export interface LoginCredential {
   email: string;
   password: string;
+}
+
+export interface MyInfo {
+  id: string;
+  name: string;
+  email: string;
+  defaultProfile: Profile;
 }

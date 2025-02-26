@@ -1,18 +1,22 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { RoleType } from "@/types";
+// import { RoleType } from "@/types";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles: RoleType[];
+  // allowedRoles?: RoleType[];
 }
 
-const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
-  const { role } = useAuth();
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const { isAuthenticated } = useAuth();
 
-  if (!allowedRoles.includes(role)) {
-    return <Navigate to="/dashboard" replace />;
+  if (!isAuthenticated) {
+    console.log("isAuthenticated", isAuthenticated);
+    return <Navigate to="/" replace />;
   }
+  // if (role && !allowedRoles?.includes(role)) {
+  //   return <Navigate to="/dashboard" replace />;
+  // }
 
   return <>{children}</>;
 };
