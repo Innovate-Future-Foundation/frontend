@@ -18,7 +18,7 @@ type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 const ForgotPasswordForm: React.FC = () => {
   const form = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     defaultValues: {
       email: ""
     }

@@ -8,6 +8,7 @@ interface AuthState {
   setRole: (role: RoleType) => void;
   organisationId: string | null;
   setOrganisationId: (organisationId: string) => void;
+  resetAuthStore: () => void;
 }
 
 export const useAuth = create<AuthState>(set => ({
@@ -23,7 +24,7 @@ export const useAuth = create<AuthState>(set => ({
   setOrganisationId: (organisationId: string) => {
     set({ organisationId });
   },
-  reset: () =>
+  resetAuthStore: () =>
     set({
       role: null,
       organisationId: null,

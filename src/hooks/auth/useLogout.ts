@@ -6,10 +6,9 @@ import { authApis } from "@/services/apiServices";
 
 interface useLogoutProps {
   handleSuccess: () => void;
-  handleError: () => void;
 }
 
-export const useLogout = ({ handleSuccess, handleError }: useLogoutProps) => {
+export const useLogout = ({ handleSuccess }: useLogoutProps) => {
   const [errorLogout, setErrorLogout] = useState<Error>();
   const [isErrorLogout, setIsErrorLogout] = useState<boolean>(true);
 
@@ -23,7 +22,6 @@ export const useLogout = ({ handleSuccess, handleError }: useLogoutProps) => {
       handleSuccess();
     },
     onError: error => {
-      handleError();
       setErrorLogout(error);
       setIsErrorLogout(true);
     }

@@ -27,6 +27,7 @@ type TourBuilderState = {
 
   setDaysTemplates: (days?: Day[]) => void;
   setActivitiesTemplates: (activities?: Activity[]) => void;
+  resetTourStore: () => void;
 };
 
 export const useTourBuilderStore = create<TourBuilderState>(set => ({
@@ -74,7 +75,7 @@ export const useTourBuilderStore = create<TourBuilderState>(set => ({
   setDaysTemplates: (daysTemplates?: Day[]) => set({ daysTemplates }),
   setActivitiesTemplates: (activityTemplates?: Activity[]) => set({ activityTemplates }),
 
-  reset: () =>
+  resetTourStore: () =>
     set({
       tourId: undefined,
       currentStep: 0,

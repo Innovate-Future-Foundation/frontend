@@ -4,8 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useLogin } from "@/hooks/auth/useLogin";
+import { LoginCredential } from "@/types/auth";
+import { Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 // setting up the validation schema
 const loginFormSchema = z.object({
@@ -24,17 +28,32 @@ const loginFormSchema = z.object({
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 const LoginForm: React.FC = () => {
+  const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth();
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     defaultValues: {
       email: "",
       password: ""
     }
   });
-  const { setFocus } = form;
+  const { setFocus, reset, formState, getValues } = form;
+
+  const handleSuccess = () => {
+    if (formState.isDirty) {
+      reset(getValues());
+    }
+    setIsAuthenticated(true);
+    navigate("/dashboard");
+  };
+
+  const mutation = useLogin({ handleSuccess });
+
   const onSubmit = (data: LoginFormValues) => {
     console.log(data);
+    mutation.mutate(data as LoginCredential);
   };
 
   useEffect(() => {
@@ -61,8 +80,8 @@ const LoginForm: React.FC = () => {
                 </Link>
               </div>
             </div>
-            <Button type="submit" className="w-full" size={"xl"}>
-              Sign In
+            <Button type="submit" disabled={mutation.isPending} className="w-full flex items-center justify-center" size={"xl"}>
+              {mutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign In"}
             </Button>
           </form>
         </Form>
