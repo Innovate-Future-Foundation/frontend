@@ -89,7 +89,7 @@ const RegisterForm: FC = () => {
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
-    mode: "onChange",
+    mode: "onBlur",
     defaultValues: {
       orgName: "",
       orgEmail: "",
@@ -110,14 +110,11 @@ const RegisterForm: FC = () => {
   const { setFocus, reset, formState, getValues, getFieldState, trigger, handleSubmit, control } = form;
   const handleSuccess = () => {
     if (formState.isDirty) {
-      setCurrentStep(5);
       reset(getValues());
     }
   };
 
-  const handleError = () => {};
-
-  const mutation = useRegister({ handleSuccess, handleError });
+  const mutation = useRegister({ handleSuccess });
 
   const onSubmit = (data: z.infer<typeof signupFormSchema>) => {
     console.log("data", data);
@@ -235,7 +232,8 @@ const RegisterForm: FC = () => {
                           type="button"
                           onClick={() => handleStepClick(5)}
                           disabled={mutation.isPending}
-                          className="w-full h-11 flex items-center justify-center"
+                          className="w-full flex items-center justify-center"
+                          size={"xl"}
                         >
                           {mutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Send Verification Email"}
                         </Button>

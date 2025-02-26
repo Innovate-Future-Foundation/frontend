@@ -7,10 +7,9 @@ import { RegisterOrgWithAdminCredentials } from "@/types/auth";
 
 interface useRegisterProps {
   handleSuccess: () => void;
-  handleError: () => void;
 }
 
-export const useRegister = ({ handleSuccess, handleError }: useRegisterProps) => {
+export const useRegister = ({ handleSuccess }: useRegisterProps) => {
   const [errorRegister, setErrorRegister] = useState<Error>();
   const [isErrorRegister, setIsErrorRegister] = useState<boolean>(true);
 
@@ -24,7 +23,6 @@ export const useRegister = ({ handleSuccess, handleError }: useRegisterProps) =>
       handleSuccess();
     },
     onError: error => {
-      handleError();
       setErrorRegister(error);
       setIsErrorRegister(true);
     }

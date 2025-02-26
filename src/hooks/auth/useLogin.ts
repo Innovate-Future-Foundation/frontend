@@ -7,10 +7,9 @@ import { LoginCredential } from "@/types/auth";
 
 interface useLoginProps {
   handleSuccess: () => void;
-  handleError: () => void;
 }
 
-export const useLogin = ({ handleSuccess, handleError }: useLoginProps) => {
+export const useLogin = ({ handleSuccess }: useLoginProps) => {
   const [errorLogin, setErrorLogin] = useState<Error>();
   const [isErrorLogin, setIsErrorLogin] = useState<boolean>(true);
 
@@ -24,7 +23,6 @@ export const useLogin = ({ handleSuccess, handleError }: useLoginProps) => {
       handleSuccess();
     },
     onError: error => {
-      handleError();
       setErrorLogin(error);
       setIsErrorLogin(true);
     }
