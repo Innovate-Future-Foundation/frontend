@@ -8,6 +8,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { pathname } = useLocation();
+  console.log("pathname", pathname);
   return (
     <div className="flex flex-col h-screen">
       <Header fromHome={!pathname.includes("dashboard")} />

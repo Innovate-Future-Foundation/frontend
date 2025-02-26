@@ -45,7 +45,7 @@ interface HeaderProps {
   fromHome: boolean;
 }
 const Header: React.FC<HeaderProps> = ({ fromHome }) => {
-  const { setRole, setOrganisationId, role } = useAuth();
+  const { setRole, setOrganisationId, isAuthenticated } = useAuth();
 
   //todo: hardcode
   useEffect(() => {
@@ -93,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ fromHome }) => {
               <p>Get Started</p>
             </Link>
           )}
-          {role ? (
+          {isAuthenticated ? (
             <SignInAvatar
               name={myProfile.defaultProfile.name ?? ""}
               email={myProfile.defaultProfile.email ?? ""}
@@ -101,7 +101,9 @@ const Header: React.FC<HeaderProps> = ({ fromHome }) => {
               profile={myProfile.defaultProfile}
             />
           ) : (
-            <Link to="/auth">Sign In</Link>
+            <Link to="/auth">
+              <p>Sign In</p>
+            </Link>
           )}
         </div>
       </nav>
