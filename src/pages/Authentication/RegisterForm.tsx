@@ -198,7 +198,7 @@ const RegisterForm: FC = () => {
                       <div className="space-y-6">
                         <FormFieldItem fieldControl={control} name="orgName" label="*Organisation Name" placeholder="Enter organisation name" />
                         <FormFieldItem fieldControl={control} name="orgEmail" label="Business Email" type="email" placeholder="Enter business email" />
-                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11" disabled={!formState.isValid}>
                           Continue
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
@@ -215,7 +215,7 @@ const RegisterForm: FC = () => {
                           <FormFieldItem fieldControl={control} name="address.postcode" label="Postcode" placeholder="Enter postcode" />
                           <FormFieldItem fieldControl={control} name="address.country" label="Country" placeholder="Enter country" />
                         </div>
-                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11" disabled={!formState.isValid}>
                           Continue
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
@@ -225,7 +225,7 @@ const RegisterForm: FC = () => {
                       <div className="space-y-4">
                         <FormFieldItem fieldControl={control} name="websiteUrl" label="Website URL" type="url" placeholder="Enter website URL" />
                         <FormFieldItem fieldControl={control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" />
-                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11 ">
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11" disabled={!formState.isValid}>
                           Continue
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
@@ -239,7 +239,7 @@ const RegisterForm: FC = () => {
                         <Button
                           type="button"
                           onClick={() => handleStepClick(5)}
-                          disabled={mutation.isPending}
+                          disabled={mutation.isPending || !formState.isValid}
                           className="w-full flex items-center justify-center"
                           size={"xl"}
                         >

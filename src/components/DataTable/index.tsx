@@ -139,8 +139,8 @@ const DataTable = <T extends object>({
             .map(filteredColumn => (
               <DropdownMenu key={filteredColumn.id}>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="ml-auto max-w-sm h-8 text-xs capitalize">
-                    <Filter size={6} className="text-gray-500" />
+                  <Button variant="outline" className="ml-auto max-w-sm h-10 text-xs capitalize shadow-none">
+                    <Filter size={6} className="text-gray-500 " />
                     {getfilterTitle[filteredColumn.id]}
                     <ChevronDown />
                   </Button>
@@ -179,9 +179,9 @@ const DataTable = <T extends object>({
 
         {/* Search */}
         <div className="relative">
-          <Input placeholder={searchPlaceholder} onChange={handleSearchChange} className="max-w-sm pl-10 h-8 text-sm w-96" {...inputProps} />
+          <Input placeholder={searchPlaceholder} onChange={handleSearchChange} className="max-w-sm pl-10 text-sm h-10 w-96" {...inputProps} />
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-            <Search size={14} />
+            <Search size={16} />
           </span>
         </div>
       </div>

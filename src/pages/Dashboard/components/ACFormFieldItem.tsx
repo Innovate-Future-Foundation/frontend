@@ -88,7 +88,7 @@ export const ACFormFieldItem = <T extends FieldValues>({ createSchema, name, lab
                 onChange={e => onInputChangeHandler(field, e)}
                 onBlur={e => handleBlur(field, e)}
                 value={inputValue}
-                className={`${fieldState?.error ? "border-destructive focus-visible:ring-destructive" : "focus-visible:ring-primary"}`}
+                className={`${fieldState?.error ? "h-10 border-destructive focus-visible:ring-destructive" : "h-10 focus-visible:ring-primary"}`}
               />
               {isSuggestionOpen && details.length > 0 && (
                 <div className="absolute top-11 z-10 w-full bg-background border rounded shadow-lg max-h-48 overflow-y-auto">

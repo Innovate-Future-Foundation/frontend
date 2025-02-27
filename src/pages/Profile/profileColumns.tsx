@@ -178,8 +178,8 @@ export const profileColumns = ({
     cell: ({ row }) => {
       const detail = row.original;
 
-      const handleOperateDetail = ({ detail, isEdit = false }: { detail: Profile; isEdit?: boolean }) => {
-        const path = isEdit ? `${detail.id}/edit` : `${detail.id}`;
+      const handleOperateDetail = ({ detail }: { detail: Profile }) => {
+        const path = `${detail.id}`;
         navigate?.(path);
       };
 
@@ -189,12 +189,8 @@ export const profileColumns = ({
 
       const menuItems = [
         {
-          label: "View",
-          onClick: () => handleOperateDetail({ detail })
-        },
-        {
           label: "Edit",
-          onClick: () => handleOperateDetail({ detail, isEdit: true })
+          onClick: () => handleOperateDetail({ detail })
         },
         {
           label: "Delete",

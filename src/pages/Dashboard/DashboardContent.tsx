@@ -25,11 +25,11 @@ const DashboardContent = () => {
         }))}
       />
       <main className="w-full text-primary-foreground30">
-        <SidebarTrigger className="fixed p-4 ml-4 mt-2 z-20" />
-        <div className="fixed bg-background top-[48px] z-[5] pl-12 h-12 w-full flex items-center">
+        <SidebarTrigger className="fixed p-4 ml-4 mt-3 z-20" />
+        <div className="fixed bg-background top-[56px] z-[5] pl-12 h-14 w-full flex items-center">
           <Breadcrumb />
         </div>
-        <div className="pt-12 z-0">
+        <div className="pt-14 z-0">
           <Outlet />
         </div>
       </main>

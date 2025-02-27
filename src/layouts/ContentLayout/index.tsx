@@ -29,7 +29,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
       {onInviteClick ? (
         <InviteModal roleInvited={roleInvited} onSubmit={onInviteClick}>
           <Button className="capitalize active:scale-95 transition-transform duration-100">
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4" strokeWidth={3} />
             {inviteLabel}
           </Button>
         </InviteModal>
@@ -37,7 +37,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
         onButtonClick &&
         buttonLabel && (
           <Button onClick={onButtonClick} className="capitalize active:scale-95 transition-transform duration-100">
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4" strokeWidth={3} />
             {buttonLabel}
           </Button>
         )

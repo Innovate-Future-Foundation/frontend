@@ -80,7 +80,7 @@ const LoginForm: React.FC = () => {
                 </Link>
               </div>
             </div>
-            <Button type="submit" disabled={mutation.isPending} className="w-full flex items-center justify-center" size={"xl"}>
+            <Button type="submit" disabled={mutation.isPending || !formState.isValid} className="w-full flex items-center justify-center" size={"xl"}>
               {mutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign In"}
             </Button>
           </form>
