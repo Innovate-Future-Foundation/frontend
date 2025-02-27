@@ -134,8 +134,8 @@ const RegisterForm: FC = () => {
         if (!isValid) return;
 
         if (targetStep - currentStep > 1) {
-          const sectionIsDirty = formFields[targetStep].some(field => getFieldState(field as keyof RegisterOrgWithAdminCredentials).isDirty === true);
-          if (sectionIsDirty === true) {
+          const sectionIsTouched = formFields[targetStep].some(field => getFieldState(field as keyof RegisterOrgWithAdminCredentials).isTouched === true);
+          if (sectionIsTouched === true) {
             setDirection(1);
             setCurrentStep(targetStep);
             return;
@@ -156,10 +156,13 @@ const RegisterForm: FC = () => {
 
   useEffect(() => {
     if (currentStep === 1) {
-      setFocus("orgName");
-    }
-    if (currentStep === 2) {
-      setFocus("address.street");
+      setTimeout(() => setFocus("orgName"), 400);
+    } else if (currentStep === 2) {
+      setTimeout(() => setFocus("address.street"), 400);
+    } else if (currentStep === 3) {
+      setTimeout(() => setFocus("websiteUrl"), 400);
+    } else if (currentStep === 4) {
+      setTimeout(() => setFocus("userName"), 400);
     }
   }, [currentStep, setFocus]);
 
