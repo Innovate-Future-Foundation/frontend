@@ -58,7 +58,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   }, [setOrganisationId, setRole, myDetailResponse]);
 
   if (isLoadingGetMe) {
-    return <FadeLoader />;
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <FadeLoader />
+      </div>
+    );
   }
   return (
     <div className="flex flex-col h-screen">
