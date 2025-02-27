@@ -64,10 +64,12 @@ export const FormFieldItem = <T extends FieldValues>({
                 <Input
                   {...field}
                   type={type === "password" ? (showPassword ? "text" : "password") : type}
-                  className={`${type === "password" ? "pr-10" : ""} ${
-                    fieldState?.error ? "border-destructive focus-visible:ring-destructive" : "focus-visible:ring-primary"
-                  }`}
-                  {...inputProps}
+                  className={cn(
+                    `${type === "password" ? "pr-10" : ""} ${
+                      fieldState?.error ? "border-destructive focus-visible:ring-destructive" : "focus-visible:ring-primary"
+                    }`,
+                    inputProps
+                  )}
                 />
                 {type === "password" && (
                   <button

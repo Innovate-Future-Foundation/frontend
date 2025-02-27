@@ -69,7 +69,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
 
   const inviteUserForm = useForm<FormInputs>({
     resolver: zodResolver(inviteUserFormSchema(roleInvited)),
-    mode: "onChange",
+    mode: "onBlur",
     defaultValues: {
       name: "",
       email: "",
@@ -127,16 +127,16 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={onOpenChangeHandler}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[425px] sm:min-w-[450px]">
+      <DialogContent className="max-w-[425px] sm:min-w-[450px] p-8">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-2xl">
             Invite {isVowel(mapRoleTypeToString[roleInvited]) ? "an" : "a"} {mapRoleTypeToString[roleInvited]}
           </DialogTitle>
           <DialogDescription>Send an invite link to a team member. The role can be changed later.</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mt-4">
           <Form {...inviteUserForm}>
-            <FormFieldItem disabled={isLoading} fieldControl={inviteUserForm.control} name="name" label="Name" placeholder="example: John Doe" />
+            <FormFieldItem disabled={isLoading} fieldControl={inviteUserForm.control} name="name" label="Name" placeholder="example: John Doe" h-10 />
             <FormFieldItem
               disabled={isLoading}
               fieldControl={inviteUserForm.control}
@@ -144,6 +144,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
               type="email"
               label="Email"
               placeholder="example: johndoe@example.com"
+              h-10
             />
             {roleInvited === "Student" && (
               <>
@@ -175,7 +176,9 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
         <DialogFooter>
           <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
             <AlertDialogTrigger asChild>
-              <Button disabled={!inviteUserForm.formState.isValid || isLoading}>{isLoading ? <Loader2 className="animate-spin" /> : "Invite"}</Button>
+              <Button size={"lg"} className="w-full rounded-full" disabled={!inviteUserForm.formState.isValid || isLoading}>
+                {isLoading ? <Loader2 className="animate-spin" /> : "Invite"}
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent className="max-w-[380px] text-justify">
               <AlertDialogHeader>
