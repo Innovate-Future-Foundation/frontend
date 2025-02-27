@@ -11,8 +11,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) {
-    console.log("isAuthenticated", isAuthenticated);
-    return <Navigate to="/" replace />;
+    return <Navigate to="/auth" replace />;
   }
   // if (role && !allowedRoles?.includes(role)) {
   //   return <Navigate to="/dashboard" replace />;
