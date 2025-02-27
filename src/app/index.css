@@ -10,7 +10,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-
+html {
+  font-size: 14px;
+}
 * {
   margin: 0;
   padding: 0;
@@ -125,5 +127,25 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 1024px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Extra-large screens (widescreen monitors) */
+@media (min-width: 1440px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 24px;
   }
 }
