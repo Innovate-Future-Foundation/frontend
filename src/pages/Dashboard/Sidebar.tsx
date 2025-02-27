@@ -83,19 +83,19 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
       )}
       <SidebarContent>
         {sidebarItemGroups.map((sidebarItemGroup, index) => (
-          <SidebarGroup className="p-0" key={`${sidebarItemGroup.sidebarLabel}${index}`}>
+          <SidebarGroup className="w-auto" key={`${sidebarItemGroup.sidebarLabel}${index}`}>
             {sidebarItemGroup.sidebarLabel && (
               <SidebarGroupLabel className="text-primary-foreground60 font-medium">{sidebarItemGroup.sidebarLabel}</SidebarGroupLabel>
             )}
             <SidebarGroupContent>
-              <SidebarMenu className="text-primary-foreground30 ">
+              <SidebarMenu className="text-primary-foreground30">
                 {sidebarItemGroup.items.map((item, index) =>
                   item.children ? (
                     <Collapsible
                       disabled
                       open={hasChildrenWithTitle[item.title]}
                       className={clsx(
-                        `${item.children.some(child => path.includes(child.url)) && "bg-secondary rounded-lg border-primary-light"} pb-2 group collapsible blur:bg-secondary hover:bg-secondary hover:rounded-lg hover:border-primary-light`
+                        `${item.children.some(child => path.includes(child.url)) && "bg-secondary rounded-lg border-primary-light"} pb-2 group  collapsible blur:bg-secondary hover:bg-secondary hover:rounded-lg hover:border-primary-light`
                       )}
                       key={`${item.title}${index}`}
                     >
@@ -103,7 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton
                             asChild
-                            className={clsx(`${item.children.some(child => path.includes(child.url)) && "text-secondary-foreground"} py-4`)}
+                            className={clsx(`${item.children.some(child => path.includes(child.url)) && "text-secondary-foreground "} py-4`)}
                           >
                             <Link to={item.url}>
                               <div className="flex items-center justify-between w-full">
@@ -118,28 +118,30 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                             </Link>
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          {item.children &&
-                            item.children.map((child, index) => (
-                              <SidebarMenuSub key={`${child.title}${index}`}>
-                                <SidebarMenuSubItem>
-                                  <SidebarMenuSubButton
-                                    asChild
-                                    className={clsx(
-                                      `${path.includes(child.url) && "bg-primary-light border-primary-light text-secondary-foreground"} flex items-center py-4 hover:bg-primary-light hover:text-secondary-foreground`
-                                    )}
-                                  >
-                                    <Link to={child.url}>
-                                      <div className="flex items-center gap-2">
-                                        <div className={clsx("w-3 h-3 rounded-sm", child.icon)}></div>
-                                        {<span className="capitalize font-medium text-sm">{child.title}</span>}
-                                      </div>
-                                    </Link>
-                                  </SidebarMenuSubButton>
-                                </SidebarMenuSubItem>
-                              </SidebarMenuSub>
-                            ))}
-                        </CollapsibleContent>
+                        {(state === "expanded" || isMobile) && (
+                          <CollapsibleContent>
+                            {item.children &&
+                              item.children.map((child, index) => (
+                                <SidebarMenuSub key={`${child.title}${index}`}>
+                                  <SidebarMenuSubItem>
+                                    <SidebarMenuSubButton
+                                      asChild
+                                      className={clsx(
+                                        `${path.includes(child.url) && "bg-primary-light border-primary-light text-secondary-foreground"} flex items-center py-4 hover:bg-primary-light hover:text-secondary-foreground `
+                                      )}
+                                    >
+                                      <Link to={child.url}>
+                                        <div className="flex items-center gap-2">
+                                          <div className={clsx("w-3 h-3 rounded-sm", child.icon)}></div>
+                                          {<span className="capitalize font-medium text-sm">{child.title}</span>}
+                                        </div>
+                                      </Link>
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                </SidebarMenuSub>
+                              ))}
+                          </CollapsibleContent>
+                        )}
                       </SidebarMenuItem>
                     </Collapsible>
                   ) : (
@@ -148,7 +150,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                         asChild
                         className={clsx(`${
                           (item.url === "/dashboard" && path === "/dashboard") || (item.url !== "/dashboard" && path.includes(item.url))
-                            ? "bg-secondary border-primary-light text-secondary-foreground"
+                            ? "bg-secondary border-primary-light text-secondary-foreground "
                             : ""
                         } 
   py-4 hover:bg-secondary hover:border-primary-light hover:text-secondary-foreground`)}
