@@ -87,7 +87,7 @@ const router: AppRoute[] = [
         handle: { breadcrumb: "tour list" }
       },
       {
-        path: "tours:id",
+        path: "tours/:id",
         element: <TourDetailPage />
       },
       {
@@ -162,7 +162,11 @@ const router: AppRoute[] = [
     children: [
       {
         path: ":id",
-        element: <TourBuilderPage />,
+        element: (
+          <ProtectedRoute>
+            <TourBuilderPage />
+          </ProtectedRoute>
+        ),
         children: [
           {
             index: true,
