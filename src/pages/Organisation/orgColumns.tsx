@@ -151,8 +151,8 @@ export const getOrgColumns = (navigate?: NavigateFunction): ColumnDef<Organisati
       cell: ({ row }) => {
         const organisationDetail = row.original;
 
-        const handleOperateDetail = ({ organisationDetail, isEdit = false }: { organisationDetail: Organisation; isEdit?: boolean }) => {
-          const path = isEdit ? `${organisationDetail.id}/edit` : `${organisationDetail.id}`;
+        const handleOperateDetail = ({ organisationDetail }: { organisationDetail: Organisation }) => {
+          const path = `${organisationDetail.id}`;
           navigate?.(path);
         };
 
@@ -162,12 +162,8 @@ export const getOrgColumns = (navigate?: NavigateFunction): ColumnDef<Organisati
 
         const menuItems = [
           {
-            label: "View",
-            onClick: () => handleOperateDetail({ organisationDetail })
-          },
-          {
             label: "Edit",
-            onClick: () => handleOperateDetail({ organisationDetail, isEdit: true })
+            onClick: () => handleOperateDetail({ organisationDetail })
           },
           {
             label: "Delete",

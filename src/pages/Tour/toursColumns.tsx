@@ -123,8 +123,8 @@ export const getToursColumns = (navigate?: NavigateFunction): ColumnDef<Tour>[] 
       cell: ({ row }) => {
         const tourDetail = row.original;
 
-        const handleOperateDetail = ({ tourDetail, isEdit = false }: { tourDetail: Tour; isEdit?: boolean }) => {
-          const path = isEdit ? `${tourDetail.id}/edit` : `${tourDetail.id}`;
+        const handleOperateDetail = ({ tourDetail }: { tourDetail: Tour }) => {
+          const path = `${tourDetail.id}`;
           navigate?.(path);
         };
 
@@ -134,12 +134,8 @@ export const getToursColumns = (navigate?: NavigateFunction): ColumnDef<Tour>[] 
 
         const menuItems = [
           {
-            label: "View",
-            onClick: () => handleOperateDetail({ tourDetail })
-          },
-          {
             label: "Edit",
-            onClick: () => handleOperateDetail({ tourDetail, isEdit: true })
+            onClick: () => handleOperateDetail({ tourDetail })
           },
           {
             label: "Delete",

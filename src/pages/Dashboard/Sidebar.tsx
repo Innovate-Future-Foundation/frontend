@@ -50,12 +50,12 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
   }, {});
 
   return (
-    <CNSidebar collapsible="icon" variant="sidebar" className={clsx(`mt-12 ${state === "expanded" && !isMobile && "p-2 px-4"} bg-background`)}>
+    <CNSidebar collapsible="icon" variant="sidebar" className={clsx(`mt-14 ${state === "expanded" && !isMobile && "p-2 px-4"} bg-background`)}>
       {sidebarheader && (
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild className="h-auto bg-accent border hover:bg-secondary-light" size={"lg"}>
+              <SidebarMenuButton asChild className="h-auto bg-accent border hover:bg-secondary-light rounded-full" size={"lg"}>
                 <Link to={sidebarheader.url ?? ""}>
                   <div className="w-full flex items-center gap-2 justify-between">
                     <div className="flex items-center gap-2">

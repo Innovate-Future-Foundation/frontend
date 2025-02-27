@@ -39,9 +39,9 @@ const SignInAvatar: React.FC<AvatarType> = ({ name, email, avatarUrl, profile })
   }
   return (
     <div className="flex gap-2 items-center">
-      <div className="flex flex-col items-end gap-[2px]">
-        <p className="text-secondary font-bold text-sm leading-3 truncate max-w-20">{name}</p>
-        <p className="text-secondary text-[12px] leading-3 truncate max-w-40">{email}</p>
+      <div className="flex flex-col items-end gap-[2px] text-foreground">
+        <p className="font-bold text-sm leading-3 truncate max-w-20">{name}</p>
+        <p className="text-[12px] leading-3 truncate max-w-40">{email}</p>
       </div>
       <HoverCard
         className="w-auto flex flex-col gap-2 p-2"
@@ -62,7 +62,7 @@ const SignInAvatar: React.FC<AvatarType> = ({ name, email, avatarUrl, profile })
       >
         <button className="flex items-center gap-2">
           <Avatar avatarLink={avatarUrl} avatarAlt={"InnovateFuture"} size={8} avatarPlaceholder={abbreviateName(name)} />
-          <ChevronDown size={16} className="text-secondary" />
+          <ChevronDown size={16} className="text-foreground" />
         </button>
       </HoverCard>
     </div>

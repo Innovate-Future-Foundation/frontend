@@ -72,7 +72,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       ) : ( */}
       {/* <> */}
       <Header fromHome={!pathname.includes("dashboard")} profile={myProfile?.defaultProfile ?? {}} />
-      <div className="py-12">{children}</div>
+      <div className="py-14">{children}</div>
       {/* </> */}
       {/* )} */}
     </div>

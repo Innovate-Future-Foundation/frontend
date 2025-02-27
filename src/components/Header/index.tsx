@@ -13,10 +13,10 @@ const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
   const navigate = useNavigate();
 
   return (
-    <header className="h-12 bg-primary w-full fixed top-0 z-10 flex justify-center">
-      <nav className="max-w-[1600px] w-full px-8 h-full flex items-center justify-between">
+    <header className="h-14 bg-background w-full fixed top-0 flex justify-center shadow-sm z-20 ">
+      <nav className="max-w-[1600px] w-full px-8 h-full flex items-center justify-between text-foreground font-medium">
         {fromHome ? (
-          <div className="flex items-center gap-4 text-secondary font-medium">
+          <div className="flex items-center gap-4">
             <Link to="/">
               <p>Home</p>
             </Link>
@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
             </Link>
           </div>
         ) : (
-          <div className="flex gap-4 text-secondary font-medium">
+          <div className="flex gap-4">
             <Link to="/">
               <p>Home</p>
             </Link>
