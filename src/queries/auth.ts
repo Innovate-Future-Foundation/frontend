@@ -9,7 +9,8 @@ export const userInfo = createQueryKeys("user", {
     queryKey: ["GETME"],
     queryFn: async () => {
       const response = await authApis.getMeReq();
-      return response.data as ApiResponse<MyInfo>;
+      const apiResponse = response.data as ApiResponse<MyInfo>;
+      return apiResponse?.data as MyInfo;
     }
   })
 });

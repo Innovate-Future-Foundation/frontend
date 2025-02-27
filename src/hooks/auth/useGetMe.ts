@@ -5,7 +5,6 @@ import { useErrorNotification } from "../useErrorNotification";
 
 export const useGetMe = () => {
   const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_USER_INFO;
-
   const {
     data: myDetailResponse,
     isLoading: isLoadingGetMe,
@@ -22,5 +21,5 @@ export const useGetMe = () => {
 
   useErrorNotification(isErrorGetMe, errorTitle, errorGetMe);
 
-  return { myDetailResponse, isLoadingGetMe, isErrorGetMe, errorGetMe };
+  return { isLoadingGetMe, myDetailResponse, isErrorGetMe, errorGetMe };
 };

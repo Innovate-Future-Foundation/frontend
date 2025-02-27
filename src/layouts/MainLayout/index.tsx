@@ -3,6 +3,8 @@ import { ReactNode, useEffect } from "react";
 import Header from "@/components/Header";
 import { useLocation } from "react-router-dom";
 import { MyInfo } from "@/types/auth";
+import { useGetMe } from "@/hooks/auth/useGetMe";
+import { FadeLoader } from "react-spinners";
 import { useAuthStore } from "@/store";
 
 const myProfile: MyInfo = {
@@ -47,25 +49,17 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { pathname } = useLocation();
-  console.log("pathname", pathname);
   const { setRole, setOrganisationId } = useAuthStore();
+  const { isLoadingGetMe, myDetailResponse } = useGetMe();
 
-  //todo: hardcode
   useEffect(() => {
-    const getMe = async () => {
-      try {
-        //todo: call get user + profile
-        //todo: save user + profile info to state
-        //todo: save role to state
-        setRole(myProfile.defaultProfile.roleCode!);
-        setOrganisationId(myProfile.defaultProfile.organisation!.id!);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getMe();
-  }, [setOrganisationId, setRole]);
+    setRole(myDetailResponse?.defaultProfile?.roleCode ?? "PlatformAdmin");
+    setOrganisationId(myDetailResponse?.defaultProfile?.organisation?.id ?? "");
+  }, [setOrganisationId, setRole, myDetailResponse]);
 
+  if (isLoadingGetMe) {
+    return <FadeLoader />;
+  }
   return (
     <div className="flex flex-col h-screen">
       <Header fromHome={!pathname.includes("dashboard")} profile={myProfile.defaultProfile} />

@@ -19,7 +19,7 @@ export const API_ENDPOINTS = {
   AUTH: "/auth",
   REGISTER: "/register-organisation-admin",
   EMAILVERIFICATION: "/email-verification",
-  GETME: "/get-me",
+  ME: "/me",
   LOGIN: "/login",
   LOGOUT: "/logout",
   INVITE: "/invite",
