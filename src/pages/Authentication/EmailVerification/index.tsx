@@ -4,12 +4,12 @@ import { EmailVerificationCredential } from "@/types/auth";
 import { useEffect } from "react";
 import { FadeLoader } from "react-spinners";
 import VerificationFail from "../VerificationFail";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store";
 
 const EmailVerification = () => {
-  const url = window.location.href;
-  const params = url.split("/").at(-1)?.split("?").at(-1);
+  const { pathname } = useLocation();
+  const params = pathname.split("/").at(-1)?.split("?").at(-1);
   const searchParams = new URLSearchParams(params);
   const token = searchParams.get("token");
   const email = searchParams.get("email");

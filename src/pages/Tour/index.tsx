@@ -4,7 +4,8 @@ import DataTable from "@/components/DataTable";
 import { ProfilePaginationFilter, ProfilePaginationOrderByType, Tour, TableBaseType } from "@/types";
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { mapStringToType } from "@/constants/mapper";
-import { toursColumns } from "./toursColumns";
+import { useNavigate } from "react-router-dom";
+import { getToursColumns } from "./toursColumns";
 
 const tableData: TableBaseType<Tour>[] = [
   {
@@ -408,7 +409,7 @@ const TourPage = () => {
     // filters,
     // sortings
   } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>({ filterMapper: mapStringToType });
-
+  const navigate = useNavigate();
   // const { contactsResponse, isLoadingContacts } = useContact({
   //   offset,
   //   limit: pagination.pageSize,
@@ -422,7 +423,7 @@ const TourPage = () => {
   // }, [contactsResponse]);
 
   const handleCreateTour = () => {
-    window.location.href = "/tours/ou762iu3gjhgjasgfcyas71";
+    navigate("/tours/ou762iu3gjhgjasgfcyas71");
   };
 
   return (
@@ -430,7 +431,7 @@ const TourPage = () => {
       <DataTable
         totalItems={9}
         limit={pagination.pageSize}
-        columns={toursColumns}
+        columns={getToursColumns(navigate)}
         data={tableData}
         isLoading={false}
         searchPlaceholder="search by name, email or phone"

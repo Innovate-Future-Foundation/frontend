@@ -1,5 +1,5 @@
 import DataTable from "@/components/DataTable";
-import { orgColumns } from "./orgColumns";
+import { getOrgColumns } from "./orgColumns";
 import ContentLayout from "@/layouts/ContentLayout";
 import { Building2 } from "lucide-react";
 import { useOrganisation } from "@/hooks/organisations/useOrganisation";
@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { Organisation, OrganisationPaginationFilter, OrganisationPaginationOrderByType, TableBaseType } from "@/types";
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { mapStringToType } from "@/constants/mapper";
+import { useNavigate } from "react-router-dom";
 
 const OrganisationPage = () => {
   const {
@@ -23,7 +24,7 @@ const OrganisationPage = () => {
     filters,
     sortings
   } = useTableFilters<OrganisationPaginationFilter, OrganisationPaginationOrderByType>({ filterMapper: mapStringToType });
-
+  const navigate = useNavigate();
   const { organisationsResponse, isLoadingOrganisations } = useOrganisation({
     offset,
     limit: pagination.pageSize,
@@ -41,7 +42,7 @@ const OrganisationPage = () => {
       <DataTable
         totalItems={organisationsResponse?.meta?.totalItems}
         limit={pagination.pageSize}
-        columns={orgColumns}
+        columns={getOrgColumns(navigate)}
         data={tableData}
         isLoading={isLoadingOrganisations}
         searchPlaceholder="search by name and email"
