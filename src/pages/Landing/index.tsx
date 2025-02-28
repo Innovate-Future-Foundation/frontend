@@ -126,7 +126,7 @@ const LandingPage: React.FC = () => {
     ];
 
     return (
-      <div className="px-[5.6%] pb-16">
+      <div className="px-[5.6%] pb-16 w-full">
         <h2 className="text-3xl font-bold text-center mb-16">Our Core Programs – Learn, Innovate, Lead</h2>
 
         {/* Tabs - Responsive layout with reduced gap */}
@@ -301,7 +301,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="w-full min-h-screen bg-[#E6F0FF]">
-      <div className="w-full max-w-[1440px] min-h-screen mx-auto bg-white">
+      <div className="w-full  min-h-screen bg-white">
         <header className="flex items-center justify-between h-20 px-[5.6%]">
           {/* Logo section */}
           <div className="flex items-center">
@@ -510,7 +510,7 @@ const LandingPage: React.FC = () => {
         <div className="px-[5.6%] pt-16 sm:pt-24 lg:pt-36 xl:pt-48 pb-16 sm:pb-20 lg:pb-24 xl:pb-32">
           <h2 className="text-2xl sm:text-2xl lg:text-3xl font-bold text-center mb-8 sm:mb-10 lg:mb-16">Expand Your Horizons with IFA</h2>
 
-          {/* 定义卡片数据 - 只定义一次 */}
+          {/* Expand Your Horizons with IFA cards */}
           {(() => {
             const cardData = [
               {

@@ -148,6 +148,8 @@ html {
   html {
     font-size: 22px;
   }
+}
+
 @font-face {
   font-family: 'Helvetica';
   src: url('/fonts/Helvetica.ttf') format('truetype');
