@@ -167,9 +167,9 @@ const RegisterForm: FC = () => {
   }, [currentStep, setFocus]);
 
   return (
-    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] px-6 overflow-hidden relative">
       {mutation.isSuccess ? (
-        <div className="w-full max-w-[460px] flex flex-col items-center justify-center ">
+        <div className="w-full max-w-[460px] 2xl:max-w-[600px] flex flex-col items-center justify-center ">
           <SendEmailSuccess handleButtonClick={handleResendVerificationEmail} />
           <Button type="button" onClick={() => navigate("/")} className="w-full" size={"xl"}>
             Back to Home
@@ -177,7 +177,7 @@ const RegisterForm: FC = () => {
         </div>
       ) : (
         <>
-          <div className="w-full max-w-[460px]">
+          <div className="w-full max-w-[460px] 2xl:max-w-[600px]">
             <Form {...form}>
               <div className="space-y-10 px-4">
                 <div className="space-y-2">

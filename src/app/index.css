@@ -11,7 +11,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 * {
   margin: 0;
@@ -133,19 +133,19 @@ html {
 /* Large devices (desktops) */
 @media (min-width: 1024px) {
   html {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
 /* Extra-large screens (widescreen monitors) */
-@media (min-width: 1440px) {
+@media (min-width: 1536) {
   html {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 
 @media (min-width: 1920px) {
   html {
-    font-size: 24px;
+    font-size: 20px;
   }
 }

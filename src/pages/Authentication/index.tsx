@@ -21,7 +21,7 @@ const AuthenticationPage = () => {
         initial={{ x: "-100%" }}
         animate={{ x: currentPage === "signup" ? "110%" : "0" }}
         transition={{ duration: 0.6, ease: [0, 0.71, 0.2, 1.01] }}
-        className="bg-gray-900 fixed hidden lg:flex rounded-IF32px w-[calc(50vw-5rem-2rem)] h-[calc(100vh-5rem)] min-h-[640px] flex-col justify-end"
+        className="bg-gray-900 fixed hidden lg:flex rounded-IF32px w-[calc(50vw-5rem-1rem)] h-[calc(100vh-5rem)] min-h-[640px] flex-col justify-end"
         style={{
           maskImage: `url(${currentPage === "signup" ? "/assets/images/maskRegister.png" : "/assets/images/mask.png"})`,
           maskRepeat: `no-repeat`,
@@ -51,6 +51,13 @@ const AuthenticationPage = () => {
           className="w-full h-full object-cover absolute z-0"
         />
       </motion.div>
+      {currentPage != "signup" && (
+        <>
+          <div className="hidden lg:flex-1 lg:flex"></div>
+          <div className="hidden lg:w-10 lg:flex"></div>
+        </>
+      )}
+
       <div className="flex-1 relative">
         <AnimatePresence mode="wait">
           <motion.div
@@ -64,6 +71,12 @@ const AuthenticationPage = () => {
           </motion.div>
         </AnimatePresence>
       </div>
+      {currentPage === "signup" && (
+        <>
+          <div className="hidden lg:flex-1 lg:flex"></div>
+          <div className="hidden lg:w-10 lg:flex"></div>
+        </>
+      )}
     </div>
   );
 };
