@@ -621,13 +621,13 @@ const LandingPage: React.FC = () => {
                 </div>
 
                 {/* Medium to Large screens (≥ 768px) - horizontal cards */}
-                <div className="hidden md:flex justify-center gap-4 h-[320px] xl:h-[360px] mb-12 overflow-x-auto md:overflow-x-visible">
+                <div className="hidden md:flex justify-center gap-6 h-[450px] mb-12 overflow-x-auto md:overflow-x-visible">
                   {cardData.map((card, index) => (
                     <div
                       key={index}
                       onClick={() => setActiveCard(activeCard === index ? null : index)}
                       className={`relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-700 ${
-                        activeCard === index ? "flex-[2.2] transition-[flex]" : "w-[160px] xl:w-[200px] flex-shrink-0 bg-[#F8F9FB]"
+                        activeCard === index ? "flex-[2.5] transition-[flex]" : "w-[190px] xl:w-[230px] flex-shrink-0 bg-[#F8F9FB]"
                       }`}
                       style={{
                         backgroundImage: activeCard === index ? `url(${card.image})` : "none",
@@ -638,16 +638,16 @@ const LandingPage: React.FC = () => {
                       {/* inactive state */}
                       <div className={`absolute inset-0 flex flex-col ${activeCard === index ? "opacity-0 invisible" : "opacity-100"}`}>
                         {/* icon container */}
-                        <div className="h-[180px] xl:h-[220px] flex items-center justify-center">
-                          <div className="w-24 xl:w-32 h-24 xl:h-32 flex items-center justify-center">
-                            <img src={card.icon} alt={card.title} className="w-14 xl:w-16 h-14 xl:h-16" />
+                        <div className="h-[260px] xl:h-[300px] flex items-center justify-center">
+                          <div className="w-20 xl:w-24 h-20 xl:h-24 flex items-center justify-center">
+                            <img src={card.icon} alt={card.title} className="w-12 xl:w-14 h-12 xl:h-14" />
                           </div>
                         </div>
 
                         {/* title section - with responsive visibility */}
-                        <div className="px-4 xl:px-8">
+                        <div className="px-4 xl:px-6 pb-8">
                           {/* Text with line clamp */}
-                          <h3 className="text-[#1A1A1A] text-base xl:text-lg font-semibold text-center font-['Helvetica-Bold'] leading-tight whitespace-normal break-words line-clamp-2 md:line-clamp-3">
+                          <h3 className="text-[#1A1A1A] text-xs xl:text-sm font-semibold text-center font-['Helvetica-Bold'] leading-tight whitespace-normal break-words line-clamp-4">
                             {card.title}
                           </h3>
                         </div>
@@ -663,7 +663,7 @@ const LandingPage: React.FC = () => {
                           <div className="font-['Helvetica'] pt-10 xl:pt-14 pl-8 xl:pl-10 pr-8 xl:pr-10">
                             <div className="flex items-start gap-3">
                               {/* icon wrapper */}
-                              <div className="flex-shrink-0 relative" style={{ width: "40px", height: "40px" }}>
+                              <div className="flex-shrink-0 relative" style={{ width: "48px", height: "48px" }}>
                                 <div className="absolute inset-0 rounded-full bg-white" />
                                 <div className="absolute inset-0 flex items-center justify-center">
                                   <img src={card.icon} alt={card.title} className="w-7 xl:w-8 h-7 xl:h-8" />
@@ -681,7 +681,7 @@ const LandingPage: React.FC = () => {
                             <div className="flex flex-col gap-4 w-full">
                               {/* Show only first 2 items on smaller screens */}
                               {card.content.map((item, i) => (
-                                <div key={i} className={`flex items-start gap-3 ${i >= 2 ? "hidden xl:flex" : ""}`}>
+                                <div key={i} className={`flex items-start gap-3 ${i >= 2 && card.content.length > 2 ? "hidden xl:flex" : ""}`}>
                                   <img src="/assets/icons/plus.svg" alt="plus" className="w-3.5 h-3.5 flex-shrink-0 mt-[0.1rem]" />
                                   <span className="text-white/90 text-sm font-['Helvetica'] leading-5 flex-1 line-clamp-2">{item}</span>
                                 </div>
@@ -926,12 +926,12 @@ const LandingPage: React.FC = () => {
             <img src="/assets/images/Community Section.jpg" alt="IFA Community" className="w-full rounded-3xl" />
 
             {/* title - use precise relative positioning */}
-            <div className="absolute left-[41.6%] top-[3.8%]">
+            <div className="absolute left-[40%] top-[3.6%] max-w-[80%]">
               <h2 className="font-['Helvetica-Bold'] text-3xl font-bold text-[#1A1A1A]">Join the IFA community and expand the possibilities</h2>
             </div>
 
             {/* content and button - use precise relative positioning */}
-            <div className="absolute left-[64.1%] top-[17.6%] max-w-[450px]">
+            <div className="absolute left-[64.1%] top-[17.6%] max-w-[40%]">
               <p className="font-['Helvetica'] text-gray-600 text-sm mb-8">
                 Whether you are a future engineer, technology entrepreneur, or an explorer with a passion for innovation, IFA welcomes you to join us! Here, you
                 can meet like-minded partners, get mentors, master cutting-edge technology, and start a new journey of professional growth!
@@ -1122,7 +1122,7 @@ const LandingPage: React.FC = () => {
                     placeholder="input your email"
                     className="flex-1 px-6 py-2 bg-transparent text-gray-900 placeholder:text-gray-500 focus:outline-none"
                   />
-                  <button className="px-8 py-2 bg-[#046FFB] text-white rounded-lg hover:bg-[#0355CC] transition-colors">Subscribe</button>
+                  <button className="px-6 py-2 bg-[#046FFB] text-white rounded-lg hover:bg-[#0355CC] transition-colors">Subscribe</button>
                 </div>
               </div>
             </div>

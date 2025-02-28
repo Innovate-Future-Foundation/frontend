@@ -138,7 +138,7 @@ html {
 }
 
 /* Extra-large screens (widescreen monitors) */
-@media (min-width: 1536) {
+@media (min-width: 1536px) {
   html {
     font-size: 18px;
   }
