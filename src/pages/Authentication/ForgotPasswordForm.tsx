@@ -34,8 +34,8 @@ const ForgotPasswordForm: React.FC = () => {
     setFocus("email");
   }, [setFocus]);
   return (
-    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] lg:ml-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
-      <div className="w-full max-w-[460px]">
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] px-6 overflow-hidden relative">
+      <div className="w-full max-w-[460px] 2xl:max-w-[600px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="sm:max-w-[460px] w-full space-y-10">
             <div className="space-y-2">

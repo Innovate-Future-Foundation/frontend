@@ -167,9 +167,9 @@ const RegisterForm: FC = () => {
   }, [currentStep, setFocus]);
 
   return (
-    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] lg:mr-[calc(50vw-5rem-2rem)] px-6 overflow-hidden relative">
+    <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] px-6 overflow-hidden relative">
       {mutation.isSuccess ? (
-        <div className="w-full max-w-[460px] flex flex-col items-center justify-center ">
+        <div className="w-full max-w-[460px] 2xl:max-w-[600px] flex flex-col items-center justify-center ">
           <SendEmailSuccess handleButtonClick={handleResendVerificationEmail} />
           <Button type="button" onClick={() => navigate("/")} className="w-full" size={"xl"}>
             Back to Home
@@ -177,7 +177,7 @@ const RegisterForm: FC = () => {
         </div>
       ) : (
         <>
-          <div className="w-full max-w-[460px]">
+          <div className="w-full max-w-[460px] 2xl:max-w-[600px]">
             <Form {...form}>
               <div className="space-y-10 px-4">
                 <div className="space-y-2">
@@ -198,7 +198,7 @@ const RegisterForm: FC = () => {
                       <div className="space-y-6">
                         <FormFieldItem fieldControl={control} name="orgName" label="*Organisation Name" placeholder="Enter organisation name" />
                         <FormFieldItem fieldControl={control} name="orgEmail" label="Business Email" type="email" placeholder="Enter business email" />
-                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11" disabled={!formState.isValid}>
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11">
                           Continue
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
@@ -215,7 +215,7 @@ const RegisterForm: FC = () => {
                           <FormFieldItem fieldControl={control} name="address.postcode" label="Postcode" placeholder="Enter postcode" />
                           <FormFieldItem fieldControl={control} name="address.country" label="Country" placeholder="Enter country" />
                         </div>
-                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11" disabled={!formState.isValid}>
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11">
                           Continue
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
@@ -225,7 +225,7 @@ const RegisterForm: FC = () => {
                       <div className="space-y-4">
                         <FormFieldItem fieldControl={control} name="websiteUrl" label="Website URL" type="url" placeholder="Enter website URL" />
                         <FormFieldItem fieldControl={control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" />
-                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11" disabled={!formState.isValid}>
+                        <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11">
                           Continue
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
