@@ -70,6 +70,8 @@ export const getContacts = (role: RoleType) => {
   };
 };
 
+export const getPermissions = () => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.PROFILE}${API_ENDPOINTS.PERMISSION}`);
+
 export const profileApis = {
   createProfile,
   getProfileById,
@@ -82,5 +84,6 @@ export const profileApis = {
   getParents,
   getStudents,
   getStudentsByParentIds,
-  getContacts
+  getContacts,
+  getPermissions
 };
