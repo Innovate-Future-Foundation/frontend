@@ -23,6 +23,12 @@ export interface ProfileInfo {
   isConfirmed?: boolean;
 }
 
+export interface PermissionTypes {
+  canEditOrganisationDetailForm: RoleType[];
+  canViewManagerScrollList: RoleType[];
+  needViewOrganisationOfUser: RoleType[];
+}
+
 export type RoleType = "UndefinedRole" | "PlatformAdmin" | "OrgAdmin" | "OrgManager" | "OrgTeacher" | "Parent" | "Student";
 
 export type ProfilePathType = "contacts" | "orgadmins" | "orgmanagers" | "orgteachers" | "parents" | "students";

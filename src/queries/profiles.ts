@@ -1,5 +1,5 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
-import { ApiResponse, Profile, ProfilePaginatedRequest } from "@/types";
+import { ApiResponse, PermissionTypes, Profile, ProfilePaginatedRequest } from "@/types";
 import { profileApis } from "@/services/apiServices";
 import { convertToQueryParams } from "@/utils/formatters";
 
@@ -55,6 +55,13 @@ export const profiles = createQueryKeys("profiles", {
     queryFn: async () => {
       const response = await profileApis.getStudents(convertToQueryParams(params), organisationId);
       return response.data as ApiResponse<Profile>;
+    }
+  }),
+  permissionslist: () => ({
+    queryKey: ["permissions"],
+    queryFn: async () => {
+      const response = await profileApis.getPermissions();
+      return response.data as ApiResponse<PermissionTypes>;
     }
   })
 });
