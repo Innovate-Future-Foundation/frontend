@@ -1,4 +1,4 @@
-import { Building2, Users, Map, BookUser, CalendarCheck2, LayoutGrid, Contact, UserRoundPen } from "lucide-react";
+import { Building2, Users, Map, BookUser, CalendarCheck2, LayoutGrid, Contact } from "lucide-react";
 import { RoleType } from "@/types";
 import { SidebarItem } from "./Sidebar";
 
@@ -93,16 +93,6 @@ const platformAdminMenu: SidebarMenu = {
           icon: Contact
         }
       ]
-    },
-    {
-      sidebarLabel: "Settings",
-      subMenu: [
-        {
-          title: "my profile",
-          url: "/dashboard/profile",
-          icon: UserRoundPen
-        }
-      ]
     }
   ]
 };
@@ -170,16 +160,6 @@ const organisationAdminMenu: SidebarMenu = {
           icon: Contact
         }
       ]
-    },
-    {
-      sidebarLabel: "Settings",
-      subMenu: [
-        {
-          title: "my profile",
-          url: "/dashboard/profile",
-          icon: UserRoundPen
-        }
-      ]
     }
   ]
 };
@@ -242,16 +222,6 @@ const organisationManagerMenu: SidebarMenu = {
           icon: Contact
         }
       ]
-    },
-    {
-      sidebarLabel: "Settings",
-      subMenu: [
-        {
-          title: "my profile",
-          url: "/dashboard/profile",
-          icon: UserRoundPen
-        }
-      ]
     }
   ]
 };
@@ -301,16 +271,6 @@ const organisationTeacherMenu: SidebarMenu = {
           icon: Contact
         }
       ]
-    },
-    {
-      sidebarLabel: "Settings",
-      subMenu: [
-        {
-          title: "my profile",
-          url: "/dashboard/profile",
-          icon: UserRoundPen
-        }
-      ]
     }
   ]
 };
@@ -344,16 +304,6 @@ const parentMenu: SidebarMenu = {
           icon: Contact
         }
       ]
-    },
-    {
-      sidebarLabel: "Settings",
-      subMenu: [
-        {
-          title: "my profile",
-          url: "/dashboard/profile",
-          icon: UserRoundPen
-        }
-      ]
     }
   ]
 };
@@ -385,16 +335,6 @@ const studentMenu: SidebarMenu = {
           title: "contacts",
           url: "/dashboard/contacts",
           icon: Contact
-        }
-      ]
-    },
-    {
-      sidebarLabel: "Settings",
-      subMenu: [
-        {
-          title: "my profile",
-          url: "/dashboard/profile",
-          icon: UserRoundPen
         }
       ]
     }
