@@ -22,7 +22,7 @@ const myProfile: MyInfo = {
         street: "60 Walkerville St",
         suburb: "Gelberton",
         state: "SA",
-        postcode: "5071",
+        postCode: "5071",
         country: "AU"
       },
       email: "info@acmecorp.com",
