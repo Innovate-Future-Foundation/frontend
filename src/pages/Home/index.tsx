@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import technologyIcon from "/assets/icons/Future science and technology education.svg";
-import educationIcon from "/assets/icons/International Study Tours & Cultural Exploration.svg";
-import mentorIcon from "/assets/icons/Industry mentor, exclusive growth community.svg";
-import communityIcon from "/assets/icons/Exclusive Community & Network Expansion.svg";
-import competitionIcon from "/assets/icons/AI Science & Technology Competition.svg";
-import futureTechnology from "/assets/images/Future technology driven.jpg";
-import internationalStudy from "/assets/images/InternationalStudyTours.jpg";
-import industryMentor from "/assets/images/Industry Mentor & practical training.jpg";
-import exclusiveCommunity from "/assets/images/Exclusive Community & Network Expansion.jpg";
-import aiCompetition from "/assets/images/AI science and technology competition.jpg";
+import technologyIcon from "/assets/icons/futureScienceTechnologyEducation.svg";
+import educationIcon from "/assets/icons/internationalStudyToursExploration.svg";
+import mentorIcon from "/assets/icons/industryMentorGrowthCommunity.svg";
+import communityIcon from "/assets/icons/exclusiveCommunityNetworkExpansion.svg";
+import competitionIcon from "/assets/icons/aiScienceTechnologyCompetition.svg";
+import futureTechnology from "/assets/images/futureTechnologyDriven.jpg";
+import internationalStudy from "/assets/images/internationalStudyTours.jpg";
+import industryMentor from "/assets/images/industryMentorPracticalTraining.jpg";
+import exclusiveCommunity from "/assets/images/exclusiveCommunityNetworkExpansion.jpg";
+import aiCompetition from "/assets/images/aiScienceTechnologyCompetition.jpg";
 import MainLayout from "@/layouts/MainLayout";
 
 interface WhyChooseIFABenefit {
@@ -71,12 +71,12 @@ const HomePage: React.FC = () => {
           "IFA SaaS is an intelligent management platform specifically designed for overseas study tours, helping students, parents, teachers and enterprise managers easily connect information and efficiently manage itineraries to ensure a smoother, safer and more efficient study tour experience.",
         modules: [
           {
-            icon: "/assets/icons/Student Portal.svg",
+            icon: "/assets/icons/studentPortal.svg",
             title: "Student Portal",
             features: ["AI real-time translation", "Social learning journal", "Itinerary View & Task alerts", "Awards and certifications"]
           },
           {
-            icon: "/assets/icons/Teacher Portal.svg",
+            icon: "/assets/icons/teacherPortal.svg",
             title: "Teacher Portal",
             features: [
               "Schedule & Classroom management",
@@ -87,12 +87,12 @@ const HomePage: React.FC = () => {
             ]
           },
           {
-            icon: "/assets/icons/Admin Portal.svg",
+            icon: "/assets/icons/adminPortal.svg",
             title: "Admin Portal",
             features: ["Enterprise account management", "Study tour project management", "Student & Teacher management", "Data Analysis & Feedback"]
           },
           {
-            icon: "/assets/icons/Parent Portal.svg",
+            icon: "/assets/icons/parentPortal.svg",
             title: "Parent Portal",
             features: [
               "Real-time location & security monitoring",
@@ -133,11 +133,11 @@ const HomePage: React.FC = () => {
             <button key={tab.id} onClick={() => setActiveTab(tab.id)} className="relative pb-4 group">
               <div className="flex items-center gap-2">
                 {activeTab !== tab.id && <span className="text-gray-400 font-semibold">{tab.id}</span>}
-                <span className={`${activeTab === tab.id ? "text-[#046FFB] font-semibold" : "text-[#1A1A1A] font-semibold hover:text-gray-600"}`}>
+                <span className={`${activeTab === tab.id ? "text-primary font-semibold" : "text-foreground font-semibold hover:text-muted-foreground"}`}>
                   {tab.title}
                 </span>
               </div>
-              {activeTab === tab.id && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-[#046FFB] rounded-full" />}
+              {activeTab === tab.id && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-primary rounded-full" />}
             </button>
           ))}
         </div>
@@ -147,12 +147,12 @@ const HomePage: React.FC = () => {
           <div key={tab.id} className={`transition-all duration-300 ${activeTab === tab.id ? "block" : "hidden"}`}>
             <div className="bg-white rounded-3xl p-8 shadow-lg">
               {/* Header section */}
-              <div className="bg-[#1A1A1A] rounded-3xl mx-[-24px] mt-[-24px] p-6 sm:p-8 md:p-12 text-white mb-8 md:mb-12">
+              <div className="bg-foreground rounded-3xl mx-[-24px] mt-[-24px] p-6 sm:p-8 md:p-12 text-primary-foreground mb-8 md:mb-12">
                 <div className="flex items-center gap-4 mb-4 md:mb-8">
                   <span className="text-2xl md:text-3xl font-bold">{tab.id}</span>
                   <h3 className="text-xl md:text-2xl font-bold">{tab.title}</h3>
                 </div>
-                <p className="text-gray-300 text-xs md:text-sm leading-relaxed max-w-[80%]">{tab.content}</p>
+                <p className="text-muted-foreground text-xs md:text-sm leading-relaxed max-w-[80%]">{tab.content}</p>
               </div>
 
               {/* Tab 03 - Complex layout with modules */}
@@ -175,7 +175,7 @@ const HomePage: React.FC = () => {
 
                           <ul className="flex flex-col gap-4 md:gap-6 px-4 pb-6 md:pb-10">
                             {module.features.map((feature, idx) => (
-                              <li key={idx} className="text-sm text-gray-600 flex items-start gap-2">
+                              <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
                                 <span className="text-gray-400 mt-1">•</span>
                                 <span className="line-clamp-3">{feature}</span>
                               </li>
@@ -190,16 +190,16 @@ const HomePage: React.FC = () => {
                   <div className="flex flex-col lg:flex-row lg:justify-between mt-8 md:mt-16">
                     {/* Left content */}
                     <div className="w-full lg:w-[45%] px-4 md:pl-12 mb-8 lg:mb-0">
-                      <h3 className="text-2xl md:text-[28px] font-bold mb-4 md:mb-6 text-[#1A1A1A]">Why choose IFA SaaS?</h3>
-                      <p className="font-['Helvetica'] text-gray-600 mb-6 md:mb-8 leading-relaxed max-w-[360px]">
+                      <h3 className="text-2xl md:text-[28px] font-bold mb-4 md:mb-6 text-foreground">Why choose IFA SaaS?</h3>
+                      <p className="text-muted-foreground mb-6 md:mb-8 leading-relaxed max-w-[360px]">
                         IFA SaaS makes overseas study tour management smarter and more convenient, creating an immersive and worry-free international learning
                         experience for every student!
                       </p>
-                      <button className="font-['Helvetica-Bold'] px-6 py-3 bg-[#046FFB] text-white rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+                      <button className="font-['Helvetica-Bold'] px-6 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                         Explore Programs
                         <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                            <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </div>
                       </button>
@@ -212,27 +212,27 @@ const HomePage: React.FC = () => {
                         {/* Mobile and tablet layout (<lg screens) */}
                         <div className="lg:hidden space-y-6">
                           {/* First card - mobile/tablet */}
-                          <div className="bg-[#F8F9FB] rounded-2xl py-8 px-6 w-full">
+                          <div className="bg-muted rounded-2xl py-8 px-6 w-full">
                             <h4 className="text-lg font-semibold mb-4">Intelligent & Data driven</h4>
-                            <p className="font-['Helvetica'] text-gray-600 text-sm leading-relaxed">
+                            <p className="text-muted-foreground text-sm leading-relaxed">
                               Combine AI translation, personalized recommendation, and intelligent itinerary management to provide a seamless study tour
                               experience.
                             </p>
                           </div>
 
                           {/* Second card - mobile/tablet */}
-                          <div className="bg-[#F8F9FB] rounded-2xl py-8 px-6 w-full">
+                          <div className="bg-muted rounded-2xl py-8 px-6 w-full">
                             <h4 className="text-lg font-semibold mb-4">High gold content certification</h4>
-                            <p className="font-['Helvetica'] text-gray-600 text-sm leading-relaxed">
+                            <p className="text-muted-foreground text-sm leading-relaxed">
                               At the end of the tour, students will receive an official letter of recommendation and a certificate of completion to facilitate
                               their future study and career development.
                             </p>
                           </div>
 
                           {/* Third card - mobile/tablet */}
-                          <div className="bg-[#F8F9FB] rounded-2xl py-8 px-6 w-full">
+                          <div className="bg-muted rounded-2xl py-8 px-6 w-full">
                             <h4 className="text-lg font-semibold mb-4">One-stop management platform</h4>
-                            <p className="font-['Helvetica'] text-gray-600 text-sm leading-relaxed">
+                            <p className="text-muted-foreground text-sm leading-relaxed">
                               All-round linkage between students, parents, teachers and enterprises simplifies information flow and reduces communication costs.
                             </p>
                           </div>
@@ -241,27 +241,27 @@ const HomePage: React.FC = () => {
                         {/* Desktop layout (≥lg screens) */}
                         <div className="hidden lg:block relative">
                           {/* First card - desktop */}
-                          <div className="bg-[#F8F9FB] rounded-2xl py-8 md:py-14 px-6 md:px-12 w-[480px] lg:ml-[-10%]">
+                          <div className="bg-muted rounded-2xl py-8 md:py-14 px-6 md:px-12 w-[480px] lg:ml-[-10%]">
                             <h4 className="text-lg font-semibold mb-4 md:mb-8">Intelligent & Data driven</h4>
-                            <p className="font-['Helvetica'] text-gray-600 text-sm leading-relaxed">
+                            <p className="text-muted-foreground text-sm leading-relaxed">
                               Combine AI translation, personalized recommendation, and intelligent itinerary management to provide a seamless study tour
                               experience.
                             </p>
                           </div>
 
                           {/* Second card - desktop */}
-                          <div className="bg-[#F8F9FB] rounded-2xl py-8 md:py-14 px-6 md:px-12 w-[480px] lg:ml-[10%] mt-6">
+                          <div className="bg-muted rounded-2xl py-8 md:py-14 px-6 md:px-12 w-[480px] lg:ml-[10%] mt-6">
                             <h4 className="text-lg font-semibold mb-4 md:mb-6">High gold content certification</h4>
-                            <p className="font-['Helvetica'] text-gray-600 text-sm leading-relaxed">
+                            <p className="text-muted-foreground text-sm leading-relaxed">
                               At the end of the tour, students will receive an official letter of recommendation and a certificate of completion to facilitate
                               their future study and career development.
                             </p>
                           </div>
 
                           {/* Third card - desktop */}
-                          <div className="bg-[#F8F9FB] rounded-2xl py-14 px-12 w-[480px] ml-[-72%] -mt-40">
+                          <div className="bg-muted rounded-2xl py-14 px-12 w-[480px] ml-[-72%] -mt-40">
                             <h4 className="text-lg font-semibold mb-6">One-stop management platform</h4>
-                            <p className="font-['Helvetica'] text-gray-600 text-sm leading-relaxed">
+                            <p className="text-muted-foreground text-sm leading-relaxed">
                               All-round linkage between students, parents, teachers and enterprises simplifies information flow and reduces communication costs.
                             </p>
                           </div>
@@ -272,7 +272,7 @@ const HomePage: React.FC = () => {
                 </div>
               ) : (
                 <div>
-                  <h4 className="text-lg flex items-center gap-2 mb-6 md:mb-10 font-semibold text-[#1A1A1A]">
+                  <h4 className="text-lg flex items-center gap-2 mb-6 md:mb-10 font-semibold text-foreground">
                     <img src="/assets/icons/feature.svg" alt="feature" className="w-5 h-5" />
                     Feature
                   </h4>
@@ -284,7 +284,7 @@ const HomePage: React.FC = () => {
                         key={index}
                         className="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 text-center min-h-[180px] flex items-center justify-center"
                       >
-                        <span className="text-xs md:text-sm text-gray-600 leading-relaxed">{feature}</span>
+                        <span className="text-xs md:text-sm text-muted-foreground leading-relaxed">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -318,24 +318,24 @@ const HomePage: React.FC = () => {
 
               {/* Right content - responsive visibility and layout */}
               <div className="w-full lg:w-[45%] pt-4 lg:pt-8 lg:pl-20">
-                <p className="font-['Helvetica'] text-primary-foreground30 text-sm sm:text-base mb-6 lg:mb-8">
+                <p className="text-primary-foreground30 text-sm sm:text-base mb-6 lg:mb-8">
                   Unlock international learning experiences through AI-driven education, global study tours, and mentorship.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="w-full sm:w-auto font-['Helvetica'] px-4 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground text-sm sm:text-base font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center justify-center sm:justify-start gap-2">
+                  <button className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground text-sm sm:text-base font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center justify-center sm:justify-start gap-2">
                     Join a Program
                     <div className="w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full flex items-center justify-center">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
                   </button>
-                  <button className="w-full sm:w-auto font-['Helvetica'] px-4 sm:px-6 py-2.5 sm:py-3 border border-[#1A1A1A] text-sm sm:text-base font-bold rounded-full hover:bg-gray-50 transition-colors flex items-center justify-center sm:justify-start gap-2">
+                  <button className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 border border-[#1A1A1A] text-sm sm:text-base font-bold rounded-full hover:bg-gray-50 transition-colors flex items-center justify-center sm:justify-start gap-2">
                     Explore Events
                     <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gray-100 rounded-full flex items-center justify-center">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
                   </button>
@@ -347,10 +347,16 @@ const HomePage: React.FC = () => {
             <div className="font-['Helvetica'] relative">
               {/* Image container */}
               <div className="relative w-full">
-                <img src="/assets/images/BG1.jpg" alt="Background" className="w-full h-[40rem] object-cover rounded-2xl" />
+                <img
+                  src="/assets/images/bgForImageAndCardsSection.webp"
+                  srcSet="/assets/images/bgForImageAndCardsSection@2x.webp 2x"
+                  alt="Background"
+                  className="w-full h-[40rem] object-cover rounded-2xl"
+                />
 
                 {/* Floating labels - hidden on screens smaller than lg (1024px) */}
                 <div className="hidden lg:block">
+                  {/* First label */}
                   <div
                     className="absolute left-[4.5%] top-[16.4%] px-10 py-3 bg-white/20 backdrop-blur-[2px] overflow-hidden"
                     style={{
@@ -380,28 +386,116 @@ const HomePage: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="absolute left-[44%] top-[9%] bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[999px]">
-                    <span className="text-base font-medium text-white">
+                  {/* Second label */}
+                  <div
+                    className="absolute left-[44%] top-[9%] px-10 py-3 bg-white/20 backdrop-blur-[2px] overflow-hidden"
+                    style={{
+                      borderRadius: "999px",
+                      background: "rgba(255,255,255,0.2)",
+                      position: "relative"
+                    }}
+                  >
+                    <div
+                      style={{
+                        content: '""',
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: "999px",
+                        padding: "1px",
+                        background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                        WebkitMaskComposite: "xor",
+                        maskComposite: "exclude",
+                        pointerEvents: "none"
+                      }}
+                    />
+                    <span className="relative z-10 text-base font-medium text-white whitespace-normal">
                       AI Science and
                       <br />
                       technology experience
                     </span>
                   </div>
 
-                  <div className="absolute left-[5%] top-[44%] bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[999px]">
-                    <span className="text-base font-medium text-white">Study tour projects</span>
+                  {/* Third label */}
+                  <div
+                    className="absolute left-[5%] top-[44%] px-10 py-3 bg-white/20 backdrop-blur-[2px] overflow-hidden"
+                    style={{
+                      borderRadius: "999px",
+                      background: "rgba(255,255,255,0.2)",
+                      position: "relative"
+                    }}
+                  >
+                    <div
+                      style={{
+                        content: '""',
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: "999px",
+                        padding: "1px",
+                        background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                        WebkitMaskComposite: "xor",
+                        maskComposite: "exclude",
+                        pointerEvents: "none"
+                      }}
+                    />
+                    <span className="relative z-10 text-base font-medium text-white">Study tour projects</span>
                   </div>
 
-                  <div className="absolute left-[81%] top-[25%] bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[999px]">
-                    <span className="text-base font-medium text-white">
+                  {/* Fourth label */}
+                  <div
+                    className="absolute left-[81%] top-[25%] px-10 py-3 bg-white/20 backdrop-blur-[2px] overflow-hidden"
+                    style={{
+                      borderRadius: "999px",
+                      background: "rgba(255,255,255,0.2)",
+                      position: "relative"
+                    }}
+                  >
+                    <div
+                      style={{
+                        content: '""',
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: "999px",
+                        padding: "1px",
+                        background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                        WebkitMaskComposite: "xor",
+                        maskComposite: "exclude",
+                        pointerEvents: "none"
+                      }}
+                    />
+                    <span className="relative z-10 text-base font-medium text-white whitespace-normal">
                       Practical training of
                       <br />
                       famous enterprises
                     </span>
                   </div>
 
-                  <div className="absolute left-[70%] top-[50%] bg-white/20 backdrop-blur-[2px] px-6 py-3 rounded-[999px]">
-                    <span className="text-base font-medium text-white">Overseas career planning</span>
+                  {/* Fifth label */}
+                  <div
+                    className="absolute left-[70%] top-[50%] px-10 py-3 bg-white/20 backdrop-blur-[2px] overflow-hidden"
+                    style={{
+                      borderRadius: "999px",
+                      background: "rgba(255,255,255,0.2)",
+                      position: "relative"
+                    }}
+                  >
+                    <div
+                      style={{
+                        content: '""',
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: "999px",
+                        padding: "1px",
+                        background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                        WebkitMaskComposite: "xor",
+                        maskComposite: "exclude",
+                        pointerEvents: "none"
+                      }}
+                    />
+                    <span className="relative z-10 text-base font-medium text-white">Overseas career planning</span>
                   </div>
                 </div>
               </div>
@@ -530,11 +624,11 @@ const HomePage: React.FC = () => {
 
                             {/* content list section */}
                             <div className="flex-1 mt-4 overflow-y-auto">
-                              <div className="flex flex-col gap-3 w-full">
+                              <div className="flex flex-col gap-4 w-full">
                                 {card.content.map((item, i) => (
                                   <div key={i} className="flex items-start gap-2">
                                     <img src="/assets/icons/plus.svg" alt="plus" className="w-3 h-3 flex-shrink-0 mt-[0.2rem]" />
-                                    <span className="text-white/90 text-xs font-['Helvetica'] leading-tight flex-1">{item}</span>
+                                    <span className="text-white/90 text-xs leading-tight flex-1">{item}</span>
                                   </div>
                                 ))}
                               </div>
@@ -626,11 +720,11 @@ const HomePage: React.FC = () => {
 
             {/* Start Your Journey Button */}
             <div className="flex justify-center mt-8 sm:mt-12 lg:mt-16">
-              <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#046FFB] text-white text-sm sm:text-base font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+              <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground text-sm sm:text-base font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                 Start Your Journey
                 <div className="w-5 sm:w-6 h-5 sm:h-6 bg-white rounded-full flex items-center justify-center">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
               </button>
@@ -649,37 +743,37 @@ const HomePage: React.FC = () => {
               <div className="flex justify-center items-center gap-20">
                 <img src="/assets/images/aws.jpg" alt="AWS" className="h-16 object-contain" />
                 <img src="/assets/images/google.jpg" alt="Google" className="h-16 object-contain" />
-                <img src="/assets/images/Microsoft.jpg" alt="Microsoft" className="h-16 object-contain" />
-                <img src="/assets/images/Tesla.jpg" alt="Tesla" className="h-16 object-contain" />
+                <img src="/assets/images/microsoft.jpg" alt="Microsoft" className="h-16 object-contain" />
+                <img src="/assets/images/tesla.jpg" alt="Tesla" className="h-16 object-contain" />
                 <img src="/assets/images/openai.jpg" alt="OpenAI" className="h-16 object-contain" />
               </div>
 
               {/* second row */}
               <div className="flex justify-center items-center gap-20">
                 <img src="/assets/images/jobpin.png" alt="JobPin" className="h-16 object-contain" />
-                <img src="/assets/images/JrAcademy.png" alt="JR Academy" className="h-16 object-contain" />
-                <img src="/assets/images/MIT.jpg" alt="MIT" className="h-16 object-contain" />
-                <img src="/assets/images/Stanford.jpg" alt="Stanford" className="h-16 object-contain" />
-                <img src="/assets/images/Harvard.png" alt="Harvard" className="h-16 object-contain" />
+                <img src="/assets/images/jrAcademy.png" alt="JR Academy" className="h-16 object-contain" />
+                <img src="/assets/images/mit.jpg" alt="MIT" className="h-16 object-contain" />
+                <img src="/assets/images/stanford.jpg" alt="Stanford" className="h-16 object-contain" />
+                <img src="/assets/images/harvard.png" alt="Harvard" className="h-16 object-contain" />
               </div>
 
               {/* third row */}
               <div className="flex justify-center items-center gap-20">
-                <img src="/assets/images/USyd.png" alt="University of Sydney" className="h-16 object-contain" />
-                <img src="/assets/images/UQ.png" alt="University of Queensland" className="h-16 object-contain" />
-                <img src="/assets/images/RMIT.jpg" alt="RMIT" className="h-16 object-contain" />
-                <img src="/assets/images/Y.jpg" alt="Y Combinator" className="h-16 object-contain" />
+                <img src="/assets/images/usyd.png" alt="University of Sydney" className="h-16 object-contain" />
+                <img src="/assets/images/uq.png" alt="University of Queensland" className="h-16 object-contain" />
+                <img src="/assets/images/rmit.jpg" alt="RMIT" className="h-16 object-contain" />
+                <img src="/assets/images/y.jpg" alt="Y Combinator" className="h-16 object-contain" />
                 <img src="/assets/images/awsStartup.jpg" alt="AWS Startups" className="h-16 object-contain" />
               </div>
             </div>
 
             {/* Become a Partner Button */}
             <div className="flex justify-center mt-16">
-              <button className="px-6 py-3 bg-[#046FFB] text-white font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+              <button className="px-6 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                 Become a Partner
                 <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
               </button>
@@ -697,16 +791,16 @@ const HomePage: React.FC = () => {
                 <div>
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
                     <img
-                      src="/assets/images/General AI Professional Development.jpg"
+                      src="/assets/images/generalAiProfessionalDevelopment.jpg"
                       alt="General AI Professional Development"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="text-lg font-semibold mb-3">General AI Professional Development</h3>
                 </div>
-                <button className="font-['Helvetica'] flex items-center gap-2 text-gray-600 hover:text-[#046FFB] transition-colors font-semibold group">
+                <button className="font-['Helvetica'] flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold group">
                   Read More
-                  <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center group-hover:bg-[#046FFB]/10">
+                  <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary/10">
                     <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
                   </div>
                 </button>
@@ -716,13 +810,13 @@ const HomePage: React.FC = () => {
               <div className="flex flex-col h-full justify-between">
                 <div>
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
-                    <img src="/assets/images/Quantum Computing Seminar.jpg" alt="Quantum Computing Seminar" className="w-full h-full object-cover" />
+                    <img src="/assets/images/quantumComputingSeminar.jpg" alt="Quantum Computing Seminar" className="w-full h-full object-cover" />
                   </div>
                   <h3 className="text-lg font-semibold mb-3">Quantum Computing Seminar</h3>
                 </div>
-                <button className="font-['Helvetica'] flex items-center gap-2 text-gray-600 hover:text-[#046FFB] transition-colors font-semibold group">
+                <button className="font-['Helvetica'] flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold group">
                   Read More
-                  <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center group-hover:bg-[#046FFB]/10">
+                  <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary/10">
                     <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
                   </div>
                 </button>
@@ -732,13 +826,13 @@ const HomePage: React.FC = () => {
               <div className="flex flex-col h-full justify-between">
                 <div>
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
-                    <img src="/assets/images/AI In AWS.jpg" alt="AI in AWS" className="w-full h-full object-cover" />
+                    <img src="/assets/images/allInAws.jpg" alt="AI in AWS" className="w-full h-full object-cover" />
                   </div>
                   <h3 className="text-lg font-semibold mb-3">AI in AWS</h3>
                 </div>
-                <button className="font-['Helvetica'] flex items-center gap-2 text-gray-600 hover:text-[#046FFB] transition-colors font-semibold group">
+                <button className="font-['Helvetica'] flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold group">
                   Read More
-                  <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center group-hover:bg-[#046FFB]/10">
+                  <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary/10">
                     <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
                   </div>
                 </button>
@@ -748,13 +842,13 @@ const HomePage: React.FC = () => {
               <div className="flex flex-col h-full justify-between">
                 <div>
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
-                    <img src="/assets/images/Past Events for Shanghai.jpg" alt="Past Events for Shanghai" className="w-full h-full object-cover" />
+                    <img src="/assets/images/pastEventsForShanghai.jpg" alt="Past Events for Shanghai" className="w-full h-full object-cover" />
                   </div>
                   <h3 className="text-lg font-semibold mb-3">Past Events for Shanghai</h3>
                 </div>
-                <button className="font-['Helvetica'] flex items-center gap-2 text-gray-600 hover:text-[#046FFB] transition-colors font-semibold group">
+                <button className="font-['Helvetica'] flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold group">
                   Read More
-                  <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center group-hover:bg-[#046FFB]/10">
+                  <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary/10">
                     <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
                   </div>
                 </button>
@@ -763,15 +857,15 @@ const HomePage: React.FC = () => {
 
             {/* Action Buttons */}
             <div className="flex justify-center items-center gap-6">
-              <button className="font-['Helvetica'] px-6 py-3 bg-[#046FFB] text-white font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+              <button className="font-['Helvetica'] px-6 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                 Register Now
                 <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
               </button>
-              <button className="font-['Helvetica'] px-6 py-3 border border-[#1A1A1A] text-[#1A1A1A] font-bold rounded-full hover:bg-gray-50 transition-colors flex items-center gap-2">
+              <button className="font-['Helvetica'] px-6 py-3 border border-[#1A1A1A] text-[#1A1A1A] font-bold rounded-full hover:bg-gray-50 transition-colors flex items-center justify-center sm:justify-start gap-2">
                 See More Events
                 <div className="w-6 h-6 bg-[#F2F4F7] rounded-full flex items-center justify-center">
                   <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2" />
@@ -786,7 +880,7 @@ const HomePage: React.FC = () => {
 
             <div className="grid grid-cols-3 gap-8 mb-16">
               {/* Basic Tier */}
-              <div className="font-['Helvetica'] relative bg-[#F8F9FB] rounded-2xl p-12 flex flex-col items-center">
+              <div className="font-['Helvetica'] relative bg-muted rounded-2xl p-12 flex flex-col items-center">
                 <img src="/assets/icons/basic.svg" alt="Basic" className="w-16 h-16 mb-4" />
                 <h3 className="text-xl font-semibold mb-2 p-2">Basic</h3>
                 <p className="text-gray-600 text-center mb-12 text-sm">Some content is accessible</p>
@@ -801,7 +895,7 @@ const HomePage: React.FC = () => {
               </div>
 
               {/* Premium Tier */}
-              <div className="relative bg-[#F8F9FB] rounded-2xl p-12 flex flex-col items-center">
+              <div className="relative bg-muted rounded-2xl p-12 flex flex-col items-center">
                 <img src="/assets/icons/premium.svg" alt="Premium" className="w-16 h-16 mb-4" />
                 <h3 className="text-xl font-semibold mb-2 p-2">Premium</h3>
                 <p className="text-gray-600 text-center mb-12 text-sm">Discounts on exclusive courses and study Tours</p>
@@ -816,7 +910,7 @@ const HomePage: React.FC = () => {
               </div>
 
               {/* VIP Tier */}
-              <div className="relative bg-[#F8F9FB] rounded-2xl p-12 flex flex-col items-center">
+              <div className="relative bg-muted rounded-2xl p-12 flex flex-col items-center">
                 <img src="/assets/icons/vip.svg" alt="IFA VIP" className="w-16 h-16 mb-4" />
                 <h3 className="text-xl font-semibold mb-2 p-2">IFA VIP</h3>
                 <p className="text-gray-600 text-center mb-12 text-sm">Tutor 1V1 + AI interview guide</p>
@@ -833,11 +927,11 @@ const HomePage: React.FC = () => {
 
             {/* Upgrade Button */}
             <div className="flex justify-center mt-24 mb-12">
-              <button className="px-6 py-3 bg-[#046FFB] text-white font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+              <button className="px-6 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                 Upgrade Now
                 <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                    <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
               </button>
@@ -848,24 +942,24 @@ const HomePage: React.FC = () => {
           <div className="px-[5.6%]">
             <div className="relative">
               {/* main image*/}
-              <img src="/assets/images/Community Section.jpg" alt="IFA Community" className="w-full rounded-3xl" />
+              <img src="/assets/images/communitySection.jpg" alt="IFA Community" className="w-full rounded-3xl" />
 
               {/* title - use precise relative positioning */}
               <div className="absolute left-[40%] top-[3.6%] max-w-[80%]">
-                <h2 className="font-['Helvetica-Bold'] text-3xl font-bold text-[#1A1A1A]">Join the IFA community and expand the possibilities</h2>
+                <h2 className="text-3xl font-bold text-foreground">Join the IFA community and expand the possibilities</h2>
               </div>
 
               {/* content and button - use precise relative positioning */}
               <div className="absolute left-[64.1%] top-[17.6%] max-w-[40%]">
-                <p className="font-['Helvetica'] text-gray-600 text-sm mb-8">
+                <p className="text-gray-600 text-sm mb-8">
                   Whether you are a future engineer, technology entrepreneur, or an explorer with a passion for innovation, IFA welcomes you to join us! Here,
                   you can meet like-minded partners, get mentors, master cutting-edge technology, and start a new journey of professional growth!
                 </p>
-                <button className="px-6 py-3 bg-[#046FFB] text-white font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2 w-fit">
+                <button className="px-6 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                   Join the Community
                   <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                      <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                 </button>
@@ -888,7 +982,7 @@ const HomePage: React.FC = () => {
 
           {/* Support Section */}
           <div className="px-[5.6%] mt-32 py-32">
-            <div className="bg-[#F8F9FB] rounded-3xl p-16 flex justify-between items-center">
+            <div className="bg-muted rounded-3xl p-16 flex justify-between items-center">
               {/* Left Content */}
               <div className="max-w-[520px]">
                 <h2 className="text-3xl font-bold text-[#1A1A1A] mb-6">Support IFA to help cultivate future scientific and technological talents</h2>
@@ -900,16 +994,16 @@ const HomePage: React.FC = () => {
 
               {/* Right Content */}
               <div className="max-w-[600px] pl-8">
-                <p className="font-['Helvetica'] text-gray-600 text-sm mb-8">
+                <p className="text-gray-600 text-sm mb-8">
                   Your support will directly impact the growth of young scientific and technological talents around the world, helping them to access quality
                   educational resources, innovation opportunities and international perspectives. Let us work together to promote science and technology
                   education and ignite the innovation dreams of the next generation!
                 </p>
-                <button className="font-['Helvetica-Bold'] px-6 py-3 bg-[#046FFB] text-white text-sm rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2">
+                <button className="px-6 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                   Donate now to change the future
                   <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                      <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                 </button>
@@ -922,32 +1016,32 @@ const HomePage: React.FC = () => {
             {/* Contact Form Section */}
             <div className="px-[5.6%] mt-32 py-12 flex items-start">
               <div className="w-[45%]">
-                <h2 className="text-3xl font-bold py-24 pl-12 text-[#1A1A1A]">Happy to answer any questions you might have</h2>
+                <h2 className="text-3xl font-bold py-24 pl-12 text-foreground">Happy to answer any questions you might have</h2>
               </div>
 
-              <div className="w-[48%] ml-8 bg-white rounded-3xl p-12 relative z-10" style={{ boxShadow: "0px 0px 50px rgba(0, 0, 0, 0.1)" }}>
+              <div className="w-[48%] ml-8 bg-background rounded-3xl p-12 relative z-10" style={{ boxShadow: "0px 0px 50px rgba(0, 0, 0, 0.1)" }}>
                 <form className="flex flex-col gap-8">
                   {/* Name fields row */}
                   <div className="flex gap-6">
                     <div className="flex-1">
-                      <label htmlFor="firstName" className="block text-[#1A1A1A] mb-2">
+                      <label htmlFor="firstName" className="block text-foreground mb-2">
                         First name
                       </label>
                       <input
                         type="text"
                         id="firstName"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#046FFB]"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
                         placeholder="First name"
                       />
                     </div>
                     <div className="flex-1">
-                      <label htmlFor="lastName" className="block text-[#1A1A1A] mb-2">
+                      <label htmlFor="lastName" className="block text-foreground mb-2">
                         Last name
                       </label>
                       <input
                         type="text"
                         id="lastName"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#046FFB]"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
                         placeholder="Last name"
                       />
                     </div>
@@ -955,26 +1049,26 @@ const HomePage: React.FC = () => {
 
                   {/* Email field */}
                   <div>
-                    <label htmlFor="email" className="block text-[#1A1A1A] mb-2">
+                    <label htmlFor="email" className="block text-foreground mb-2">
                       Email
                     </label>
                     <input
                       type="email"
                       id="email"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#046FFB]"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
                       placeholder="Email Adress"
                     />
                   </div>
 
                   {/* Question field */}
                   <div>
-                    <label htmlFor="question" className="block text-[#1A1A1A] mb-2">
+                    <label htmlFor="question" className="block text-foreground mb-2">
                       Your Question
                     </label>
                     <textarea
                       id="question"
                       rows={6}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#046FFB] resize-none"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary resize-none"
                       placeholder="Enter your text here"
                     />
                   </div>
@@ -982,12 +1076,12 @@ const HomePage: React.FC = () => {
                   {/* Submit button */}
                   <button
                     type="submit"
-                    className="self-start px-8 py-3 bg-[#046FFB] text-white font-bold rounded-full hover:bg-[#0355CC] transition-colors flex items-center gap-2"
+                    className="self-start px-8 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2"
                   >
                     Send
-                    <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="#046FFB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <div className="w-6 h-6 bg-primary-foreground rounded-full flex items-center justify-center">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
                   </button>
@@ -996,13 +1090,13 @@ const HomePage: React.FC = () => {
             </div>
 
             {/* Footer Section */}
-            <div className="font-['Helvetica'] bg-[#25292C] mt-[-280px] pt-[320px] pb-16 px-[5.6%]">
+            <div className="bg-[#25292C] mt-[-280px] pt-[320px] pb-16 px-[5.6%]">
               <div className="flex justify-between">
                 {/* Logo and Brand */}
                 <div>
                   <div className="flex items-center">
                     <img src="/assets/images/logo2.png" alt="INNOVATE FUTURE" className="w-10 h-10" />
-                    <div className="flex flex-col font-['Helvetica-Bold'] ml-3">
+                    <div className="flex flex-col ml-3">
                       <span className="font-bold text-base text-white">INNOVATE FUTURE</span>
                       <span className="text-white text-xs font-bold">ASSOCIATION</span>
                     </div>
@@ -1011,7 +1105,7 @@ const HomePage: React.FC = () => {
 
                 {/* Navigation Links */}
                 <div>
-                  <h3 className="font-['Helvetica-Bold'] text-white font-semibold mb-6">Your name</h3>
+                  <h3 className="text-white font-semibold mb-6">Your name</h3>
                   <ul className="flex flex-col gap-4">
                     {["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].map(item => (
                       <li key={item}>
@@ -1025,7 +1119,7 @@ const HomePage: React.FC = () => {
 
                 {/* Partner Links */}
                 <div>
-                  <h3 className="font-['Helvetica-Bold'] text-white font-semibold mb-6">Partner Links</h3>
+                  <h3 className="text-white font-semibold mb-6">Partner Links</h3>
                   <ul className="flex flex-col gap-4">
                     {["Sunflower AI", "Bookwell AI", "Beequant.AI", "Jobpin AI"].map(item => (
                       <li key={item}>
@@ -1039,7 +1133,7 @@ const HomePage: React.FC = () => {
 
                 {/* Newsletter Subscription - adjusted width and styling */}
                 <div className="max-w-[480px]">
-                  <h3 className="font-['Helvetica-Bold'] text-white font-semibold mb-6">Subscribe Newsletter</h3>
+                  <h3 className="text-white font-semibold mb-6">Subscribe Newsletter</h3>
                   <p className="text-gray-400 mb-6">Subscribe to our newsletter to get updates about our services and offers.</p>
                   <div className="flex bg-white rounded-lg p-1">
                     <input
@@ -1047,7 +1141,7 @@ const HomePage: React.FC = () => {
                       placeholder="input your email"
                       className="flex-1 px-6 py-2 bg-transparent text-gray-900 placeholder:text-gray-500 focus:outline-none"
                     />
-                    <button className="px-6 py-2 bg-[#046FFB] text-white rounded-lg hover:bg-[#0355CC] transition-colors">Subscribe</button>
+                    <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">Subscribe</button>
                   </div>
                 </div>
               </div>

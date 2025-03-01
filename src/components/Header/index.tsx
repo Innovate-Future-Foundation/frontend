@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import SignInAvatar from "./SignInAvatar";
 import { useAuthStore } from "@/store";
 import { ProfileInfo } from "@/types";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 interface HeaderProps {
@@ -14,6 +14,21 @@ const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
   const { isAuthenticated } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [activeItem, setActiveItem] = useState("Home");
+
+  // Set the active item based on the current path
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setActiveItem("Home");
+    } else {
+      const path = location.pathname.slice(1);
+      const matchedItem = ["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].find(item => item.toLowerCase().replace(/\s+/g, "") === path);
+      if (matchedItem) {
+        setActiveItem(matchedItem);
+      }
+    }
+  }, [location.pathname]);
 
   return (
     <header
@@ -36,10 +51,24 @@ const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
           <div className="flex items-center gap-8">
             {["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].map(item => (
               <div key={item} className="relative group">
-                <div className="text-base font-['Helvetica-Rounded-Bold'] font-bold text-foreground cursor-pointer hover:text-primary transition-colors whitespace-nowrap">
+                <div
+                  className={clsx(
+                    "text-base font-['Helvetica-Rounded-Bold'] font-bold cursor-pointer transition-colors whitespace-nowrap",
+                    activeItem === item ? "text-primary" : "text-foreground hover:text-primary"
+                  )}
+                  onClick={() => {
+                    setActiveItem(item);
+                    navigate(item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "")}`);
+                  }}
+                >
                   {item}
                 </div>
-                <div className="absolute -bottom-2 left-1/2 w-4 h-1 bg-primary rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center -translate-x-1/2" />
+                <div
+                  className={clsx(
+                    "absolute -bottom-2 left-1/2 w-4 h-1 bg-primary rounded-full transition-transform duration-300 origin-center -translate-x-1/2",
+                    activeItem === item ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  )}
+                />
               </div>
             ))}
           </div>
@@ -95,7 +124,15 @@ const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
             {/* Mobile menu items */}
             <div className="flex flex-col p-5 space-y-4">
               {["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].map(item => (
-                <a key={item} href="#" className="text-lg font-medium text-foreground hover:text-primary">
+                <a
+                  key={item}
+                  onClick={() => {
+                    setActiveItem(item);
+                    setIsMobileMenuOpen(false);
+                    navigate(item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "")}`);
+                  }}
+                  className={clsx("text-lg font-medium cursor-pointer", activeItem === item ? "text-primary" : "text-foreground hover:text-primary")}
+                >
                   {item}
                 </a>
               ))}
