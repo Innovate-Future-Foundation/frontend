@@ -81,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ fromHome }) => {
           </Button>
         )}
         {isAuthenticated && userProfile ? (
-          <SignInAvatar name={userProfile.name ?? ""} email={userProfile.email ?? ""} avatarUrl={userProfile.avatarUrl ?? ""} />
+          <SignInAvatar name={userProfile.name ?? ""} avatarUrl={userProfile.avatarUrl ?? ""} />
         ) : (
           <button
             onClick={() => navigate("/auth")}
