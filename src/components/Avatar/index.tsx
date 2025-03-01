@@ -65,7 +65,6 @@ const Avatar: React.FC<AvatarProps> = ({
     <>
       {selectedFile ? (
         <ImageCropper
-          // croppedImageUrl={croppedImageUrl}
           setCroppedImageUrl={setCroppedImageUrl}
           dialogOpen={isDialogOpen}
           setDialogOpen={setDialogOpen}

@@ -1,12 +1,13 @@
-import React, { ReactNode, type SyntheticEvent } from "react";
+import React, { ReactNode, useEffect, useState, type SyntheticEvent } from "react";
 import ReactCrop, { centerCrop, makeAspectCrop, type Crop, type PixelCrop } from "react-image-crop";
 import { FileWithPath } from "react-dropzone";
-import { CropIcon } from "lucide-react";
+import { CropIcon, Loader2 } from "lucide-react";
 import "react-image-crop/dist/ReactCrop.css";
 
 import { Avatar as CNAvatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useUploadImage } from "@/hooks/upload/useUploadImage";
 
 export type FileWithPreview = FileWithPath & {
   preview: string;
@@ -18,23 +19,13 @@ interface ImageCropperProps {
   selectedFile: FileWithPreview | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<FileWithPreview | null>>;
   children: ReactNode;
-  setCroppedImageUrl: (croppedImage: string) => void;
-  // croppedImageUrl: string;
+  setCroppedImageUrl: (croppedImage: string | null) => void;
   getUploadedUrl?: (url: string) => void;
 }
 
-export function ImageCropper({
-  dialogOpen,
-  setDialogOpen,
-  selectedFile,
-  setSelectedFile,
-  setCroppedImageUrl,
-  // croppedImageUrl,
-  getUploadedUrl,
-  children
-}: ImageCropperProps) {
+export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelectedFile, setCroppedImageUrl, getUploadedUrl, children }: ImageCropperProps) {
   const aspect = 1;
-
+  const [imgRawFile, setImgRawFile] = useState<File | null>(null);
   const imgRef = React.useRef<HTMLImageElement | null>(null);
 
   const [crop, setCrop] = React.useState<Crop>();
@@ -50,6 +41,9 @@ export function ImageCropper({
     if (imgRef.current && crop.width && crop.height) {
       const scroppedImageUrl = getCroppedImg(imgRef.current, crop);
       setCroppedImageUrl(scroppedImageUrl);
+      //convert base64 to file
+      const croppedImageFile = base64ToFile(scroppedImageUrl, selectedFile?.name || "cropped.png");
+      setImgRawFile(croppedImageFile);
     }
   }
 
@@ -72,24 +66,46 @@ export function ImageCropper({
     return canvas.toDataURL("image/png", 1.0);
   }
 
-  async function onCropComplete() {
+  const { mutate, data, isSuccess, isPending } = useUploadImage();
+
+  async function onCropComplete(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
     try {
       //todo: call upload img api
-      getUploadedUrl?.(
-        "https://plus.unsplash.com/premium_photo-1732568817442-342a8c77fb80?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-      );
-      // setCroppedImageUrl(croppedImageUrl);
-      setDialogOpen(false);
-      setSelectedFile(null);
+      if (imgRawFile) {
+        mutate(imgRawFile);
+      }
     } catch (error) {
       alert(`Something went wrong! Error Message ${error}`);
     }
   }
 
+  const handleOpenChange = (open: boolean) => {
+    setDialogOpen(open);
+    if (!open) {
+      setSelectedFile(null);
+      setDialogOpen(false);
+      setCroppedImageUrl(null);
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess && !isPending) {
+      getUploadedUrl?.(data?.data.data.url);
+      setSelectedFile(null);
+      setDialogOpen(false);
+    }
+  }, [isSuccess, data, getUploadedUrl, setDialogOpen, setSelectedFile, isPending]);
+
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="p-5 gap-0">
+      <DialogContent
+        className="p-5 gap-0"
+        onInteractOutside={e => {
+          e.preventDefault();
+        }}
+      >
         <DialogTitle className="pl-5">Crop Your Avatar</DialogTitle>
         <DialogDescription className="pl-5">Adjust the crop area to create your avatar.</DialogDescription>
         <div className="p-6 size-full">
@@ -101,9 +117,15 @@ export function ImageCropper({
           </ReactCrop>
         </div>
         <DialogFooter className="p-6 pt-0 justify-center">
-          <Button type="submit" size={"sm"} className="w-fit" onClick={onCropComplete}>
-            <CropIcon className="mr-1.5 size-4" />
-            Crop
+          <Button size={"sm"} className="w-fit" onClick={e => onCropComplete(e)}>
+            {isPending ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <>
+                <CropIcon className="mr-1.5 size-4" />
+                Crop
+              </>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -127,4 +149,18 @@ export function centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect
     mediaWidth,
     mediaHeight
   );
+}
+
+function base64ToFile(base64String: string, fileName: string): File {
+  const arr = base64String.split(",");
+  const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
+  const byteString = atob(arr[1]);
+  let n = byteString.length;
+  const uint8Array = new Uint8Array(n);
+
+  while (n--) {
+    uint8Array[n] = byteString.charCodeAt(n);
+  }
+
+  return new File([uint8Array], fileName, { type: mime });
 }
