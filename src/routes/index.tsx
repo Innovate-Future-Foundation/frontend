@@ -1,7 +1,5 @@
 import { RouteObject } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
-
-import HomePage from "@/pages/Home";
 import AuthenticationPage from "@/pages/Authentication";
 import DashboardPage from "@/pages/Dashboard";
 import OrganisationPage from "@/pages/Organisation";
@@ -28,7 +26,7 @@ import DayBuilder from "@/pages/TourBuilder/Schedule/DayBuilder";
 import ActivityBuilder from "@/pages/TourBuilder/Schedule/ActivityBuilder";
 import TourDetailPage from "@/pages/Tour/TourDetailPage";
 import EmailVerification from "@/pages/Authentication/EmailVerification";
-// import ProtectedRoute from "@/components/ProtectedRoute/ProtectedRoute";
+import HomePage from "@/pages/Home";
 
 export type AppRoute = RouteObject & {
   handle?: {

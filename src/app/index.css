@@ -3,7 +3,7 @@
 @tailwind utilities;
 @plugin "@tailwindcss/typography";
 body {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica', Inter, system-ui, Avenir, Arial, sans-serif;
   height: 100vh;
   width: 100vw;
   -webkit-font-smoothing: antialiased;
@@ -128,6 +128,9 @@ html {
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    font-family: 'Helvetica', Inter, system-ui, Avenir, Arial, sans-serif;
+  }
 }
 
 /* Large devices (desktops) */
@@ -138,7 +141,7 @@ html {
 }
 
 /* Extra-large screens (widescreen monitors) */
-@media (min-width: 1536) {
+@media (min-width: 1536px) {
   html {
     font-size: 18px;
   }
@@ -149,3 +152,47 @@ html {
     font-size: 22px;
   }
 }
+
+@font-face {
+  font-family: 'Helvetica';
+  src: url('/fonts/Helvetica.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Helvetica-Bold';
+  src: url('/fonts/Helvetica-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Helvetica-BoldOblique';
+  src: url('/fonts/Helvetica-BoldOblique.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Helvetica-Light';
+  src: url('/fonts/helvetica-light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Helvetica-Oblique';
+  src: url('/fonts/Helvetica-Oblique.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Helvetica-Rounded-Bold';
+  src: url('/fonts/helvetica-rounded-bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Helvetica-Compressed';
+  src: url('/fonts/helvetica-compressed.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'big-john';
+  src: url('/fonts/big-john-woff2-2.ttf') format('truetype');
+}
+
+
+
+

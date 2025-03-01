@@ -12,7 +12,9 @@ describe("Renders main page correctly", async () => {
         <App />
       </MemoryRouter>
     );
-    const homeNavElement = screen.getAllByText(/Homepage/i).find(element => element.tagName === "H1");
+    const homeNavElement = screen
+      .getAllByText(/Unlock international learning experiences through AI-driven education, global study tours, and mentorship./i)
+      .find(element => element.tagName === "P");
     //assert
     expect(homeNavElement).toBeInTheDocument();
   });
