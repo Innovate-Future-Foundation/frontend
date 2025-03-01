@@ -2,9 +2,10 @@ import React from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 
 import { Avatar as CNAvatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ImageCropper } from "./imageCropper";
-import { FileWithPreview } from "./imageCropper";
 import { cn } from "@/lib/utils";
+import { Pencil } from "lucide-react";
+import clsx from "clsx";
+import { FileWithPreview, ImageCropper } from "./ImageCropper";
 
 interface AvatarProps {
   avatarLink: string;
@@ -14,6 +15,7 @@ interface AvatarProps {
   outline?: boolean;
   clickable?: boolean;
   className?: string;
+  getUploadedUrl?: (url: string) => void;
   imageProps?: React.ComponentProps<typeof AvatarImage>;
   fallbackProps?: React.ComponentProps<typeof AvatarFallback>;
 }
@@ -30,6 +32,7 @@ const Avatar: React.FC<AvatarProps> = ({
   outline = false,
   clickable,
   className,
+  getUploadedUrl,
   imageProps = {},
   fallbackProps = {},
   ...props
@@ -37,7 +40,7 @@ const Avatar: React.FC<AvatarProps> = ({
   const avatarStyle = `aspect-square w-${size} h-${size} ${outline && "outline outline-white"}`;
   const [selectedFile, setSelectedFile] = React.useState<FileWithPreview | null>(null);
   const [isDialogOpen, setDialogOpen] = React.useState(false);
-  const [croppedImage, setCroppedImage] = React.useState<string>("");
+  const [croppedImageUrl, setCroppedImageUrl] = React.useState<string | null>(null);
 
   const onDrop = React.useCallback((acceptedFiles: FileWithPath[]) => {
     const file = acceptedFiles[0];
@@ -51,9 +54,6 @@ const Avatar: React.FC<AvatarProps> = ({
 
     setSelectedFile(fileWithPreview);
     setDialogOpen(true);
-
-    // Call the upload function TODO
-    // uploadAvatar(fileWithPreview);
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -65,24 +65,56 @@ const Avatar: React.FC<AvatarProps> = ({
     <>
       {selectedFile ? (
         <ImageCropper
-          setCroppedImage={setCroppedImage}
+          // croppedImageUrl={croppedImageUrl}
+          setCroppedImageUrl={setCroppedImageUrl}
           dialogOpen={isDialogOpen}
           setDialogOpen={setDialogOpen}
           selectedFile={selectedFile}
           setSelectedFile={setSelectedFile}
+          getUploadedUrl={getUploadedUrl}
         >
-          <CNAvatar {...getRootProps()} className={cn(avatarStyle, className)} {...props}>
-            {clickable ? <input {...getInputProps()} /> : null}
-            <AvatarImage src={croppedImage ?? avatarLink} alt={avatarAlt} {...imageProps} />
-            <AvatarFallback {...fallbackProps}>{avatarPlaceholder}</AvatarFallback>
-          </CNAvatar>
+          <div {...getRootProps()} className={clsx(`relative ${clickable ? "cursor-pointer" : "cursor-default"}`)}>
+            {clickable && (
+              <input
+                {...getInputProps()}
+                className="hidden"
+                onClick={e => {
+                  e.stopPropagation();
+                }}
+              />
+            )}
+            {clickable && (
+              <div className="bg-primary text-primary-foreground absolute z-[2] right-1 bottom-0 rounded-full p-1 shadow-md">
+                <Pencil size={size - 6} />
+              </div>
+            )}
+            <CNAvatar className={cn(avatarStyle, className)} {...props}>
+              <AvatarImage src={croppedImageUrl ?? avatarLink} alt={avatarAlt} {...imageProps} />
+              <AvatarFallback {...fallbackProps}>{avatarPlaceholder}</AvatarFallback>
+            </CNAvatar>
+          </div>
         </ImageCropper>
       ) : (
-        <CNAvatar {...getRootProps()} className={cn(avatarStyle, className)} {...props}>
-          {clickable ? <input {...getInputProps()} /> : null}
-          <AvatarImage src={avatarLink} alt={avatarAlt} {...imageProps} />
-          <AvatarFallback {...fallbackProps}>{avatarPlaceholder}</AvatarFallback>
-        </CNAvatar>
+        <div {...getRootProps()} className={clsx(`relative ${clickable ? "cursor-pointer" : "cursor-default"}`)}>
+          {clickable && (
+            <input
+              {...getInputProps()}
+              className="hidden"
+              onClick={e => {
+                e.stopPropagation();
+              }}
+            />
+          )}
+          {clickable && (
+            <div className="bg-primary text-primary-foreground absolute z-[2] right-1 bottom-0 rounded-full p-1 shadow-md">
+              <Pencil size={size - 6} />
+            </div>
+          )}
+          <CNAvatar className={cn(avatarStyle, className)} {...props}>
+            <AvatarImage src={croppedImageUrl ?? avatarLink} alt={avatarAlt} {...imageProps} />
+            <AvatarFallback {...fallbackProps}>{avatarPlaceholder}</AvatarFallback>
+          </CNAvatar>
+        </div>
       )}
     </>
   );

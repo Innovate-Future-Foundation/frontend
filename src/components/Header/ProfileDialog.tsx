@@ -52,42 +52,56 @@ const ProfileDialog: React.FC<{ children: ReactNode; profile: ProfileInfo }> = (
     // TODO: Perform actions such as sending the data to the server
   };
 
+  const getUploadedUrl = async (url: string) => {
+    console.log("url", url);
+    console.log("isDirty", userProfileInfoForm.formState.isDirty);
+    await userProfileInfoForm.setValue("avatarUrl", url, { shouldDirty: true });
+    console.log("isDirty", userProfileInfoForm.formState.isDirty);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="p-0 max-w-[425px] rounded-md overflow-hidden">
-        <div className="h-14 bg-accent">
-          <Avatar
-            className="absolute top-6 left-8"
-            avatarLink={userProfileInfoForm.watch("avatarUrl") ?? ""}
-            avatarAlt={avatarAlt}
-            avatarPlaceholder={abbreviateName(userProfileInfoForm.watch("name"))}
-            size={14}
-            outline={true}
-          />
-        </div>
-        <div className="p-8 pt-6">
-          <DialogHeader>
-            <div className="flex-col flex items-start">
-              <DialogTitle className="truncate max-w-20">{userProfileInfoForm.watch("name")}</DialogTitle>
-              <DialogDescription className="truncate max-w-40">{userProfileInfoForm.watch("email")}</DialogDescription>
-            </div>
-          </DialogHeader>
-          <Separator className="my-4" />
-          <div className="grid gap-4 ">
-            <Form {...userProfileInfoForm}>
+      <DialogContent
+        className="p-0 max-w-[425px] rounded-md overflow-hidden"
+        onEscapeKeyDown={e => e.preventDefault()}
+        onPointerDown={e => e.preventDefault()}
+        onInteractOutside={e => e.preventDefault()}
+      >
+        <Form {...userProfileInfoForm}>
+          <div className="h-14 bg-accent">
+            <Avatar
+              className="absolute top-6 left-8"
+              avatarLink={userProfileInfoForm.watch("avatarUrl") ?? ""}
+              avatarAlt={avatarAlt}
+              avatarPlaceholder={abbreviateName(userProfileInfoForm.watch("name"))}
+              size={14}
+              outline={true}
+              clickable={true}
+              getUploadedUrl={getUploadedUrl}
+            />
+          </div>
+          <div className="p-8 pt-6">
+            <DialogHeader>
+              <div className="flex-col flex items-start">
+                <DialogTitle className="truncate max-w-20">{userProfileInfoForm.watch("name")}</DialogTitle>
+                <DialogDescription className="truncate max-w-40">{userProfileInfoForm.watch("email")}</DialogDescription>
+              </div>
+            </DialogHeader>
+            <Separator className="my-4" />
+            <div className="grid gap-4 ">
               <FormFieldItem fieldControl={userProfileInfoForm.control} name="name" label="Name" placeholder="John Doe" />
               <FormFieldItem fieldControl={userProfileInfoForm.control} name="email" label="Email" placeholder="johndoe@example.com" />
               <FormFieldItem fieldControl={userProfileInfoForm.control} name="phone" label="Phone" placeholder="+61 400 123 456" />
-            </Form>
-          </div>
-          <Separator className="my-4" />
-          <DialogFooter>
-            <div className="flex gap-4 justify-end">
-              <Button onClick={userProfileInfoForm.handleSubmit(handleUserProfileInfoSubmit)}>Save changes</Button>
             </div>
-          </DialogFooter>
-        </div>
+            <Separator className="my-4" />
+            <DialogFooter>
+              <div className="flex gap-4 justify-end">
+                <Button onClick={userProfileInfoForm.handleSubmit(handleUserProfileInfoSubmit)}>Save changes</Button>
+              </div>
+            </DialogFooter>
+          </div>
+        </Form>
       </DialogContent>
     </Dialog>
   );

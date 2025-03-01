@@ -13,9 +13,8 @@ import { BeatLoader } from "react-spinners";
 const OrganisationDetailPage = () => {
   const { canEditOrganisationDetailForm, canViewManagerScrollList } = usePermissions();
   const { id } = useParams();
-  console.log("organisationId", id);
+
   const { organisationDetailResponse, isLoadingOrganisationDetail } = useOrganisationDetail(id ?? "");
-  console.log("organisationDetail", organisationDetailResponse);
 
   const orgProfileDetail: Organisation = useMemo(() => {
     return !Array.isArray(organisationDetailResponse?.data) && organisationDetailResponse?.data ? organisationDetailResponse.data : ({} as Organisation);

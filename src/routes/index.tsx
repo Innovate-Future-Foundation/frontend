@@ -152,6 +152,11 @@ const router: AppRoute[] = [
         path: "students/:id",
         element: <ProfileDetailPage role="Student" />,
         handle: { breadcrumb: "Student profile" }
+      },
+      {
+        path: "profile",
+        element: <ProfileDetailPage />,
+        handle: { breadcrumb: "My profile" }
       }
     ]
   },

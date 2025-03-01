@@ -1,12 +1,12 @@
 import React, { ReactNode, type SyntheticEvent } from "react";
 import ReactCrop, { centerCrop, makeAspectCrop, type Crop, type PixelCrop } from "react-image-crop";
 import { FileWithPath } from "react-dropzone";
-import { CropIcon, Trash2Icon } from "lucide-react";
+import { CropIcon } from "lucide-react";
 import "react-image-crop/dist/ReactCrop.css";
 
 import { Avatar as CNAvatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export type FileWithPreview = FileWithPath & {
   preview: string;
@@ -18,16 +18,26 @@ interface ImageCropperProps {
   selectedFile: FileWithPreview | null;
   setSelectedFile: React.Dispatch<React.SetStateAction<FileWithPreview | null>>;
   children: ReactNode;
-  setCroppedImage: (croppedImage: string) => void;
+  setCroppedImageUrl: (croppedImage: string) => void;
+  // croppedImageUrl: string;
+  getUploadedUrl?: (url: string) => void;
 }
 
-export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelectedFile, setCroppedImage, children }: ImageCropperProps) {
+export function ImageCropper({
+  dialogOpen,
+  setDialogOpen,
+  selectedFile,
+  setSelectedFile,
+  setCroppedImageUrl,
+  // croppedImageUrl,
+  getUploadedUrl,
+  children
+}: ImageCropperProps) {
   const aspect = 1;
 
   const imgRef = React.useRef<HTMLImageElement | null>(null);
 
   const [crop, setCrop] = React.useState<Crop>();
-  const [croppedImageUrl, setCroppedImageUrl] = React.useState<string>("");
 
   function onImageLoad(e: SyntheticEvent<HTMLImageElement>) {
     if (aspect) {
@@ -36,10 +46,10 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
     }
   }
 
-  function onCropComplete(crop: PixelCrop) {
+  function onCrop(crop: PixelCrop) {
     if (imgRef.current && crop.width && crop.height) {
-      const croppedImageUrl = getCroppedImg(imgRef.current, crop);
-      setCroppedImageUrl(croppedImageUrl);
+      const scroppedImageUrl = getCroppedImg(imgRef.current, crop);
+      setCroppedImageUrl(scroppedImageUrl);
     }
   }
 
@@ -62,14 +72,20 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
     return canvas.toDataURL("image/png", 1.0);
   }
 
-  async function onCrop() {
+  async function onCropComplete() {
     try {
-      setCroppedImage(croppedImageUrl);
+      //todo: call upload img api
+      getUploadedUrl?.(
+        "https://plus.unsplash.com/premium_photo-1732568817442-342a8c77fb80?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      );
+      // setCroppedImageUrl(croppedImageUrl);
       setDialogOpen(false);
+      setSelectedFile(null);
     } catch (error) {
       alert(`Something went wrong! Error Message ${error}`);
     }
   }
+
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>{children}</DialogTrigger>
@@ -77,29 +93,15 @@ export function ImageCropper({ dialogOpen, setDialogOpen, selectedFile, setSelec
         <DialogTitle className="pl-5">Crop Your Avatar</DialogTitle>
         <DialogDescription className="pl-5">Adjust the crop area to create your avatar.</DialogDescription>
         <div className="p-6 size-full">
-          <ReactCrop crop={crop} onChange={(_, percentCrop) => setCrop(percentCrop)} onComplete={c => onCropComplete(c)} aspect={aspect} className="w-full">
+          <ReactCrop crop={crop} onChange={(_, percentCrop) => setCrop(percentCrop)} onComplete={c => onCrop(c)} aspect={aspect} className="w-full">
             <CNAvatar className="size-full rounded-none">
               <AvatarImage ref={imgRef} className="size-full rounded-none" alt="Image Cropper Shell" src={selectedFile?.preview} onLoad={onImageLoad} />
               <AvatarFallback className="size-full min-h-[460px] rounded-none">Loading...</AvatarFallback>
             </CNAvatar>
           </ReactCrop>
         </div>
-        <DialogFooter className="p-6 pt-0 justify-center ">
-          <DialogClose asChild>
-            <Button
-              size={"sm"}
-              type="reset"
-              className="w-fit"
-              variant={"outline"}
-              onClick={() => {
-                setSelectedFile(null);
-              }}
-            >
-              <Trash2Icon className="mr-1.5 size-4" />
-              Re-Upload
-            </Button>
-          </DialogClose>
-          <Button type="submit" size={"sm"} className="w-fit" onClick={onCrop}>
+        <DialogFooter className="p-6 pt-0 justify-center">
+          <Button type="submit" size={"sm"} className="w-fit" onClick={onCropComplete}>
             <CropIcon className="mr-1.5 size-4" />
             Crop
           </Button>

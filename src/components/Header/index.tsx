@@ -1,18 +1,17 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import SignInAvatar from "./SignInAvatar";
 import { useAuthStore } from "@/store";
-import { ProfileInfo } from "@/types";
 import { Button } from "../ui/button";
 import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 interface HeaderProps {
   fromHome: boolean;
-  profile: ProfileInfo;
 }
-const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
-  const { isAuthenticated } = useAuthStore();
+
+const Header: React.FC<HeaderProps> = ({ fromHome }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, userProfile } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeItem, setActiveItem] = useState("Home");
@@ -81,8 +80,8 @@ const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
             Get Started
           </Button>
         )}
-        {isAuthenticated && profile ? (
-          <SignInAvatar name={profile.name ?? ""} email={profile.email ?? ""} avatarUrl={profile.avatarUrl ?? ""} profile={profile} />
+        {isAuthenticated && userProfile ? (
+          <SignInAvatar name={userProfile.name ?? ""} email={userProfile.email ?? ""} avatarUrl={userProfile.avatarUrl ?? ""} />
         ) : (
           <button
             onClick={() => navigate("/auth")}
