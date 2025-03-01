@@ -58,7 +58,6 @@ const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
                   )}
                   onClick={() => {
                     setActiveItem(item);
-                    navigate(item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "")}`);
                   }}
                 >
                   {item}
@@ -124,17 +123,16 @@ const Header: React.FC<HeaderProps> = ({ fromHome, profile }) => {
             {/* Mobile menu items */}
             <div className="flex flex-col p-5 space-y-4">
               {["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].map(item => (
-                <a
+                <div
                   key={item}
                   onClick={() => {
                     setActiveItem(item);
                     setIsMobileMenuOpen(false);
-                    navigate(item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "")}`);
                   }}
                   className={clsx("text-lg font-medium cursor-pointer", activeItem === item ? "text-primary" : "text-foreground hover:text-primary")}
                 >
                   {item}
-                </a>
+                </div>
               ))}
             </div>
           </div>
