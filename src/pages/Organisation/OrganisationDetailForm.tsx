@@ -63,7 +63,7 @@ const addressInfoFormSchema = z.object({
       message: "State must not exceed 20 characters."
     })
     .optional(),
-  postcode: z
+  postCode: z
     .string()
     .regex(/^\d{4}$/, {
       message: "Postcode must be a 4-digit number."
@@ -112,7 +112,7 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
       street: orgProfileDetail.address?.street ?? "",
       suburb: orgProfileDetail.address?.suburb ?? "",
       state: orgProfileDetail.address?.state ?? "",
-      postcode: orgProfileDetail.address?.postcode ?? "",
+      postCode: orgProfileDetail.address?.postCode ?? "",
       country: orgProfileDetail.address?.country ?? ""
     }
   });
@@ -177,7 +177,7 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
           street: data.street ?? "",
           suburb: data.suburb ?? "",
           state: data.state ?? "",
-          postcode: data.postcode ?? "",
+          postCode: data.postCode ?? "",
           country: data.country ?? ""
         }
       }
@@ -278,7 +278,7 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
             </div>
             <div className="flex gap-4 w-full">
               <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" disabled={disabled} />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" disabled={disabled} />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="postCode" label="Postcode" placeholder="5000" disabled={disabled} />
             </div>
             <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" disabled={disabled} />
           </Form>
