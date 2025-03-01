@@ -25,5 +25,7 @@ export const API_ENDPOINTS = {
   INVITE: "/invite",
   TOKEN: "/token",
   ORGANISATION: "/organisations",
-  PROFILE: "/profiles"
+  PROFILE: "/profiles",
+  UPLOAD: "/upload",
+  IMAGE: "/image"
 };

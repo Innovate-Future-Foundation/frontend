@@ -16,7 +16,7 @@ export interface Address {
   street: string;
   suburb: string;
   state: string;
-  postcode: string;
+  postCode: string;
   country: string;
 }
 export type OrgStatusCode = "UndefinedOrgStatus" | "Pending" | "Active" | "Suspended";

@@ -20,6 +20,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import Avatar from "@/components/Avatar";
 import { SidebarheaderAccess } from "./SidebarMenu";
 import clsx from "clsx";
+import { useAuthStore } from "@/store";
+import { abbreviateName } from "@/utils/formatters";
 
 export interface SidebarProps {
   sidebarheader?: SidebarheaderAccess;
@@ -39,6 +41,8 @@ export interface SidebarItem {
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) => {
   const { state, isMobile } = useSidebar();
+  const { organisaitonProfile } = useAuthStore();
+
   const path = useLocation().pathname;
   const hasChildrenWithTitle = sidebarItemGroups.reduce((groupAcc: Record<string, boolean>, sidebarItemGroup: SidebarItemGroup) => {
     sidebarItemGroup.items.forEach(item => {
@@ -62,14 +66,14 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
                       <Avatar
                         size={8}
                         className="inline-block"
-                        avatarLink={"https://github.com/shadcn.png"}
-                        avatarAlt={"@AcmeCorporation"}
-                        avatarPlaceholder={"AC"}
+                        avatarLink={organisaitonProfile?.logoUrl ?? ""}
+                        avatarAlt={organisaitonProfile?.orgName ?? ""}
+                        avatarPlaceholder={abbreviateName(organisaitonProfile?.orgName ?? "")}
                       />
                       {
                         <div className="flex flex-col items-start gap-[2px]">
-                          <p className="text-primary-foreground30 font-bold text-sm leading-3 truncate max-w-40">{"Acme Corporation"}</p>
-                          <p className="text-primary-foreground50 text-[12px] leading-3 truncate max-w-40">{"info@acmecorp.com"}</p>
+                          <p className="text-primary-foreground30 font-bold text-sm leading-3 truncate max-w-40">{organisaitonProfile?.orgName ?? ""}</p>
+                          <p className="text-primary-foreground50 text-[12px] leading-3 truncate max-w-40">{organisaitonProfile?.email ?? ""}</p>
                         </div>
                       }
                     </div>

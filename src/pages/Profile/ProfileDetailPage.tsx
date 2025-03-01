@@ -7,12 +7,12 @@ import { useParams } from "react-router-dom";
 import { useProfileDetail } from "@/hooks/profiles/useProfileDetail";
 import { useMemo } from "react";
 import { BeatLoader } from "react-spinners";
+import { useAuthStore } from "@/store";
 
-const ProfileDetailPage: React.FC<{ role: RoleType }> = ({ role }) => {
+const ProfileDetailPage: React.FC<{ role?: RoleType }> = ({ role }) => {
   const { id } = useParams();
-  console.log("Id", id);
-  const { profileDetailResponse, isLoadingProfileDetail } = useProfileDetail(id ?? "");
-  console.log("ProfileDetail", profileDetailResponse);
+  const { userProfile } = useAuthStore();
+  const { profileDetailResponse, isLoadingProfileDetail } = useProfileDetail(id ?? userProfile?.id ?? "");
 
   const userProfileDetail: Profile = useMemo(() => {
     return !Array.isArray(profileDetailResponse?.data) && profileDetailResponse?.data ? profileDetailResponse.data : ({} as Profile);
@@ -26,7 +26,7 @@ const ProfileDetailPage: React.FC<{ role: RoleType }> = ({ role }) => {
     );
   }
   return (
-    <ContentLayout icon={WalletCards} title={`${role} profile`}>
+    <ContentLayout icon={WalletCards} title={`${role ?? "my"} profile`}>
       <ProfileForm userProfileDetail={userProfileDetail} />
     </ContentLayout>
   );

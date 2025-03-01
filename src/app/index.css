@@ -3,7 +3,7 @@
 @tailwind utilities;
 @plugin "@tailwindcss/typography";
 body {
-  font-family: 'Helvetica', Inter, system-ui, Avenir, Arial, sans-serif;
+  font-family: "Helvetica", Inter, system-ui, Avenir, Arial, sans-serif;
   height: 100vh;
   width: 100vw;
   -webkit-font-smoothing: antialiased;
@@ -18,7 +18,7 @@ html {
   padding: 0;
   line-height: 1.2;
   box-sizing: border-box;
-  letter-spacing: -0.2px;
+  letter-spacing: 0px;
 }
 
 /* for rich text */
@@ -129,7 +129,7 @@ html {
     @apply bg-background text-foreground;
   }
   html {
-    font-family: 'Helvetica', Inter, system-ui, Avenir, Arial, sans-serif;
+    font-family: "Helvetica", Inter, system-ui, Avenir, Arial, sans-serif;
   }
 }
 
@@ -154,45 +154,41 @@ html {
 }
 
 @font-face {
-  font-family: 'Helvetica';
-  src: url('/fonts/Helvetica.ttf') format('truetype');
+  font-family: "Helvetica";
+  src: url("/fonts/Helvetica.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Helvetica-Bold';
-  src: url('/fonts/Helvetica-Bold.ttf') format('truetype');
+  font-family: "Helvetica-Bold";
+  src: url("/fonts/Helvetica-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Helvetica-BoldOblique';
-  src: url('/fonts/Helvetica-BoldOblique.ttf') format('truetype');
+  font-family: "Helvetica-BoldOblique";
+  src: url("/fonts/Helvetica-BoldOblique.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Helvetica-Light';
-  src: url('/fonts/helvetica-light.ttf') format('truetype');
+  font-family: "Helvetica-Light";
+  src: url("/fonts/helvetica-light.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Helvetica-Oblique';
-  src: url('/fonts/Helvetica-Oblique.ttf') format('truetype');
+  font-family: "Helvetica-Oblique";
+  src: url("/fonts/Helvetica-Oblique.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Helvetica-Rounded-Bold';
-  src: url('/fonts/helvetica-rounded-bold.otf') format('opentype');
+  font-family: "Helvetica-Rounded-Bold";
+  src: url("/fonts/helvetica-rounded-bold.otf") format("opentype");
 }
 
 @font-face {
-  font-family: 'Helvetica-Compressed';
-  src: url('/fonts/helvetica-compressed.otf') format('opentype');
+  font-family: "Helvetica-Compressed";
+  src: url("/fonts/helvetica-compressed.otf") format("opentype");
 }
 
 @font-face {
-  font-family: 'big-john';
-  src: url('/fonts/big-john-woff2-2.ttf') format('truetype');
+  font-family: "big-john";
+  src: url("/fonts/big-john-woff2-2.ttf") format("truetype");
 }
-
-
-
-

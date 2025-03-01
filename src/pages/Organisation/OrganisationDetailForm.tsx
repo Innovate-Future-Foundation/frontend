@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Badge } from "@/components/ui/badge";
 import { Form } from "@/components/ui/form";
 import Avatar from "@/components/Avatar";
-import FormWrapper from "@/components/FormWrapper.tsx";
+import FormWrapper, { SaveButton } from "@/components/FormWrapper.tsx";
 import { FormFieldItem } from "@/components/FormField";
 import { Organisation, SubscriptionCode } from "@/types";
 import { abbreviateName } from "@/utils/formatters";
@@ -13,8 +13,9 @@ import { useUpdateOrganisation } from "@/hooks/organisations/useUpdateOrganisati
 import { useState } from "react";
 import { getImageBySubscription } from "@/constants/mapper";
 
+const companyLogoUrlSchema = z.object({ logoUrl: z.string().optional() });
+
 const companyInfoFormSchema = z.object({
-  logoUrl: z.string().optional(),
   orgName: z
     .string()
     .min(2, {
@@ -62,7 +63,7 @@ const addressInfoFormSchema = z.object({
       message: "State must not exceed 20 characters."
     })
     .optional(),
-  postcode: z
+  postCode: z
     .string()
     .regex(/^\d{4}$/, {
       message: "Postcode must be a 4-digit number."
@@ -83,14 +84,21 @@ interface OrganisationProfileProps {
   disabled?: boolean;
   orgProfileDetail: Organisation;
 }
-type FormName = "company" | "address" | null;
+type FormName = "company" | "address" | "logoUrl" | null;
 const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = false, orgProfileDetail }) => {
   const [handleFormName, setHandleFormName] = useState<FormName>(null);
+  const companyLogoUrlForm = useForm<z.infer<typeof companyLogoUrlSchema>>({
+    resolver: zodResolver(companyLogoUrlSchema),
+    mode: "onChange",
+    defaultValues: {
+      logoUrl: orgProfileDetail.logoUrl ?? ""
+    }
+  });
+
   const companyInfoForm = useForm<z.infer<typeof companyInfoFormSchema>>({
     resolver: zodResolver(companyInfoFormSchema),
     mode: "onChange",
     defaultValues: {
-      logoUrl: orgProfileDetail.logoUrl ?? "",
       orgName: orgProfileDetail.orgName ?? "",
       email: orgProfileDetail.email ?? "",
       websiteUrl: orgProfileDetail.websiteUrl ?? ""
@@ -104,7 +112,7 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
       street: orgProfileDetail.address?.street ?? "",
       suburb: orgProfileDetail.address?.suburb ?? "",
       state: orgProfileDetail.address?.state ?? "",
-      postcode: orgProfileDetail.address?.postcode ?? "",
+      postCode: orgProfileDetail.address?.postCode ?? "",
       country: orgProfileDetail.address?.country ?? ""
     }
   });
@@ -124,6 +132,12 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
         setHandleFormName(null);
       }, 3000);
     }
+    if (companyLogoUrlForm.formState.isDirty) {
+      companyLogoUrlForm.reset(companyLogoUrlForm.getValues());
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
   };
 
   const handleError = () => {
@@ -135,6 +149,12 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
     }
     if (addressInfoForm.formState.isDirty) {
       addressInfoForm.reset();
+      setTimeout(() => {
+        setHandleFormName(null);
+      }, 3000);
+    }
+    if (companyLogoUrlForm.formState.isDirty) {
+      companyLogoUrlForm.reset();
       setTimeout(() => {
         setHandleFormName(null);
       }, 3000);
@@ -157,48 +177,75 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
           street: data.street ?? "",
           suburb: data.suburb ?? "",
           state: data.state ?? "",
-          postcode: data.postcode ?? "",
+          postCode: data.postCode ?? "",
           country: data.country ?? ""
         }
       }
     });
   };
 
+  const getUploadedUrl = async (url: string) => {
+    console.log("url", url);
+    console.log("isDirty", companyLogoUrlForm.formState.isDirty);
+    await companyLogoUrlForm.setValue("logoUrl", url, { shouldDirty: true });
+    console.log("isDirty", companyLogoUrlForm.formState.isDirty);
+  };
+
+  const handleCompanyLogoUrlSubmit = (data: z.infer<typeof companyLogoUrlSchema>) => {
+    console.log("data", data);
+    setHandleFormName("logoUrl");
+    mutation.mutate({ id: orgProfileDetail.id!, bodyData: { logoUrl: data.logoUrl } });
+  };
+
   return (
-    <div className="w-full flex flex-col justify-center">
-      <div className="h-32 bg-accent mt-4 rounded-md flex items-center pl-4">
-        <div className="top-10 left-8 flex gap-3 items-end">
-          <Avatar
-            avatarLink={companyInfoForm.watch("logoUrl")!}
-            size={24}
-            avatarAlt={avatarAlt}
-            avatarPlaceholder={abbreviateName(companyInfoForm.watch("orgName"))}
-            outline={true}
-            clickable={true}
-          />
-          <div className="flex flex-col">
-            <p className="text-lg leading-none font-bold capitalize">{companyInfoForm.watch("orgName")}</p>
-            <p className="text-xs">{companyInfoForm.watch("websiteUrl")}</p>
-            <div className="flex gap-2 mt-2">
-              <Badge variant="secondary" className="text-muted-foreground bg-muted px-1">
-                <div className="capitalize mr-1">{orgProfileDetail.subscriptionCode}</div>
-                <Avatar
-                  avatarLink={getImageBySubscription[orgProfileDetail.subscriptionCode as SubscriptionCode]}
-                  avatarPlaceholder={abbreviateName(orgProfileDetail.subscriptionCode ?? "")}
-                  size={4}
-                />
-              </Badge>
-              <Badge variant={"secondary"} className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green">
-                {orgProfileDetail.orgStatusCode}
-              </Badge>
-              <Badge variant={"outline"} className="lowercase p-0 px-2 rounded-full font-medium text-xs">
-                {orgProfileDetail.orgName}
-              </Badge>
+    <div className="w-full flex flex-col gap-4 mt-4 justify-center">
+      <div className="grid grid-cols-1 bg-muted/50 rounded-sm p-6">
+        <Form {...companyLogoUrlForm}>
+          <div className="flex justify-between">
+            <div className="flex gap-4 items-center">
+              <Avatar
+                avatarLink={companyLogoUrlForm.watch("logoUrl")!}
+                size={24}
+                avatarAlt={avatarAlt}
+                avatarPlaceholder={abbreviateName(companyInfoForm.watch("orgName"))}
+                outline={true}
+                clickable={true}
+                getUploadedUrl={getUploadedUrl}
+              />
+              <div className="flex flex-col">
+                <p className="text-lg leading-none font-bold capitalize">{companyInfoForm.watch("orgName")}</p>
+                <p className="text-xs">{companyInfoForm.watch("websiteUrl")}</p>
+                <div className="flex gap-2 mt-2">
+                  <Badge variant="secondary" className="text-muted-foreground bg-muted px-1">
+                    <div className="capitalize mr-1">{orgProfileDetail.subscriptionCode}</div>
+                    <Avatar
+                      avatarLink={getImageBySubscription[orgProfileDetail.subscriptionCode as SubscriptionCode]}
+                      avatarPlaceholder={abbreviateName(orgProfileDetail.subscriptionCode ?? "")}
+                      size={4}
+                    />
+                  </Badge>
+                  <Badge
+                    variant={"secondary"}
+                    className="lowercase p-0 px-2 rounded-full font-medium text-xs text-secondary-foregroundGreen bg-secondary-green"
+                  >
+                    {orgProfileDetail.orgStatusCode}
+                  </Badge>
+                  <Badge variant={"outline"} className="lowercase p-0 px-2 rounded-full font-medium text-xs">
+                    {orgProfileDetail.orgName}
+                  </Badge>
+                </div>
+              </div>
             </div>
+            <SaveButton
+              disabled={!companyLogoUrlForm.formState.isDirty}
+              isPending={handleFormName === "logoUrl" && mutation.isPending}
+              isSuccess={handleFormName === "logoUrl" && !companyLogoUrlForm.formState.isDirty && mutation.isSuccess}
+              isError={handleFormName === "logoUrl" && !companyLogoUrlForm.formState.isDirty && mutation.isError}
+              onSave={disabled ? undefined : companyLogoUrlForm.handleSubmit(handleCompanyLogoUrlSubmit)}
+            />
           </div>
-        </div>
+        </Form>
       </div>
-      <div className="h-4"></div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <FormWrapper
           disabled={!companyInfoForm.formState.isDirty}
@@ -231,7 +278,7 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
             </div>
             <div className="flex gap-4 w-full">
               <FormFieldItem fieldControl={addressInfoForm.control} name="suburb" label="Suburb" placeholder="Gilberton" disabled={disabled} />
-              <FormFieldItem fieldControl={addressInfoForm.control} name="postcode" label="Postcode" placeholder="5000" disabled={disabled} />
+              <FormFieldItem fieldControl={addressInfoForm.control} name="postCode" label="Postcode" placeholder="5000" disabled={disabled} />
             </div>
             <FormFieldItem fieldControl={addressInfoForm.control} name="street" label="Street" placeholder="60 Walkerville Rd" disabled={disabled} />
           </Form>

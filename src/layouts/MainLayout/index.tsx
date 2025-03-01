@@ -12,9 +12,9 @@ const myProfile: MyInfo = {
   name: "Chelsea",
   email: "chelsea@exmaple.com",
   defaultProfile: {
-    id: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    id: "5e94ea59-a496-40b5-a6b4-a57bcd058aba",
     organisation: {
-      id: "0618d3b9-256c-4b12-8b2f-548fbea05208",
+      id: "0dad9751-f94b-4d11-a2ce-d93e72e47c9b",
       orgName: "Acme Corporation",
       logoUrl: "https://github.com/shadcn.png",
       websiteUrl: "https://www.acmecorp.com",
@@ -22,7 +22,7 @@ const myProfile: MyInfo = {
         street: "60 Walkerville St",
         suburb: "Gelberton",
         state: "SA",
-        postcode: "5071",
+        postCode: "5071",
         country: "AU"
       },
       email: "info@acmecorp.com",
@@ -49,16 +49,18 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { pathname } = useLocation();
-  const { setRole, setOrganisationId } = useAuthStore();
+  const { setRole, setOrganisationId, setUserProfile, setOrganisation } = useAuthStore();
   //todo: wait geMe api
   // const { isLoadingGetMe, myDetailResponse, isErrorGetMe } = useGetMe({
   //   enabled: isAuthenticated
   // });
 
   useEffect(() => {
-    setRole(myProfile?.defaultProfile?.roleCode ?? "PlatformAdmin");
-    setOrganisationId(myProfile?.defaultProfile?.organisation?.id ?? "");
-  }, [setRole, setOrganisationId]);
+    setRole(myProfile?.defaultProfile?.roleCode ?? null);
+    setOrganisationId(myProfile?.defaultProfile?.organisation?.id ?? null);
+    setUserProfile(myProfile?.defaultProfile);
+    setOrganisation(myProfile?.defaultProfile?.organisation ?? null);
+  }, [setRole, setOrganisationId, setUserProfile, setOrganisation]);
 
   // if (isErrorGetMe) {
   //   return <Navigate to="/auth" />;
@@ -71,7 +73,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         </div>
       ) : ( */}
       {/* <> */}
-      <Header fromHome={!pathname.includes("dashboard")} profile={myProfile?.defaultProfile ?? {}} />
+      <Header fromHome={!pathname.includes("dashboard")} />
       <div className="pt-14">{children}</div>
       {/* </> */}
       {/* )} */}

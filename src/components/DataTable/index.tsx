@@ -139,8 +139,11 @@ const DataTable = <T extends object>({
             .map(filteredColumn => (
               <DropdownMenu key={filteredColumn.id}>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="ml-auto max-w-sm h-10 text-xs capitalize shadow-none">
-                    <Filter size={6} className="text-gray-500 " />
+                  <Button
+                    variant="outline"
+                    className="ml-auto max-w-sm h-10 text-xs tracking-wide font-normal capitalize shadow-none text-primary-foreground30 "
+                  >
+                    <Filter size={6} className="text-primary-foreground60 " />
                     {getfilterTitle[filteredColumn.id]}
                     <ChevronDown />
                   </Button>
