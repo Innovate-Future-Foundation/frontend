@@ -85,7 +85,7 @@ const Avatar: React.FC<AvatarProps> = ({
             )}
             {clickable && (
               <div className="bg-primary text-primary-foreground absolute z-[2] right-1 bottom-0 rounded-full p-1 shadow-md">
-                <Pencil size={size - 6} />
+                <Pencil size={14} />
               </div>
             )}
             <CNAvatar className={cn(avatarStyle, className)} {...props}>
@@ -107,7 +107,7 @@ const Avatar: React.FC<AvatarProps> = ({
           )}
           {clickable && (
             <div className="bg-primary text-primary-foreground absolute z-[2] right-1 bottom-0 rounded-full p-1 shadow-md">
-              <Pencil size={size - 6} />
+              <Pencil size={14} />
             </div>
           )}
           <CNAvatar className={cn(avatarStyle, className)} {...props}>
