@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Organisation, OrgStatusCode, SubscriptionCode } from "@/types";
-import Dropdown from "@/components/Dropdown";
+import Dropdown, { DropdownMenuItemType } from "@/components/Dropdown";
 import Avatar from "@/components/Avatar";
 import { getColorStyleByStatus, getImageBySubscription } from "@/constants/mapper";
 import clsx from "clsx";
@@ -160,17 +160,19 @@ export const getOrgColumns = (navigate?: NavigateFunction): ColumnDef<Organisati
           console.log("id about to delete: ", organisation.id);
         };
 
-        const menuItems = [
+        const menuItems: DropdownMenuItemType<Organisation>[] = [
           {
             label: "Edit",
             onClick: () => handleOperateDetail({ organisationDetail })
-          },
-          {
-            label: "Delete",
-            onClick: handleDelete,
-            className: "text-destructive"
           }
         ];
+        if (row.getValue("isActive")) {
+          menuItems.push({
+            label: "Suspend",
+            onClick: () => handleDelete,
+            className: "text-destructive"
+          });
+        }
 
         return (
           <Dropdown<Organisation> item={organisationDetail} menuItems={menuItems}>
