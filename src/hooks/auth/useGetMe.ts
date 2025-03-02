@@ -9,18 +9,19 @@ export const useGetMe = ({ enabled }: { enabled: boolean }) => {
     data: myDetailResponse,
     isLoading: isLoadingGetMe,
     error: errorGetMe,
-    isError: isErrorGetMe
+    isError: isErrorGetMe,
+    isSuccess: isSuccessGetMe
   } = useQuery({
     ...userInfo.detail(),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,
-    retry: 3,
+    retry: 1,
     refetchOnWindowFocus: false,
     enabled: enabled
   });
 
   useErrorNotification(isErrorGetMe, errorTitle, errorGetMe);
 
-  return { isLoadingGetMe, myDetailResponse, isErrorGetMe, errorGetMe };
+  return { isLoadingGetMe, myDetailResponse, isErrorGetMe, errorGetMe, isSuccessGetMe };
 };

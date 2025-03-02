@@ -64,9 +64,9 @@ const router: AppRoute[] = [
   {
     path: "dashboard",
     element: (
-      <ProtectedRoute>
-        <DashboardPage />
-      </ProtectedRoute>
+      // <ProtectedRoute>
+      <DashboardPage />
+      // </ProtectedRoute>
     ),
     children: [
       {

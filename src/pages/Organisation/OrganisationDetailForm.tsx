@@ -12,6 +12,7 @@ import { abbreviateName } from "@/utils/formatters";
 import { useUpdateOrganisation } from "@/hooks/organisations/useUpdateOrganisation";
 import { useState } from "react";
 import { getImageBySubscription } from "@/constants/mapper";
+import { useAuthStore } from "@/store";
 
 const companyLogoUrlSchema = z.object({ logoUrl: z.string().optional() });
 
@@ -87,6 +88,7 @@ interface OrganisationProfileProps {
 type FormName = "company" | "address" | "logoUrl" | null;
 const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = false, orgProfileDetail }) => {
   const [handleFormName, setHandleFormName] = useState<FormName>(null);
+  const { setOrganisation, organisationId, organisaitonProfile } = useAuthStore();
   const companyLogoUrlForm = useForm<z.infer<typeof companyLogoUrlSchema>>({
     resolver: zodResolver(companyLogoUrlSchema),
     mode: "onChange",
@@ -121,44 +123,44 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
 
   const handleSuccess = () => {
     if (companyInfoForm.formState.isDirty) {
+      //update state
+      if (orgProfileDetail.id === organisationId) {
+        setOrganisation({ ...organisaitonProfile, ...companyInfoForm.getValues() });
+      }
       companyInfoForm.reset(companyInfoForm.getValues());
-      setTimeout(() => {
-        setHandleFormName(null);
-      }, 3000);
     }
     if (addressInfoForm.formState.isDirty) {
+      //update state
+      if (orgProfileDetail.id === organisationId) {
+        setOrganisation({ ...organisaitonProfile, ...addressInfoForm.getValues() });
+      }
       addressInfoForm.reset(addressInfoForm.getValues());
-      setTimeout(() => {
-        setHandleFormName(null);
-      }, 3000);
     }
     if (companyLogoUrlForm.formState.isDirty) {
+      //update state
+      if (orgProfileDetail.id === organisationId) {
+        setOrganisation({ ...organisaitonProfile, ...companyLogoUrlForm.getValues() });
+      }
       companyLogoUrlForm.reset(companyLogoUrlForm.getValues());
-      setTimeout(() => {
-        setHandleFormName(null);
-      }, 3000);
     }
+    setTimeout(() => {
+      setHandleFormName(null);
+    }, 3000);
   };
 
   const handleError = () => {
     if (companyInfoForm.formState.isDirty) {
       companyInfoForm.reset();
-      setTimeout(() => {
-        setHandleFormName(null);
-      }, 3000);
     }
     if (addressInfoForm.formState.isDirty) {
       addressInfoForm.reset();
-      setTimeout(() => {
-        setHandleFormName(null);
-      }, 3000);
     }
     if (companyLogoUrlForm.formState.isDirty) {
       companyLogoUrlForm.reset();
-      setTimeout(() => {
-        setHandleFormName(null);
-      }, 3000);
     }
+    setTimeout(() => {
+      setHandleFormName(null);
+    }, 3000);
   };
 
   const mutation = useUpdateOrganisation({ handleSuccess, handleError });

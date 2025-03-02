@@ -62,18 +62,20 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) =
               <SidebarMenuButton asChild className="h-auto bg-background border hover:bg-secondary-light rounded-full" size={"lg"}>
                 <Link to={sidebarheader.url ?? ""}>
                   <div className="w-full flex items-center gap-2 justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-center gap-2">
                       <Avatar
                         size={8}
-                        className="inline-block"
+                        className=""
                         avatarLink={organisaitonProfile?.logoUrl ?? ""}
                         avatarAlt={organisaitonProfile?.orgName ?? ""}
                         avatarPlaceholder={abbreviateName(organisaitonProfile?.orgName ?? "")}
                       />
                       {
-                        <div className="flex flex-col items-start gap-[2px]">
-                          <p className="text-primary-foreground30 font-bold text-sm leading-3 truncate max-w-40">{organisaitonProfile?.orgName ?? ""}</p>
-                          <p className="text-primary-foreground50 text-[12px] leading-3 truncate max-w-40">{organisaitonProfile?.email ?? ""}</p>
+                        <div className="flex flex-col items-start gap-[2px] justify-center">
+                          <p className="text-primary-foreground30 font-bold text-sm leading-5 truncate max-w-40">{organisaitonProfile?.orgName ?? ""}</p>
+                          {organisaitonProfile?.email && (
+                            <p className="text-primary-foreground50 text-[12px] leading-3 truncate max-w-40">{organisaitonProfile?.email ?? ""}</p>
+                          )}
                         </div>
                       }
                     </div>

@@ -274,7 +274,10 @@ const DataTable = <T extends object>({
                     </Card>
                   ))
                 ) : (
-                  <div className="h-24 text-center">No results.</div>
+                  <div className="col-span-4 text-sm flex flex-col gap-2 w-full mb-2 items-center justify-center text-center text-primary-foreground50">
+                    <CircleOff className="inline-block" />
+                    No results.
+                  </div>
                 )}
               </div>
             </div>
