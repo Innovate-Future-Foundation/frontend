@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "@/hooks/auth/useRegister";
 import { RegisterOrgWithAdminCredentials } from "@/types/auth";
 import SendEmailSuccess from "./SendEmailSuccess";
+import { InputFile } from "@/components/InputFile";
 
 const signupFormSchema = z.object({
   orgName: z.string().min(2, "Organisation name must be at least 2 characters"),
@@ -154,6 +155,10 @@ const RegisterForm: FC = () => {
     //todo: call ResendVerificationEmail api
   };
 
+  const handleGetUrl = async (url: string) => {
+    await form.setValue("logoUrl", url, { shouldDirty: true });
+  };
+
   useEffect(() => {
     if (currentStep === 1) {
       setTimeout(() => setFocus("orgName"), 400);
@@ -224,7 +229,10 @@ const RegisterForm: FC = () => {
                     {currentStep === 3 && (
                       <div className="space-y-4">
                         <FormFieldItem fieldControl={control} name="websiteUrl" label="Website URL" type="url" placeholder="Enter website URL" />
-                        <FormFieldItem fieldControl={control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" />
+                        {/* <FormFieldItem fieldControl={control} name="logoUrl" label="Logo URL" type="url" placeholder="Enter logo URL" /> */}
+                        <div className="h-24">
+                          <InputFile title="Logo Upload" getUrl={handleGetUrl} orgName={form.watch("orgName")} />
+                        </div>
                         <Button type="button" onClick={() => handleStepClick(currentStep + 1)} className="w-full h-11">
                           Continue
                           <ArrowRight className="ml-2 h-4 w-4" />
