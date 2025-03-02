@@ -8,6 +8,7 @@ import { useOrgTeacher } from "@/hooks/profiles/useOrgTeacher";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { useNavigate } from "react-router-dom";
+import { useUpdateProfile } from "@/hooks/profiles/useUpdateProfile";
 
 const OrgTeacherPage = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const OrgTeacherPage = () => {
     filters,
     sortings
   } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
-
+  const mutation = useUpdateProfile({});
   const { orgTeachersResponse, isLoadingOrgTeachers } = useOrgTeacher({
     offset,
     limit: pagination.pageSize,
@@ -50,7 +51,7 @@ const OrgTeacherPage = () => {
       <DataTable
         totalItems={orgTeachersResponse?.meta?.totalItems}
         limit={pagination.pageSize}
-        columns={profileColumns({ profilePath: "orgteachers", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate })}
+        columns={profileColumns({ profilePath: "orgteachers", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate, mutation })}
         data={tableData}
         isLoading={isLoadingOrgTeachers}
         searchPlaceholder="search by name, email or phone"

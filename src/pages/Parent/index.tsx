@@ -7,6 +7,7 @@ import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { useParentWithChildren } from "@/hooks/profiles/useParentWithChildren";
 import { useNavigate } from "react-router-dom";
+import { useUpdateProfile } from "@/hooks/profiles/useUpdateProfile";
 
 const ParentPage = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const ParentPage = () => {
     filters,
     sortings
   } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
-
+  const mutation = useUpdateProfile({});
   const { totalItems, parentsData, isLoadingParents, isLoadingChildren } = useParentWithChildren({
     offset,
     limit: pagination.pageSize,
@@ -45,7 +46,7 @@ const ParentPage = () => {
       <DataTable
         totalItems={totalItems}
         limit={pagination.pageSize}
-        columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate })}
+        columns={profileColumns({ profilePath: "parents", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate, mutation })}
         data={parentsData}
         isLoading={isLoadingParents || isLoadingChildren}
         searchPlaceholder="search by name, email or phone"

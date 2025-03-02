@@ -8,6 +8,7 @@ import { useOrgManager } from "@/hooks/profiles/useOrgManager";
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useNavigate } from "react-router-dom";
+import { useUpdateProfile } from "@/hooks/profiles/useUpdateProfile";
 
 const OrgManagerPage = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const OrgManagerPage = () => {
     filters,
     sortings
   } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
-
+  const mutation = useUpdateProfile({});
   const { orgManagersResponse, isLoadingOrgManagers } = useOrgManager({
     offset,
     limit: pagination.pageSize,
@@ -50,7 +51,7 @@ const OrgManagerPage = () => {
       <DataTable
         totalItems={orgManagersResponse?.meta?.totalItems}
         limit={pagination.pageSize}
-        columns={profileColumns({ profilePath: "orgmanagers", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate })}
+        columns={profileColumns({ profilePath: "orgmanagers", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate, mutation })}
         data={tableData}
         isLoading={isLoadingOrgManagers}
         searchPlaceholder="search by name, email or phone"

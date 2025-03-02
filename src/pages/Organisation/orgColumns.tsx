@@ -6,11 +6,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
-import { Organisation, OrgStatusCode, SubscriptionCode } from "@/types";
+import { Organisation, SubscriptionCode } from "@/types";
 import Dropdown, { DropdownMenuItemType } from "@/components/Dropdown";
 import Avatar from "@/components/Avatar";
-import { getColorStyleByStatus, getImageBySubscription } from "@/constants/mapper";
-import clsx from "clsx";
+import { getImageBySubscription } from "@/constants/mapper";
 import { Tooltip } from "@/components/Tooltip";
 import { NavigateFunction } from "react-router-dom";
 
@@ -93,24 +92,24 @@ export const getOrgColumns = (navigate?: NavigateFunction): ColumnDef<Organisati
       ),
       enableGlobalFilter: false
     },
-    {
-      accessorKey: "orgStatusCode",
-      header: "Status",
-      cell: ({ row }) => (
-        <>
-          {row.getValue("orgStatusCode") === "UndefinedOrgStatus" ? (
-            <div className="capitalize mx-2 text-primary-foreground60">
-              <CircleOff size={14} />
-            </div>
-          ) : (
-            <Badge variant="outline" className={clsx(getColorStyleByStatus[row.getValue("orgStatusCode") as OrgStatusCode])}>
-              <div className="capitalize">{row.getValue("orgStatusCode")}</div>
-            </Badge>
-          )}
-        </>
-      ),
-      enableGlobalFilter: false
-    },
+    // {
+    //   accessorKey: "orgStatusCode",
+    //   header: "Status",
+    //   cell: ({ row }) => (
+    //     <>
+    //       {row.getValue("orgStatusCode") === "UndefinedOrgStatus" ? (
+    //         <div className="capitalize mx-2 text-primary-foreground60">
+    //           <CircleOff size={14} />
+    //         </div>
+    //       ) : (
+    //         <Badge variant="outline" className={clsx(getColorStyleByStatus[row.getValue("orgStatusCode") as OrgStatusCode])}>
+    //           <div className="capitalize">{row.getValue("orgStatusCode")}</div>
+    //         </Badge>
+    //       )}
+    //     </>
+    //   ),
+    //   enableGlobalFilter: false
+    // },
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
@@ -156,23 +155,12 @@ export const getOrgColumns = (navigate?: NavigateFunction): ColumnDef<Organisati
           navigate?.(path);
         };
 
-        const handleDelete = (organisation: Organisation) => {
-          console.log("id about to delete: ", organisation.id);
-        };
-
         const menuItems: DropdownMenuItemType<Organisation>[] = [
           {
             label: "Edit",
             onClick: () => handleOperateDetail({ organisationDetail })
           }
         ];
-        if (row.getValue("isActive")) {
-          menuItems.push({
-            label: "Suspend",
-            onClick: () => handleDelete,
-            className: "text-destructive"
-          });
-        }
 
         return (
           <Dropdown<Organisation> item={organisationDetail} menuItems={menuItems}>

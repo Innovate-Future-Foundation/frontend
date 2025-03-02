@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Baby, ChevronsLeftRight, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, Baby, ChevronsLeftRight, Loader2, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,23 +7,35 @@ import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
 import AppDropdown, { DropdownMenuItemType } from "@/components/Dropdown";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
-import { Profile, ProfilePathType } from "@/types";
+import { Profile, ProfileInfo, ProfilePathType } from "@/types";
 import clsx from "clsx";
 import { getColorStyleByIsActive, getColorStyleByIsConfirmed } from "@/constants/mapper";
 import { Tooltip } from "@/components/Tooltip";
 import { NavigateFunction } from "react-router-dom";
+import { UseMutationResult } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 interface GenerateColumnsOptions {
   profilePath?: ProfilePathType;
   hideRole?: boolean;
   hideOrganisation?: boolean;
   navigate?: NavigateFunction;
+  mutation?: UseMutationResult<
+    AxiosResponse<any, any>,
+    Error,
+    {
+      id: string;
+      bodyData: ProfileInfo;
+    },
+    unknown
+  >;
 }
 
 export const profileColumns = ({
   profilePath = "contacts",
   hideRole = false,
   hideOrganisation = false,
-  navigate
+  navigate,
+  mutation
 }: GenerateColumnsOptions): ColumnDef<Profile>[] => {
   const baseColumns: ColumnDef<Profile>[] = [
     {
@@ -99,7 +111,11 @@ export const profileColumns = ({
       header: "Status",
       cell: ({ row }) => (
         <Badge variant="outline" className={clsx(getColorStyleByIsActive.get(row.getValue("isActive")))}>
-          <div className="capitalize">{row.getValue("isActive") ? "active" : "suspended"}</div>
+          {mutation?.isPending && row.original.id === mutation?.variables.id ? (
+            <Loader2 className="h-2 w-2 animate-spin" />
+          ) : (
+            <div className="capitalize">{row.getValue("isActive") ? "active" : "suspended"}</div>
+          )}
         </Badge>
       ),
       enableGlobalFilter: false
@@ -183,8 +199,12 @@ export const profileColumns = ({
         navigate?.(path);
       };
 
-      const handleDelete = (detail: Profile) => {
-        console.log("ID about to delete: ", detail.id);
+      const handleSuspend = (detail: Profile) => {
+        mutation?.mutate?.({ id: detail.id ?? "", bodyData: { isActive: false } });
+      };
+
+      const handleActivate = (detail: Profile) => {
+        mutation?.mutate?.({ id: detail.id ?? "", bodyData: { isActive: true } });
       };
 
       const menuItems: DropdownMenuItemType<Profile>[] = [
@@ -196,15 +216,21 @@ export const profileColumns = ({
       if (row.getValue("isActive")) {
         menuItems.push({
           label: "Suspend",
-          onClick: () => handleDelete(detail),
+          onClick: () => handleSuspend(detail),
           className: "text-destructive"
+        });
+      } else {
+        menuItems.push({
+          label: "Activate",
+          onClick: () => handleActivate(detail),
+          className: "text-secondary-foregroundGreen"
         });
       }
 
       return (
         <AppDropdown<Profile> item={detail} menuItems={menuItems}>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+          <Button variant="ghost" className={clsx(`h-8 w-8 p-0`)}>
+            <span className={clsx(`sr-only`)}>Open menu</span>
             <MoreHorizontal />
           </Button>
         </AppDropdown>
