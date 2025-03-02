@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import AppAvatar from "@/components/Avatar";
-import AppDropdown from "@/components/Dropdown";
+import AppDropdown, { DropdownMenuItemType } from "@/components/Dropdown";
 import { abbreviateName, formatDateToDDMMYYYY } from "@/utils/formatters";
 import { Profile, ProfilePathType } from "@/types";
 import clsx from "clsx";
@@ -187,17 +187,19 @@ export const profileColumns = ({
         console.log("ID about to delete: ", detail.id);
       };
 
-      const menuItems = [
+      const menuItems: DropdownMenuItemType<Profile>[] = [
         {
           label: "Edit",
           onClick: () => handleOperateDetail({ detail })
-        },
-        {
-          label: "Delete",
-          onClick: () => handleDelete(detail),
-          className: "text-destructive"
         }
       ];
+      if (row.getValue("isActive")) {
+        menuItems.push({
+          label: "Suspend",
+          onClick: () => handleDelete(detail),
+          className: "text-destructive"
+        });
+      }
 
       return (
         <AppDropdown<Profile> item={detail} menuItems={menuItems}>
