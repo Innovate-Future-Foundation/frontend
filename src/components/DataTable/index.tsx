@@ -27,7 +27,7 @@ import { Card } from "../ui/card";
 import { getFiltersItems, getfilterTitle } from "@/constants/mapper";
 import { useCallback, useEffect, useMemo } from "react";
 import { DEBOUNCE_TIME_MS } from "@/constants/appConfig";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 
 interface DataTableProps<T extends object> {
   columns: ColumnDef<T>[];
@@ -68,7 +68,7 @@ const DataTable = <T extends object>({
 }: DataTableProps<T>) => {
   const [rowSelection, setRowSelection] = React.useState({});
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
-  const { role } = useAuthStore();
+  const { role } = useUserStore();
   const table = useReactTable<TableBaseType<T>>({
     data,
     columns,
@@ -274,7 +274,10 @@ const DataTable = <T extends object>({
                     </Card>
                   ))
                 ) : (
-                  <div className="h-24 text-center">No results.</div>
+                  <div className="col-span-4 text-sm flex flex-col gap-2 w-full mb-2 items-center justify-center text-center text-primary-foreground50">
+                    <CircleOff className="inline-block" />
+                    No results.
+                  </div>
                 )}
               </div>
             </div>

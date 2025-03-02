@@ -3,10 +3,11 @@ import { ChevronDown, LogOut, User } from "lucide-react";
 import Avatar from "../Avatar";
 import HoverCard from "../HoverCard";
 import { Button } from "../ui/button";
-import { useAuthStore, useTourBuilderStore } from "@/store";
+import { useUserStore, useTourBuilderStore } from "@/store";
 import { useLogout } from "@/hooks/auth/useLogout";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { useAuth } from "@/hooks/useAuth";
 
 interface AvatarType {
   name: string;
@@ -14,14 +15,16 @@ interface AvatarType {
 }
 
 const SignInAvatar: React.FC<AvatarType> = ({ name, avatarUrl }) => {
-  const { resetAuthStore } = useAuthStore();
+  const { resetUserStore } = useUserStore();
   const { resetTourStore } = useTourBuilderStore();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleSuccess = () => {
-    navigate("/");
-    resetAuthStore();
+    logout();
+    resetUserStore();
     resetTourStore();
+    navigate("/");
   };
 
   const mutation = useLogout({ handleSuccess });

@@ -1,2 +1,2 @@
 export * from "./useTourBuilderStore";
-export * from "./useAuthStore";
+export * from "./useUserStore";

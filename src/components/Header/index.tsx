@@ -1,9 +1,10 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import SignInAvatar from "./SignInAvatar";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 import { Button } from "../ui/button";
 import { useState, useEffect } from "react";
 import clsx from "clsx";
+import { useAuth } from "@/hooks/useAuth";
 
 interface HeaderProps {
   fromHome: boolean;
@@ -11,7 +12,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ fromHome }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isAuthenticated, userProfile } = useAuthStore();
+  const { userProfile } = useUserStore();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeItem, setActiveItem] = useState("Home");

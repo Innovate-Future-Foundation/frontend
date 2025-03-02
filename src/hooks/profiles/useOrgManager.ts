@@ -4,10 +4,10 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { ProfilePaginatedRequest } from "@/types";
 import { profiles } from "@/queries/profiles";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 
 export const useOrgManager = (profilePaginatedRequest: ProfilePaginatedRequest) => {
-  const { organisationId } = useAuthStore();
+  const { organisaitonProfile } = useUserStore();
   const errorTitle = ERROR_MESSAGES.FAIL_TO_FETCH_ORGMANEGERS;
 
   const {
@@ -16,7 +16,7 @@ export const useOrgManager = (profilePaginatedRequest: ProfilePaginatedRequest) 
     error: errorOrgManagers,
     isError: isErrorOrgManagers
   } = useQuery({
-    ...profiles.orgManagerslist(profilePaginatedRequest, organisationId!),
+    ...profiles.orgManagerslist(profilePaginatedRequest, organisaitonProfile?.id ?? ""),
     placeholderData: keepPreviousData,
     staleTime: 60000,
     gcTime: 300000,

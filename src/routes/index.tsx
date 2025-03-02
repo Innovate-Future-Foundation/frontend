@@ -27,6 +27,7 @@ import ActivityBuilder from "@/pages/TourBuilder/Schedule/ActivityBuilder";
 import TourDetailPage from "@/pages/Tour/TourDetailPage";
 import EmailVerification from "@/pages/Authentication/EmailVerification";
 import HomePage from "@/pages/Home";
+import RedirectRoute from "@/components/ProtectedRoute/RedirectRoute";
 
 export type AppRoute = RouteObject & {
   handle?: {
@@ -41,7 +42,11 @@ const router: AppRoute[] = [
   },
   {
     path: "auth",
-    element: <AuthenticationPage />,
+    element: (
+      <RedirectRoute>
+        <AuthenticationPage />
+      </RedirectRoute>
+    ),
     children: [
       {
         index: true,
