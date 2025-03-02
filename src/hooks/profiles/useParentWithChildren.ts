@@ -4,10 +4,10 @@ import { ERROR_MESSAGES } from "@/constants/errorMessages";
 import { Profile, ProfilePaginatedRequest, TableBaseType } from "@/types";
 import { useMemo } from "react";
 import { profiles } from "@/queries/profiles";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 
 export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedRequest) => {
-  const { organisationId } = useAuthStore();
+  const { organisaitonProfile } = useUserStore();
   const errorTitleChildren = ERROR_MESSAGES.FAIL_TO_FETCH_CHILDREN;
   const errorTitleParent = ERROR_MESSAGES.FAIL_TO_FETCH_PARENT;
 
@@ -17,7 +17,7 @@ export const useParentWithChildren = (profilePaginatedRequest: ProfilePaginatedR
     error: errorParents,
     isError: isErrorParents
   } = useQuery({
-    ...profiles.parentslist(profilePaginatedRequest, organisationId!),
+    ...profiles.parentslist(profilePaginatedRequest, organisaitonProfile?.id ?? ""),
     staleTime: 60000,
     gcTime: 300000,
     retry: 3,

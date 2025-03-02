@@ -7,11 +7,11 @@ import { useParams } from "react-router-dom";
 import { useProfileDetail } from "@/hooks/profiles/useProfileDetail";
 import { useMemo } from "react";
 import { BeatLoader } from "react-spinners";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 
 const ProfileDetailPage: React.FC<{ role?: RoleType }> = ({ role }) => {
   const { id } = useParams();
-  const { userProfile } = useAuthStore();
+  const { userProfile } = useUserStore();
   const { profileDetailResponse, isLoadingProfileDetail } = useProfileDetail(id ?? userProfile?.id ?? "");
 
   const userProfileDetail: Profile = useMemo(() => {

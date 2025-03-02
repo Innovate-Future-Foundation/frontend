@@ -1,7 +1,7 @@
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 
 export function usePermissions() {
-  const { role } = useAuthStore();
+  const { role } = useUserStore();
 
   const permissions = {
     canEditOrganisationDetailForm: ["PlatformAdmin", "OrgAdmin"].includes(role!),

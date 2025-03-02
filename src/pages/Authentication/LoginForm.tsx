@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useLogin } from "@/hooks/auth/useLogin";
 import { LoginCredential } from "@/types/auth";
 import { Loader2 } from "lucide-react";
-import { useAuthStore } from "@/store";
+import { useAuth } from "@/hooks/useAuth";
 
 // setting up the validation schema
 const loginFormSchema = z.object({
@@ -29,7 +29,7 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useAuthStore();
+  const { login } = useAuth();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -45,7 +45,7 @@ const LoginForm: React.FC = () => {
     if (formState.isDirty) {
       reset(getValues());
     }
-    setIsAuthenticated(true);
+    login();
     navigate("/dashboard");
   };
 

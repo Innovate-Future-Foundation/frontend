@@ -20,7 +20,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import Avatar from "@/components/Avatar";
 import { SidebarheaderAccess } from "./SidebarMenu";
 import clsx from "clsx";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 import { abbreviateName } from "@/utils/formatters";
 
 export interface SidebarProps {
@@ -41,7 +41,7 @@ export interface SidebarItem {
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarItemGroups, sidebarheader }) => {
   const { state, isMobile } = useSidebar();
-  const { organisaitonProfile } = useAuthStore();
+  const { organisaitonProfile } = useUserStore();
 
   const path = useLocation().pathname;
   const hasChildrenWithTitle = sidebarItemGroups.reduce((groupAcc: Record<string, boolean>, sidebarItemGroup: SidebarItemGroup) => {

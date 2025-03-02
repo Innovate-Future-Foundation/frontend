@@ -12,7 +12,7 @@ import { abbreviateName } from "@/utils/formatters";
 import { useUpdateOrganisation } from "@/hooks/organisations/useUpdateOrganisation";
 import { useState } from "react";
 import { getImageBySubscription } from "@/constants/mapper";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 
 const companyLogoUrlSchema = z.object({ logoUrl: z.string().optional() });
 
@@ -88,7 +88,7 @@ interface OrganisationProfileProps {
 type FormName = "company" | "address" | "logoUrl" | null;
 const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = false, orgProfileDetail }) => {
   const [handleFormName, setHandleFormName] = useState<FormName>(null);
-  const { setOrganisation, organisationId, organisaitonProfile } = useAuthStore();
+  const { setOrganisation, organisaitonProfile } = useUserStore();
   const companyLogoUrlForm = useForm<z.infer<typeof companyLogoUrlSchema>>({
     resolver: zodResolver(companyLogoUrlSchema),
     mode: "onChange",
@@ -124,21 +124,21 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
   const handleSuccess = () => {
     if (companyInfoForm.formState.isDirty) {
       //update state
-      if (orgProfileDetail.id === organisationId) {
+      if (orgProfileDetail.id === organisaitonProfile?.id) {
         setOrganisation({ ...organisaitonProfile, ...companyInfoForm.getValues() });
       }
       companyInfoForm.reset(companyInfoForm.getValues());
     }
     if (addressInfoForm.formState.isDirty) {
       //update state
-      if (orgProfileDetail.id === organisationId) {
+      if (orgProfileDetail.id === organisaitonProfile?.id) {
         setOrganisation({ ...organisaitonProfile, ...addressInfoForm.getValues() });
       }
       addressInfoForm.reset(addressInfoForm.getValues());
     }
     if (companyLogoUrlForm.formState.isDirty) {
       //update state
-      if (orgProfileDetail.id === organisationId) {
+      if (orgProfileDetail.id === organisaitonProfile?.id) {
         setOrganisation({ ...organisaitonProfile, ...companyLogoUrlForm.getValues() });
       }
       companyLogoUrlForm.reset(companyLogoUrlForm.getValues());
@@ -207,7 +207,7 @@ const OrganisationProfile: React.FC<OrganisationProfileProps> = ({ disabled = fa
             <div className="flex gap-4 items-center">
               <Avatar
                 avatarLink={companyLogoUrlForm.watch("logoUrl")!}
-                size={24}
+                size={20}
                 avatarAlt={avatarAlt}
                 avatarPlaceholder={abbreviateName(companyInfoForm.watch("orgName"))}
                 outline={true}

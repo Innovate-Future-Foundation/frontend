@@ -11,7 +11,7 @@ import { useUpdateProfile } from "@/hooks/profiles/useUpdateProfile";
 import { Profile } from "@/types";
 import { abbreviateName } from "@/utils/formatters";
 import { useState } from "react";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 
 const avatarUrlSchema = z.object({ avatarUrl: z.string().optional() });
 type FormName = "profile" | "avatarUrl" | null;
@@ -42,7 +42,7 @@ interface ProfileFormProps {
 }
 const ProfileForm: React.FC<ProfileFormProps> = ({ userProfileDetail, disabled }) => {
   const [handleFormName, setHandleFormName] = useState<FormName>(null);
-  const { setUserProfile, userProfile } = useAuthStore();
+  const { setUserProfile, userProfile } = useUserStore();
   const avatarUrlForm = useForm<z.infer<typeof avatarUrlSchema>>({
     resolver: zodResolver(avatarUrlSchema),
     mode: "onChange",
@@ -124,7 +124,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userProfileDetail, disabled }
             <div className="flex gap-4 items-center">
               <Avatar
                 avatarLink={avatarUrlForm.watch("avatarUrl")!}
-                size={24}
+                size={20}
                 avatarAlt={avatarAlt}
                 avatarPlaceholder={abbreviateName(profileInfoForm.watch("name"))}
                 outline={true}

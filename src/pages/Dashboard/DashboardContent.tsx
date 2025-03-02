@@ -3,17 +3,17 @@ import { Outlet } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Breadcrumb from "@/components/Breadcurmb";
 import { filterMenuByRole } from "./SidebarMenu";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 import Sidebar from "./Sidebar";
 import { FadeLoader } from "react-spinners";
 
 const DashboardContent = () => {
-  const { role, organisationId } = useAuthStore();
+  const { role, organisaitonProfile } = useUserStore();
 
   if (!role) {
     return <FadeLoader />;
   }
-  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role!, organisationId!);
+  const roleBasedDashboardMenuItemGroups = filterMenuByRole(role!, organisaitonProfile?.id ?? "");
 
   return (
     <SidebarProvider>

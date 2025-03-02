@@ -2,9 +2,10 @@ import { ReactNode, useEffect } from "react";
 
 import Header from "@/components/Header";
 import { useLocation } from "react-router-dom";
-import { useAuthStore } from "@/store";
+import { useUserStore } from "@/store";
 import { useGetMe } from "@/hooks/auth/useGetMe";
 import { FadeLoader } from "react-spinners";
+import { useAuth } from "@/hooks/useAuth";
 
 // const myProfile: MyInfo = {
 //   id: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -48,20 +49,22 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { pathname } = useLocation();
-  const { setRole, setOrganisationId, setUserProfile, userProfile, setOrganisation, isAuthenticated, setIsAuthenticated } = useAuthStore();
+  const { setRole, setUserProfile, userProfile, setOrganisation } = useUserStore();
+  const { isAuthenticated, logout } = useAuth();
 
-  //todo: wait geMe api
-  const { isLoadingGetMe, myDetailResponse, isSuccessGetMe } = useGetMe({ enabled: !userProfile || !isAuthenticated });
+  // Automatically login
+  const { isLoadingGetMe, myDetailResponse, isSuccessGetMe, isErrorGetMe } = useGetMe({ enabled: !userProfile && isAuthenticated });
 
   useEffect(() => {
     if (isSuccessGetMe) {
-      setIsAuthenticated(true);
       setRole(myDetailResponse?.roleCode ?? null);
-      setOrganisationId(myDetailResponse?.organisation?.id ?? null);
       setUserProfile(myDetailResponse ?? null);
       setOrganisation(myDetailResponse?.organisation ?? null);
     }
-  }, [setRole, setOrganisationId, setUserProfile, setOrganisation, myDetailResponse, isSuccessGetMe, setIsAuthenticated]);
+    if (isErrorGetMe) {
+      logout();
+    }
+  }, [setRole, setUserProfile, setOrganisation, myDetailResponse, isSuccessGetMe, isErrorGetMe, logout]);
 
   return (
     <div className="flex flex-col w-full">

@@ -7,7 +7,7 @@ export const ERROR_MESSAGES = {
   UNKNOWN: "An unknown error occurred. Please try again later.",
   DUPLICATE_REQUEST: "Request has been submitted.",
   FAIL_TO_REGISTER: "Fail to sign up.",
-  FAIL_TO_FETCH_USER_INFO: "Fail to get user profile",
+  FAIL_TO_FETCH_USER_INFO: "Fail to onboard",
   FAIL_TO_LOGIN: "Fail to login.",
   FAIL_TO_LOGOUT: "Fail to logout.",
   FAIL_TO_UPLOAD_IMAGE: "Fail to upload image.",
