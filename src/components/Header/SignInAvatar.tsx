@@ -21,10 +21,10 @@ const SignInAvatar: React.FC<AvatarType> = ({ name, avatarUrl }) => {
   const navigate = useNavigate();
 
   const handleSuccess = () => {
-    navigate("/");
     logout();
     resetUserStore();
     resetTourStore();
+    navigate("/");
   };
 
   const mutation = useLogout({ handleSuccess });
