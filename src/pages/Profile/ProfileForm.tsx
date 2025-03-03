@@ -118,7 +118,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ userProfileDetail, disabled }
 
   return (
     <div className="w-full flex flex-col gap-4 mt-4 justify-center">
-      <div className="grid grid-cols-1 bg-muted/50 rounded-sm p-6">
+      <div className="grid grid-cols-1 bg-muted/50 rounded-lg p-6">
         <Form {...avatarUrlForm}>
           <div className="flex justify-between">
             <div className="flex gap-4 items-center">

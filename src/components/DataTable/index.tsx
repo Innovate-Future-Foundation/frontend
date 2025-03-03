@@ -144,7 +144,8 @@ const DataTable = <T extends object>({
                     className="ml-auto max-w-sm h-10 text-xs tracking-wide font-normal capitalize shadow-none text-primary-foreground30 "
                   >
                     <Filter size={6} className="text-primary-foreground60 " />
-                    {getfilterTitle[filteredColumn.id]}
+                    {getfilterTitle[filteredColumn.id]}:
+                    <p className="text-primary">{`${table.getState().columnFilters.filter(state => state.id === filteredColumn.id).length == 0 ? "all" : table.getState().columnFilters.find(state => state.id === filteredColumn.id)?.value}`}</p>
                     <ChevronDown />
                   </Button>
                 </DropdownMenuTrigger>
@@ -265,7 +266,7 @@ const DataTable = <T extends object>({
                     <Card
                       key={row.id}
                       className={
-                        "relative w-full border-none shadow-sm shadow-primary-light rounded-md overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent/30 hover:shadow-primary-light"
+                        "border relative w-full shadow-none rounded-lg overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent/30 hover:shadow-primary-light"
                       }
                     >
                       {row.getVisibleCells().map(cell => {

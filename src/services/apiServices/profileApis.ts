@@ -59,6 +59,7 @@ export const getContacts = (role: RoleType) => {
     const allowedRoles = CONTACT_ACCESS[role]?.join(",");
 
     const queryParams = new URLSearchParams(queryData);
+    queryParams.append("filters.isActive", "true");
     if (orgId) queryParams.append("filters.orgId", orgId);
 
     // if queryData contains roleId do not append roleId again
