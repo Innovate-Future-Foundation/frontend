@@ -26,6 +26,7 @@ const ParentPage = () => {
     filters,
     sortings
   } = useTableFilters<ProfilePaginationFilter, ProfilePaginationOrderByType>();
+
   const mutation = useUpdateProfile({});
   const { totalItems, parentsData, isLoadingParents, isLoadingChildren } = useParentWithChildren({
     offset,

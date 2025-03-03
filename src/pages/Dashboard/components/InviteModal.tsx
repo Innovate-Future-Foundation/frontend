@@ -21,9 +21,11 @@ import { useCallback, useEffect, useState } from "react";
 import { ACFormFieldItem } from "./ACFormFieldItem";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/hooks/use-toast";
 import { RoleType } from "@/types";
 import { mapRoleTypeToString } from "@/constants/mapper";
+import { useInviteUser } from "@/hooks/auth/useInviteUser";
+import SuccessAnimation from "@/components/SuccessAnimation";
+import { useParent } from "@/hooks/profiles/useParent";
 
 export interface FormInputs {
   name: string;
@@ -33,18 +35,17 @@ export interface FormInputs {
 
 interface props {
   roleInvited: RoleType;
-  onSubmit: (data: FormInputs) => Promise<void>;
+  // onSubmit: (data: FormInputs) => Promise<void>;
   children: React.ReactNode;
 }
 
 const isVowel = (word: string) => /^[aeiouAEIOU]/.test(word);
 
-const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
-  const { toast } = useToast();
+const InviteModal: React.FC<props> = ({ roleInvited, children }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [isParentEmailShowToggle, setIsParentEmailShowToggle] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
 
   const inviteUserFormSchema = (roleInvited: string) => {
     return z.object({
@@ -86,31 +87,28 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
 
   const { reset } = inviteUserForm;
 
+  const handleSuccess = () => {
+    reset();
+    setIsParentEmailShowToggle(false);
+  };
+  const handleError = () => {
+    reset();
+    setIsParentEmailShowToggle(false);
+  };
+
+  const { mutate, isPending, isSuccess } = useInviteUser({ handleSuccess, handleError });
+  const { parentsData, isSuccessGetParents } = useParent({ limit: 8, searchKey: inputValue, filters: { isActive: true, isConfirmed: true } });
+
   const handleFormSubmit: SubmitHandler<FormInputs> = useCallback(
     async data => {
-      setIsLoading(true);
       setIsAlertDialogOpen(false);
       if (roleInvited !== "Student" || !isParentEmailShowToggle) {
         delete data.parentEmail;
       }
-      try {
-        await onSubmit(data);
-        toast({
-          title: "Successfully",
-          description: "You have invited a team member."
-        });
-      } catch (error) {
-        toast({
-          title: "Invite failed ",
-          description: `${error}`
-        });
-      } finally {
-        reset();
-        setIsLoading(false);
-        setIsParentEmailShowToggle(false);
-      }
+      console.log("data", data);
+      mutate({ ...data, roleCode: roleInvited });
     },
-    [roleInvited, isParentEmailShowToggle, onSubmit, toast, reset]
+    [isParentEmailShowToggle, mutate, roleInvited]
   );
 
   const onCheckedChangeHandler = (checked: boolean) => {
@@ -136,30 +134,26 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
         </DialogHeader>
         <div className="flex flex-col gap-4 mt-4">
           <Form {...inviteUserForm}>
-            <FormFieldItem disabled={isLoading} fieldControl={inviteUserForm.control} name="name" label="Name" placeholder="example: John Doe" h-10 />
-            <FormFieldItem
-              disabled={isLoading}
-              fieldControl={inviteUserForm.control}
-              name="email"
-              type="email"
-              label="Email"
-              placeholder="example: johndoe@example.com"
-              h-10
-            />
+            <FormFieldItem fieldControl={inviteUserForm.control} name="name" label="Name" placeholder="example: John Doe" h-10 />
+            <FormFieldItem fieldControl={inviteUserForm.control} name="email" type="email" label="Email" placeholder="example: johndoe@example.com" h-10 />
             {roleInvited === "Student" && (
               <>
                 <div className="flex items-center space-x-2">
-                  <Switch disabled={isLoading} id="parentEmailSwitch" checked={isParentEmailShowToggle} onCheckedChange={onCheckedChangeHandler} />
+                  <Switch id="parentEmailSwitch" checked={isParentEmailShowToggle} onCheckedChange={onCheckedChangeHandler} />
                   <Label htmlFor="parentEmailSwitch">Parent Email</Label>
                 </div>
                 {isParentEmailShowToggle && (
                   <ACFormFieldItem
-                    disabled={isLoading}
                     name="parentEmail"
                     type="email"
+                    data={parentsData}
+                    isSuccess={isSuccessGetParents}
                     label="Parent Email"
                     placeholder="example: johndoe@example.com"
                     createSchema={inviteUserForm}
+                    disabled={false}
+                    setInputValue={setInputValue}
+                    inputValue={inputValue}
                   />
                 )}
               </>
@@ -176,20 +170,28 @@ const InviteModal: React.FC<props> = ({ roleInvited, onSubmit, children }) => {
         <DialogFooter>
           <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
             <AlertDialogTrigger asChild>
-              <Button size={"lg"} className="w-full rounded-full" disabled={!inviteUserForm.formState.isValid || isLoading}>
-                {isLoading ? <Loader2 className="animate-spin" /> : "Invite"}
+              <Button size={"lg"} className="w-full rounded-full" disabled={!inviteUserForm.formState.isValid}>
+                Invite
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className="max-w-[380px] text-justify">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>This action cannot be undone. This will permanently add the user specified into the server.</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel className={buttonVariants({ variant: "destructive" })}>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={inviteUserForm.handleSubmit(handleFormSubmit)}>Confirm</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
+            {isSuccess ? (
+              <AlertDialogContent className="max-w-[380px] text-justify">
+                <SuccessAnimation title={"Invite Email Sent!"} subtitle="Please check your email to accept invitation." />
+              </AlertDialogContent>
+            ) : (
+              <AlertDialogContent className="max-w-[380px] text-justify">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>This action cannot be undone. This will permanently add the user specified into the server.</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className={buttonVariants({ variant: "destructive" })}>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={inviteUserForm.handleSubmit(handleFormSubmit)}>
+                    {isPending ? <Loader2 className="animate-spin" /> : "Confirm"}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            )}
           </AlertDialog>
         </DialogFooter>
       </DialogContent>

@@ -4,6 +4,7 @@ import { Profile } from "@/types";
 import {
   EmailVerificationCredential,
   ForgotPasswordCredential,
+  InviteUserCredential,
   LoginCredential,
   RegisterOrgWithAdminCredentials,
   ResendEmailCredential,
@@ -33,6 +34,10 @@ const forgotPasswordReq = (forgotPasswordCredentialData: ForgotPasswordCredentia
 
 const resetPasswordReq = (resetPasswordCredentialData: ResetPasswordCredential) =>
   appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.RESETPASSWORD}`, resetPasswordCredentialData);
+const inviteUserReq = (inviteUserCredentialData: InviteUserCredential) =>
+  appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.INVITE}`, inviteUserCredentialData);
+// const resetPasswordReq = (emailVerifyCredentialData: EmailVerificationCredential) =>
+//   appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.EMAILVERIFICATION}`, emailVerifyCredentialData);
 
 const getMeReq = () => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.ME}`);
 
@@ -46,5 +51,6 @@ export const authApis = {
   reSendEmailReq,
   getMeReq,
   forgotPasswordReq,
-  resetPasswordReq
+  resetPasswordReq,
+  inviteUserReq
 };
