@@ -149,10 +149,10 @@ const HomePage: React.FC = () => {
               {/* Header section */}
               <div className="bg-foreground rounded-3xl mx-[-24px] mt-[-24px] p-6 sm:p-8 md:p-12 text-primary-foreground mb-8 md:mb-12">
                 <div className="flex items-center gap-4 mb-4 md:mb-8">
-                  <span className="text-2xl md:text-3xl font-bold">{tab.id}</span>
-                  <h3 className="text-xl md:text-2xl font-bold">{tab.title}</h3>
+                  <span className="text-2xl md:text-3xl font-bold text-white">{tab.id}</span>
+                  <h3 className="text-xl md:text-2xl font-bold text-white">{tab.title}</h3>
                 </div>
-                <p className="text-muted-foreground text-xs md:text-sm leading-relaxed max-w-[80%]">{tab.content}</p>
+                <p className="text-white/90 text-xs md:text-sm leading-relaxed max-w-[80%]">{tab.content}</p>
               </div>
 
               {/* Tab 03 - Complex layout with modules */}
@@ -735,43 +735,40 @@ const HomePage: React.FC = () => {
           <CorePrograms />
 
           {/* Trusted by Global Leaders in Education & Tech */}
-          <div className="px-[5.6%] py-32 bg-white">
-            <h2 className="text-3xl font-bold text-center mb-16">Trusted by Global Leaders in Education & Tech</h2>
+          <div className="px-[5.6%] py-16 md:py-24 lg:py-32 bg-white">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 lg:mb-16">Trusted by Global Leaders in Education & Tech</h2>
 
-            <div className="flex flex-col gap-16">
-              {/* first row */}
-              <div className="flex justify-center items-center gap-20">
-                <img src="/assets/images/aws.jpg" alt="AWS" className="h-16 object-contain" />
-                <img src="/assets/images/google.jpg" alt="Google" className="h-16 object-contain" />
-                <img src="/assets/images/microsoft.jpg" alt="Microsoft" className="h-16 object-contain" />
-                <img src="/assets/images/tesla.jpg" alt="Tesla" className="h-16 object-contain" />
-                <img src="/assets/images/openai.jpg" alt="OpenAI" className="h-16 object-contain" />
-              </div>
+            <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
+              {/* Partners grid - all rows combined into a responsive grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-10 lg:gap-20 justify-items-center">
+                {/* First row */}
+                <img src="/assets/images/aws.jpg" alt="AWS" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/google.jpg" alt="Google" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/microsoft.jpg" alt="Microsoft" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/tesla.jpg" alt="Tesla" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/openai.jpg" alt="OpenAI" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
 
-              {/* second row */}
-              <div className="flex justify-center items-center gap-20">
-                <img src="/assets/images/jobpin.png" alt="JobPin" className="h-16 object-contain" />
-                <img src="/assets/images/jrAcademy.png" alt="JR Academy" className="h-16 object-contain" />
-                <img src="/assets/images/mit.jpg" alt="MIT" className="h-16 object-contain" />
-                <img src="/assets/images/stanford.jpg" alt="Stanford" className="h-16 object-contain" />
-                <img src="/assets/images/harvard.png" alt="Harvard" className="h-16 object-contain" />
-              </div>
+                {/* Second row */}
+                <img src="/assets/images/jobpin.png" alt="JobPin" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/jrAcademy.png" alt="JR Academy" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/mit.jpg" alt="MIT" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/stanford.jpg" alt="Stanford" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/harvard.png" alt="Harvard" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
 
-              {/* third row */}
-              <div className="flex justify-center items-center gap-20">
-                <img src="/assets/images/usyd.png" alt="University of Sydney" className="h-16 object-contain" />
-                <img src="/assets/images/uq.png" alt="University of Queensland" className="h-16 object-contain" />
-                <img src="/assets/images/rmit.jpg" alt="RMIT" className="h-16 object-contain" />
-                <img src="/assets/images/y.jpg" alt="Y Combinator" className="h-16 object-contain" />
-                <img src="/assets/images/awsStartup.jpg" alt="AWS Startups" className="h-16 object-contain" />
+                {/* Third row */}
+                <img src="/assets/images/usyd.png" alt="University of Sydney" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/uq.png" alt="University of Queensland" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/rmit.jpg" alt="RMIT" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/y.jpg" alt="Y Combinator" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/awsStartup.jpg" alt="AWS Startups" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
               </div>
             </div>
 
             {/* Become a Partner Button */}
-            <div className="flex justify-center mt-16">
-              <button className="px-6 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
+            <div className="flex justify-center mt-8 md:mt-12 lg:mt-16">
+              <button className="px-5 py-2.5 md:px-6 md:py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                 Become a Partner
-                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                <div className="w-5 h-5 md:w-6 md:h-6 bg-white rounded-full flex items-center justify-center">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="text-primary">
                     <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -944,13 +941,12 @@ const HomePage: React.FC = () => {
               {/* main image*/}
               <img src="/assets/images/communitySection.jpg" alt="IFA Community" className="w-full rounded-3xl" />
 
-              {/* title - use precise relative positioning */}
-              <div className="absolute left-[40%] top-[3.6%] max-w-[80%]">
-                <h2 className="text-3xl font-bold text-foreground">Join the IFA community and expand the possibilities</h2>
+              {/* Desktop layout - only visible on xl and larger screens */}
+              <div className="absolute left-[40%] top-[3.6%] max-w-[80%] hidden xl:block">
+                <h2 className="text-3xl font-bold text-foreground whitespace-nowrap">Join the IFA community and expand the possibilities</h2>
               </div>
 
-              {/* content and button - use precise relative positioning */}
-              <div className="absolute left-[64.1%] top-[17.6%] max-w-[40%]">
+              <div className="absolute left-[64.1%] top-[17.6%] max-w-[40%] hidden xl:block">
                 <p className="text-gray-600 text-sm mb-8">
                   Whether you are a future engineer, technology entrepreneur, or an explorer with a passion for innovation, IFA welcomes you to join us! Here,
                   you can meet like-minded partners, get mentors, master cutting-edge technology, and start a new journey of professional growth!
@@ -965,16 +961,103 @@ const HomePage: React.FC = () => {
                 </button>
               </div>
 
+              {/* Medium layout - only visible on lg to xl screens */}
+              <div className="absolute right-[5%] top-[5%] w-[40%] hidden lg:block xl:hidden">
+                <h2 className="text-2xl font-bold text-foreground text-right">Join the IFA community and expand the possibilities</h2>
+              </div>
+
+              {/* Mobile layout - only visible on smaller than lg screens */}
+              <div className="absolute right-[5%] top-[5%] w-[40%] lg:hidden text-right">
+                <h2 className="text-base sm:text-lg md:text-xl font-bold text-foreground">
+                  Join the IFA
+                  <br />
+                  community and
+                  <br />
+                  expand the
+                  <br />
+                  possibilities
+                </h2>
+              </div>
+
               {/* bottom tag list */}
-              <div className="absolute bottom-12 left-12 flex flex-col gap-4">
-                <div className="bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[32px]">
-                  <span className="text-base font-medium text-white">AI automatically pushes the latest events & information</span>
+              <div className="absolute bottom-4 sm:bottom-8 md:bottom-12 left-4 sm:left-8 md:left-12 flex flex-col gap-2 sm:gap-3 md:gap-4 hidden md:flex">
+                <div
+                  className="px-4 sm:px-6 md:px-10 py-2 sm:py-2.5 md:py-3 backdrop-blur-[4px] overflow-hidden"
+                  style={{
+                    borderRadius: "32px",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    position: "relative"
+                  }}
+                >
+                  <div
+                    style={{
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: "32px",
+                      padding: "1px",
+                      background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      WebkitMaskComposite: "xor",
+                      maskComposite: "exclude",
+                      pointerEvents: "none"
+                    }}
+                  />
+                  <span className="relative z-10 text-xs sm:text-sm md:text-base font-medium text-white line-clamp-1">
+                    AI automatically pushes the latest events & information
+                  </span>
                 </div>
-                <div className="bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[32px]">
-                  <span className="text-base font-medium text-white">IFA Connect (Forums & Resources)</span>
+
+                <div
+                  className="px-4 sm:px-6 md:px-10 py-2 sm:py-2.5 md:py-3 backdrop-blur-[4px] overflow-hidden"
+                  style={{
+                    borderRadius: "32px",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    position: "relative"
+                  }}
+                >
+                  <div
+                    style={{
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: "32px",
+                      padding: "1px",
+                      background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      WebkitMaskComposite: "xor",
+                      maskComposite: "exclude",
+                      pointerEvents: "none"
+                    }}
+                  />
+                  <span className="relative z-10 text-xs sm:text-sm md:text-base font-medium text-white line-clamp-1">IFA Connect (Forums & Resources)</span>
                 </div>
-                <div className="bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[32px]">
-                  <span className="text-base font-medium text-white">Industry mentor guidance & student exchange group</span>
+
+                <div
+                  className="px-4 sm:px-6 md:px-10 py-2 sm:py-2.5 md:py-3 backdrop-blur-[4px] overflow-hidden"
+                  style={{
+                    borderRadius: "32px",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    position: "relative"
+                  }}
+                >
+                  <div
+                    style={{
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: "32px",
+                      padding: "1px",
+                      background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      WebkitMaskComposite: "xor",
+                      maskComposite: "exclude",
+                      pointerEvents: "none"
+                    }}
+                  />
+                  <span className="relative z-10 text-xs sm:text-sm md:text-base font-medium text-white line-clamp-1">
+                    Industry mentor guidance & student exchange group
+                  </span>
                 </div>
               </div>
             </div>
@@ -1091,9 +1174,9 @@ const HomePage: React.FC = () => {
 
             {/* Footer Section */}
             <div className="bg-[#25292C] mt-[-280px] pt-[320px] pb-16 px-[5.6%]">
-              <div className="flex justify-between">
+              <div className="flex flex-col md:flex-row justify-between gap-8 md:gap-4">
                 {/* Logo and Brand */}
-                <div>
+                <div className="mb-8 md:mb-0">
                   <div className="flex items-center">
                     <img src="/assets/images/logo2.png" alt="INNOVATE FUTURE" className="w-10 h-10" />
                     <div className="flex flex-col ml-3">
@@ -1104,7 +1187,7 @@ const HomePage: React.FC = () => {
                 </div>
 
                 {/* Navigation Links */}
-                <div>
+                <div className="mb-8 md:mb-0">
                   <h3 className="text-white font-semibold mb-6">Your name</h3>
                   <ul className="flex flex-col gap-4">
                     {["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].map(item => (
@@ -1118,7 +1201,7 @@ const HomePage: React.FC = () => {
                 </div>
 
                 {/* Partner Links */}
-                <div>
+                <div className="mb-8 md:mb-0">
                   <h3 className="text-white font-semibold mb-6">Partner Links</h3>
                   <ul className="flex flex-col gap-4">
                     {["Sunflower AI", "Bookwell AI", "Beequant.AI", "Jobpin AI"].map(item => (
@@ -1132,16 +1215,16 @@ const HomePage: React.FC = () => {
                 </div>
 
                 {/* Newsletter Subscription - adjusted width and styling */}
-                <div className="max-w-[480px]">
+                <div className="max-w-full md:max-w-[480px]">
                   <h3 className="text-white font-semibold mb-6">Subscribe Newsletter</h3>
                   <p className="text-gray-400 mb-6">Subscribe to our newsletter to get updates about our services and offers.</p>
-                  <div className="flex bg-white rounded-lg p-1">
+                  <div className="flex flex-col sm:flex-row bg-white rounded-lg p-1">
                     <input
                       type="email"
                       placeholder="input your email"
                       className="flex-1 px-6 py-2 bg-transparent text-gray-900 placeholder:text-gray-500 focus:outline-none"
                     />
-                    <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">Subscribe</button>
+                    <button className="mt-2 sm:mt-0 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">Subscribe</button>
                   </div>
                 </div>
               </div>
