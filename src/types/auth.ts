@@ -18,6 +18,9 @@ export interface EmailVerificationCredential {
   token: string;
   profileId: string;
 }
+export interface ResendEmailCredential {
+  email: string;
+}
 
 export interface LoginCredential {
   email: string;
