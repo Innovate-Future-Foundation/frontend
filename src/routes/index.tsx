@@ -16,7 +16,6 @@ import ContactPage from "@/pages/Contacts";
 import TourBuilderPage from "@/pages/TourBuilder";
 import ForgotPasswordForm from "@/pages/Authentication/ForgotPasswordForm";
 import LoginForm from "@/pages/Authentication/LoginForm";
-import RegisterForm from "@/pages/Authentication/RegisterForm";
 import ContactLeader from "@/pages/TourBuilder/ContactLeader";
 import Schedule from "@/pages/TourBuilder/Schedule";
 import StudentsEnrollment from "@/pages/TourBuilder/StudentsEnrollment";
@@ -29,6 +28,7 @@ import HomePage from "@/pages/Home";
 import RedirectRoute from "@/components/ProtectedRoute/RedirectRoute";
 import ResetPassword from "@/pages/Authentication/ResetPassword";
 import DefaultDashboard from "@/pages/DefaultDashboard";
+import RegisterForm from "@/pages/Authentication/RegisterForm";
 
 export type AppRoute = RouteObject & {
   handle?: {
