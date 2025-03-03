@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
   EMAILVERIFICATION: "/email-verification",
   RESENDEMAIL: "/resend-verification-email",
   FORGOTPASSWORD: "/forgot-password",
+  RESETPASSWORD: "/reset-password",
   ME: "/me",
   LOGIN: "/login",
   LOGOUT: "/logout",

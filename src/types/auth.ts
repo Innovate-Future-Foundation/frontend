@@ -28,7 +28,11 @@ export interface LoginCredential {
   email: string;
   password: string;
 }
-
+export interface ResetPasswordCredential {
+  resetPasswordToken: string;
+  email: string;
+  newPassword: string;
+}
 export interface MyInfo {
   id: string;
   name: string;
