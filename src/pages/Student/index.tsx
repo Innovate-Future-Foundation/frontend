@@ -8,6 +8,7 @@ import { useStudent } from "@/hooks/profiles/useStudent";
 import { usePermissions } from "@/hooks/usePermissions";
 import { useTableFilters } from "@/hooks/useTableFilters";
 import { useNavigate } from "react-router-dom";
+import { useUpdateProfile } from "@/hooks/profiles/useUpdateProfile";
 
 const StudentPage = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const StudentPage = () => {
     sortings,
     searchKey
   });
+  const mutation = useUpdateProfile({});
 
   const tableData: TableBaseType<Profile>[] = useMemo(() => {
     return Array.isArray(studentsResponse?.data) ? studentsResponse?.data : [];
@@ -50,7 +52,7 @@ const StudentPage = () => {
       <DataTable
         totalItems={studentsResponse?.meta?.totalItems}
         limit={pagination.pageSize}
-        columns={profileColumns({ profilePath: "students", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate })}
+        columns={profileColumns({ profilePath: "students", hideRole: true, hideOrganisation: !needViewOrganisationOfUser, navigate, mutation })}
         data={tableData}
         isLoading={isLoadingStudents}
         searchPlaceholder="search by name, email or phone"

@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
 
-interface DropdownMenuItemType<T> {
+export interface DropdownMenuItemType<T> {
   label: string;
   onClick: (item: T) => void;
   className?: string;

@@ -7,8 +7,8 @@ import { ProfileInfo } from "@/types";
 import { profileApis } from "@/services/apiServices";
 
 interface useUpdateProfileProps {
-  handleSuccess: () => void;
-  handleError: () => void;
+  handleSuccess?: () => void;
+  handleError?: () => void;
 }
 
 export const useUpdateProfile = ({ handleSuccess, handleError }: useUpdateProfileProps) => {
@@ -24,11 +24,11 @@ export const useUpdateProfile = ({ handleSuccess, handleError }: useUpdateProfil
   return useMutation({
     mutationFn: ({ id, bodyData }: { id: string; bodyData: ProfileInfo }) => profileApis.updateProfile(id, bodyData),
     onSuccess: () => {
-      handleSuccess();
+      handleSuccess?.();
       queryClient.invalidateQueries({ queryKey: ["profiles"] });
     },
     onError: error => {
-      handleError();
+      handleError?.();
       setErrorProfiles(error);
       setIsErrorProfiles(true);
     }
