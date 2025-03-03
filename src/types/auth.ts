@@ -21,7 +21,9 @@ export interface EmailVerificationCredential {
 export interface ResendEmailCredential {
   email: string;
 }
-
+export interface ForgotPasswordCredential {
+  email: string;
+}
 export interface LoginCredential {
   email: string;
   password: string;

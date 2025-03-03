@@ -52,7 +52,6 @@ const LoginForm: React.FC = () => {
   const mutation = useLogin({ handleSuccess });
 
   const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
     mutation.mutate(data as LoginCredential);
   };
 
