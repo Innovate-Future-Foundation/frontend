@@ -74,12 +74,12 @@ const LoginForm: React.FC = () => {
               <FormFieldItem type="password" fieldControl={form.control} name="password" label="Password" placeholder="Enter your password" />
 
               <div className="text-right">
-                <Link className="font-bold text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgotpassword"}>
+                <Link className="font-bold text-sm text-secondary-foreground hover:text-secondary-foreground/80" to={"/auth/forgot-password"}>
                   Forgot Password?
                 </Link>
               </div>
             </div>
-            <Button type="submit" disabled={mutation.isPending || !formState.isValid} className="w-full flex items-center justify-center" size={"xl"}>
+            <Button type="submit" className="w-full flex items-center justify-center" size={"xl"}>
               {mutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign In"}
             </Button>
           </form>

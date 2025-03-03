@@ -28,6 +28,7 @@ import TourDetailPage from "@/pages/Tour/TourDetailPage";
 import EmailVerification from "@/pages/Authentication/EmailVerification";
 import HomePage from "@/pages/Home";
 import RedirectRoute from "@/components/ProtectedRoute/RedirectRoute";
+import ResetPassword from "@/pages/Authentication/ResetPassword";
 
 export type AppRoute = RouteObject & {
   handle?: {
@@ -57,7 +58,7 @@ const router: AppRoute[] = [
         element: <RegisterForm />
       },
       {
-        path: "forgotpassword",
+        path: "forgot-password",
         element: <ForgotPasswordForm />
       }
     ]
@@ -65,6 +66,10 @@ const router: AppRoute[] = [
   {
     path: "auth/signup/email-verification",
     element: <EmailVerification />
+  },
+  {
+    path: "auth/reset-password",
+    element: <ResetPassword />
   },
   {
     path: "dashboard",

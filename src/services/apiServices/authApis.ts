@@ -1,7 +1,14 @@
 import { API_ENDPOINTS } from "@/constants/apiConfig";
 import appRequest from "@/services/httpClient";
 import { Profile } from "@/types";
-import { EmailVerificationCredential, ForgotPasswordCredential, LoginCredential, RegisterOrgWithAdminCredentials, ResendEmailCredential } from "@/types/auth";
+import {
+  EmailVerificationCredential,
+  ForgotPasswordCredential,
+  LoginCredential,
+  RegisterOrgWithAdminCredentials,
+  ResendEmailCredential,
+  ResetPasswordCredential
+} from "@/types/auth";
 
 const getTokenReq = (codeQueryParams: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.AUTH}${API_ENDPOINTS.TOKEN}?${codeQueryParams}`);
 
@@ -24,8 +31,8 @@ const reSendEmailReq = (emailVerifyCredentialData: ResendEmailCredential) =>
 const forgotPasswordReq = (forgotPasswordCredentialData: ForgotPasswordCredential) =>
   appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.FORGOTPASSWORD}`, forgotPasswordCredentialData);
 
-// const resetPasswordReq = (emailVerifyCredentialData: EmailVerificationCredential) =>
-//   appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.EMAILVERIFICATION}`, emailVerifyCredentialData);
+const resetPasswordReq = (resetPasswordCredentialData: ResetPasswordCredential) =>
+  appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.RESETPASSWORD}`, resetPasswordCredentialData);
 
 const getMeReq = () => appRequest.get(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.ME}`);
 
@@ -38,5 +45,6 @@ export const authApis = {
   emailVerificationReq,
   reSendEmailReq,
   getMeReq,
-  forgotPasswordReq
+  forgotPasswordReq,
+  resetPasswordReq
 };

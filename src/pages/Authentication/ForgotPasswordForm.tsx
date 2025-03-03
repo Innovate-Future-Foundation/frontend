@@ -63,7 +63,7 @@ const ForgotPasswordForm: React.FC = () => {
                 <FormFieldItem fieldControl={form.control} name="email" label="Email" placeholder="Enter your email" />
               </div>
 
-              <Button size={"xl"} type="submit" className="w-full" disabled={!form.formState.isValid}>
+              <Button size={"xl"} type="submit" className="w-full">
                 {isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Send Reset Password Email"}
               </Button>
             </form>
