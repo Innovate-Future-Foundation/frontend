@@ -182,11 +182,7 @@ const RegisterForm: FC = () => {
     <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] px-6 overflow-hidden relative">
       {mutation.isSuccess ? (
         <div className="w-full max-w-[460px] 2xl:max-w-[600px] flex flex-col items-center justify-center ">
-          <EmailSendAnimation
-            handleButtonClick={handleResendVerificationEmail}
-            isInitalSuccess={mutation.isSuccess}
-            isResendSuccess={reSendEmailMutation.isSuccess}
-          />
+          <EmailSendAnimation handleButtonClick={handleResendVerificationEmail} isSuccess={mutation.isSuccess || reSendEmailMutation.isSuccess} />
           <Button type="button" onClick={() => navigate("/")} className="w-full" size={"xl"}>
             Back to Home
           </Button>

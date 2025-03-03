@@ -5,12 +5,11 @@ import React, { useEffect, useState } from "react";
 
 interface EmailSendAnimationProps {
   handleButtonClick?: () => void;
-  isInitalSuccess?: boolean;
-  isResendSuccess: boolean;
+  isSuccess?: boolean;
   message?: string;
 }
 
-const EmailSendAnimation: React.FC<EmailSendAnimationProps> = ({ handleButtonClick, isInitalSuccess, isResendSuccess, message }) => {
+const EmailSendAnimation: React.FC<EmailSendAnimationProps> = ({ handleButtonClick, isSuccess, message }) => {
   const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
@@ -23,28 +22,25 @@ const EmailSendAnimation: React.FC<EmailSendAnimationProps> = ({ handleButtonCli
 
   return (
     <motion.div
-      key={isResendSuccess || isInitalSuccess ? "success" : "error"}
-      initial={{ opacity: 0, y: isResendSuccess || isInitalSuccess ? 0 : -50 }}
+      key={isSuccess ? "success" : "error"}
+      initial={{ opacity: 0, y: isSuccess ? 0 : -50 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, x: isResendSuccess || isInitalSuccess ? -200 : 200 }}
+      exit={{ opacity: 0, x: isSuccess ? -200 : 200 }}
       className="flex items-center justify-center"
     >
       <div className="min-h-[400px] flex flex-col items-center justify-center text-center space-y-8">
-        {isResendSuccess || isInitalSuccess ? (
-          <SuccessAnimation
-            title={isInitalSuccess && !isResendSuccess ? "Send Email Sent!" : "Resend Email Successfully!"}
-            subtitle="Please check your email to verify your email."
-          />
-        ) : (
+        {message ? (
           <ErrorAnimation title="Verify Email Failed" subTitle={message || "Something went wrong."} />
+        ) : (
+          <SuccessAnimation title={"Email Sent!"} subtitle="Please check your email." />
         )}
 
         <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-muted-foreground">
           {countdown > 0 ? (
-            <span>{isResendSuccess ? `Resend Send email in ${countdown}s` : `Retry send Send email in ${countdown}s`}</span>
+            <span>{isSuccess ? `Resend Send email in ${countdown}s` : `Retry send Send email in ${countdown}s`}</span>
           ) : (
             <>
-              <span>{isResendSuccess ? "Didn't receive the email?" : "Want to try again?"}</span>
+              <span>{isSuccess ? "Didn't receive the email?" : "Want to try again?"}</span>
               <a
                 className="font-bold text-secondary-foreground hover:text-secondary-foreground/80 cursor-pointer"
                 onClick={() => {
@@ -52,7 +48,7 @@ const EmailSendAnimation: React.FC<EmailSendAnimationProps> = ({ handleButtonCli
                   setCountdown(60);
                 }}
               >
-                {isResendSuccess ? "Resend" : "Resend email"}
+                {isSuccess ? "Resend" : "Resend email"}
               </a>
             </>
           )}

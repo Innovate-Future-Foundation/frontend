@@ -57,7 +57,7 @@ const EmailVerification = () => {
         <EmailVerificationAnimation
           message={error?.message ?? reSendEmailMutation.error?.message}
           handleButtonClick={handleResendVerificationEmail}
-          isResendSuccess={reSendEmailMutation.isSuccess}
+          isSuccess={reSendEmailMutation.isSuccess}
         />
       )}
       {!isPending && !reSendEmailMutation.isPending && !isSuccess && !isError && <div className="text-center">Waiting for user action...</div>}

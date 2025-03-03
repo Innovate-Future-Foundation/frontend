@@ -20,6 +20,7 @@ export const API_ENDPOINTS = {
   REGISTER: "/register-organisation-admin",
   EMAILVERIFICATION: "/email-verification",
   RESENDEMAIL: "/resend-verification-email",
+  FORGOTPASSWORD: "/forgot-password",
   ME: "/me",
   LOGIN: "/login",
   LOGOUT: "/logout",

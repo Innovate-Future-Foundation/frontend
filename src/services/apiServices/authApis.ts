@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "@/constants/apiConfig";
 import appRequest from "@/services/httpClient";
 import { Profile } from "@/types";
-import { EmailVerificationCredential, LoginCredential, RegisterOrgWithAdminCredentials, ResendEmailCredential } from "@/types/auth";
+import { EmailVerificationCredential, ForgotPasswordCredential, LoginCredential, RegisterOrgWithAdminCredentials, ResendEmailCredential } from "@/types/auth";
 
 const getTokenReq = (codeQueryParams: URLSearchParams) => appRequest.get(`${API_ENDPOINTS.AUTH}${API_ENDPOINTS.TOKEN}?${codeQueryParams}`);
 
@@ -21,6 +21,9 @@ const emailVerificationReq = (emailVerifyCredentialData: EmailVerificationCreden
 const reSendEmailReq = (emailVerifyCredentialData: ResendEmailCredential) =>
   appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.RESENDEMAIL}`, emailVerifyCredentialData);
 
+const forgotPasswordReq = (forgotPasswordCredentialData: ForgotPasswordCredential) =>
+  appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.FORGOTPASSWORD}`, forgotPasswordCredentialData);
+
 // const resetPasswordReq = (emailVerifyCredentialData: EmailVerificationCredential) =>
 //   appRequest.post(`${API_ENDPOINTS.API_V1}${API_ENDPOINTS.AUTH}${API_ENDPOINTS.EMAILVERIFICATION}`, emailVerifyCredentialData);
 
@@ -34,5 +37,6 @@ export const authApis = {
   logoutReq,
   emailVerificationReq,
   reSendEmailReq,
-  getMeReq
+  getMeReq,
+  forgotPasswordReq
 };
