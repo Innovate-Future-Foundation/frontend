@@ -1,11 +1,12 @@
 import SuccessAnimation from "@/components/SuccessAnimation";
 import { useEmailVerification } from "@/hooks/auth/useEmailVerification";
-import { EmailVerificationCredential } from "@/types/auth";
+import { EmailVerificationCredential, ResendEmailCredential } from "@/types/auth";
 import { useEffect } from "react";
 import { FadeLoader } from "react-spinners";
-import VerificationFail from "../VerificationFail";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useReSendEmail } from "@/hooks/auth/useReSendEmail";
+import EmailVerificationAnimation from "../EmailSendAnimation";
 
 const EmailVerification = () => {
   const pathname = window.location.href;
@@ -26,11 +27,15 @@ const EmailVerification = () => {
     }, 5000);
   };
 
-  const { error, isError, isPending, isSuccess, mutate } = useEmailVerification({ handleSuccess });
+  const { error, isPending, isError, isSuccess, mutate } = useEmailVerification({ handleSuccess });
+
+  const reSendEmailMutation = useReSendEmail();
 
   const handleResendVerificationEmail = () => {
     console.debug("handleResendVerificationEmail...");
-    //todo: call ResendVerificationEmail api (email)
+    if (email) {
+      reSendEmailMutation.mutate({ email } as ResendEmailCredential);
+    }
   };
 
   useEffect(() => {
@@ -44,13 +49,18 @@ const EmailVerification = () => {
 
   return (
     <div className="w-screen h-screen w-max-[1440px] flex items-center justify-center ">
-      {isPending && <FadeLoader />}
-
-      {isSuccess && <SuccessAnimation title={"Verify Email Successfully!"} subtitle={"Redirect to landing page..."} />}
-
-      {isError && <VerificationFail errorMsg={error?.message ?? "An unknown error occurred."} handleButtonClick={handleResendVerificationEmail} />}
-
-      {!isPending && !isSuccess && !isError && <div className="text-center">Waiting for user action...</div>}
+      {isPending || reSendEmailMutation.isPending ? (
+        <FadeLoader />
+      ) : isSuccess ? (
+        <SuccessAnimation title={"Verify Email Successfully!"} subtitle={"Redirect to landing page..."} />
+      ) : (
+        <EmailVerificationAnimation
+          message={error?.message ?? reSendEmailMutation.error?.message}
+          handleButtonClick={handleResendVerificationEmail}
+          isResendSuccess={reSendEmailMutation.isSuccess}
+        />
+      )}
+      {!isPending && !reSendEmailMutation.isPending && !isSuccess && !isError && <div className="text-center">Waiting for user action...</div>}
     </div>
   );
 };

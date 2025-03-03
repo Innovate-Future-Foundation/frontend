@@ -9,9 +9,11 @@ import { FormFieldItem } from "@/components/FormField";
 import { Form } from "@/components/ui/form";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "@/hooks/auth/useRegister";
-import { RegisterOrgWithAdminCredentials } from "@/types/auth";
-import SendEmailSuccess from "./SendEmailSuccess";
+import { RegisterOrgWithAdminCredentials, ResendEmailCredential } from "@/types/auth";
+// import SendEmailSuccess from "./SendEmailSuccess";
 import { InputFile } from "@/components/InputFile";
+import { useReSendEmail } from "@/hooks/auth/useReSendEmail";
+import EmailSendAnimation from "./EmailSendAnimation";
 
 const signupFormSchema = z.object({
   orgName: z.string().min(2, "Organisation name must be at least 2 characters"),
@@ -108,14 +110,17 @@ const RegisterForm: FC = () => {
       password: ""
     }
   });
-  const { setFocus, reset, formState, getValues, getFieldState, trigger, handleSubmit, control } = form;
+  const { setFocus, formState, getFieldState, trigger, handleSubmit, control } = form;
+
   const handleSuccess = () => {
-    if (formState.isDirty) {
-      reset(getValues());
-    }
+    // if (formState.isDirty) {
+    //   reset(getValues());
+    // }
   };
 
   const mutation = useRegister({ handleSuccess });
+
+  const reSendEmailMutation = useReSendEmail();
 
   const onSubmit = (data: z.infer<typeof signupFormSchema>) => {
     console.log("data", data);
@@ -151,8 +156,10 @@ const RegisterForm: FC = () => {
   };
 
   const handleResendVerificationEmail = () => {
-    console.log("handleResendVerificationEmail...");
-    //todo: call ResendVerificationEmail api
+    const email = form.watch("userEmail");
+    if (email) {
+      reSendEmailMutation.mutate({ email } as ResendEmailCredential);
+    }
   };
 
   const handleGetUrl = async (url: string) => {
@@ -175,7 +182,11 @@ const RegisterForm: FC = () => {
     <div className="h-[calc(100vh-5rem)] min-h-[640px] flex flex-col items-center pt-[15vh] px-6 overflow-hidden relative">
       {mutation.isSuccess ? (
         <div className="w-full max-w-[460px] 2xl:max-w-[600px] flex flex-col items-center justify-center ">
-          <SendEmailSuccess handleButtonClick={handleResendVerificationEmail} />
+          <EmailSendAnimation
+            handleButtonClick={handleResendVerificationEmail}
+            isInitalSuccess={mutation.isSuccess}
+            isResendSuccess={reSendEmailMutation.isSuccess}
+          />
           <Button type="button" onClick={() => navigate("/")} className="w-full" size={"xl"}>
             Back to Home
           </Button>
