@@ -80,7 +80,7 @@ const Avatar: React.FC<AvatarProps> = ({
       ) : (
         <CNAvatar {...getRootProps()} className={cn(avatarStyle, className)} {...props}>
           {clickable ? <input {...getInputProps()} /> : null}
-          <AvatarImage src={avatarLink} alt={avatarAlt} {...imageProps} />
+          <AvatarImage src={avatarLink} alt={avatarAlt} {...imageProps} data-testid="avatar-image" />
           <AvatarFallback {...fallbackProps}>{avatarPlaceholder}</AvatarFallback>
         </CNAvatar>
       )}

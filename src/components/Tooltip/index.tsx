@@ -12,7 +12,7 @@ export const Tooltip: React.FC<TooltipProps> = ({ children, content, className }
     <TooltipProvider>
       <CNTooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent className={className}>
+        <TooltipContent className={className} data-testid="tooltip-content">
           <p>{content}</p>
         </TooltipContent>
       </CNTooltip>

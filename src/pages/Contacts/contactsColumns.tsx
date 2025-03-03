@@ -47,7 +47,11 @@ export const contactsColumns: ColumnDef<Profile>[] = [
         <div className="text-sm lowercase truncate max-w-100 flex items-center gap-2">
           {row.getValue("email")}
           {row.getValue("isConfirmed") ? (
-            <CheckCheck size={16} className={clsx(`${row.getValue("isActive") ? "text-secondary-foregroundGreen" : "text-primary-foreground60"}`)} />
+            <CheckCheck
+              size={16}
+              data-testid="CheckCheckIcon"
+              className={clsx(`${row.getValue("isActive") ? "text-secondary-foregroundGreen" : "text-primary-foreground60"}`)}
+            />
           ) : (
             ""
           )}

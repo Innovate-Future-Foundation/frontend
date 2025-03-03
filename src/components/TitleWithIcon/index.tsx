@@ -8,7 +8,8 @@ export interface TitleWithIconProps {
 export const TitleWithIcon: React.FC<TitleWithIconProps> = ({ icon: Icon, title }) => {
   return (
     <div className="inline-flex items-center gap-2 my-4">
-      <div className="p-2 bg-background rounded-md shadow-sm">
+      {/* <div className="p-2 bg-background rounded-md shadow-sm"> */}
+      <div className="p-2 bg-background rounded-md shadow-sm" data-testid="icon">
         <Icon className="h-4 w-4 text-secondary-foreground" />
       </div>
       <h2 className="capitalize text-xl font-semibold text-foreground">{title}</h2>
