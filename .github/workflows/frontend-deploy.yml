@@ -31,7 +31,6 @@ jobs:
   deploy:
     environment:
       name: ${{ inputs.environment }}
-      url: ${{ inputs.website_url }}
     runs-on: ubuntu-latest
 
     steps:
