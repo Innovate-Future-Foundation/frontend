@@ -1,13 +1,12 @@
 name: Frontend CD - Dev Deployment
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Frontend CI - Build & Test"]
     types:
       - completed
-    branches: [ dev ]
-  workflow_dispatch:
-    
+    branches: [dev]
 
 permissions:
   id-token: write
@@ -15,106 +14,13 @@ permissions:
 
 jobs:
   deploy-to-dev:
-    environment:
-      name: Development
-    env:
-      AWS_REGION: ap-southeast-2
-      DEV_FRONTEND_BUCKET: "dev-foundation-innovatefuture-dev-frontend-static"
-      DEV_CLOUDFRONT_ID: "E1ZS25NCQ6M256"
-      DEV_WEBSITE_URL: "https://dev.innovatefuture.foundation"
-      node_version: "22.1.0"
-    
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
-    
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.node_version }}
-          cache: 'npm'
-
-      - name: Debug Info
-        run: |
-          echo "Repository: ${{ github.repository }}"
-          echo "Ref: ${{ github.ref }}"
-          echo "Actor: ${{ github.actor }}"
-          echo "Event Name: ${{ github.event_name }}"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "OIDC Provider: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:oidc-provider/token.actions.githubusercontent.com"
-          echo "Role ARN: arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
-          echo "Workflow Run ID: ${{ github.event.workflow_run.id }}"
-          echo "Workflow Run Number: ${{ github.event.workflow_run.run_number }}"
-          echo "Workflow Run Conclusion: ${{ github.event.workflow_run.conclusion }}"
-          echo "Workflow Run Head Branch: ${{ github.event.workflow_run.head_branch }}"
-          echo "Workflow Run Head SHA: ${{ github.event.workflow_run.head_sha }}"
-          echo "Workflow Run Event: ${{ github.event.workflow_run.event }}"
-          echo "Workflow Run Status: ${{ github.event.workflow_run.status }}"
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
-          aws-region: ${{ env.AWS_REGION }}
-          audience: "sts.amazonaws.com"
-
-      - name: Debug Deployment Info
-        run: |
-          echo "Event name: ${{ github.event_name }}"
-          echo "Workflow run number: ${{ github.event.workflow_run.run_number }}"
-          echo "Workflow run id: ${{ github.event.workflow_run.id }}"
-          echo "Workflow name: ${{ github.event.workflow_run.name }}"
-          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
-
-      - name: Download Production Assets
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-dist-${{ github.event.workflow_run.run_number }}
-          path: dist
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Deploy to Dev S3
-        run: |
-          aws s3 sync dist/ s3://${{ env.DEV_FRONTEND_BUCKET }} \
-          --delete \
-          --cache-control "max-age=31536000,public"
-
-      - name: Invalidate CloudFront
-        run: |
-          aws cloudfront create-invalidation \
-          --distribution-id ${{ env.DEV_CLOUDFRONT_ID }} \
-          --paths "/*"
-
-      - name: Verify Deployment
-        run: |
-          echo "Verifying deployment..."
-          retries=3
-          while [ $retries -gt 0 ]; do
-            response_code=$(curl -s -o /dev/null -w "%{http_code}" ${{ env.DEV_WEBSITE_URL }})
-            if [[ $response_code =~ ^2 ]]; then
-              echo "✅ Deployment verified!!"
-              exit 0
-            fi
-            retries=$((retries-1))
-            [ $retries -gt 0 ] && sleep 10
-          done
-          exit 1
-
-      - name: Notify Discord
-        if: always()
-        uses: tsickert/discord-webhook@v6.0.0
-        with:
-          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
-          thread-id: "1330422313769893938"
-          username: "Frontend Deploy Bot"
-          content: |
-            ${{ job.status == 'success' && '✅ Frontend Dev Deployment Successful!' || '❌ Frontend Dev Deployment Failed!' }}
-            **Environment:** Development
-            **Build:** ${{ github.run_number }}
-            **Status:** ${{ job.status }}
-            **Website:** ${{ env.DEV_WEBSITE_URL }}
-            ${{ job.status != 'success' && '<@&1315850473391001674>' || '' }} 
+    uses: ./.github/workflows/frontend-deploy.yml
+    with:
+      environment: Development
+      bucket_name: dev-foundation-innovatefuture-dev-frontend-static
+      website_url: https://dev.innovatefuture.foundation
+      api_url: https://dev.innovatefuture.foundation
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_DEV_ACCOUNT }}
+      DISCORD_WEBHOOK: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+      CLOUDFRONT_ID: ${{ secrets.DEV_CLOUDFRONT_ID }}
