@@ -104,7 +104,7 @@ export const SaveButton: React.FC<{
 
 const FormWrapper: React.FC<FormPieceProp> = ({ formTitle, children, onSave, disabled = true, isPending = false, isSuccess = false, isError = false }) => {
   return (
-    <Card className="rounded-lg shadow-none w-full overflow-hidden bg-transparent">
+    <Card className="rounded-lg border w-full overflow-hidden bg-background shadow-none">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg text-primary-foreground30">{formTitle}</CardTitle>
