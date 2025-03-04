@@ -34,7 +34,6 @@ export interface FormInputs {
 
 interface props {
   roleInvited: RoleType;
-  // onSubmit: (data: FormInputs) => Promise<void>;
   children: React.ReactNode;
 }
 

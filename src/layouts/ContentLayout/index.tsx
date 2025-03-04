@@ -27,7 +27,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = ({
     <div className="flex justify-between items-center w-full bg-accent px-6">
       <TitleWithIcon {...props} />
       {onInviteClick ? (
-        <InviteModal roleInvited={roleInvited} onSubmit={onInviteClick}>
+        <InviteModal roleInvited={roleInvited}>
           <Button className="capitalize active:scale-95 transition-transform duration-100">
             <Plus className="h-4 w-4" strokeWidth={3} />
             {inviteLabel}
