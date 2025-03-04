@@ -11,7 +11,6 @@ import ProfileDetailPage from "@/pages/Profile/ProfileDetailPage";
 import OrgTeacherPage from "@/pages/OrgTeacher";
 import OrgAdminPage from "@/pages/OrgAdmin";
 import EventPage from "@/pages/Event";
-import DefaultDashboardPage from "@/pages/DefaultDashboard";
 import OrgManagerPage from "@/pages/OrgManager";
 import ContactPage from "@/pages/Contacts";
 import TourBuilderPage from "@/pages/TourBuilder";
@@ -29,6 +28,7 @@ import EmailVerification from "@/pages/Authentication/EmailVerification";
 import HomePage from "@/pages/Home";
 import RedirectRoute from "@/components/ProtectedRoute/RedirectRoute";
 import ResetPassword from "@/pages/Authentication/ResetPassword";
+import DefaultDashboard from "@/pages/DefaultDashboard";
 
 export type AppRoute = RouteObject & {
   handle?: {
@@ -81,7 +81,7 @@ const router: AppRoute[] = [
     children: [
       {
         index: true,
-        element: <DefaultDashboardPage />,
+        element: <DefaultDashboard />,
         handle: { breadcrumb: "dashboard" }
       },
       {

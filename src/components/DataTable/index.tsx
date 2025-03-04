@@ -200,7 +200,7 @@ const DataTable = <T extends object>({
               <Table>
                 <TableHeader className="bg-accent">
                   {table.getHeaderGroups().map(headerGroup => (
-                    <TableRow key={headerGroup.id} className="border-none ">
+                    <TableRow key={headerGroup.id} className="border-none">
                       {headerGroup.headers.map(header => {
                         return (
                           <TableHead className="text-primary-foreground50 text-sm " key={header.id}>
@@ -211,7 +211,7 @@ const DataTable = <T extends object>({
                     </TableRow>
                   ))}
                 </TableHeader>
-                <TableBody>
+                <TableBody className="bg-background">
                   {table.getRowModel().rows?.length ? (
                     table.getRowModel().rows.map(row => (
                       <React.Fragment key={row.id}>
@@ -266,7 +266,7 @@ const DataTable = <T extends object>({
                     <Card
                       key={row.id}
                       className={
-                        "border relative w-full shadow-none rounded-lg overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-accent/30 hover:shadow-primary-light"
+                        "border bg-background relative w-full shadow-none rounded-lg overflow-hidden hover:scale-102 hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out hover:bg-background hover:shadow-primary-light"
                       }
                     >
                       {row.getVisibleCells().map(cell => {
