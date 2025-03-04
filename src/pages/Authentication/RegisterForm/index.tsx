@@ -52,7 +52,10 @@ const signupFormSchema = z.object({
   }),
   websiteUrl: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
   logoUrl: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
-  userName: z.string().min(2, "Admin name must be at least 2 characters"),
+  userName: z
+    .string()
+    .min(2, "Username must be at least 2 characters.")
+    .regex(/^[A-Za-z0-9]+$/, "Username can only contain letters and digits."),
   userEmail: z.string().email("Please enter a valid email address"),
   password: z
     .string()
