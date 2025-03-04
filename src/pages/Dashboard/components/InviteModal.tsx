@@ -82,9 +82,7 @@ const InviteModal: React.FC<props> = ({ roleInvited, children }) => {
     })();
   }, [inviteUserForm, isParentEmailShowToggle]);
 
-  const { reset } = inviteUserForm;
-
-  const { mutate, isPending, isSuccess, isError } = useInviteUser({});
+  const { mutate, isPending, isSuccess, isError, reset } = useInviteUser({});
   const { parentsData, isSuccessGetParents } = useParent({ limit: 8, searchKey: inputValue, filters: { isActive: true, isConfirmed: true } });
 
   const handleFormSubmit: SubmitHandler<FormInputs> = useCallback(
@@ -104,23 +102,22 @@ const InviteModal: React.FC<props> = ({ roleInvited, children }) => {
   };
 
   const onOpenChangeHandler = (open: boolean) => {
-    reset();
+    inviteUserForm.reset();
     setIsParentEmailShowToggle(false);
     setIsDialogOpen(open);
   };
 
   useEffect(() => {
-    console.log("isSuccess:", isSuccess);
-    console.log("isError:", isError);
     if (isSuccess || isError) {
       setTimeout(() => {
         setIsAlertDialogOpen(false);
         setIsDialogOpen(false);
-        reset();
+        inviteUserForm.reset();
         setIsParentEmailShowToggle(false);
+        reset();
       }, 1500);
     }
-  }, [isSuccess, isError, reset]);
+  }, [isSuccess, isError, inviteUserForm, reset]);
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={onOpenChangeHandler}>
