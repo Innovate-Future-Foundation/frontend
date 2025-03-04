@@ -1,5 +1,5 @@
 import { Address } from "./organisation";
-import { Profile } from "./profile";
+import { Profile, RoleType } from "./profile";
 
 export interface RegisterOrgWithAdminCredentials {
   orgName: string;
@@ -24,6 +24,12 @@ export interface ResendEmailCredential {
 export interface ForgotPasswordCredential {
   email: string;
 }
+export interface InviteUserCredential {
+  email: string;
+  name: string;
+  roleCode: RoleType;
+}
+
 export interface LoginCredential {
   email: string;
   password: string;

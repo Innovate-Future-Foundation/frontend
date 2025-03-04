@@ -13,7 +13,7 @@ import { RegisterOrgWithAdminCredentials, ResendEmailCredential } from "@/types/
 // import SendEmailSuccess from "./SendEmailSuccess";
 import { InputFile } from "@/components/InputFile";
 import { useReSendEmail } from "@/hooks/auth/useReSendEmail";
-import EmailSendAnimation from "./EmailSendAnimation";
+import EmailSendAnimation from "../EmailSendAnimation";
 
 const signupFormSchema = z.object({
   orgName: z.string().min(2, "Organisation name must be at least 2 characters"),

@@ -11,6 +11,7 @@ export const ERROR_MESSAGES = {
   FAIL_TO_FETCH_USER_INFO: "Fail to onboard",
   FAIL_TO_LOGIN: "Fail to login.",
   FAIL_TO_LOGOUT: "Fail to logout.",
+  FAIL_TO_INVITE_USER: "fail to invite user",
   FAIL_TO_UPLOAD_IMAGE: "Fail to upload image.",
   FAIL_TO_SEND_VERIFICATION_EMAIL: "Fail to sent verification email.",
   FAIL_TO_FETCH_ORGANISATIONS: "Fail to get organisations",

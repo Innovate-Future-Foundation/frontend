@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForgotPassword } from "@/hooks/auth/useForgotPassword";
 import { Loader2 } from "lucide-react";
-import EmailSendAnimation from "./EmailSendAnimation";
+import EmailSendAnimation from "../EmailSendAnimation";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email({
