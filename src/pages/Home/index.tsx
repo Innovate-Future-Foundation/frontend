@@ -163,7 +163,7 @@ const HomePage: React.FC = () => {
                 <p className="text-white/90 text-xs md:text-sm leading-relaxed max-w-[80%]">{tab.content}</p>
               </div>
 
-              {/* Tab 03 - Complex layout with modules */}
+              {/* Tab 03 - Complex layout with different modules */}
               {tab.id === "03" && tab.modules ? (
                 <div className="flex flex-col gap-8 md:gap-16">
                   {/* Modules grid - responsive layout */}
