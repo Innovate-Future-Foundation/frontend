@@ -9,9 +9,6 @@ on:
       bucket_name:
         required: true
         type: string
-      cloudfront_id:
-        required: true
-        type: string
       website_url:
         required: true
         type: string
@@ -22,6 +19,8 @@ on:
       AWS_ACCOUNT_ID:
         required: true
       DISCORD_WEBHOOK:
+        required: true
+      CLOUDFRONT_ID:
         required: true
 
 env:
@@ -62,7 +61,7 @@ jobs:
       - name: Invalidate CloudFront
         run: |
           aws cloudfront create-invalidation \
-          --distribution-id ${{ inputs.cloudfront_id }} \
+          --distribution-id ${{ secrets.CLOUDFRONT_ID }} \
           --paths "/*"
 
       - name: Verify Deployment

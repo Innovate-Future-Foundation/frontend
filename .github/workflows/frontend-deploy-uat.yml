@@ -18,9 +18,9 @@ jobs:
     with:
       environment: UAT
       bucket_name: uat-foundation-innovatefuture-uat-frontend-static
-      cloudfront_id: E3JTL07A6BPHK
-      website_url: https://uat.innovatefuture.foundation
-      api_url: https://uat.innovatefuture.foundation
+      website_url: https://uat01.innovatefuture.foundation
+      api_url: https://uat01.innovatefuture.foundation
     secrets:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_UAT_ACCOUNT }}
       DISCORD_WEBHOOK: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+      CLOUDFRONT_ID: ${{ secrets.UAT_CLOUDFRONT_ID }}
