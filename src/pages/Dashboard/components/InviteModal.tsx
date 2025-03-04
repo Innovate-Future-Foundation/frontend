@@ -26,7 +26,6 @@ import { mapRoleTypeToString } from "@/constants/mapper";
 import { useInviteUser } from "@/hooks/auth/useInviteUser";
 import SuccessAnimation from "@/components/SuccessAnimation";
 import { useParent } from "@/hooks/profiles/useParent";
-
 export interface FormInputs {
   name: string;
   email: string;
@@ -46,7 +45,6 @@ const InviteModal: React.FC<props> = ({ roleInvited, children }) => {
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [isParentEmailShowToggle, setIsParentEmailShowToggle] = useState(false);
   const [inputValue, setInputValue] = useState<string>("");
-
   const inviteUserFormSchema = (roleInvited: string) => {
     return z.object({
       avatarLink: z.string().optional(),
@@ -87,21 +85,11 @@ const InviteModal: React.FC<props> = ({ roleInvited, children }) => {
 
   const { reset } = inviteUserForm;
 
-  const handleSuccess = () => {
-    reset();
-    setIsParentEmailShowToggle(false);
-  };
-  const handleError = () => {
-    reset();
-    setIsParentEmailShowToggle(false);
-  };
-
-  const { mutate, isPending, isSuccess } = useInviteUser({ handleSuccess, handleError });
+  const { mutate, isPending, isSuccess, isError } = useInviteUser({});
   const { parentsData, isSuccessGetParents } = useParent({ limit: 8, searchKey: inputValue, filters: { isActive: true, isConfirmed: true } });
 
   const handleFormSubmit: SubmitHandler<FormInputs> = useCallback(
     async data => {
-      setIsAlertDialogOpen(false);
       if (roleInvited !== "Student" || !isParentEmailShowToggle) {
         delete data.parentEmail;
       }
@@ -121,6 +109,19 @@ const InviteModal: React.FC<props> = ({ roleInvited, children }) => {
     setIsParentEmailShowToggle(false);
     setIsDialogOpen(open);
   };
+
+  useEffect(() => {
+    console.log("isSuccess:", isSuccess);
+    console.log("isError:", isError);
+    if (isSuccess || isError) {
+      setTimeout(() => {
+        setIsAlertDialogOpen(false);
+        setIsDialogOpen(false);
+        reset();
+        setIsParentEmailShowToggle(false);
+      }, 1500);
+    }
+  }, [isSuccess, isError, reset]);
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={onOpenChangeHandler}>
