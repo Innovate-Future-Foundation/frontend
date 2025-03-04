@@ -103,10 +103,14 @@ const Header: React.FC<HeaderProps> = ({ fromHome }) => {
 
       {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
-        <div className="xl:hidden fixed inset-0 bg-background z-50">
-          <div className="flex flex-col h-full">
+        <div className="xl:hidden fixed inset-0 z-50">
+          {/* Backdrop overlay */}
+          <div className="absolute inset-0 bg-black/50" onClick={() => setIsMobileMenuOpen(false)} />
+
+          {/* Menu container - full screen */}
+          <div className="relative h-full w-full flex flex-col bg-white">
             {/* Mobile menu header */}
-            <div className="flex items-center justify-between p-5 border-b">
+            <div className="flex items-center justify-between p-5 border-b bg-white">
               <div className="flex items-center">
                 <img src="/assets/images/logo1.png" alt="INNOVATE FUTURE" className="w-8 h-8" />
                 <div className="flex flex-col ml-2">
@@ -114,7 +118,7 @@ const Header: React.FC<HeaderProps> = ({ fromHome }) => {
                   <span className="text-primary text-xs font-bold">ASSOCIATION</span>
                 </div>
               </div>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2">
+              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-primary/10 rounded-lg transition-colors">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -122,7 +126,7 @@ const Header: React.FC<HeaderProps> = ({ fromHome }) => {
             </div>
 
             {/* Mobile menu items */}
-            <div className="flex flex-col p-5 space-y-4">
+            <div className="flex flex-col p-5 space-y-6 bg-white">
               {["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].map(item => (
                 <div
                   key={item}
@@ -130,11 +134,33 @@ const Header: React.FC<HeaderProps> = ({ fromHome }) => {
                     setActiveItem(item);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={clsx("text-lg font-medium cursor-pointer", activeItem === item ? "text-primary" : "text-foreground hover:text-primary")}
+                  className={clsx(
+                    "text-xl font-bold cursor-pointer relative group",
+                    activeItem === item ? "text-primary" : "text-foreground hover:text-primary"
+                  )}
                 >
                   {item}
+                  <div
+                    className={clsx(
+                      "absolute -bottom-2 left-0 w-8 h-1 bg-primary rounded-full transition-transform duration-300 origin-left",
+                      activeItem === item ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    )}
+                  />
                 </div>
               ))}
+            </div>
+
+            {/* Call to action buttons */}
+            <div className="mt-auto p-5 border-t bg-white">
+              {isAuthenticated && userProfile ? (
+                <Button variant="default" className="w-full" onClick={() => navigate("/dashboard")}>
+                  Dashboard
+                </Button>
+              ) : (
+                <Button variant="default" className="w-full" onClick={() => navigate("/auth")}>
+                  Sign In
+                </Button>
+              )}
             </div>
           </div>
         </div>
