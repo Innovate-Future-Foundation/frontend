@@ -39,6 +39,9 @@ interface Tab {
   whyChooseIFA?: WhyChooseIFA;
 }
 
+{
+  /*Home Page*/
+}
 const HomePage: React.FC = () => {
   const [activeCard, setActiveCard] = useState<number | null>(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
