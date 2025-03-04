@@ -12,7 +12,10 @@ export default {
 			'2xl': '1536px', // @media (min-width: 1536px) { ... }
 		},
 		extend: {
-			boxShadow: {},
+			boxShadow: {
+				'soft': '0 10px 30px rgba(0,0,0,0.05)',
+				'inner-soft': 'inset 0 2px 6px rgba(0,0,0,0.02)',
+			},
 			spacing: {},
 			borderWidth: {},
 			borderRadius: {

@@ -9,6 +9,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  background: linear-gradient(135deg, #fafafe 0%, #ffffff 100%);
 }
 html {
   font-size: 16px;
