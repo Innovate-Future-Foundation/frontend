@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import technologyIcon from "/assets/icons/futureScienceTechnologyEducation.svg";
 import educationIcon from "/assets/icons/internationalStudyToursExploration.svg";
 import mentorIcon from "/assets/icons/industryMentorGrowthCommunity.svg";
@@ -10,6 +11,7 @@ import industryMentor from "/assets/images/industryMentorPracticalTraining.jpg";
 import exclusiveCommunity from "/assets/images/exclusiveCommunityNetworkExpansion.jpg";
 import aiCompetition from "/assets/images/aiScienceTechnologyCompetition.jpg";
 import MainLayout from "@/layouts/MainLayout";
+import clsx from "clsx";
 
 interface WhyChooseIFABenefit {
   title: string;
@@ -37,8 +39,14 @@ interface Tab {
   whyChooseIFA?: WhyChooseIFA;
 }
 
+{
+  /*Home Page*/
+}
 const HomePage: React.FC = () => {
   const [activeCard, setActiveCard] = useState<number | null>(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState("Home");
+  const navigate = useNavigate();
 
   const CorePrograms = () => {
     const [activeTab, setActiveTab] = useState("01");
@@ -149,13 +157,13 @@ const HomePage: React.FC = () => {
               {/* Header section */}
               <div className="bg-foreground rounded-3xl mx-[-24px] mt-[-24px] p-6 sm:p-8 md:p-12 text-primary-foreground mb-8 md:mb-12">
                 <div className="flex items-center gap-4 mb-4 md:mb-8">
-                  <span className="text-2xl md:text-3xl font-bold">{tab.id}</span>
-                  <h3 className="text-xl md:text-2xl font-bold">{tab.title}</h3>
+                  <span className="text-2xl md:text-3xl font-bold text-white">{tab.id}</span>
+                  <h3 className="text-xl md:text-2xl font-bold text-white">{tab.title}</h3>
                 </div>
-                <p className="text-muted-foreground text-xs md:text-sm leading-relaxed max-w-[80%]">{tab.content}</p>
+                <p className="text-white/90 text-xs md:text-sm leading-relaxed max-w-[80%]">{tab.content}</p>
               </div>
 
-              {/* Tab 03 - Complex layout with modules */}
+              {/* Tab 03 - Complex layout with different modules */}
               {tab.id === "03" && tab.modules ? (
                 <div className="flex flex-col gap-8 md:gap-16">
                   {/* Modules grid - responsive layout */}
@@ -299,6 +307,83 @@ const HomePage: React.FC = () => {
 
   return (
     <MainLayout>
+      {/* Mobile Navigation Menu */}
+      {isMobileMenuOpen && (
+        <div className="xl:hidden fixed inset-0 z-50">
+          {/* Backdrop with blur effect */}
+          <div className="absolute inset-0 bg-black opacity-50" onClick={() => setIsMobileMenuOpen(false)} />
+
+          {/* Menu Content */}
+          <nav className="relative h-full w-[80%] max-w-sm flex flex-col bg-white shadow-lg">
+            {/* Menu header */}
+            <div className="flex items-center justify-between p-4 border-b">
+              <div className="flex items-center">
+                <img src="/assets/images/logo1.png" alt="INNOVATE FUTURE" className="w-8 h-8" />
+                <div className="flex flex-col ml-2">
+                  <span className="font-bold text-sm text-primary">INNOVATE FUTURE</span>
+                  <span className="text-primary text-xs font-bold">ASSOCIATION</span>
+                </div>
+              </div>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-primary/10 rounded-lg transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Mobile menu items */}
+            <div className="flex flex-col p-6 bg-white">
+              {["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].map(item => (
+                <div key={item} className="relative group py-4">
+                  <div
+                    onClick={() => {
+                      setActiveItem(item);
+                      setIsMobileMenuOpen(false);
+                      navigate(item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "")}`);
+                    }}
+                    className={clsx(
+                      "text-base font-['Helvetica-Rounded-Bold'] font-bold cursor-pointer transition-colors whitespace-nowrap",
+                      activeItem === item ? "text-primary" : "text-foreground hover:text-primary"
+                    )}
+                  >
+                    {item}
+                  </div>
+                  <div
+                    className={clsx(
+                      "absolute -bottom-2 left-0 w-12 h-1 bg-primary rounded-full transition-transform duration-300 origin-left",
+                      activeItem === item ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    )}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Call to action buttons */}
+            <div className="mt-auto p-6 space-y-4">
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  navigate("/auth");
+                }}
+                className="w-full px-6 py-3 rounded-full border border-primary-foreground30 text-sm font-medium text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors"
+              >
+                Sign In
+              </button>
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  navigate("/join");
+                }}
+                className="w-full px-6 py-3 rounded-full bg-primary text-white font-medium text-sm hover:bg-primary/90 transition-colors"
+              >
+                Join a Program
+              </button>
+            </div>
+          </nav>
+        </div>
+      )}
+
+      {/* Main content */}
       <div className="w-full min-h-screen bg-secondary-light">
         <div className="w-full  min-h-screen bg-background">
           <div className="px-[5.6%] pt-20">
@@ -735,43 +820,40 @@ const HomePage: React.FC = () => {
           <CorePrograms />
 
           {/* Trusted by Global Leaders in Education & Tech */}
-          <div className="px-[5.6%] py-32 bg-white">
-            <h2 className="text-3xl font-bold text-center mb-16">Trusted by Global Leaders in Education & Tech</h2>
+          <div className="px-[5.6%] py-16 md:py-24 lg:py-32 bg-white">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12 lg:mb-16">Trusted by Global Leaders in Education & Tech</h2>
 
-            <div className="flex flex-col gap-16">
-              {/* first row */}
-              <div className="flex justify-center items-center gap-20">
-                <img src="/assets/images/aws.jpg" alt="AWS" className="h-16 object-contain" />
-                <img src="/assets/images/google.jpg" alt="Google" className="h-16 object-contain" />
-                <img src="/assets/images/microsoft.jpg" alt="Microsoft" className="h-16 object-contain" />
-                <img src="/assets/images/tesla.jpg" alt="Tesla" className="h-16 object-contain" />
-                <img src="/assets/images/openai.jpg" alt="OpenAI" className="h-16 object-contain" />
-              </div>
+            <div className="flex flex-col gap-8 md:gap-12 lg:gap-16">
+              {/* Partners grid - all rows combined into a responsive grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-10 lg:gap-20 justify-items-center">
+                {/* First row */}
+                <img src="/assets/images/aws.jpg" alt="AWS" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/google.jpg" alt="Google" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/microsoft.jpg" alt="Microsoft" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/tesla.jpg" alt="Tesla" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/openai.jpg" alt="OpenAI" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
 
-              {/* second row */}
-              <div className="flex justify-center items-center gap-20">
-                <img src="/assets/images/jobpin.png" alt="JobPin" className="h-16 object-contain" />
-                <img src="/assets/images/jrAcademy.png" alt="JR Academy" className="h-16 object-contain" />
-                <img src="/assets/images/mit.jpg" alt="MIT" className="h-16 object-contain" />
-                <img src="/assets/images/stanford.jpg" alt="Stanford" className="h-16 object-contain" />
-                <img src="/assets/images/harvard.png" alt="Harvard" className="h-16 object-contain" />
-              </div>
+                {/* Second row */}
+                <img src="/assets/images/jobpin.png" alt="JobPin" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/jrAcademy.png" alt="JR Academy" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/mit.jpg" alt="MIT" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/stanford.jpg" alt="Stanford" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/harvard.png" alt="Harvard" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
 
-              {/* third row */}
-              <div className="flex justify-center items-center gap-20">
-                <img src="/assets/images/usyd.png" alt="University of Sydney" className="h-16 object-contain" />
-                <img src="/assets/images/uq.png" alt="University of Queensland" className="h-16 object-contain" />
-                <img src="/assets/images/rmit.jpg" alt="RMIT" className="h-16 object-contain" />
-                <img src="/assets/images/y.jpg" alt="Y Combinator" className="h-16 object-contain" />
-                <img src="/assets/images/awsStartup.jpg" alt="AWS Startups" className="h-16 object-contain" />
+                {/* Third row */}
+                <img src="/assets/images/usyd.png" alt="University of Sydney" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/uq.png" alt="University of Queensland" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/rmit.jpg" alt="RMIT" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/y.jpg" alt="Y Combinator" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
+                <img src="/assets/images/awsStartup.jpg" alt="AWS Startups" className="h-10 sm:h-12 md:h-14 lg:h-16 object-contain" />
               </div>
             </div>
 
             {/* Become a Partner Button */}
-            <div className="flex justify-center mt-16">
-              <button className="px-6 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
+            <div className="flex justify-center mt-8 md:mt-12 lg:mt-16">
+              <button className="px-5 py-2.5 md:px-6 md:py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                 Become a Partner
-                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                <div className="w-5 h-5 md:w-6 md:h-6 bg-white rounded-full flex items-center justify-center">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="text-primary">
                     <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -782,11 +864,82 @@ const HomePage: React.FC = () => {
 
           {/* Membership Section */}
           <div className="px-[5.6%] py-16">
-            <h2 className="text-3xl font-bold text-center mb-16">Unlock Your Potential with IFA Membership</h2>
+            <h2 className="text-2xl sm:text-2xl lg:text-3xl font-bold text-center mb-8 sm:mb-10 lg:mb-16">Unlock Your Potential with IFA Membership</h2>
 
-            {/* Event Cards Grid */}
-            <div className="grid grid-cols-4 gap-6 mb-16">
-              {/* General AI Professional Development */}
+            {/* Event Cards - Mobile View */}
+            <div className="flex flex-col gap-6 md:hidden mb-8">
+              {/* General AI Professional Development - Mobile */}
+              <div className="flex flex-col h-full justify-between bg-white rounded-xl shadow-sm p-4">
+                <div>
+                  <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-3">
+                    <img
+                      src="/assets/images/generalAiProfessionalDevelopment.jpg"
+                      alt="General AI Professional Development"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-base font-semibold mb-2">General AI Professional Development</h3>
+                </div>
+                <button className="font-['Helvetica'] flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold group">
+                  Read More
+                  <div className="w-5 h-5 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary/10">
+                    <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
+                  </div>
+                </button>
+              </div>
+
+              {/* Quantum Computing Seminar - Mobile */}
+              <div className="flex flex-col h-full justify-between bg-white rounded-xl shadow-sm p-4">
+                <div>
+                  <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-3">
+                    <img src="/assets/images/quantumComputingSeminar.jpg" alt="Quantum Computing Seminar" className="w-full h-full object-cover" />
+                  </div>
+                  <h3 className="text-base font-semibold mb-2">Quantum Computing Seminar</h3>
+                </div>
+                <button className="font-['Helvetica'] flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold group">
+                  Read More
+                  <div className="w-5 h-5 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary/10">
+                    <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
+                  </div>
+                </button>
+              </div>
+
+              {/* AI in AWS - Mobile */}
+              <div className="flex flex-col h-full justify-between bg-white rounded-xl shadow-sm p-4">
+                <div>
+                  <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-3">
+                    <img src="/assets/images/allInAws.jpg" alt="AI in AWS" className="w-full h-full object-cover" />
+                  </div>
+                  <h3 className="text-base font-semibold mb-2">AI in AWS</h3>
+                </div>
+                <button className="font-['Helvetica'] flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold group">
+                  Read More
+                  <div className="w-5 h-5 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary/10">
+                    <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
+                  </div>
+                </button>
+              </div>
+
+              {/* Past Events for Shanghai - Mobile */}
+              <div className="flex flex-col h-full justify-between bg-white rounded-xl shadow-sm p-4">
+                <div>
+                  <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-3">
+                    <img src="/assets/images/pastEventsForShanghai.jpg" alt="Past Events for Shanghai" className="w-full h-full object-cover" />
+                  </div>
+                  <h3 className="text-base font-semibold mb-2">Past Events for Shanghai</h3>
+                </div>
+                <button className="font-['Helvetica'] flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-semibold group">
+                  Read More
+                  <div className="w-5 h-5 bg-secondary rounded-full flex items-center justify-center group-hover:bg-primary/10">
+                    <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2 h-2 group-hover:brightness-0 group-hover:invert" />
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Event Cards Grid - Desktop View */}
+            <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              {/* General AI Professional Development - Desktop */}
               <div className="flex flex-col h-full justify-between">
                 <div>
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
@@ -806,7 +959,7 @@ const HomePage: React.FC = () => {
                 </button>
               </div>
 
-              {/* Quantum Computing Seminar */}
+              {/* Quantum Computing Seminar - Desktop */}
               <div className="flex flex-col h-full justify-between">
                 <div>
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
@@ -822,7 +975,7 @@ const HomePage: React.FC = () => {
                 </button>
               </div>
 
-              {/* AI in AWS */}
+              {/* AI in AWS - Desktop */}
               <div className="flex flex-col h-full justify-between">
                 <div>
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
@@ -838,7 +991,7 @@ const HomePage: React.FC = () => {
                 </button>
               </div>
 
-              {/* Past Events for Shanghai */}
+              {/* Past Events for Shanghai - Desktop */}
               <div className="flex flex-col h-full justify-between">
                 <div>
                   <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-4">
@@ -875,15 +1028,64 @@ const HomePage: React.FC = () => {
           </div>
 
           {/* Membership Tiers */}
-          <div className="px-[5.6%] py-32">
-            <h2 className="text-3xl font-bold text-center mb-24">IFA Exclusive Events & Global Experiences</h2>
+          <div className="px-[5.6%] py-16 sm:py-20 lg:py-32">
+            <h2 className="text-2xl sm:text-2xl lg:text-3xl font-bold text-center mb-8 sm:mb-12 lg:mb-24">IFA Exclusive Events & Global Experiences</h2>
 
-            <div className="grid grid-cols-3 gap-8 mb-16">
-              {/* Basic Tier */}
-              <div className="font-['Helvetica'] relative bg-muted rounded-2xl p-12 flex flex-col items-center">
-                <img src="/assets/icons/basic.svg" alt="Basic" className="w-16 h-16 mb-4" />
+            {/* Mobile View - Vertical Layout */}
+            <div className="flex flex-col gap-8 md:hidden mb-12">
+              {/* Basic Tier - Mobile */}
+              <div className="font-['Helvetica'] relative bg-muted rounded-xl p-8 flex flex-col items-center">
+                <img src="/assets/icons/basic.svg" alt="Basic" className="w-12 h-12 mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Basic</h3>
+                <p className="text-gray-600 text-center mb-8 text-sm">Some content is accessible</p>
+
+                {/* semi-circle */}
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-6 bg-white rounded-t-full"></div>
+
+                {/* circle button */}
+                <div className="absolute bottom-[-18px] left-1/2 transform -translate-x-1/2 w-10 h-10 bg-[#F2F4F7] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#046FFB]/10 shadow-md">
+                  <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2.5 h-2.5" />
+                </div>
+              </div>
+
+              {/* Premium Tier - Mobile */}
+              <div className="font-['Helvetica'] relative bg-muted rounded-xl p-8 flex flex-col items-center">
+                <img src="/assets/icons/premium.svg" alt="Premium" className="w-12 h-12 mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Premium</h3>
+                <p className="text-gray-600 text-center mb-8 text-sm">Discounts on exclusive courses and study Tours</p>
+
+                {/* semi-circle */}
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-6 bg-white rounded-t-full"></div>
+
+                {/* circle button */}
+                <div className="absolute bottom-[-18px] left-1/2 transform -translate-x-1/2 w-10 h-10 bg-[#F2F4F7] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#046FFB]/10 shadow-md">
+                  <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2.5 h-2.5" />
+                </div>
+              </div>
+
+              {/* VIP Tier - Mobile */}
+              <div className="font-['Helvetica'] relative bg-muted rounded-xl p-8 flex flex-col items-center">
+                <img src="/assets/icons/vip.svg" alt="IFA VIP" className="w-12 h-12 mb-3" />
+                <h3 className="text-lg font-semibold mb-2">IFA VIP</h3>
+                <p className="text-gray-600 text-center mb-8 text-sm">Tutor 1V1 + AI interview guide</p>
+
+                {/* semi-circle */}
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-6 bg-white rounded-t-full"></div>
+
+                {/* circle button */}
+                <div className="absolute bottom-[-18px] left-1/2 transform -translate-x-1/2 w-10 h-10 bg-[#F2F4F7] rounded-full flex items-center justify-center cursor-pointer hover:bg-[#046FFB]/10 shadow-md">
+                  <img src="/assets/icons/arrow.svg" alt="arrow" className="w-2.5 h-2.5" />
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop View - Grid Layout */}
+            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
+              {/* Basic Tier - Desktop */}
+              <div className="font-['Helvetica'] relative bg-muted rounded-2xl p-8 lg:p-12 flex flex-col items-center">
+                <img src="/assets/icons/basic.svg" alt="Basic" className="w-14 lg:w-16 h-14 lg:h-16 mb-4" />
                 <h3 className="text-xl font-semibold mb-2 p-2">Basic</h3>
-                <p className="text-gray-600 text-center mb-12 text-sm">Some content is accessible</p>
+                <p className="text-gray-600 text-center mb-10 lg:mb-12 text-sm">Some content is accessible</p>
 
                 {/* semi-circle */}
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-white rounded-t-full"></div>
@@ -894,11 +1096,11 @@ const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Premium Tier */}
-              <div className="relative bg-muted rounded-2xl p-12 flex flex-col items-center">
-                <img src="/assets/icons/premium.svg" alt="Premium" className="w-16 h-16 mb-4" />
+              {/* Premium Tier - Desktop */}
+              <div className="font-['Helvetica'] relative bg-muted rounded-2xl p-8 lg:p-12 flex flex-col items-center">
+                <img src="/assets/icons/premium.svg" alt="Premium" className="w-14 lg:w-16 h-14 lg:h-16 mb-4" />
                 <h3 className="text-xl font-semibold mb-2 p-2">Premium</h3>
-                <p className="text-gray-600 text-center mb-12 text-sm">Discounts on exclusive courses and study Tours</p>
+                <p className="text-gray-600 text-center mb-10 lg:mb-12 text-sm">Discounts on exclusive courses and study Tours</p>
 
                 {/* semi-circle */}
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-white rounded-t-full"></div>
@@ -909,11 +1111,11 @@ const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* VIP Tier */}
-              <div className="relative bg-muted rounded-2xl p-12 flex flex-col items-center">
-                <img src="/assets/icons/vip.svg" alt="IFA VIP" className="w-16 h-16 mb-4" />
+              {/* VIP Tier - Desktop */}
+              <div className="font-['Helvetica'] relative bg-muted rounded-2xl p-8 lg:p-12 flex flex-col items-center">
+                <img src="/assets/icons/vip.svg" alt="IFA VIP" className="w-14 lg:w-16 h-14 lg:h-16 mb-4" />
                 <h3 className="text-xl font-semibold mb-2 p-2">IFA VIP</h3>
-                <p className="text-gray-600 text-center mb-12 text-sm">Tutor 1V1 + AI interview guide</p>
+                <p className="text-gray-600 text-center mb-10 lg:mb-12 text-sm">Tutor 1V1 + AI interview guide</p>
 
                 {/* semi-circle */}
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-white rounded-t-full"></div>
@@ -926,10 +1128,10 @@ const HomePage: React.FC = () => {
             </div>
 
             {/* Upgrade Button */}
-            <div className="flex justify-center mt-24 mb-12">
-              <button className="px-6 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
+            <div className="flex justify-center mt-12 sm:mt-16 lg:mt-24 mb-8 sm:mb-10 lg:mb-12">
+              <button className="px-5 sm:px-6 py-2.5 sm:py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
                 Upgrade Now
-                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                <div className="w-5 sm:w-6 h-5 sm:h-6 bg-white rounded-full flex items-center justify-center">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="text-primary">
                     <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -944,13 +1146,12 @@ const HomePage: React.FC = () => {
               {/* main image*/}
               <img src="/assets/images/communitySection.jpg" alt="IFA Community" className="w-full rounded-3xl" />
 
-              {/* title - use precise relative positioning */}
-              <div className="absolute left-[40%] top-[3.6%] max-w-[80%]">
-                <h2 className="text-3xl font-bold text-foreground">Join the IFA community and expand the possibilities</h2>
+              {/* Desktop layout - only visible on xl and larger screens */}
+              <div className="absolute left-[40%] top-[3.6%] max-w-[80%] hidden xl:block">
+                <h2 className="text-3xl font-bold text-foreground whitespace-nowrap">Join the IFA community and expand the possibilities</h2>
               </div>
 
-              {/* content and button - use precise relative positioning */}
-              <div className="absolute left-[64.1%] top-[17.6%] max-w-[40%]">
+              <div className="absolute left-[64.1%] top-[17.6%] max-w-[40%] hidden xl:block">
                 <p className="text-gray-600 text-sm mb-8">
                   Whether you are a future engineer, technology entrepreneur, or an explorer with a passion for innovation, IFA welcomes you to join us! Here,
                   you can meet like-minded partners, get mentors, master cutting-edge technology, and start a new journey of professional growth!
@@ -965,24 +1166,138 @@ const HomePage: React.FC = () => {
                 </button>
               </div>
 
+              {/* Medium layout - only visible on lg to xl screens */}
+              <div className="absolute right-[5%] top-[5%] w-[40%] hidden lg:block xl:hidden">
+                <h2 className="text-2xl font-bold text-foreground text-right">Join the IFA community and expand the possibilities</h2>
+              </div>
+
+              {/* Mobile layout - only visible on smaller than lg screens */}
+              <div className="absolute right-[5%] top-[5%] w-[40%] lg:hidden text-right">
+                <h2 className="text-base sm:text-lg md:text-xl font-bold text-foreground">
+                  Join the IFA
+                  <br />
+                  community and
+                  <br />
+                  expand the
+                  <br />
+                  possibilities
+                </h2>
+              </div>
+
               {/* bottom tag list */}
-              <div className="absolute bottom-12 left-12 flex flex-col gap-4">
-                <div className="bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[32px]">
-                  <span className="text-base font-medium text-white">AI automatically pushes the latest events & information</span>
+              <div className="absolute bottom-4 sm:bottom-8 md:bottom-12 left-4 sm:left-8 md:left-12 flex flex-col gap-2 sm:gap-3 md:gap-4 hidden md:flex">
+                <div
+                  className="px-4 sm:px-6 md:px-10 py-2 sm:py-2.5 md:py-3 backdrop-blur-[4px] overflow-hidden"
+                  style={{
+                    borderRadius: "32px",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    position: "relative"
+                  }}
+                >
+                  <div
+                    style={{
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: "32px",
+                      padding: "1px",
+                      background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      WebkitMaskComposite: "xor",
+                      maskComposite: "exclude",
+                      pointerEvents: "none"
+                    }}
+                  />
+                  <span className="relative z-10 text-xs sm:text-sm md:text-base font-medium text-white line-clamp-1">
+                    AI automatically pushes the latest events & information
+                  </span>
                 </div>
-                <div className="bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[32px]">
-                  <span className="text-base font-medium text-white">IFA Connect (Forums & Resources)</span>
+
+                <div
+                  className="px-4 sm:px-6 md:px-10 py-2 sm:py-2.5 md:py-3 backdrop-blur-[4px] overflow-hidden"
+                  style={{
+                    borderRadius: "32px",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    position: "relative"
+                  }}
+                >
+                  <div
+                    style={{
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: "32px",
+                      padding: "1px",
+                      background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      WebkitMaskComposite: "xor",
+                      maskComposite: "exclude",
+                      pointerEvents: "none"
+                    }}
+                  />
+                  <span className="relative z-10 text-xs sm:text-sm md:text-base font-medium text-white line-clamp-1">IFA Connect (Forums & Resources)</span>
                 </div>
-                <div className="bg-white/20 backdrop-blur-[2px] px-10 py-3 rounded-[32px]">
-                  <span className="text-base font-medium text-white">Industry mentor guidance & student exchange group</span>
+
+                <div
+                  className="px-4 sm:px-6 md:px-10 py-2 sm:py-2.5 md:py-3 backdrop-blur-[4px] overflow-hidden"
+                  style={{
+                    borderRadius: "32px",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    position: "relative"
+                  }}
+                >
+                  <div
+                    style={{
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: "32px",
+                      padding: "1px",
+                      background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0))",
+                      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                      WebkitMaskComposite: "xor",
+                      maskComposite: "exclude",
+                      pointerEvents: "none"
+                    }}
+                  />
+                  <span className="relative z-10 text-xs sm:text-sm md:text-base font-medium text-white line-clamp-1">
+                    Industry mentor guidance & student exchange group
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Support Section */}
-          <div className="px-[5.6%] mt-32 py-32">
-            <div className="bg-muted rounded-3xl p-16 flex justify-between items-center">
+          <div className="px-[5.6%] mt-16 sm:mt-24 lg:mt-32 py-16 sm:py-24 lg:py-32">
+            {/* Mobile and Tablet Layout */}
+            <div className="lg:hidden bg-muted rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10">
+              <div className="flex flex-col gap-6 sm:gap-8">
+                <h2 className="text-2xl sm:text-3xl font-bold text-[#1A1A1A]">Support IFA to help cultivate future scientific and technological talents</h2>
+                <div className="flex flex-col gap-2 text-gray-600">
+                  <p>Every donation you make is a strength for the future!</p>
+                  <p>Support us to benefit more students!</p>
+                </div>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Your support will directly impact the growth of young scientific and technological talents around the world, helping them to access quality
+                  educational resources, innovation opportunities and international perspectives. Let us work together to promote science and technology
+                  education and ignite the innovation dreams of the next generation!
+                </p>
+                <div className="flex justify-center sm:justify-start">
+                  <button className="px-6 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2">
+                    Donate now to change the future
+                    <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden lg:flex bg-muted rounded-3xl p-16 justify-between items-center">
               {/* Left Content */}
               <div className="max-w-[520px]">
                 <h2 className="text-3xl font-bold text-[#1A1A1A] mb-6">Support IFA to help cultivate future scientific and technological talents</h2>
@@ -1014,86 +1329,165 @@ const HomePage: React.FC = () => {
           {/* Contact Form Section with Footer */}
           <div className="relative">
             {/* Contact Form Section */}
-            <div className="px-[5.6%] mt-32 py-12 flex items-start">
-              <div className="w-[45%]">
-                <h2 className="text-3xl font-bold py-24 pl-12 text-foreground">Happy to answer any questions you might have</h2>
+            <div className="px-[5.6%] mt-16 sm:mt-24 lg:mt-32 py-8 sm:py-10 lg:py-12">
+              {/* Mobile and Tablet Layout */}
+              <div className="lg:hidden">
+                <div className="w-full text-center mb-8">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Happy to answer any questions you might have</h2>
+                </div>
+
+                <div className="w-full bg-background rounded-2xl p-6 sm:p-8 relative z-10" style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.1)" }}>
+                  <form className="flex flex-col gap-6">
+                    {/* Name fields row */}
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                      <div className="flex-1">
+                        <label htmlFor="firstNameMobile" className="block text-foreground mb-2">
+                          First name
+                        </label>
+                        <input
+                          type="text"
+                          id="firstNameMobile"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
+                          placeholder="First name"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label htmlFor="lastNameMobile" className="block text-foreground mb-2">
+                          Last name
+                        </label>
+                        <input
+                          type="text"
+                          id="lastNameMobile"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
+                          placeholder="Last name"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email field */}
+                    <div>
+                      <label htmlFor="emailMobile" className="block text-foreground mb-2">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="emailMobile"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
+                        placeholder="Email Adress"
+                      />
+                    </div>
+
+                    {/* Question field */}
+                    <div>
+                      <label htmlFor="questionMobile" className="block text-foreground mb-2">
+                        Your Question
+                      </label>
+                      <textarea
+                        id="questionMobile"
+                        rows={6}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary resize-none"
+                        placeholder="Enter your text here"
+                      />
+                    </div>
+
+                    {/* Submit button */}
+                    <button
+                      type="submit"
+                      className="self-center sm:self-start px-6 sm:px-8 py-2.5 sm:py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2"
+                    >
+                      Send
+                      <div className="w-5 sm:w-6 h-5 sm:h-6 bg-primary-foreground rounded-full flex items-center justify-center">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                          <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                    </button>
+                  </form>
+                </div>
               </div>
 
-              <div className="w-[48%] ml-8 bg-background rounded-3xl p-12 relative z-10" style={{ boxShadow: "0px 0px 50px rgba(0, 0, 0, 0.1)" }}>
-                <form className="flex flex-col gap-8">
-                  {/* Name fields row */}
-                  <div className="flex gap-6">
-                    <div className="flex-1">
-                      <label htmlFor="firstName" className="block text-foreground mb-2">
-                        First name
+              {/* Desktop Layout */}
+              <div className="hidden lg:flex items-start">
+                <div className="w-[45%]">
+                  <h2 className="text-3xl font-bold py-24 pl-12 text-foreground">Happy to answer any questions you might have</h2>
+                </div>
+
+                <div className="w-[48%] ml-8 bg-background rounded-3xl p-12 relative z-10" style={{ boxShadow: "0px 0px 50px rgba(0, 0, 0, 0.1)" }}>
+                  <form className="flex flex-col gap-8">
+                    {/* Name fields row */}
+                    <div className="flex gap-6">
+                      <div className="flex-1">
+                        <label htmlFor="firstName" className="block text-foreground mb-2">
+                          First name
+                        </label>
+                        <input
+                          type="text"
+                          id="firstName"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
+                          placeholder="First name"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label htmlFor="lastName" className="block text-foreground mb-2">
+                          Last name
+                        </label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
+                          placeholder="Last name"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email field */}
+                    <div>
+                      <label htmlFor="email" className="block text-foreground mb-2">
+                        Email
                       </label>
                       <input
-                        type="text"
-                        id="firstName"
+                        type="email"
+                        id="email"
                         className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
-                        placeholder="First name"
+                        placeholder="Email Adress"
                       />
                     </div>
-                    <div className="flex-1">
-                      <label htmlFor="lastName" className="block text-foreground mb-2">
-                        Last name
+
+                    {/* Question field */}
+                    <div>
+                      <label htmlFor="question" className="block text-foreground mb-2">
+                        Your Question
                       </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
-                        placeholder="Last name"
+                      <textarea
+                        id="question"
+                        rows={6}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary resize-none"
+                        placeholder="Enter your text here"
                       />
                     </div>
-                  </div>
 
-                  {/* Email field */}
-                  <div>
-                    <label htmlFor="email" className="block text-foreground mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary"
-                      placeholder="Email Adress"
-                    />
-                  </div>
-
-                  {/* Question field */}
-                  <div>
-                    <label htmlFor="question" className="block text-foreground mb-2">
-                      Your Question
-                    </label>
-                    <textarea
-                      id="question"
-                      rows={6}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary resize-none"
-                      placeholder="Enter your text here"
-                    />
-                  </div>
-
-                  {/* Submit button */}
-                  <button
-                    type="submit"
-                    className="self-start px-8 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2"
-                  >
-                    Send
-                    <div className="w-6 h-6 bg-primary-foreground rounded-full flex items-center justify-center">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
-                        <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                  </button>
-                </form>
+                    {/* Submit button */}
+                    <button
+                      type="submit"
+                      className="self-start px-8 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary-dark transition-colors flex items-center gap-2"
+                    >
+                      Send
+                      <div className="w-6 h-6 bg-primary-foreground rounded-full flex items-center justify-center">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
+                          <path d="M3 9L9 3M9 3H4M9 3V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                    </button>
+                  </form>
+                </div>
               </div>
             </div>
 
             {/* Footer Section */}
             <div className="bg-[#25292C] mt-[-280px] pt-[320px] pb-16 px-[5.6%]">
-              <div className="flex justify-between">
+              <div className="flex flex-col md:flex-row justify-between gap-8 md:gap-4">
                 {/* Logo and Brand */}
-                <div>
+                <div className="mb-8 md:mb-0">
                   <div className="flex items-center">
                     <img src="/assets/images/logo2.png" alt="INNOVATE FUTURE" className="w-10 h-10" />
                     <div className="flex flex-col ml-3">
@@ -1104,7 +1498,7 @@ const HomePage: React.FC = () => {
                 </div>
 
                 {/* Navigation Links */}
-                <div>
+                <div className="mb-8 md:mb-0">
                   <h3 className="text-white font-semibold mb-6">Your name</h3>
                   <ul className="flex flex-col gap-4">
                     {["Home", "Events", "Partners", "Membership", "About Us", "Contact Us"].map(item => (
@@ -1118,7 +1512,7 @@ const HomePage: React.FC = () => {
                 </div>
 
                 {/* Partner Links */}
-                <div>
+                <div className="mb-8 md:mb-0">
                   <h3 className="text-white font-semibold mb-6">Partner Links</h3>
                   <ul className="flex flex-col gap-4">
                     {["Sunflower AI", "Bookwell AI", "Beequant.AI", "Jobpin AI"].map(item => (
@@ -1132,16 +1526,16 @@ const HomePage: React.FC = () => {
                 </div>
 
                 {/* Newsletter Subscription - adjusted width and styling */}
-                <div className="max-w-[480px]">
+                <div className="max-w-full md:max-w-[480px]">
                   <h3 className="text-white font-semibold mb-6">Subscribe Newsletter</h3>
                   <p className="text-gray-400 mb-6">Subscribe to our newsletter to get updates about our services and offers.</p>
-                  <div className="flex bg-white rounded-lg p-1">
+                  <div className="flex flex-col sm:flex-row bg-white rounded-lg p-1">
                     <input
                       type="email"
                       placeholder="input your email"
                       className="flex-1 px-6 py-2 bg-transparent text-gray-900 placeholder:text-gray-500 focus:outline-none"
                     />
-                    <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">Subscribe</button>
+                    <button className="mt-2 sm:mt-0 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">Subscribe</button>
                   </div>
                 </div>
               </div>
