@@ -1,0 +1,194 @@
+name: Frontend PR Preview
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [ dev ]
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  NODE_VERSION: "22.1.0"
+  PREVIEW_BUCKET_PREFIX: "pr-preview-"
+  AWS_REGION: ap-southeast-2
+
+jobs:
+  preview:
+    if: github.event.action != 'closed' && !github.event.pull_request.merged
+    environment:
+      name: Development
+      url: ${{ steps.create_preview.outputs.preview_url }}
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+          audience: "sts.amazonaws.com"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Create Preview Environment
+        id: create_preview
+        run: |
+          # Get PR branch name
+          BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
+          # Remove leading and trailing hyphens
+          BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
+          PREVIEW_ID="branch${BRANCH_NAME}"
+          
+          # Generate bucket name: ensure it starts with letter/number and contains only lowercase letters, numbers, and hyphens
+          BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
+          # Remove invalid characters
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]//g')
+          # Remove leading and trailing hyphens
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | sed 's/^-//;s/-$//')
+          # Limit length to 63 characters
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
+          
+          echo "Creating preview environment with bucket: ${BUCKET_NAME}"
+          
+          # Check if bucket exists
+          if ! aws s3api head-bucket --bucket ${BUCKET_NAME} 2>/dev/null; then
+            # Create S3 bucket if it doesn't exist
+            aws s3api create-bucket \
+              --bucket ${BUCKET_NAME} \
+              --region ${{ env.AWS_REGION }} \
+              --create-bucket-configuration LocationConstraint=${{ env.AWS_REGION }}
+          fi
+          
+          # Disable block public access for the preview bucket
+          aws s3api put-public-access-block \
+            --bucket ${BUCKET_NAME} \
+            --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+          
+          # Configure bucket policy
+          aws s3api put-bucket-policy \
+            --bucket ${BUCKET_NAME} \
+            --policy '{
+              "Version": "2012-10-17",
+              "Statement": [{
+                "Sid": "PublicReadGetObject",
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::'"${BUCKET_NAME}"'/*"
+              }]
+            }'
+          
+          # Configure static website hosting
+          aws s3 website s3://${BUCKET_NAME} \
+            --index-document index.html \
+            --error-document index.html
+
+          # Upload build files
+          aws s3 sync dist/ s3://${BUCKET_NAME} \
+            --delete \
+            --cache-control "max-age=3600,public"
+          
+          # Set preview URL
+          PREVIEW_URL="http://${BUCKET_NAME}.s3-website.${{ env.AWS_REGION }}.amazonaws.com"
+          echo "preview_url=${PREVIEW_URL}" >> $GITHUB_OUTPUT
+          echo "bucket_name=${BUCKET_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Notify Discord
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+          thread-id: "1330422313769893938"
+          username: "Frontend Preview Bot"
+          content: |
+            🔍 Preview Environment Created
+            **Event:** ${{ github.event_name }}
+            ${{ github.event_name == 'pull_request' && format('**PR:** #{0}', github.event.pull_request.number) || format('**Branch:** {0}', github.ref_name) }}
+            ${{ github.event_name == 'pull_request' && format('**Title:** {0}', github.event.pull_request.title) || '' }}
+            **Preview URL:** ${{ steps.create_preview.outputs.preview_url }}
+            **Author:** ${{ github.actor }}
+
+  cleanup:
+    if: github.event.action == 'closed' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment:
+      name: Development
+    
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_DEV_ACCOUNT }}:role/oidc-${{ vars.REPO_ORG_ABBR }}-${{ github.event.repository.name }}"
+          audience: "sts.amazonaws.com"
+
+      - name: Cleanup Preview Environment
+        run: |
+          echo "Starting cleanup process..."
+          echo "Event type: ${{ github.event_name }}"
+          echo "PR action: ${{ github.event.action }}"
+          echo "PR merged: ${{ github.event.pull_request.merged }}"
+          echo "Source branch: ${{ github.event.pull_request.head.ref }}"
+          
+          # Get PR branch name
+          BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}" | sed 's/[^a-zA-Z0-9-]/-/g' | tr '[:upper:]' '[:lower:]')
+          echo "Processed branch name: ${BRANCH_NAME}"
+          BRANCH_NAME=$(echo "$BRANCH_NAME" | sed 's/^-//;s/-$//')
+          PREVIEW_ID="branch${BRANCH_NAME}"
+          
+          # Generate bucket name
+          BUCKET_NAME="${{ env.PREVIEW_BUCKET_PREFIX }}${PREVIEW_ID}"
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]//g')
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | sed 's/^-//;s/-$//')
+          BUCKET_NAME=$(echo "$BUCKET_NAME" | cut -c 1-63)
+          
+          echo "Target bucket for cleanup: ${BUCKET_NAME}"
+          
+          # Check if bucket exists before cleanup
+          if aws s3api head-bucket --bucket ${BUCKET_NAME} 2>/dev/null; then
+            echo "Bucket exists, proceeding with cleanup..."
+            
+            # Remove bucket policy first
+            echo "Removing bucket policy..."
+            aws s3api delete-bucket-policy --bucket ${BUCKET_NAME} || true
+            
+            # Remove bucket contents
+            echo "Removing bucket contents..."
+            aws s3 rm s3://${BUCKET_NAME} --recursive
+            
+            # Delete the bucket
+            echo "Deleting bucket..."
+            aws s3api delete-bucket --bucket ${BUCKET_NAME}
+            
+            echo "Cleanup completed successfully"
+          else
+            echo "Bucket ${BUCKET_NAME} does not exist, no cleanup needed"
+          fi
+
+      - name: Notify Discord
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+          thread-id: "1330422313769893938"
+          username: "Frontend Preview Bot"
+          content: |
+            🧹 Preview Environment Cleaned Up
+            **Event:** ${{ github.event_name }}
+            ${{ github.event_name == 'pull_request' && format('**PR:** #{0}', github.event.pull_request.number) || format('**Branch:** {0}', github.ref_name) }}
+            ${{ github.event_name == 'pull_request' && format('**Title:** {0}', github.event.pull_request.title) || '' }} 

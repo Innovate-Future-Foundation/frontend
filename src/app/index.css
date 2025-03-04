@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@plugin "@tailwindcss/typography";
+body {
+  font-family: "Helvetica", Inter, system-ui, Avenir, Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background: linear-gradient(135deg, #fafcfe 0%, #ffffff 100%);
+}
+html {
+  font-size: 16px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  box-sizing: border-box;
+  letter-spacing: 0px;
+}
+
+/* for rich text */
+.ProseMirror-focused {
+  outline: 1px solid #046ffb;
+  border-radius: 8px;
+}
+.ProseMirror {
+  border: 1px solid rgb(233, 233, 233);
+  border-radius: 5px;
+  padding: 46px 10px 10px;
+  height: 200px;
+  overflow-y: scroll;
+}
+@layer base {
+  :root {
+    --background: 217 65% 100%;
+    --foreground: 217 69% 1%;
+    --muted: 217 10% 94%;
+    --muted-foreground: 217 8% 27%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 0 0% 0%;
+    --card: 0 0% 99%;
+    --card-foreground: 0 0% 0%;
+    --border: 217 14% 90%;
+    --input: 217 14% 90%;
+    --primary: 214.01 96.86% 50%;
+    --primary-light: 214.01 100% 90.15%;
+    --primary-dark: 214.01 100% 23.65%;
+    --primary-foreground: 0 0% 100%;
+    --primary-foreground-80: 0 0% 80%;
+    --primary-foreground-60: 0 0% 60%;
+    --primary-foreground-50: 0 0% 50%;
+    --primary-foreground-30: 0 0% 30%;
+    --secondary: 218.82 100% 95.89%;
+    --secondary-light: 218.82 100% 97.89%;
+    --secondary-foreground: 214.01 96.86% 50%;
+    --secondary-purple: 264 88.24% 93.33%;
+    --secondary-purple-light: 264 88.24% 83.33%;
+    --secondary-foreground-purple: 262.71 85.51% 59.41%;
+    --secondary-green: 154.67 54.22% 93.73%;
+    --secondary-green-light: 154.67 54.22% 83.33%;
+    --secondary-foreground-green: 151.01 36.63% 47.65%;
+    --secondary-red: 0 50% 91.37%;
+    --secondary-red-light: 0 50% 83.33%;
+    --secondary-foreground-red: 3.72 57.77% 49.22%;
+    --secondary-yellow: 38.82 89.47% 92.55%;
+    --secondary-yellow-light: 38.82 89.47% 83.33%;
+    --secondary-foreground-yellow: 35.87 86.47% 59.41%;
+    --accent: 210 20% 96.08%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 2 87% 43%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 217 100% 50%;
+    --chart-1: 214.01 96.86% 50%;
+    --chart-2: 218.82 100% 91.89%;
+    --chart-3: 210 20% 96.08%;
+    --chart-4: 218.82 100% 94.89%;
+    --chart-5: 214.01 99.86% 50%;
+    --radius: 0.5rem;
+    --sidebar-background: 217 65% 100%;
+    --sidebar-border: 220 13% 80%;
+  }
+
+  .dark {
+    --background: 240 13.73% 10%;
+    --foreground: 229.76 31.78% 74.71%;
+    --muted: 232.5 15.44% 18.32%;
+    --muted-foreground: 233.79 11.37% 50%;
+    --popover: 234.55 17.46% 12.35%;
+    --popover-foreground: 234 12.4% 52.55%;
+    --card: 234.55 17.46% 12.35%;
+    --card-foreground: 229.76 31.78% 74.71%;
+    --border: 232.5 17.53% 33.38%;
+    --input: 232 20.95% 29.89%;
+    --primary: 0 0% 82.75%;
+    --primary-light: 214.01 100% 62.72%;
+    --primary-dark: 214.01 100% 23.65%;
+    --primary-foreground: 214.01 96.86% 50%;
+    --secondary: 214.01 100% 74.12%;
+    --secondary-foreground: 234.55 17.46% 12.35%;
+    --secondary-purple: 264 88.24% 93.33%;
+    --secondary-foreground-purple: 262.71 85.51% 59.41%;
+    --secondary-green: 154.67 54.22% 83.73%;
+    --secondary-foreground-green: 151.01 36.63% 47.65%;
+    --secondary-red: 0 50% 91.37%;
+    --secondary-foreground-red: 3.72 57.77% 49.22%;
+    --secondary-yellow: 38.82 89.47% 92.55%;
+    --secondary-foreground-yellow: 35.87 86.47% 59.41%;
+    --accent: 234.55 17.83% 9.47%;
+    --accent-foreground: 0 0% 82.75%;
+    --destructive: 1.58 75.54% 55.96%;
+    --destructive-foreground: 210 40% 98.04%;
+    --ring: 225.45 71.22% 72.75%;
+    --chart-1: 0 0% 82.75%;
+    --chart-2: 214.01 100% 74.12%;
+    --chart-3: 234.55 17.83% 9.47%;
+    --chart-4: 214.01 100% 77.12%;
+    --chart-5: 0 3% 82.75%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    font-family: "Helvetica", Inter, system-ui, Avenir, Arial, sans-serif;
+  }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Extra-large screens (widescreen monitors) */
+@media (min-width: 1536px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 22px;
+  }
+}
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("/fonts/Helvetica.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica-Bold";
+  src: url("/fonts/Helvetica-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica-BoldOblique";
+  src: url("/fonts/Helvetica-BoldOblique.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica-Light";
+  src: url("/fonts/helvetica-light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica-Oblique";
+  src: url("/fonts/Helvetica-Oblique.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Helvetica-Rounded-Bold";
+  src: url("/fonts/helvetica-rounded-bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Helvetica-Compressed";
+  src: url("/fonts/helvetica-compressed.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "big-john";
+  src: url("/fonts/big-john-woff2-2.ttf") format("truetype");
+}

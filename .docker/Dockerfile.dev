@@ -1,0 +1,17 @@
+FROM node:18-alpine
+
+# RUN apk add --no-cache git // add later if  git operations are needed during build or runtime
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm ci
+
+COPY . .
+
+RUN npm run prepare
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]

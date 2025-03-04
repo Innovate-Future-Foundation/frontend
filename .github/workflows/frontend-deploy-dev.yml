@@ -1,0 +1,26 @@
+name: Frontend CD - Dev Deployment
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Frontend CI - Build & Test"]
+    types:
+      - completed
+    branches: [dev]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-to-dev:
+    uses: ./.github/workflows/frontend-deploy.yml
+    with:
+      environment: Development
+      bucket_name: dev-foundation-innovatefuture-dev-frontend-static
+      website_url: https://dev.innovatefuture.foundation
+      api_url: https://dev.innovatefuture.foundation
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_DEV_ACCOUNT }}
+      DISCORD_WEBHOOK: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+      CLOUDFRONT_ID: ${{ secrets.DEV_CLOUDFRONT_ID }}

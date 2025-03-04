@@ -1,0 +1,78 @@
+name: Frontend CI - Build & Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [dev, uat, main]
+  push:
+    branches: [dev, uat, main]
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-and-test:
+    environment:
+      name: ${{ github.ref_name == 'main' && 'Production' || github.ref_name == 'uat' && 'UAT' || 'Development' }}
+    env:
+      node_version: "22.1.0"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.node_version }}
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Production Assets
+        run: npm run build
+
+      - name: Verify Build Output
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "Build verification failed!"
+            exit 1
+          fi
+
+      - name: Debug Build Info
+        run: |
+          echo "Build number: ${{ github.run_number }}"
+          echo "Artifact name: frontend-dist-${{ github.run_number }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Event name: ${{ github.event_name }}"
+          echo "Ref name: ${{ github.ref_name }}"
+
+      - name: Upload Production Assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist-${{ github.run_number }}
+          path: dist/
+          retention-days: 1
+
+      - name: Notify Discord on Failure
+        if: failure()
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+          thread-id: "1330422313769893938"
+          username: "Frontend Build Bot"
+          content: |
+            ❌ Frontend Build Failed!
+            **Pipeline:** Build & Test
+            **Build:** ${{ github.run_number }}
+            **Branch:** ${{ github.ref_name }}
+            **Triggered by:** ${{ github.actor }}
+            <@&1315850473391001674>
