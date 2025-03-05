@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { profiles } from "@/queries/profiles";
 import { useUserStore } from "@/store";
 
-export const useParent = (profilePaginatedRequest: ProfilePaginatedRequest) => {
+export const useParent = ({ profilePaginatedRequest, enabled }: { profilePaginatedRequest: ProfilePaginatedRequest; enabled: boolean }) => {
   const { organisaitonProfile } = useUserStore();
   const errorTitleParent = ERROR_MESSAGES.FAIL_TO_FETCH_PARENT;
 
@@ -22,7 +22,7 @@ export const useParent = (profilePaginatedRequest: ProfilePaginatedRequest) => {
     gcTime: 300000,
     retry: 3,
     refetchOnWindowFocus: false,
-    enabled: !!profilePaginatedRequest.limit
+    enabled: enabled
   });
 
   useErrorNotification(isErrorParents, errorTitleParent, errorParents);

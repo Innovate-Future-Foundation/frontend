@@ -83,7 +83,15 @@ const InviteModal: React.FC<props> = ({ roleInvited, children }) => {
   }, [inviteUserForm, isParentEmailShowToggle]);
 
   const { mutate, isPending, isSuccess, isError, reset } = useInviteUser({});
-  const { parentsData, isSuccessGetParents } = useParent({ limit: 8, searchKey: inputValue, filters: { isActive: true, isConfirmed: true } });
+
+  const { parentsData, isSuccessGetParents } = useParent({
+    profilePaginatedRequest: {
+      limit: 8,
+      searchKey: inputValue,
+      filters: { isActive: true, isConfirmed: true }
+    },
+    enabled: isDialogOpen && !!isParentEmailShowToggle
+  });
 
   const handleFormSubmit: SubmitHandler<FormInputs> = useCallback(
     async data => {

@@ -96,7 +96,6 @@ const platformAdminMenu: SidebarMenu = {
     }
   ]
 };
-
 const organisationAdminMenu: SidebarMenu = {
   sidebarHeader: {
     url: "/dashboard/organisations/:id"
@@ -163,7 +162,6 @@ const organisationAdminMenu: SidebarMenu = {
     }
   ]
 };
-
 const organisationManagerMenu: SidebarMenu = {
   sidebarHeader: {
     url: "/dashboard/organisations/:id"
@@ -274,7 +272,6 @@ const organisationTeacherMenu: SidebarMenu = {
     }
   ]
 };
-
 const parentMenu: SidebarMenu = {
   sidebarHeader: {
     url: "/dashboard/organisations/:id"
@@ -307,7 +304,6 @@ const parentMenu: SidebarMenu = {
     }
   ]
 };
-
 const studentMenu: SidebarMenu = {
   sidebarHeader: {
     url: "/dashboard/organisations/:id"
