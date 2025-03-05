@@ -19,8 +19,8 @@ jobs:
     with:
       environment: Production
       bucket_name: prod-foundation-innovatefuture-prod-frontend-static
-      website_url: https://saas.innovatefuture.foundation
-      api_url: https://saas.innovatefuture.foundation
+      website_url: https://innovatefuture.foundation
+      api_url: https://innovatefuture.foundation
     secrets:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_PROD_ACCOUNT }}
       DISCORD_WEBHOOK: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
