@@ -183,7 +183,7 @@ const DataTable = <T extends object>({
 
         {/* Search */}
         <div className="relative">
-          <Input placeholder={searchPlaceholder} onChange={handleSearchChange} className="max-w-sm pl-10 text-sm h-10 w-96" {...inputProps} />
+          <Input placeholder={searchPlaceholder} onChange={handleSearchChange} className="max-w-sm pl-10 text-sm h-10 w-96 bg-background" {...inputProps} />
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
             <Search size={16} />
           </span>
