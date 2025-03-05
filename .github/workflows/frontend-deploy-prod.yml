@@ -1,0 +1,27 @@
+name: Frontend CD - Production Deployment
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Frontend CI - Build & Test"]
+    types:
+      - completed
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-to-prod:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    uses: ./.github/workflows/frontend-deploy.yml
+    with:
+      environment: Production
+      bucket_name: prod-foundation-innovatefuture-prod-frontend-static
+      website_url: https://sass.innovatefuture.foundation
+      api_url: https://sass.innovatefuture.foundation
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_PROD_ACCOUNT }}
+      DISCORD_WEBHOOK: ${{ secrets.DEV_PR_DISCORD_WEBHOOK }}
+      CLOUDFRONT_ID: ${{ secrets.PROD_CLOUDFRONT_ID }}

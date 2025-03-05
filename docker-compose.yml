@@ -1,0 +1,21 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.dev
+
+    container_name: innovate-future-frontend
+    env_file:
+      - .env.local
+    volumes:
+      - .:/app
+
+    ports:
+      - "5173:5173"
+
+    stdin_open: true
+    tty: true
+
+networks:
+  default:
+    name: innovate-future-network
